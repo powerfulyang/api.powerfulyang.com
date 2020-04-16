@@ -1,0 +1,97 @@
+#!/bin/bash
+function error() {
+    echo -e "\033[46;31m 你不要这样啊~~ 程序完蛋啦~\(≧▽≦)/~ \033[0m"
+}
+function typeOperation() {
+    echo -e "\033[44;30m $1 \033[0m"
+}
+function commonInfo() {
+    echo -e "\033[34m $1 \033[0m"
+}
+function doneInfo() {
+    echo -e "\033[43;34m $1 \033[0m"
+}
+function errorInfo() {
+    echo -e "\033[31m $1 \033[0m"
+    typeOperation "程序要重启了"
+    start
+}
+function doingInfo() {
+    echo -e "\033[40;34m $1 \033[0m"
+}
+
+function createController()
+{
+    if [[ $1 =~ ^[A-Za-z0-9]+$ ]]; then
+      commonInfo "$1 开启创建";
+      nest generate module $1 module;
+      doneInfo "$1 module 创建完成";
+      nest generate service $1 service;
+      doneInfo "$1 service 创建完成";
+      nest generate controller $1 controller;
+      doneInfo "$1 controller 创建完成";
+      nest generate cl $1 entity;
+      doneInfo "$1 class 创建完成";
+#      修改名称
+
+      commonInfo "换entity名字"
+      doingInfo "mv src/$1/$1.ts src/$1/$1.entity.ts"
+      mv src/entity/$1.ts src/entity/$1.entity.ts
+      doingInfo "mv src/$1/$1.spec.ts src/$1/$1.entity.spec.ts"
+      mv src/entity/$1.spec.ts src/entity/$1.entity.spec.ts
+      doneInfo "完啦"
+    else
+     errorInfo "$1 名称不行";
+    fi
+}
+
+createMiddleware(){
+      if [[ $1 =~ ^[A-Za-z0-9]+$ ]]; then
+          commonInfo "$1 开启创建";
+          nest generate mi $1 middleware/$1;
+          doneInfo "$1 middleware 创建完成";
+          doneInfo "完啦"
+        else
+         errorInfo "$1 名称不行";
+        fi
+}
+
+
+start() {
+    echo -e "\033[42;30m nest 自主脚本，欢迎您的使用鸭！！！ \033[0m"
+commonInfo "请输入要进行的操作:"
+commonInfo "------------------------1. 生成控制器"
+commonInfo "------------------------2. 生成中间件"
+commonInfo "------------------------3. 编译启动项目"
+commonInfo "------------------------4. 重新启动项目"
+
+read op;
+case $op in
+ 1)
+        typeOperation  "请输入控制器名称: ";
+          read  class;
+            createController $class;
+        ;;
+ 2)
+        typeOperation "请输入中间件名称"
+          read class
+            createMiddleware $class
+        ;;
+ 3)
+        commonInfo "启动项目"
+          npm run prod
+        ;;
+ 4)
+        commonInfo "重启项目"
+          npm run re-prod
+        ;;
+ *)
+        errorInfo "请输入提示可选操作"
+        ;;
+esac
+}
+
+
+start
+
+
