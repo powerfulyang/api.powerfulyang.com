@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  app:
+    image: powerfulyang/api.powerfulyang.com
+    container_name: api.powerfulyang.com
+    network_mode: host
+    ports:
+      - '3000:3000'
+    environment:
+      'NODE_ENV': 'production'
+      'SecretId': ${SecretId}
+      'SecretKey': ${SecretKey}
+    restart: always
+    volumes:
+      - /root/static/upload:/usr/app/upload
+    command: npm run start:prod
+    env_file:
+      - .env

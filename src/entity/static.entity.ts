@@ -2,9 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Bucket } from './bucket.entity';
@@ -14,9 +12,12 @@ export class Static {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @JoinColumn()
-  @ManyToMany(() => Bucket, { nullable: false })
+  @JoinColumn({ name: 'bucket_id' })
+  @ManyToOne(() => Bucket, (bucket) => bucket.staticList)
   bucket: Bucket;
+
+  @Column({ name: 'bucket_id' })
+  bucketId: number;
 
   @Column()
   filename: string;
@@ -30,15 +31,36 @@ export class Static {
   @Column()
   comment: string;
 
-  @Column({ name: 'file_path' })
+  @Column({ name: 'file_path', unique: true })
   filePath: string;
 
   @Column({ name: 'min_file_path' })
   minFilePath: string;
+
+  @Column({ name: 'webp_file_path' })
+  webpFilePath: string;
 
   @Column({ name: 'access_url' })
   accessUrl: string;
 
   @Column({ name: 'min_access_url' })
   minAccessUrl: string;
+
+  @Column({ name: 'webp_access_url' })
+  webpAccessUrl: string;
+
+  @Column({ name: 'upload_date' })
+  uploadDate: string;
+
+  @Column({ name: 'dir_path' })
+  dirPath: string;
+
+  @Column({ name: 'min_dir_path' })
+  minDirPath: string;
+
+  @Column({ name: 'webp_dir_path' })
+  webpDirPath: string;
+
+  @Column()
+  sha1: string;
 }

@@ -2,9 +2,10 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FormatMiddleware } from './middleware/format/format.middleware';
 import { StaticModule } from './module/static/static.module';
+import config from './config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), StaticModule],
+  imports: [TypeOrmModule.forRoot(config), StaticModule],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

@@ -17,3 +17,10 @@ services:
       - 3306:3306
     volumes:
       - ./data:/var/lib/mysql
+    networks:
+      - dev-net
+
+
+networks:
+  dev-net:
+    external: true

@@ -1,7 +1,5 @@
 export class BaseSevice {
   success() {
-    return {
-
-    }
+    return {};
   }
 }

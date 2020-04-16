@@ -1,0 +1,56 @@
+name: app
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [13.x]
+        docker-repository: [powerfulyang/api.powerfulyang.com]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package.json') }}
+      - name: build
+        run: |
+          sudo apt-get update
+          sudo apt-get install autoconf libtool nasm libpng-dev automake pkg-config build-essential wget -yq --no-install-suggests --no-install-recommends --force-yes
+          npm i
+          npm run build
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@v2.0.7
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          ARGS: '-avz'
+          SOURCE: 'api.powerfulyang.com.yml'
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          TARGET: /root/app/api.powerfulyang.com
+      - name: Dockerize
+        id: dockerize
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ matrix.docker-repository }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tags: 'latest'
+      - name: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script_stop: false
+          script: |
+            docker pull ${{ matrix.docker-repository }}
+            cd /root/app/api.powerfulyang.com
+            docker-compose -f api.powerfulyang.com.yml up -d

@@ -13,17 +13,24 @@ export class BucketUtils {
   }
 
   static formatFilePath(staticEntity: Static) {
-    const currentDay = dayjs().format('YYYY-MM-DD');
+    const uploadDate = dayjs().format('YYYY-MM-DD');
     staticEntity = {
       projectName: staticEntity.projectName || 'default',
       folder: staticEntity.folder || 'default',
       comment: staticEntity.comment || '',
       ...staticEntity,
     };
-    staticEntity.filePath = `${staticEntity.projectName}/${staticEntity.folder}/${currentDay}/${staticEntity.filename}`;
-    staticEntity.minFilePath = `${staticEntity.projectName}/${
+    staticEntity.dirPath = `${staticEntity.projectName}/${staticEntity.folder}/${uploadDate}`;
+    staticEntity.filePath = `${staticEntity.dirPath}/${staticEntity.filename}`;
+    staticEntity.minDirPath = `${staticEntity.projectName}/${
       staticEntity.folder
-    }/${currentDay + 'min'}/${staticEntity.filename}`;
+    }/${uploadDate + '-min'}`;
+    staticEntity.minFilePath = `${staticEntity.minDirPath}/${staticEntity.filename}`;
+    staticEntity.webpDirPath = `${staticEntity.projectName}/${
+      staticEntity.folder
+    }/${uploadDate + '-webp'}`;
+    staticEntity.webpFilePath = `${staticEntity.webpDirPath}/${staticEntity.filename}.webp`;
+    staticEntity.uploadDate = uploadDate;
     return staticEntity;
   }
 }

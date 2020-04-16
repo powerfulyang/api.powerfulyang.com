@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BucketRegion } from '../enum/Bucket';
 import { Static } from './static.entity';
 
@@ -19,8 +13,7 @@ export class Bucket {
   @Column({ name: 'bucket_region' })
   bucketRegion: BucketRegion;
 
-  @JoinColumn()
-  @OneToMany(() => Static, (staticEntity) => staticEntity)
+  @OneToMany(() => Static, (staticEntity) => staticEntity.bucket)
   staticList: Static[];
 
   @Column({ name: 'is_default' })

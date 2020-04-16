@@ -36,9 +36,9 @@ lerna-debug.log*
 /yarn.lock
 /package-lock.json
 
-src/config.ts
 
 #/test.js
 
 mysql/data/
 .env
+upload/
