@@ -2,7 +2,6 @@ version: '3.1'
 services:
   db:
     image: mysql
-    restart: always
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -17,10 +16,3 @@ services:
       - 3306:3306
     volumes:
       - ./data:/var/lib/mysql
-    networks:
-      - dev-net
-
-
-networks:
-  dev-net:
-    external: true

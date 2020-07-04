@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [13.x]
         docker-repository: [powerfulyang/api.powerfulyang.com.base]
     steps:
       - uses: actions/checkout@v2
@@ -25,4 +24,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: "latest"
           dockerfile: Dockerfile.base
-          context: .

@@ -1,21 +1,24 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BucketRegion } from '../enum/Bucket';
-import { Static } from './static.entity';
+import { StaticResource } from './static.entity';
 
 @Entity('bucket')
 export class Bucket {
-  @PrimaryGeneratedColumn({ name: 'bucket_id' })
-  bucketId: number;
+    @PrimaryGeneratedColumn()
+    bucketId!: number;
 
-  @Column({ name: 'bucket_name', unique: true })
-  bucketName: string;
+    @OneToMany(() => StaticResource, (staticResource) => staticResource.bucket)
+    staticList!: StaticResource[];
 
-  @Column({ name: 'bucket_region' })
-  bucketRegion: BucketRegion;
+    @Column({ unique: true })
+    bucketName!: string;
 
-  @OneToMany(() => Static, (staticEntity) => staticEntity.bucket)
-  staticList: Static[];
+    @Column()
+    bucketRegion!: BucketRegion;
 
-  @Column({ name: 'is_default' })
-  isDefault: boolean;
+    @Column()
+    SecretId!: string;
+
+    @Column()
+    SecretKey!: string;
 }

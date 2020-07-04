@@ -1,19 +1,22 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FormatMiddleware } from './middleware/format/format.middleware';
-import { StaticModule } from './module/static/static.module';
+import { StaticModule } from './module/static.module';
 import config from './config';
+import { UserModule } from './module/user.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseFormatInterceptor } from './common/interceptors/response.format.interceptor';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), StaticModule],
+    imports: [
+        TypeOrmModule.forRoot(config),
+        JwtModule.register({
+            secret: process.env.JWT_SECRET || '111',
+            signOptions: { expiresIn: '30m' },
+        }),
+        StaticModule,
+        UserModule,
+    ],
+    providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseFormatInterceptor }],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    /**
-     * 2019-10-12 tips: req.body 在app.use(new FormatMiddleware().use)的情况下不能获取值
-     * 上面的情况app.use(BodyParser.json())还没有完成，可以（自己手动加上）或者 （configure里面在设置）
-     * https://github.com/nestjs/nest/issues/3148#issuecomment-541043223
-     */
-    consumer.apply(FormatMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
