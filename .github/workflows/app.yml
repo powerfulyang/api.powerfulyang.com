@@ -34,7 +34,7 @@ jobs:
           SOURCE: 'api.powerfulyang.com.yml'
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
-          TARGET: /root/app/api.powerfulyang.com
+          TARGET: /root/app/api.powerfulyang.com/
       - name: Dockerize
         id: dockerize
         uses: elgohr/Publish-Docker-Github-Action@master
