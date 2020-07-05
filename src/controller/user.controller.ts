@@ -1,4 +1,4 @@
-import { Body, Controller, Redirect } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { User } from '../entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,11 +11,11 @@ export class UserController {
         private jwtService: JwtService,
     ) {}
 
-    @Redirect()
+    @Post('login')
     async login(@Body() user: User) {
         const { email, password } = user;
         user = await this.userDao.findOneOrFail({ email, password });
-        const token = this.jwtService.sign(user);
+        const token = this.jwtService.sign({ ...user });
         return { setToken: token };
     }
 }

@@ -25,8 +25,18 @@ export class StaticService {
     listBucket() {
         return this.bucketDao.findAndCount();
     }
+
     async storeStatic(file: UploadFile, staticResource: StaticResource, bucket: Bucket) {
+        if (!staticResource) {
+            staticResource = new StaticResource();
+            staticResource.projectName = 'gallery';
+        }
+        if (!bucket) {
+            bucket = await this.bucketDao.findOneOrFail();
+        }
+        staticResource.filename = file.originalname;
         staticResource.sha1 = HashUtils.sha1Hex(file.buffer);
+        staticResource.bucket = bucket;
         const ext = extname(file.originalname);
         staticResource.path = {
             webp: `${staticResource.sha1}.webp`,
@@ -36,22 +46,25 @@ export class StaticService {
         await this.staticDao.insert(staticResource);
         const resizeBuffer = await sharp(file.buffer).resize(300).toBuffer();
         const webpBuffer = await sharp(resizeBuffer).webp().toBuffer();
-        const currentPath = join(process.cwd(), 'upload', staticResource.projectName);
-        mkdirp(currentPath).then(() => {
+        const resizePath = join(process.cwd(), 'upload', staticResource.projectName, 'resize');
+        const webpPath = join(process.cwd(), 'upload', staticResource.projectName, 'webp');
+        const originPath = join(process.cwd(), 'upload', staticResource.projectName, 'origin');
+        mkdirp(resizePath).then(() => {
             // write file
-            writeFile(join(currentPath, staticResource.path.resize), resizeBuffer, () => {
+            writeFile(join(resizePath, staticResource.path.resize), resizeBuffer, () => {
                 console.log('save resize');
             });
-            writeFile(join(currentPath, staticResource.path.origin), file.buffer, () => {
-                console.log('save origin');
-            });
-            writeFile(join(currentPath, staticResource.path.webp), webpBuffer, () => {
+        });
+        mkdirp(webpPath).then(() => {
+            writeFile(join(webpPath, staticResource.path.webp), webpBuffer, () => {
                 console.log('save webp');
             });
         });
-        if (!bucket) {
-            bucket = await this.bucketDao.findOneOrFail();
-        }
+        mkdirp(originPath).then(() => {
+            writeFile(join(originPath, staticResource.path.origin), file.buffer, () => {
+                console.log('save origin');
+            });
+        });
         const { SecretId, SecretKey, bucketRegion, bucketName } = bucket;
         const cosUtils = new COS({ SecretId, SecretKey });
 

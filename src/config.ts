@@ -9,7 +9,7 @@ const mysqlConfig: TypeOrmModuleOptions = {
     username: 'root',
     password: 'root',
     database: 'test',
-    timezone: '+00:00',
+    timezone: '+08:00',
     synchronize: true,
     logging: false,
     entities: [join(__dirname, './**/**.entity{.ts,.js}')],

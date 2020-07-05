@@ -6,6 +6,7 @@ import { UserModule } from './module/user.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseFormatInterceptor } from './common/interceptors/response.format.interceptor';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './common/auth/JwtStrategy';
 
 @Module({
     imports: [
@@ -17,6 +18,6 @@ import { JwtModule } from '@nestjs/jwt';
         StaticModule,
         UserModule,
     ],
-    providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseFormatInterceptor }],
+    providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseFormatInterceptor }, JwtStrategy],
 })
 export class AppModule {}

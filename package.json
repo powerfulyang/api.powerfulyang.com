@@ -7,9 +7,10 @@
     "scripts": {
         "format": "prettier --write \"src/**/*.ts\"",
         "lint": "eslint src --ext .ts --fix",
-        "start": "nest start -p tsconfig.json",
-        "test": "jest",
-        "test:watch": "jest --watch",
+        "start:dev": "cross-env JWT_SECRET=111 nest start -p tsconfig.json --watch",
+        "start:prod": "node dist/main.js",
+        "build": "nest build -p tsconfig.build.json",
+        "test": "jest --detectOpenHandles",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json"
