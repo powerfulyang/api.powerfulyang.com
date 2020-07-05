@@ -1,7 +1,0 @@
-version: '3.1'
-services:
-  app:
-    image: powerfulyang/api.powerfulyang.com.base
-    build:
-      context: .
-      dockerfile: Dockerfile.base
