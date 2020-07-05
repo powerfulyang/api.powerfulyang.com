@@ -21,4 +21,7 @@ export class Bucket {
 
     @Column()
     SecretKey!: string;
+
+    @Column()
+    bucketRegionUrl!: string;
 }

@@ -1,7 +1,7 @@
 export enum BucketRegion {
-    shanghai = 'shanghai',
+    'ap-shanghai' = 'ap-shanghai',
 }
 
-export enum BucketRegionUrl {
-    'shanghai' = 'cos.ap-shanghai.myqcloud.com',
-}
+export const BucketRegionUrl = {
+    'ap-shanghai': 'cos.ap-shanghai.myqcloud.com',
+};

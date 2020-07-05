@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpException,
     HttpStatus,
@@ -18,21 +19,23 @@ import { StaticResource } from '../entity/static.entity';
 import { UploadFile } from '../type/UploadFile';
 
 @Controller('static')
-@UseGuards(JwtAuthGuard)
 export class StaticController {
     constructor(private staticService: StaticService) {}
 
     @Post('bucket')
+    @UseGuards(JwtAuthGuard)
     addBucket(@Body() bucket: Bucket) {
         return this.staticService.addBucket(bucket);
     }
 
     @Get('bucket')
+    @UseGuards(JwtAuthGuard)
     listBucket() {
         return this.staticService.listBucket();
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     @UseInterceptors(
         FileInterceptor('file', {
             fileFilter: (_req, file, cb) => {
@@ -57,5 +60,10 @@ export class StaticController {
     @Get()
     list(@Query('projectName') projectName: string) {
         return this.staticService.listStatic(projectName);
+    }
+
+    @Delete()
+    remove(@Body('id') id: number) {
+        return this.staticService.remove(id);
     }
 }

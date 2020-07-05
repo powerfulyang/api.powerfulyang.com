@@ -22,8 +22,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/package.json') }}
       - name: build
         run: |
-          sudo apt-get update
-          sudo apt-get install autoconf libtool nasm libpng-dev automake pkg-config build-essential wget -yq --no-install-suggests --no-install-recommends --force-yes
           npm i
           npm run build
       - name: Deploy

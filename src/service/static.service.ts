@@ -7,9 +7,10 @@ import sharp from 'sharp';
 import HashUtils from '../utils/HashUtils';
 import { StaticResource } from '../entity/static.entity';
 import { UploadFile } from '../type/UploadFile';
-import { join, extname } from 'path';
+import { extname, join } from 'path';
 import { writeFile } from 'fs';
 import COS from 'cos-nodejs-sdk-v5';
+import { BucketRegionUrl } from '../enum/Bucket';
 
 @Injectable()
 export class StaticService {
@@ -19,6 +20,7 @@ export class StaticService {
     ) {}
 
     addBucket(bucket: Bucket) {
+        bucket.bucketRegionUrl = `//${bucket.bucketName}.${BucketRegionUrl[bucket.bucketRegion]}`;
         return this.bucketDao.insert(bucket);
     }
 
@@ -98,6 +100,29 @@ export class StaticService {
         if (projectName) {
             query.projectName = projectName;
         }
-        return this.staticDao.findAndCount(query);
+        return this.staticDao.findAndCount({
+            ...query,
+            relations: ['bucket'],
+            order: {
+                staticId: 'DESC',
+            },
+        });
+    }
+
+    async remove(id: number) {
+        const staticResource = await this.staticDao.findOneOrFail({
+            relations: ['bucket'],
+        });
+        const { SecretId, SecretKey, bucketName, bucketRegion } = staticResource?.bucket;
+        const cosUtils = new COS({
+            SecretId,
+            SecretKey,
+        });
+        cosUtils.deleteObject({
+            Key: staticResource.path.webp,
+            Region: bucketRegion,
+            Bucket: bucketName,
+        });
+        return this.staticDao.delete(id);
     }
 }
