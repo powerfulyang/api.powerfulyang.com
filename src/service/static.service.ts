@@ -92,4 +92,12 @@ export class StaticService {
             });
         });
     }
+
+    listStatic(projectName: string) {
+        const query = {} as { projectName?: string };
+        if (projectName) {
+            query.projectName = projectName;
+        }
+        return this.staticDao.findAndCount(query);
+    }
 }

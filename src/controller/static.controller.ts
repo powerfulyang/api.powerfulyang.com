@@ -5,6 +5,7 @@ import {
     HttpException,
     HttpStatus,
     Post,
+    Query,
     UploadedFile,
     UseGuards,
     UseInterceptors,
@@ -22,12 +23,12 @@ export class StaticController {
     constructor(private staticService: StaticService) {}
 
     @Post('bucket')
-    add(@Body() bucket: Bucket) {
+    addBucket(@Body() bucket: Bucket) {
         return this.staticService.addBucket(bucket);
     }
 
     @Get('bucket')
-    list() {
+    listBucket() {
         return this.staticService.listBucket();
     }
 
@@ -51,5 +52,10 @@ export class StaticController {
         @Body('bucket') bucket: Bucket,
     ) {
         return this.staticService.storeStatic(file, staticResource, bucket);
+    }
+
+    @Get()
+    list(@Query('projectName') projectName: string) {
+        return this.staticService.listStatic(projectName);
     }
 }
