@@ -3,6 +3,7 @@ services:
     app:
         image: powerfulyang/api.powerfulyang.com
         container_name: api.powerfulyang.com
+        network_mode: host
         environment:
             'NODE_ENV': 'production'
             'JWT_SECRET': ${JWT_SECRET}
