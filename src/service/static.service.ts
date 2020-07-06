@@ -118,10 +118,13 @@ export class StaticService {
             SecretId,
             SecretKey,
         });
-        cosUtils.deleteObject({
-            Key: staticResource.path.webp,
+        const paths = staticResource.path as any;
+        cosUtils.deleteMultipleObject({
             Region: bucketRegion,
             Bucket: bucketName,
+            Objects: Object.keys(paths).map((item) => ({
+                Key: paths[item],
+            })),
         });
         return this.staticDao.delete(id);
     }

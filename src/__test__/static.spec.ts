@@ -82,11 +82,9 @@ describe('static module test', () => {
         cosUtils.deleteMultipleObject({
             Bucket: bucketName,
             Region: bucketRegion,
-            Objects: [
-                Object.keys(paths).map((item) => ({
-                    Key: paths[item],
-                })),
-            ],
+            Objects: Object.keys(paths).map((item) => ({
+                Key: paths[item],
+            })),
         });
         await staticDao.delete(staticResource.staticId);
     });

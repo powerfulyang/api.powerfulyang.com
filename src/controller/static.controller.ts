@@ -63,6 +63,7 @@ export class StaticController {
     }
 
     @Delete()
+    @UseGuards(JwtAuthGuard)
     remove(@Body('id') id: number) {
         return this.staticService.remove(id);
     }
