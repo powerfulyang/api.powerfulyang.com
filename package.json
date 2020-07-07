@@ -32,6 +32,7 @@
         "reflect-metadata": "^0.1.13",
         "rxjs": "^6.6.0",
         "sharp": "^0.25.4",
+        "socks5-https-client": "^1.2.1",
         "typeorm": "^0.2.25"
     },
     "devDependencies": {

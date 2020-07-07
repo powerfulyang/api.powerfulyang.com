@@ -6,8 +6,29 @@ export class TelegramBotService {
     private readonly bot: TelegramBot;
     private readonly token = <string>process.env.TELEGRAM_BOT_TOKEN;
     private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
+
     constructor() {
-        this.bot = new TelegramBot(this.token, { polling: true });
+        if (process.env.TELEGRAM_BOT_SOCKS5_PROXY) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const Agent = require('socks5-https-client/lib/Agent');
+
+            this.bot = new TelegramBot(this.token, {
+                polling: true,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                request: {
+                    agentClass: Agent,
+                    agentOptions: {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        socksHost: process.env.TELEGRAM_BOT_SOCKS5_PROXY.split(':')[0],
+                        socksPort: Number(process.env.TELEGRAM_BOT_SOCKS5_PROXY.split(':')[1]),
+                    },
+                },
+            });
+        } else {
+            this.bot = new TelegramBot(this.token, { polling: true });
+        }
     }
 
     getBot() {
