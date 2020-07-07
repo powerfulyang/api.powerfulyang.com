@@ -1,7 +1,7 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { Type, ActionType } from './github.interfaces';
+import { ActionType, Type } from './github.interfaces';
 import { createHmac } from 'crypto';
 
 @Injectable()
@@ -20,48 +20,45 @@ export class GitHubEventsGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const signature: string = request.headers['x-hub-signature'];
         const githubEvent: Type = request.headers['x-github-event'];
-        const { secretToken } = request.params;
 
-        return this._checkValid(
+        return GitHubEventsGuard._checkValid(
             signature,
             githubEvent,
             restrictedEvents,
             restrictedActions,
             request.body,
-            secretToken,
         );
     }
 
-    private _checkValid(
+    private static _checkValid(
         signature: string,
         githubEvent: Type,
         restrictedEvents: Type[],
         restrictedActions: ActionType[],
         payload: any,
-        secretToken: string,
     ): boolean {
         if (!signature) {
-            throw new UnauthorizedException(`This request doesn't contain a github signature`);
+            throw new ForbiddenException(`This request doesn't contain a github signature`);
         }
 
         if (!restrictedEvents.includes(githubEvent)) {
-            throw new UnauthorizedException(`An unsupported webhook event was triggered`);
+            throw new ForbiddenException(`An unsupported webhook event was triggered`);
         }
 
         const { action } = payload;
         if (!restrictedActions.includes(action)) {
-            throw new UnauthorizedException(`An unsupported webhook action was triggered`);
+            throw new ForbiddenException(`An unsupported webhook action was triggered`);
         }
 
-        return GitHubEventsGuard._checkSignature(signature, payload, secretToken);
+        return GitHubEventsGuard._checkSignature(signature, payload);
     }
 
-    private static _checkSignature(signature: string, payload: any, secretToken: string): boolean {
-        const hmac = createHmac('sha1', secretToken);
+    private static _checkSignature(signature: string, payload: any): boolean {
+        const hmac = createHmac('sha1', <string>process.env.GITHUB_WEBHOOK_SECRET);
         const digest = 'sha1=' + hmac.update(JSON.stringify(payload)).digest('hex');
 
-        if (!secretToken || signature !== digest) {
-            throw new UnauthorizedException(
+        if (signature !== digest) {
+            throw new ForbiddenException(
                 `Request body digest (${digest}) does not match ${signature}`,
             );
         }

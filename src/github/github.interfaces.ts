@@ -2,9 +2,10 @@ export type Type = 'issues' | 'pull_request' | 'pull_request_review';
 export type MsgType = 'text' | 'markdown';
 export type ActionType = 'opened' | 'closed' | 'edited' | 'assigned';
 
-export interface IParam {
+export interface Payload {
     action: string;
     sender: IUser;
+    organization: IUser;
     repository: IRepository;
     issue: IIssue;
     pull_request: IPullRequest;

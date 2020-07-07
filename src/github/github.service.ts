@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IMessageInfo, IParam, IRepository, IUser, Type } from './github.interfaces';
+import { IMessageInfo, IRepository, IUser, Payload, Type } from './github.interfaces';
 import { TelegramBotService } from 'api/telegram-bot';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class GithubService {
         }\nAssignee: ${(assignee && assignee.login) || '--'}`;
     }
 
-    private static _formatIssueContent(param: IParam): string {
+    private static _formatIssueContent(param: Payload): string {
         const { repository, issue, sender, action } = param;
 
         return `Issue Change\n\nIssue Detail: ${issue.url}\n${GithubService._getCommonContent(
@@ -32,7 +32,7 @@ export class GithubService {
         )}`;
     }
 
-    private static _formatPrContent(param: IParam): string {
+    private static _formatPrContent(param: Payload): string {
         const { repository, pull_request, sender, action } = param;
 
         return `Pull Request Change\n\nPR Title: ${pull_request.title}\nPR Detail: ${
@@ -40,7 +40,7 @@ export class GithubService {
         }\n${GithubService._getCommonContent(repository, sender, action, pull_request.assignee)}`;
     }
 
-    private static _formatPrReviewContent(param: IParam): string {
+    private static _formatPrReviewContent(param: Payload): string {
         const { repository, pull_request, sender, action, review } = param;
 
         const content = `Pull Request Review Change\n\nPR Detail: ${
@@ -55,7 +55,7 @@ export class GithubService {
         return content;
     }
 
-    public async sendMsg(param: IParam, type: Type) {
+    public async sendMsg(payload: Payload, type: Type) {
         const funcMapToGetContent = {
             issues: GithubService._formatIssueContent.bind(this),
             pull_request: GithubService._formatPrContent.bind(this),
@@ -65,7 +65,7 @@ export class GithubService {
         const msg: IMessageInfo = {
             msgtype: 'text',
             text: {
-                content: `${funcMapToGetContent[type](param)}`,
+                content: `${funcMapToGetContent[type](payload)}`,
             },
         };
 
