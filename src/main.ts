@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { config } from 'dotenv';
 
 if (process.env.NODE_ENV !== 'production') {
-    config();
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('dotenv').config();
 }
 
 async function bootstrap(): Promise<void> {

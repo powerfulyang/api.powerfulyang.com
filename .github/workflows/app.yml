@@ -49,6 +49,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script_stop: false
           script: |
-            docker pull ${{ matrix.docker-repository }}
+            proxychains4 docker pull ${{ matrix.docker-repository }}
             cd /root/app/api.powerfulyang.com
-            docker-compose -f api.powerfulyang.com.yml up -d
+            proxychains4 docker-compose -f api.powerfulyang.com.yml up -d
