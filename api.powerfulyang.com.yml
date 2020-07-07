@@ -6,7 +6,6 @@ services:
         network_mode: host
         environment:
             'NODE_ENV': 'production'
-            'JWT_SECRET': ${JWT_SECRET}
         restart: always
         volumes:
             - /root/static/upload:/usr/app/upload

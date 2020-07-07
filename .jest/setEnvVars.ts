@@ -1,1 +1,2 @@
-process.env.JWT_SECRET = 'TEST';
+import { config } from 'dotenv';
+config();

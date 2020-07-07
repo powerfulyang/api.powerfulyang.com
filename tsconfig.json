@@ -2,6 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "declaration": true,
+        "rootDirs": ["src", "libs"],
         "removeComments": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -15,8 +16,12 @@
         "noUnusedParameters": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "strict": true
+        "strict": true,
+        "paths": {
+            "api/telegram-bot": ["libs/telegram-bot/src"],
+            "api/telegram-bot/*": ["libs/telegram-bot/src/*"]
+        }
     },
-    "exclude": ["node_modules", "dist"],
+    "exclude": ["node_modules", "dist", "test", "**/*spec.ts"],
     "include": ["src/**/*.ts"]
 }

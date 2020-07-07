@@ -3,7 +3,7 @@ import { User } from '../entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { JwtAuthGuard } from '../common/auth/JwtAuthGuard';
+import { JwtAuthGuard } from '../common/authorization/JwtAuthGuard';
 
 @Controller('user')
 export class UserController {

@@ -14,7 +14,7 @@ import {
 import { Bucket } from '../entity/bucket.entity';
 import { StaticService } from '../service/static.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from '../common/auth/JwtAuthGuard';
+import { JwtAuthGuard } from '../common/authorization/JwtAuthGuard';
 import { StaticResource } from '../entity/static.entity';
 import { UploadFile } from '../type/UploadFile';
 

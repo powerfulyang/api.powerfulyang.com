@@ -1,0 +1,15 @@
+{
+    "collection": "@nestjs/schematics",
+    "sourceRoot": "src",
+    "projects": {
+        "telegram-bot": {
+            "type": "library",
+            "root": "libs/telegram-bot",
+            "entryFile": "index",
+            "sourceRoot": "libs/telegram-bot/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/telegram-bot/tsconfig.lib.json"
+            }
+        }
+    }
+}
