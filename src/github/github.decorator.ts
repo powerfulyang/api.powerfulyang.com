@@ -1,10 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
-import { Type, ActionType } from './github.interfaces';
+import { EventType } from './github.enum';
 
-export const GithubWebhookEvents = (events: Type[]) => {
+export const GithubWebhookEvents = (events: EventType[]) => {
     return SetMetadata('GithubWebhookEvents', events);
-};
-
-export const GithubWebhookActions = (actions: ActionType[]) => {
-    return SetMetadata('GithubWebhookActions', actions);
 };

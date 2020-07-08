@@ -1,24 +1,23 @@
-import { Body, Controller, Headers, Logger, Post, UseGuards } from '@nestjs/common';
-import { IHeader, Payload, Type } from './github.interfaces';
+import { Body, Controller, Headers, Post, UseGuards } from '@nestjs/common';
+import { IHeader, Payload } from './github.interfaces';
 import { GithubService } from './github.service';
 import { GitHubEventsGuard } from './github-event.guard';
-import { GithubWebhookActions, GithubWebhookEvents } from './github.decorator';
+import { GithubWebhookEvents } from './github.decorator';
+import { EventType } from './github.enum';
+import { WebhookPayload } from './payload/webhook-payload';
 
 @Controller('github')
 export class GithubController {
-    private readonly logger = new Logger(GithubController.name);
     constructor(private readonly githubService: GithubService) {}
 
     @UseGuards(GitHubEventsGuard)
-    @GithubWebhookEvents(['issues', 'pull_request'])
-    @GithubWebhookActions(['opened', 'closed'])
+    @GithubWebhookEvents(Object.values(EventType))
     @Post()
-    async getWebhook(@Body() payload: Payload, @Headers() headers: IHeader) {
-        const type: Type = headers['x-github-event'];
-        this.logger.log({
-            headers,
-            payload,
-        });
-        return this.githubService.sendMsg(payload, type);
+    async getWebhook<T extends WebhookPayload>(
+        @Body() payload: Payload<T>,
+        @Headers() headers: IHeader,
+    ) {
+        const type: EventType = headers['x-github-event'];
+        return this.githubService.dealWebHook(payload, type);
     }
 }
