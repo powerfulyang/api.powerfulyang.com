@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Bucket } from '../entity/bucket.entity';
 import { Repository } from 'typeorm';
@@ -11,12 +11,15 @@ import { extname, join } from 'path';
 import { writeFile } from 'fs';
 import COS from 'cos-nodejs-sdk-v5';
 import { BucketRegionUrl } from '../enum/Bucket';
+import { ClientProxy } from '@nestjs/microservices';
+import { MICROSERVICE_NAME, COS_UPLOAD_MSG_PATTERN } from '../constants/constants';
 
 @Injectable()
 export class StaticService {
     constructor(
         @InjectRepository(Bucket) private bucketDao: Repository<Bucket>,
         @InjectRepository(StaticResource) private staticDao: Repository<StaticResource>,
+        @Inject(MICROSERVICE_NAME) private readonly microserviceClient: ClientProxy,
     ) {}
 
     addBucket(bucket: Bucket) {
@@ -71,6 +74,8 @@ export class StaticService {
         const cosUtils = new COS({ SecretId, SecretKey });
 
         new Promise(() => {
+            // TODO 异步队列上传
+            this.microserviceClient.emit(COS_UPLOAD_MSG_PATTERN, staticResource.sha1);
             cosUtils.putObject({
                 Body: file.buffer,
                 ContentLength: file.size,
