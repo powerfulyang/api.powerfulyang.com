@@ -1,6 +1,11 @@
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('dotenv').config();
+}
+
 const mysqlConfig: TypeOrmModuleOptions = {
     name: 'default',
     type: 'mysql',

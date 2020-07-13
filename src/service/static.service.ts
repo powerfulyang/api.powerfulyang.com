@@ -3,16 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Bucket } from '../entity/bucket.entity';
 import { Repository } from 'typeorm';
 import mkdirp from 'mkdirp';
-import sharp from 'sharp';
 import HashUtils from '../utils/HashUtils';
 import { StaticResource } from '../entity/static.entity';
 import { UploadFile } from '../type/UploadFile';
 import { extname, join } from 'path';
-import { writeFile } from 'fs';
+import { promises } from 'fs';
 import COS from 'cos-nodejs-sdk-v5';
 import { BucketRegionUrl } from '../enum/Bucket';
 import { ClientProxy } from '@nestjs/microservices';
-import { MICROSERVICE_NAME, COS_UPLOAD_MSG_PATTERN } from '../constants/constants';
+import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME } from '../constants/constants';
+
+const { writeFile } = promises;
 
 @Injectable()
 export class StaticService {
@@ -29,6 +30,10 @@ export class StaticService {
 
     listBucket() {
         return this.bucketDao.findAndCount();
+    }
+
+    sendMsg(msg: string) {
+        return this.microserviceClient.emit(COS_UPLOAD_MSG_PATTERN, msg);
     }
 
     async storeStatic(file: UploadFile, staticResource: StaticResource, bucket: Bucket) {
@@ -49,61 +54,22 @@ export class StaticService {
             origin: `${staticResource.sha1}${ext}`,
         };
         await this.staticDao.insert(staticResource);
-        const resizeBuffer = await sharp(file.buffer).resize(300).toBuffer();
-        const webpBuffer = await sharp(resizeBuffer).webp().toBuffer();
-        const resizePath = join(process.cwd(), 'upload', staticResource.projectName, 'resize');
-        const webpPath = join(process.cwd(), 'upload', staticResource.projectName, 'webp');
+        // 只把原图存起来 其他的交给异步MQ
         const originPath = join(process.cwd(), 'upload', staticResource.projectName, 'origin');
-        mkdirp(resizePath).then(() => {
-            // write file
-            writeFile(join(resizePath, staticResource.path.resize), resizeBuffer, () => {
-                console.log('save resize');
-            });
-        });
-        mkdirp(webpPath).then(() => {
-            writeFile(join(webpPath, staticResource.path.webp), webpBuffer, () => {
-                console.log('save webp');
-            });
-        });
         mkdirp(originPath).then(() => {
-            writeFile(join(originPath, staticResource.path.origin), file.buffer, () => {
-                console.log('save origin');
-            });
+            writeFile(join(originPath, staticResource.path.origin), file.buffer);
         });
-        const { SecretId, SecretKey, bucketRegion, bucketName } = bucket;
-        const cosUtils = new COS({ SecretId, SecretKey });
-
-        new Promise(() => {
-            // TODO 异步队列上传
-            this.microserviceClient.emit(COS_UPLOAD_MSG_PATTERN, staticResource.sha1);
-            cosUtils.putObject({
-                Body: file.buffer,
-                ContentLength: file.size,
-                Key: staticResource.path.origin,
-                Region: bucketRegion,
-                Bucket: bucketName,
-            });
-            cosUtils.putObject({
-                Body: resizeBuffer,
-                ContentLength: resizeBuffer.length,
-                Key: staticResource.path.resize,
-                Region: bucketRegion,
-                Bucket: bucketName,
-            });
-            cosUtils.putObject({
-                Body: webpBuffer,
-                ContentLength: webpBuffer.length,
-                Key: staticResource.path.webp,
-                Region: bucketRegion,
-                Bucket: bucketName,
-            });
-        });
+        this.sendMsg(staticResource.sha1);
     }
 
-    listStatic(projectName: string) {
-        const query = {} as { projectName?: string };
+    listStatic(projectName: string, page: number) {
+        const query = {} as { projectName?: string; skip: number; take: number };
         if (projectName) {
             query.projectName = projectName;
+        }
+        if (page) {
+            query.skip = (page - 1) * 20;
+            query.take = 20;
         }
         return this.staticDao.findAndCount({
             ...query,

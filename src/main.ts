@@ -3,11 +3,6 @@ import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
-if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require('dotenv').config();
-}
-
 async function bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule);
     app.connectMicroservice({
@@ -18,6 +13,8 @@ async function bootstrap(): Promise<void> {
             queueOptions: {
                 durable: false,
             },
+            noAck: false,
+            prefetchCount: 1,
         },
     });
     await app.startAllMicroservicesAsync();

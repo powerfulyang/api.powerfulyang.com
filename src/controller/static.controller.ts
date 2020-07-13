@@ -58,8 +58,8 @@ export class StaticController {
     }
 
     @Get()
-    list(@Query('projectName') projectName: string) {
-        return this.staticService.listStatic(projectName);
+    list(@Query('projectName') projectName: string, @Query('page') page: number) {
+        return this.staticService.listStatic(projectName, page);
     }
 
     @Delete()
