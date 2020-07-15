@@ -57,9 +57,10 @@ export class StaticService {
         // 只把原图存起来 其他的交给异步MQ
         const originPath = join(process.cwd(), 'upload', staticResource.projectName, 'origin');
         mkdirp(originPath).then(() => {
-            writeFile(join(originPath, staticResource.path.origin), file.buffer);
+            writeFile(join(originPath, staticResource.path.origin), file.buffer).then(() =>
+                this.sendMsg(staticResource.sha1),
+            );
         });
-        this.sendMsg(staticResource.sha1);
     }
 
     listStatic(projectName: string, page: number) {
