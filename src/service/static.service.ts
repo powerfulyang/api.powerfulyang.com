@@ -12,6 +12,7 @@ import COS from 'cos-nodejs-sdk-v5';
 import { BucketRegionUrl } from '../enum/Bucket';
 import { ClientProxy } from '@nestjs/microservices';
 import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME } from '../constants/constants';
+import { phash } from '@powerfulyang/utils/build/main/lib/image';
 
 const { writeFile } = promises;
 
@@ -44,6 +45,7 @@ export class StaticService {
         if (!bucket) {
             bucket = await this.bucketDao.findOneOrFail();
         }
+        staticResource.pHash = await phash(file.buffer);
         staticResource.filename = file.originalname;
         staticResource.sha1 = HashUtils.sha1Hex(file.buffer);
         staticResource.bucket = bucket;
@@ -63,7 +65,7 @@ export class StaticService {
         });
     }
 
-    listStatic(projectName: string, page: number) {
+    listStatic(projectName?: string, page?: number) {
         const query = {} as { projectName?: string; skip: number; take: number };
         if (projectName) {
             query.projectName = projectName;
@@ -99,5 +101,19 @@ export class StaticService {
             })),
         });
         return this.staticDao.delete(id);
+    }
+
+    getOriginPath(staticResource: StaticResource) {
+        return join(
+            process.cwd(),
+            'upload',
+            staticResource.projectName,
+            'origin',
+            staticResource.path.origin,
+        );
+    }
+
+    getStaticDao() {
+        return this.staticDao;
     }
 }

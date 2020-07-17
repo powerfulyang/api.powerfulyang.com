@@ -6,6 +6,7 @@ import { StaticController } from '../controller/static.controller';
 import { StaticResource } from '../entity/static.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MICROSERVICE_NAME, RMQ_QUEUE, RMQ_URLS } from '../constants/constants';
+import { ScriptController } from '../controller/script.controller';
 
 @Module({
     imports: [
@@ -25,6 +26,6 @@ import { MICROSERVICE_NAME, RMQ_QUEUE, RMQ_URLS } from '../constants/constants';
         ]),
     ],
     providers: [StaticService],
-    controllers: [StaticController],
+    controllers: [StaticController, ScriptController],
 })
 export class StaticModule {}

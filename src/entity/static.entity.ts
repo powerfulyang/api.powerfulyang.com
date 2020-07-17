@@ -34,6 +34,9 @@ export class StaticResource {
     @Column({ unique: true })
     sha1!: string;
 
+    @Column({ default: '' })
+    pHash!: string;
+
     @CreateDateColumn()
     createAt!: Date;
 
