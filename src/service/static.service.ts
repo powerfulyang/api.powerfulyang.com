@@ -86,6 +86,7 @@ export class StaticService {
     async remove(id: number) {
         const staticResource = await this.staticDao.findOneOrFail({
             relations: ['bucket'],
+            where: { staticId: id },
         });
         const { SecretId, SecretKey, bucketName, bucketRegion } = staticResource?.bucket;
         const cosUtils = new COS({

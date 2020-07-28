@@ -14,8 +14,6 @@ export class TelegramBotService {
 
             this.bot = new TelegramBot(this.token, {
                 polling: true,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 request: {
                     agentClass: Agent,
                     agentOptions: {
