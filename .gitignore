@@ -33,8 +33,7 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/yarn.lock
-/package-lock.json
+
 
 
 #/test.js

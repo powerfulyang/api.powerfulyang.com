@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../app.module';
+import { AppModule } from '../src/app.module';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Bucket } from '../entity/bucket.entity';
+import { Bucket } from '../src/entity/bucket.entity';
 import COS from 'cos-nodejs-sdk-v5';
 
 describe('cos libs test', () => {
