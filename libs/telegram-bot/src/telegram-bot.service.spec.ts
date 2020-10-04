@@ -16,9 +16,9 @@ describe('TelegramBotService', () => {
         expect(service).toBeDefined();
     });
 
-    it('bot receive message', async function () {
+    it('bot wait to receive message', async function () {
         const chatId = await new Promise((resolve) => {
-            service.getBot().on('message', (msg) => {
+            service.bot?.on('message', (msg) => {
                 resolve(msg.chat.id);
             });
         });
@@ -26,6 +26,9 @@ describe('TelegramBotService', () => {
     });
 
     it('bot send message', async function () {
-        await expect(service.sendToMe('111')).resolves.toHaveProperty('text', '111');
-    });
+        await expect(service.sendToMe('111')).resolves.toHaveProperty(
+            'text',
+            '111',
+        );
+    }, 50000);
 });

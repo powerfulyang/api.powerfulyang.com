@@ -41,3 +41,5 @@ lerna-debug.log*
 mysql/data/
 .env
 upload/
+
+.instagram-bot/

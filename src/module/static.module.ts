@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Bucket } from '../entity/bucket.entity';
 import { StaticService } from '../service/static.service';
 import { StaticController } from '../controller/static.controller';
 import { StaticResource } from '../entity/static.entity';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MICROSERVICE_NAME, RMQ_QUEUE, RMQ_URLS } from '../constants/constants';
-import { ScriptController } from '../controller/script.controller';
+import {
+    MICROSERVICE_NAME,
+    RMQ_QUEUE,
+    RMQ_URLS,
+} from '../constants/constants';
 
 @Module({
     imports: [
@@ -26,6 +29,6 @@ import { ScriptController } from '../controller/script.controller';
         ]),
     ],
     providers: [StaticService],
-    controllers: [StaticController, ScriptController],
+    controllers: [StaticController],
 })
 export class StaticModule {}
