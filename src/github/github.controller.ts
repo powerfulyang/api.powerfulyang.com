@@ -1,4 +1,10 @@
-import { Body, Controller, Headers, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Headers,
+    Post,
+    UseGuards,
+} from '@nestjs/common';
 import { IHeader, Payload } from './github.interfaces';
 import { GithubService } from './github.service';
 import { GitHubEventsGuard } from './github-event.guard';

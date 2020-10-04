@@ -1,15 +1,45 @@
 {
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "src",
-    "projects": {
-        "telegram-bot": {
-            "type": "library",
-            "root": "libs/telegram-bot",
-            "entryFile": "index",
-            "sourceRoot": "libs/telegram-bot/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/telegram-bot/tsconfig.lib.json"
-            }
-        }
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "projects": {
+    "telegram-bot": {
+      "type": "library",
+      "root": "libs/telegram-bot",
+      "entryFile": "index",
+      "sourceRoot": "libs/telegram-bot/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/telegram-bot/tsconfig.lib.json"
+      }
+    },
+    "instagram-bot": {
+      "type": "library",
+      "root": "libs/instagram-bot",
+      "entryFile": "index",
+      "sourceRoot": "libs/instagram-bot/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/instagram-bot/tsconfig.lib.json"
+      }
+    },
+    "pinterest-rss": {
+      "type": "library",
+      "root": "libs/pinterest-rss",
+      "entryFile": "index",
+      "sourceRoot": "libs/pinterest-rss/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/pinterest-rss/tsconfig.lib.json"
+      }
+    },
+    "pixiv-rss": {
+      "type": "library",
+      "root": "libs/pixiv-rss",
+      "entryFile": "index",
+      "sourceRoot": "libs/pixiv-rss/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/pixiv-rss/tsconfig.lib.json"
+      }
     }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
 }

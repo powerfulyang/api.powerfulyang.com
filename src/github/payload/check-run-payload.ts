@@ -1,7 +1,11 @@
 import { WebhookPayload } from './webhook-payload';
 
 export interface CheckRunPayload extends WebhookPayload {
-    action: 'created' | 'completed' | 'rerequested' | 'requested_action';
+    action:
+        | 'created'
+        | 'completed'
+        | 'rerequested'
+        | 'requested_action';
     check_run: {
         html_url: string;
         conclusion:

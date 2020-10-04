@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
+import { CoreService } from './core.service';
 
 @Module({
-    imports: [PassportModule],
+    providers: [CoreService],
+    exports: [CoreService],
 })
 export class CoreModule {}

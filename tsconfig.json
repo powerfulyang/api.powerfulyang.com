@@ -19,9 +19,17 @@
         "strict": true,
         "paths": {
             "api/telegram-bot": ["libs/telegram-bot/src"],
-            "api/telegram-bot/*": ["libs/telegram-bot/src/*"]
+            "api/telegram-bot/*": ["libs/telegram-bot/src/*"],
+            "api/instagram-bot": ["libs/instagram-bot/src"],
+            "api/instagram-bot/*": ["libs/instagram-bot/src/*"],
+            "api/pinterest-rss": ["libs/pinterest-rss/src"],
+            "api/pinterest-rss/*": ["libs/pinterest-rss/src/*"],
+            "api/pixiv-bot": ["libs/pixiv-bot/src"],
+            "api/pixiv-bot/*": ["libs/pixiv-bot/src/*"],
+            "@/core": ["src/core"],
+            "@/core/*": ["src/core/*"]
         }
     },
     "exclude": ["node_modules", "dist"],
-    "include": ["src/**/*.ts", "__test__"]
+    "include": ["src/**/*.ts", "__test__", "libs"]
 }

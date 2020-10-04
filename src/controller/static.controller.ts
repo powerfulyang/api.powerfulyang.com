@@ -11,9 +11,9 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Bucket } from '../entity/bucket.entity';
 import { StaticService } from '../service/static.service';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../common/authorization/JwtAuthGuard';
 import { StaticResource } from '../entity/static.entity';
 import { UploadFile } from '../type/UploadFile';
@@ -41,11 +41,14 @@ export class StaticController {
             fileFilter: (_req, file, cb) => {
                 if (!/^(image|video|audio)\//.test(file.mimetype)) {
                     return cb(
-                        new HttpException('Only images are allowed!', HttpStatus.BAD_REQUEST),
+                        new HttpException(
+                            'Only images are allowed!',
+                            HttpStatus.BAD_REQUEST,
+                        ),
                         false,
                     );
                 }
-                cb(null, true);
+                return cb(null, true);
             },
         }),
     )
@@ -54,11 +57,18 @@ export class StaticController {
         @Body('staticResource') staticResource: StaticResource,
         @Body('bucket') bucket: Bucket,
     ) {
-        return this.staticService.storeStatic(file, staticResource, bucket);
+        return this.staticService.storeStatic(
+            file,
+            staticResource,
+            bucket,
+        );
     }
 
     @Get()
-    list(@Query('projectName') projectName: string, @Query('page') page: number) {
+    list(
+        @Query('projectName') projectName: string,
+        @Query('page') page: number,
+    ) {
         return this.staticService.listStatic(projectName, page);
     }
 

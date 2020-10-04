@@ -1,8 +1,14 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { User } from '../entity/user.entity';
+import {
+    Body,
+    Controller,
+    Get,
+    Post,
+    UseGuards,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../entity/user.entity';
 import { JwtAuthGuard } from '../common/authorization/JwtAuthGuard';
 
 @Controller('user')
@@ -15,8 +21,11 @@ export class UserController {
     @Post('login')
     async login(@Body() user: User) {
         const { email, password } = user;
-        user = await this.userDao.findOneOrFail({ email, password });
-        const token = this.jwtService.sign({ ...user });
+        const userInfo = await this.userDao.findOneOrFail({
+            email,
+            password,
+        });
+        const token = this.jwtService.sign({ ...userInfo });
         return { setToken: token };
     }
 
@@ -31,7 +40,8 @@ export class UserController {
             email: 'antdesign@alipay.com',
             signature: '海纳百川，有容乃大',
             title: '交互专家',
-            group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
+            group:
+                '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
             tags: [
                 {
                     key: '0',

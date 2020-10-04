@@ -1,7 +1,7 @@
 import { Module, HttpModule } from '@nestjs/common';
+import { TelegramBotModule } from 'api/telegram-bot';
 import { GithubService } from './github.service';
 import { GithubController } from './github.controller';
-import { TelegramBotModule } from 'api/telegram-bot';
 
 @Module({
     imports: [HttpModule, TelegramBotModule],

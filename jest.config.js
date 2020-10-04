@@ -1,6 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const tsconfig = require('./tsconfig.json');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig);
 
 module.exports = {
@@ -11,7 +9,7 @@ module.exports = {
     },
     moduleNameMapper,
     maxConcurrency: 5,
-    moduleFileExtensions: ['js', 'json', 'ts'],
+    moduleFileExtensions: ['js', 'json', 'ts', 'node'],
     setupFiles: ['./.jest/setEnvVars.ts'],
     rootDir: '.',
     testRegex: '.spec.ts$',

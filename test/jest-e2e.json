@@ -1,9 +1,21 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "api/instagram-bot/(.*)": "<rootDir>/../libs/instagram-bot/src/$1",
+    "api/instagram-bot": "<rootDir>/../libs/instagram-bot/src",
+    "api/pinterest-rss/(.*)": "<rootDir>/../libs/pinterest-rss/src/$1",
+    "api/pinterest-rss": "<rootDir>/../libs/pinterest-rss/src",
+    "api/pixiv-rss/(.*)": "<rootDir>/../libs/pixiv-rss/src/$1",
+    "api/pixiv-rss": "<rootDir>/../libs/pixiv-rss/src"
   }
 }

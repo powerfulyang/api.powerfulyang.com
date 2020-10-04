@@ -24,7 +24,11 @@ declare module 'cos-nodejs-sdk-v5' {
         deleteBucketWebsite(params: any, callback: any): any;
 
         deleteMultipleObject(
-            params: { Bucket: string; Region: string; Objects: { Key: string }[] },
+            params: {
+                Bucket: string;
+                Region: string;
+                Objects: { Key: string }[];
+            },
             callback?: any,
         ): any;
 
