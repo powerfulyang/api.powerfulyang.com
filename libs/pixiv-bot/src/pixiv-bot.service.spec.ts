@@ -21,6 +21,10 @@ describe('PixivRssService', () => {
     });
 
     it('should be defined', async () => {
-        await expect(service.fetchAll()).resolves.toBe(1);
+        await expect(
+            service
+                .fetchUndo('73500666')
+                .then((res) => res.pop()!.id),
+        ).resolves.toBe('84710311');
     });
 });

@@ -3,8 +3,8 @@ import {
     PinterestInterface,
     RSSPinterestInterface,
 } from 'api/pinterest-rss/pinterest.interface';
-import { CoreService } from '../../../src/core/core.service';
-import { RssInterface } from '../../../src/core/base/interface/rss.interface';
+import { CoreService } from '@/core/core.service';
+import { RssInterface } from '@/core/base/interface/rss.interface';
 
 @Injectable()
 export class PinterestRssService implements RssInterface {
@@ -14,10 +14,10 @@ export class PinterestRssService implements RssInterface {
     constructor(private coreService: CoreService) {}
 
     private async fetchAll(): Promise<PinterestInterface[]> {
-        const json = await this.coreService.fetchJsonFromRss<
+        const json = await this.coreService.proxyFetchJsonFromRss<
             RSSPinterestInterface
         >(this.myRssUrl);
-        return this.transform(json);
+        return PinterestRssService.transform(json);
     }
 
     async fetchUndo(lastId?: string): Promise<PinterestInterface[]> {
@@ -32,7 +32,7 @@ export class PinterestRssService implements RssInterface {
         return undoPosts;
     }
 
-    private transform(
+    private static transform(
         originJson: RSSPinterestInterface,
     ): PinterestInterface[] {
         const urls = originJson.rss.channel[0].item.map((x: any) => {

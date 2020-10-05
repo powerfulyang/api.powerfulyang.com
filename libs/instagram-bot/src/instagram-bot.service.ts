@@ -7,8 +7,8 @@ import mkdirp from 'mkdirp';
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { InstagramInterface } from 'api/instagram-bot/instagram.interface';
-import { getTags } from '../../../src/utils/util';
-import { RssInterface } from '../../../src/core/base/interface/rss.interface';
+import { getTags } from '@/utils/util';
+import { RssInterface } from '@/core/base/interface/rss.interface';
 
 const Agent = require('socks5-https-client/lib/Agent');
 
@@ -64,7 +64,7 @@ export class InstagramBotService implements RssInterface {
 
     async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {
         const savedFeed = this.bot.feed.saved();
-        const saved: any[] = [];
+        const saved: InstagramInterface[] = [];
         let signal = true;
         do {
             const pageSaved = await savedFeed.items();
@@ -85,13 +85,13 @@ export class InstagramBotService implements RssInterface {
 
     private static getDetailFromSavedMedia(
         savedItem: SavedFeedResponseMedia,
-    ) {
+    ): InstagramInterface {
         return {
             id: savedItem.id,
             tags: getTags(savedItem.caption?.text),
             imgList: savedItem.carousel_media?.map(
                 (x) => x.image_versions2.candidates[0].url,
-            ) || [savedItem.image_versions2?.candidates[0].url],
+            ) || [savedItem.image_versions2!.candidates[0].url],
         };
     }
 }
