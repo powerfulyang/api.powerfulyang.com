@@ -12,6 +12,7 @@ export class UploadStaticService {
     ) {}
 
     async persistent(sha1: string) {
+        await this.assetDao.findOne();
         return sha1;
     }
 
