@@ -13,6 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     validate(user: User): User {
+        // to check use status;
+        this.success(user);
         return user;
     }
 }
