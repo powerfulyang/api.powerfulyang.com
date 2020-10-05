@@ -5,17 +5,18 @@ import {
     Work,
 } from 'api/pixiv-bot/pixiv.interface';
 import { InstagramInterface } from 'api/instagram-bot/instagram.interface';
-import { CoreService } from '@/core/core.service';
-import { RssInterface } from '@/core/base/interface/rss.interface';
+import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()
-export class PixivBotService implements RssInterface {
+export class PixivBotService {
+    constructor(private proxyFetchService: ProxyFetchService) {}
+
     private readonly pixivApiUrl =
         'https://www.pixiv.net/ajax/user/31359863/illusts/bookmarks';
 
     private readonly defaultLimit = 48;
 
-    parseQueryUrl(
+    private parseQueryUrl(
         offset = 0,
         limit = this.defaultLimit,
         tag = '',
@@ -31,17 +32,14 @@ export class PixivBotService implements RssInterface {
         })}`;
     }
 
-    constructor(private coreService: CoreService) {}
-
     private fetch(offset?: number) {
-        return this.coreService.proxyFetchJson<RESPixivInterface>(
-            this.parseQueryUrl(offset),
-            {
-                headers: {
-                    cookie: <string>process.env.PIXIV_BOT_COOKIE,
-                },
+        return this.proxyFetchService.proxyFetchJson<
+            RESPixivInterface
+        >(this.parseQueryUrl(offset), {
+            headers: {
+                cookie: process.env.PIXIV_BOT_COOKIE,
             },
-        );
+        });
     }
 
     async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {

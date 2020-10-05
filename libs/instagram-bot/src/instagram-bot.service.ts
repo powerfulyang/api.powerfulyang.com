@@ -3,48 +3,50 @@ import {
     IgApiClient,
     SavedFeedResponseMedia,
 } from 'instagram-private-api';
-import mkdirp from 'mkdirp';
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { InstagramInterface } from 'api/instagram-bot/instagram.interface';
-import { getTags } from '@/utils/util';
-import { RssInterface } from '@/core/base/interface/rss.interface';
 
 const Agent = require('socks5-https-client/lib/Agent');
 
 @Injectable()
-export class InstagramBotService implements RssInterface {
-    private readonly bot: IgApiClient;
+export class InstagramBotService {
+    private readonly bot = new IgApiClient();
+
+    private readonly cookiePath = join(
+        process.cwd(),
+        '.cookies',
+        'instagram',
+    );
 
     constructor() {
-        this.bot = new IgApiClient();
-        this.bot.state.generateDevice(
-            <string>process.env.IG_USERNAME,
-        );
+        this.bot.state.generateDevice(process.env.IG_USERNAME);
         const {
             BOT_SOCKS5_PROXY_HOST,
             BOT_SOCKS5_PROXY_PORT,
         } = process.env;
-        this.bot.request.defaults.agentClass = Agent;
-        this.bot.request.defaults.agentOptions = {
-            socksHost: BOT_SOCKS5_PROXY_HOST,
-            socksPort: Number(BOT_SOCKS5_PROXY_PORT),
-        } as any;
-    }
-
-    async loginIn() {
-        let cookiePath = join(process.cwd(), '.instagram-bot');
-        await mkdirp(cookiePath);
-        cookiePath = join(cookiePath, 'cookies');
+        if (BOT_SOCKS5_PROXY_HOST || BOT_SOCKS5_PROXY_PORT) {
+            this.bot.request.defaults.agentClass = Agent;
+            this.bot.request.defaults.agentOptions = <any>{
+                socksHost: BOT_SOCKS5_PROXY_HOST,
+                socksPort: Number(BOT_SOCKS5_PROXY_PORT),
+            };
+        }
         this.bot.request.end$.subscribe(async () => {
             const serialized = await this.bot.state.serialize();
             delete serialized.constants;
-            writeFileSync(cookiePath, JSON.stringify(serialized));
+            writeFileSync(
+                this.cookiePath,
+                JSON.stringify(serialized),
+            );
         });
+    }
+
+    private async checkLogin() {
         let shouldLogin = true;
-        if (existsSync(cookiePath)) {
+        if (existsSync(this.cookiePath)) {
             try {
-                const serialized = readFileSync(cookiePath);
+                const serialized = readFileSync(this.cookiePath);
                 await this.bot.state.deserialize(
                     serialized.toString(),
                 );
@@ -56,13 +58,14 @@ export class InstagramBotService implements RssInterface {
         }
         if (shouldLogin) {
             await this.bot.account.login(
-                <string>process.env.IG_USERNAME,
-                <string>process.env.IG_PASSWORD,
+                process.env.IG_USERNAME,
+                process.env.IG_PASSWORD,
             );
         }
     }
 
     async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {
+        await this.checkLogin();
         const savedFeed = this.bot.feed.saved();
         const saved: InstagramInterface[] = [];
         let signal = true;
@@ -83,12 +86,21 @@ export class InstagramBotService implements RssInterface {
         return saved;
     }
 
+    private static getTags(text?: string) {
+        const tagsText = text
+            ?.replace(/[\n\r]/, '')
+            .match(/#[^#]*/gi);
+        return (tagsText || []).map((x) => x.trim());
+    }
+
     private static getDetailFromSavedMedia(
         savedItem: SavedFeedResponseMedia,
     ): InstagramInterface {
         return {
             id: savedItem.id,
-            tags: getTags(savedItem.caption?.text),
+            tags: InstagramBotService.getTags(
+                savedItem.caption?.text,
+            ),
             imgList: savedItem.carousel_media?.map(
                 (x) => x.image_versions2.candidates[0].url,
             ) || [savedItem.image_versions2!.candidates[0].url],

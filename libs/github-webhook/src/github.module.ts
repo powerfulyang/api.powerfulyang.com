@@ -1,10 +1,10 @@
-import { Module, HttpModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TelegramBotModule } from 'api/telegram-bot';
 import { GithubService } from './github.service';
 import { GithubController } from './github.controller';
 
 @Module({
-    imports: [HttpModule, TelegramBotModule],
+    imports: [TelegramBotModule],
     providers: [GithubService],
     controllers: [GithubController],
 })

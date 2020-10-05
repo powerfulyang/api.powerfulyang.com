@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StaticResource } from '../entity/static.entity';
+import { StaticResource } from '@/entity/asset.entity';
 import { UploadStaticController } from './upload-static.controller';
 import { UploadStaticService } from './upload-static.service';
 

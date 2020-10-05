@@ -37,6 +37,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/pixiv-rss/tsconfig.lib.json"
       }
+    },
+    "github-webhook": {
+      "type": "library",
+      "root": "libs/github-webhook",
+      "entryFile": "index",
+      "sourceRoot": "libs/github-webhook/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/github-webhook/tsconfig.lib.json"
+      }
+    },
+    "tencent-cloud-cos": {
+      "type": "library",
+      "root": "libs/tencent-cloud-cos",
+      "entryFile": "index",
+      "sourceRoot": "libs/tencent-cloud-cos/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/tencent-cloud-cos/tsconfig.lib.json"
+      }
+    },
+    "proxy-fetch": {
+      "type": "library",
+      "root": "libs/proxy-fetch",
+      "entryFile": "index",
+      "sourceRoot": "libs/proxy-fetch/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/proxy-fetch/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {

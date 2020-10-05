@@ -5,7 +5,7 @@ import {
     Payload,
     RmqContext,
 } from '@nestjs/microservices';
-import { COS_UPLOAD_MSG_PATTERN } from '../constants/constants';
+import { COS_UPLOAD_MSG_PATTERN } from '@/constants/constants';
 import { UploadStaticService } from './upload-static.service';
 
 @Controller()

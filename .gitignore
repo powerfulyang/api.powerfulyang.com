@@ -42,4 +42,4 @@ mysql/data/
 .env
 upload/
 
-.instagram-bot/
+.cookies/*

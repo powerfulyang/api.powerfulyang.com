@@ -1,12 +1,7 @@
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies,global-require
-    require('dotenv').config();
-}
-
-const mysqlConfig: TypeOrmModuleOptions = {
+export const config: TypeOrmModuleOptions = {
     name: 'default',
     type: 'mysql',
     host: 'localhost',
@@ -21,4 +16,3 @@ const mysqlConfig: TypeOrmModuleOptions = {
     migrations: [],
     subscribers: [],
 };
-export default mysqlConfig;

@@ -3,20 +3,17 @@ import {
     Controller,
     Delete,
     Get,
-    HttpException,
-    HttpStatus,
     Post,
     Query,
     UploadedFile,
     UseGuards,
-    UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Bucket } from '../entity/bucket.entity';
-import { StaticService } from '../service/static.service';
-import { JwtAuthGuard } from '../common/authorization/JwtAuthGuard';
-import { StaticResource } from '../entity/static.entity';
-import { UploadFile } from '../type/UploadFile';
+import { Bucket } from '@/entity/bucket.entity';
+import { StaticService } from '@/service/static.service';
+import { JwtAuthGuard } from '@/common/authorization/JwtAuthGuard';
+import { UploadFile } from '@/type/UploadFile';
+import { MultimediaUpload } from '@/common/decorator/multimedia.upload.decorator';
+import { Asset } from '@/entity/asset.entity';
 
 @Controller('static')
 export class StaticController {
@@ -36,25 +33,10 @@ export class StaticController {
 
     @Post()
     @UseGuards(JwtAuthGuard)
-    @UseInterceptors(
-        FileInterceptor('file', {
-            fileFilter: (_req, file, cb) => {
-                if (!/^(image|video|audio)\//.test(file.mimetype)) {
-                    return cb(
-                        new HttpException(
-                            'Only images are allowed!',
-                            HttpStatus.BAD_REQUEST,
-                        ),
-                        false,
-                    );
-                }
-                return cb(null, true);
-            },
-        }),
-    )
+    @MultimediaUpload()
     storeStatic(
         @UploadedFile() file: UploadFile,
-        @Body('staticResource') staticResource: StaticResource,
+        @Body('staticResource') staticResource: Asset,
         @Body('bucket') bucket: Bucket,
     ) {
         return this.staticService.storeStatic(

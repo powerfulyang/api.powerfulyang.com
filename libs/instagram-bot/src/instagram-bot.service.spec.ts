@@ -5,7 +5,6 @@ describe('InstagramBotService', () => {
     let service: InstagramBotService;
 
     beforeEach(async () => {
-        jest.setTimeout(1000000);
         const module: TestingModule = await Test.createTestingModule({
             providers: [InstagramBotService],
         }).compile();
@@ -13,7 +12,6 @@ describe('InstagramBotService', () => {
         service = module.get<InstagramBotService>(
             InstagramBotService,
         );
-        await service.loginIn();
     });
 
     it('should fetch all saved be defined', async () => {
