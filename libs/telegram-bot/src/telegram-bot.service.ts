@@ -5,9 +5,9 @@ const Agent = require('socks5-https-client/lib/Agent');
 
 @Injectable()
 export class TelegramBotService {
-    readonly bot?: TelegramBot;
+    private readonly bot?: TelegramBot;
 
-    private readonly token = <string>process.env.TELEGRAM_BOT_TOKEN;
+    private readonly token = process.env.TELEGRAM_BOT_TOKEN;
 
     private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 
@@ -21,7 +21,7 @@ export class TelegramBotService {
         ) {
             this.bot = new TelegramBot(this.token, {
                 polling: true,
-                request: {
+                request: <any>{
                     agentClass: Agent,
                     agentOptions: {
                         socksHost: process.env.BOT_SOCKS5_PROXY_HOST,
@@ -29,7 +29,7 @@ export class TelegramBotService {
                             process.env.BOT_SOCKS5_PROXY_PORT,
                         ),
                     },
-                } as any,
+                },
             });
         } else {
             this.bot = new TelegramBot(this.token, { polling: true });

@@ -16,6 +16,7 @@
         "noUnusedParameters": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "strictPropertyInitialization": false,
         "strict": true,
         "paths": {
             "api/telegram-bot": ["libs/telegram-bot/src"],
@@ -26,9 +27,17 @@
             "api/pinterest-rss/*": ["libs/pinterest-rss/src/*"],
             "api/pixiv-bot": ["libs/pixiv-bot/src"],
             "api/pixiv-bot/*": ["libs/pixiv-bot/src/*"],
-            "@/*": ["src/*"]
+            "@/*": ["src/*"],
+            "app/github-webhook": ["libs/github-webhook/src"],
+            "app/github-webhook/*": ["libs/github-webhook/src/*"],
+            "api/tencent-cloud-cos": ["libs/tencent-cloud-cos/src"],
+            "api/tencent-cloud-cos/*": [
+                "libs/tencent-cloud-cos/src/*"
+            ],
+            "api/proxy-fetch": ["libs/proxy-fetch/src"],
+            "api/proxy-fetch/*": ["libs/proxy-fetch/src/*"]
         }
     },
     "exclude": ["node_modules", "dist"],
-    "include": ["src/**/*.ts", "__test__", "libs"]
+    "include": ["src/**/*.ts", "__test__", "libs", "test"]
 }

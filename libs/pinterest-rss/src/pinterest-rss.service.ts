@@ -3,18 +3,17 @@ import {
     PinterestInterface,
     RSSPinterestInterface,
 } from 'api/pinterest-rss/pinterest.interface';
-import { CoreService } from '@/core/core.service';
-import { RssInterface } from '@/core/base/interface/rss.interface';
+import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()
-export class PinterestRssService implements RssInterface {
+export class PinterestRssService {
+    constructor(private proxyFetchService: ProxyFetchService) {}
+
     private readonly myRssUrl =
         'https://www.pinterest.com/powerfulyang/feed.rss';
 
-    constructor(private coreService: CoreService) {}
-
     private async fetchAll(): Promise<PinterestInterface[]> {
-        const json = await this.coreService.proxyFetchJsonFromRss<
+        const json = await this.proxyFetchService.proxyFetchJsonFromRss<
             RSSPinterestInterface
         >(this.myRssUrl);
         return PinterestRssService.transform(json);

@@ -7,15 +7,15 @@ import { promises } from 'fs';
 import COS from 'cos-nodejs-sdk-v5';
 import { ClientProxy } from '@nestjs/microservices';
 import { pHash } from '@powerfulyang/node-utils';
-import HashUtils from '../utils/HashUtils';
-import { StaticResource } from '../entity/static.entity';
-import { UploadFile } from '../type/UploadFile';
-import { BucketRegionUrl } from '../enum/Bucket';
+import { StaticResource } from '@/entity/asset.entity';
+import { UploadFile } from '@/type/UploadFile';
+import { BucketRegionUrl } from '@/enum/Bucket';
 import {
     COS_UPLOAD_MSG_PATTERN,
     MICROSERVICE_NAME,
-} from '../constants/constants';
-import { Bucket } from '../entity/bucket.entity';
+} from '@/constants/constants';
+import { Bucket } from '@/entity/bucket.entity';
+import HashUtils from '../utils/HashUtils';
 
 const { writeFile } = promises;
 

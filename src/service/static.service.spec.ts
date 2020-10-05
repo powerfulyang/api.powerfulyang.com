@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StaticService } from './static.service';
 import { StaticModule } from '../module/static.module';
-import mysqlConfig from '../config';
+import mysqlConfig from '../mysql/config';
 
 describe('test static service', () => {
     let staticService: StaticService;

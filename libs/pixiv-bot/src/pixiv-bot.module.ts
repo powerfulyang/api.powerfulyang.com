@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 import { PixivBotService } from './pixiv-bot.service';
-import { CoreModule } from '@/core/core.module';
 
 @Module({
-    imports: [CoreModule],
+    imports: [ProxyFetchModule],
     providers: [PixivBotService],
     exports: [PixivBotService],
 })

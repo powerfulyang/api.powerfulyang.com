@@ -8,38 +8,28 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { Bucket } from './bucket.entity';
-import { StaticPath } from '../type/UploadFile';
 
-@Entity('static')
-export class StaticResource {
+@Entity('asset')
+export class Asset {
     @PrimaryGeneratedColumn()
-    staticId!: number;
+    id: number;
 
     @JoinColumn()
     @ManyToOne(() => Bucket)
-    bucket!: Bucket;
-
-    @Column()
-    filename!: string;
-
-    @Column({ type: 'json' })
-    path!: StaticPath;
-
-    @Column()
-    projectName!: string;
+    bucket: Bucket;
 
     @Column({ default: '' })
-    comment!: string;
+    comment: string;
 
     @Column({ unique: true })
-    sha1!: string;
+    sha1: string;
 
     @Column({ default: '' })
-    pHash!: string;
+    pHash: string;
 
     @CreateDateColumn()
-    createAt!: Date;
+    createAt: Date;
 
     @UpdateDateColumn()
-    updateAt!: Date;
+    updateAt: Date;
 }

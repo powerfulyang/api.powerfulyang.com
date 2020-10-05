@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PinterestRssService } from './pinterest-rss.service';
 import { PinterestRssModule } from 'api/pinterest-rss/pinterest-rss.module';
+import { CoreModule } from '@/core/core.module';
 
 describe('PinterestRssService', () => {
     let service: PinterestRssService;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [PinterestRssModule],
+            imports: [CoreModule, PinterestRssModule],
         }).compile();
 
         service = module.get<PinterestRssService>(

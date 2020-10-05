@@ -6,13 +6,13 @@ import { WebhookPayload } from './payload/webhook-payload';
 
 @Injectable()
 export class GithubService {
-    constructor(private chatBotService: TelegramBotService) {}
+    constructor(private telegramBotService: TelegramBotService) {}
 
-    public async sendMsg<T extends WebhookPayload>(
+    private async sendToMe<T extends WebhookPayload>(
         payload: Payload<T>,
         type: EventType,
     ) {
-        return this.chatBotService.sendToMe(
+        return this.telegramBotService.sendToMe(
             `${EventType[type]} Change\nAction: ${payload.action}\nRepository: ${payload.repository?.full_name}`,
         );
     }
@@ -22,11 +22,9 @@ export class GithubService {
         type: EventType,
     ) {
         switch (type) {
-            case EventType.issues: {
-                return this.sendMsg(payload, type);
-            }
+            // TODO
             default: {
-                return this.sendMsg(payload, type);
+                return this.sendToMe(payload, type);
             }
         }
     }

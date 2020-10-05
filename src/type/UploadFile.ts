@@ -18,9 +18,3 @@ export type UploadFile = {
     /** A Buffer of the entire file (MemoryStorage) */
     buffer: Buffer;
 };
-
-export type StaticPath = {
-    resize: string;
-    webp: string;
-    origin: string;
-};

@@ -11,6 +11,7 @@ module.exports = {
     maxConcurrency: 5,
     moduleFileExtensions: ['js', 'json', 'ts', 'node'],
     setupFiles: ['./.jest/setEnvVars.ts'],
+    setupFilesAfterEnv: ['./jest.setup.ts'],
     rootDir: '.',
     testRegex: '.spec.ts$',
     transform: {

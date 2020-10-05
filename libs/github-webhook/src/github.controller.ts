@@ -12,7 +12,7 @@ import { GithubWebhookEvents } from './github.decorator';
 import { EventType } from './github.enum';
 import { WebhookPayload } from './payload/webhook-payload';
 
-@Controller('github')
+@Controller('github-webhook')
 export class GithubController {
     constructor(private readonly githubService: GithubService) {}
 

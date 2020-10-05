@@ -62,7 +62,7 @@ export class GitHubEventsGuard implements CanActivate {
     ): boolean {
         const hmac = createHmac(
             'sha1',
-            <string>process.env.GITHUB_WEBHOOK_SECRET,
+            process.env.GITHUB_WEBHOOK_SECRET,
         );
         const digest = `sha1=${hmac
             .update(JSON.stringify(payload))

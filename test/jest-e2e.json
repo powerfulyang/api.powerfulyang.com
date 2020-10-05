@@ -16,6 +16,10 @@
     "api/pinterest-rss/(.*)": "<rootDir>/../libs/pinterest-rss/src/$1",
     "api/pinterest-rss": "<rootDir>/../libs/pinterest-rss/src",
     "api/pixiv-rss/(.*)": "<rootDir>/../libs/pixiv-rss/src/$1",
-    "api/pixiv-rss": "<rootDir>/../libs/pixiv-rss/src"
+    "api/pixiv-rss": "<rootDir>/../libs/pixiv-rss/src",
+    "api/tencent-cloud-cos/(.*)": "<rootDir>/../libs/tencent-cloud-cos/src/$1",
+    "api/tencent-cloud-cos": "<rootDir>/../libs/tencent-cloud-cos/src",
+    "api/proxy-fetch/(.*)": "<rootDir>/../libs/proxy-fetch/src/$1",
+    "api/proxy-fetch": "<rootDir>/../libs/proxy-fetch/src"
   }
 }
