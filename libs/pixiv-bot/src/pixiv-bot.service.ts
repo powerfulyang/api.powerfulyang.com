@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { stringify } from 'qs';
 import {
-    PixivBotApiQuery,
     RESPixivInterface,
     Work,
 } from 'api/pixiv-bot/pixiv.interface';
@@ -14,43 +13,62 @@ export class PixivBotService implements RssInterface {
     private readonly pixivApiUrl =
         'https://www.pixiv.net/ajax/user/31359863/illusts/bookmarks';
 
-    constructor(private coreService: CoreService) {}
+    private readonly defaultLimit = 48;
 
     parseQueryUrl(
-        query: PixivBotApiQuery = {
-            tag: '',
-            offset: 0,
-            limit: 48,
-            rest: 'show',
-            lang: 'zh',
-        },
+        offset = 0,
+        limit = this.defaultLimit,
+        tag = '',
+        rest = 'show',
+        lang = 'zh',
     ) {
-        return `${this.pixivApiUrl}?${stringify(query)}`;
+        return `${this.pixivApiUrl}?${stringify({
+            tag,
+            offset,
+            limit,
+            rest,
+            lang,
+        })}`;
     }
 
-    async fetchAll() {
-        const res = await this.coreService.proxyFetch(
-            this.parseQueryUrl(),
+    constructor(private coreService: CoreService) {}
+
+    private fetch(offset?: number) {
+        return this.coreService.proxyFetchJson<RESPixivInterface>(
+            this.parseQueryUrl(offset),
             {
                 headers: {
                     cookie: <string>process.env.PIXIV_BOT_COOKIE,
                 },
             },
         );
-        const json = await res.json();
-        return PixivBotService.transform(json);
     }
 
-    async fetchUndo(lastId?: string): Promise<any> {
-        const allPosts = await this.fetchAll();
-        const undoPosts = [];
-        for (let i = 0; i < allPosts.length; i++) {
-            if (allPosts[i].id === lastId) {
-                break;
+    async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {
+        const undoes: InstagramInterface[] = [];
+        let offset = 0;
+
+        let signal = true;
+        do {
+            const favorites = await this.fetch(offset);
+            const { works } = favorites.body;
+            if (
+                favorites.error ||
+                works.length !== this.defaultLimit
+            ) {
+                signal = false;
             }
-            undoPosts.push(allPosts[i]);
-        }
-        return undoPosts;
+            for (let i = 0; i < works.length; i++) {
+                if (lastId === works[i].id) {
+                    signal = false;
+                    break;
+                }
+                undoes.push(PixivBotService.transform(works[i]));
+            }
+            offset++;
+        } while (signal);
+
+        return undoes;
     }
 
     private static getPixivCatUrl(item: Work) {
@@ -64,15 +82,11 @@ export class PixivBotService implements RssInterface {
             );
     }
 
-    private static transform(
-        originJson: RESPixivInterface,
-    ): InstagramInterface[] {
-        return originJson.body.works.map((item) => {
-            return {
-                id: item.id,
-                tags: item.tags,
-                imgList: PixivBotService.getPixivCatUrl(item),
-            };
-        });
+    private static transform(work: Work): InstagramInterface {
+        return {
+            id: work.id,
+            tags: work.tags,
+            imgList: PixivBotService.getPixivCatUrl(work),
+        };
     }
 }

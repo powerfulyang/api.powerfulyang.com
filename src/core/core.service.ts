@@ -16,7 +16,15 @@ export class CoreService {
         return fetch(url, draft);
     }
 
-    async fetchJsonFromRss<T>(
+    async proxyFetchJson<T>(
+        url: string,
+        draft: RequestInit = {},
+    ): Promise<T> {
+        const res = await this.proxyFetch(url, draft);
+        return res.json();
+    }
+
+    async proxyFetchJsonFromRss<T>(
         rssUrl: string,
         draft: RequestInit = {},
     ): Promise<T> {

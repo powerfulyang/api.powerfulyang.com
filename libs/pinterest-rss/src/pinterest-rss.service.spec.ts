@@ -19,7 +19,7 @@ describe('PinterestRssService', () => {
         await expect(
             service
                 .fetchUndo('836262224552035684')
-                .then((res) => res.pop()?.id),
+                .then((res) => res.pop()!.id),
         ).resolves.toStrictEqual('836262224552037400');
     });
 });
