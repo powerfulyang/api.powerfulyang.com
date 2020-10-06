@@ -1,23 +1,19 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ClientProxy } from '@nestjs/microservices';
-import {
-    COS_UPLOAD_MSG_PATTERN,
-    MICROSERVICE_NAME,
-} from '@/constants/constants';
+import { COS_UPLOAD_MSG_PATTERN } from '@/constants/constants';
 import { Bucket } from '@/entity/bucket.entity';
 import { Asset } from '@/entity/asset.entity';
+import { CoreService } from '@/core/core.service';
 
 @Injectable()
-export class StaticService {
+export class AssetService {
     constructor(
         @InjectRepository(Bucket)
         private bucketDao: Repository<Bucket>,
         @InjectRepository(Asset)
         private assetDao: Repository<Asset>,
-        @Inject(MICROSERVICE_NAME)
-        private readonly microserviceClient: ClientProxy,
+        private coreService: CoreService,
     ) {}
 
     listBucket() {
@@ -29,7 +25,7 @@ export class StaticService {
     }
 
     sendMsg(msg: string) {
-        return this.microserviceClient.emit(
+        return this.coreService.microserviceClient.emit(
             COS_UPLOAD_MSG_PATTERN,
             msg,
         );

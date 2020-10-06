@@ -12,9 +12,6 @@ export class TelegramBotService {
     private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 
     constructor() {
-        if (process.env.TELEGRAM_BOT_BAN_POLLING) {
-            return;
-        }
         if (
             process.env.BOT_SOCKS5_PROXY_HOST ||
             process.env.BOT_SOCKS5_PROXY_PORT

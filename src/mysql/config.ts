@@ -12,7 +12,7 @@ export const config: TypeOrmModuleOptions = {
     timezone: '+08:00',
     synchronize: true,
     logging: false,
-    entities: [join(__dirname, './**/**.entity{.ts,.js}')],
+    entities: [join(__dirname, '../**/**.entity{.ts,.js}')],
     migrations: [],
     subscribers: [],
 };

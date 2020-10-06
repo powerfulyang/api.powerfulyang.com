@@ -4,7 +4,7 @@ import { TelegramBotService } from './telegram-bot.service';
 describe('TelegramBotService', () => {
     let service: TelegramBotService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [TelegramBotService],
         }).compile();

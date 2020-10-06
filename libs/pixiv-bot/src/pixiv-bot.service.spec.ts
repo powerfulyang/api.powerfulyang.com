@@ -6,7 +6,7 @@ import { CoreModule } from '@/core/core.module';
 describe('PixivRssService', () => {
     let service: PixivBotService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [CoreModule, PixivBotModule],
         }).compile();

@@ -5,7 +5,7 @@ import { Bucket } from '@/entity/bucket.entity';
 import { Asset } from '@/entity/asset.entity';
 
 @Injectable()
-export class UploadStaticService {
+export class UploadAssetService {
     constructor(
         @InjectRepository(Asset)
         private assetDao: Repository<Asset>,

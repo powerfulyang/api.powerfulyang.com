@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InstagramBotService } from './instagram-bot.service';
+import { InstagramBotModule } from 'api/instagram-bot/instagram-bot.module';
 
 describe('InstagramBotService', () => {
     let service: InstagramBotService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [InstagramBotService],
+            imports: [InstagramBotModule],
         }).compile();
 
         service = module.get<InstagramBotService>(

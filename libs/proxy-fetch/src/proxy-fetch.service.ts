@@ -6,7 +6,7 @@ const Agent = require('socks5-https-client/lib/Agent');
 
 @Injectable()
 export class ProxyFetchService {
-    private readonly agent = new Agent({
+    readonly agent = new Agent({
         socksHost: process.env.BOT_SOCKS5_PROXY_HOST,
         socksPort: process.env.BOT_SOCKS5_PROXY_PORT,
     });
