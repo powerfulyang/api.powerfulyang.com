@@ -10,6 +10,7 @@ export class AppLogger implements LoggerService {
 
     setContext(context: string) {
         this.initializeLogger(context);
+        return this;
     }
 
     initializeLogger(context: string) {

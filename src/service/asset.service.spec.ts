@@ -3,14 +3,14 @@ import { AssetService } from './asset.service';
 import { AssetModule } from '@/module/asset.module';
 import { CoreModule } from '@/core/core.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { config } from '@/mysql/config';
+import { mysqlConfig } from '@/configuration/mysql.config';
 
 describe('test static service', () => {
     let staticService: AssetService;
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [
-                TypeOrmModule.forRoot(config),
+                TypeOrmModule.forRoot(mysqlConfig),
                 AssetModule,
                 CoreModule,
             ],

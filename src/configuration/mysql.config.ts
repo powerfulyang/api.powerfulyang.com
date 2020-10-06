@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export const config: TypeOrmModuleOptions = {
+export const mysqlConfig: TypeOrmModuleOptions = {
     name: 'default',
     type: 'mysql',
     host: 'localhost',
