@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GithubController } from './github.controller';
+import { GithubModule } from 'app/github-webhook/github.module';
 
 describe('Github Controller', () => {
     let controller: GithubController;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            controllers: [GithubController],
+            imports: [GithubModule],
         }).compile();
 
         controller = module.get<GithubController>(GithubController);

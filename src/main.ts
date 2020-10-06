@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
@@ -19,6 +20,7 @@ async function bootstrap(): Promise<void> {
     });
     await app.startAllMicroservicesAsync();
     app.enableCors();
+    app.useGlobalPipes(new ValidationPipe());
     await app.listen(3001);
 }
 (async (): Promise<void> => {

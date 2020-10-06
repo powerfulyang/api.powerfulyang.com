@@ -6,11 +6,11 @@ import {
     RmqContext,
 } from '@nestjs/microservices';
 import { COS_UPLOAD_MSG_PATTERN } from '@/constants/constants';
-import { UploadStaticService } from './upload-static.service';
+import { UploadAssetService } from './upload-asset.service';
 
 @Controller()
-export class UploadStaticController {
-    constructor(private uploadStaticService: UploadStaticService) {}
+export class UploadAssetController {
+    constructor(private uploadStaticService: UploadAssetService) {}
 
     @MessagePattern(COS_UPLOAD_MSG_PATTERN)
     async getNotifications(

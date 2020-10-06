@@ -4,7 +4,7 @@ import { ProxyFetchService } from './proxy-fetch.service';
 describe('ProxyFetchService', () => {
     let service: ProxyFetchService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [ProxyFetchService],
         }).compile();

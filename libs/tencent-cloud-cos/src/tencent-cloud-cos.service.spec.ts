@@ -4,7 +4,7 @@ import { TencentCloudCosService } from './tencent-cloud-cos.service';
 describe('TencentCloudCosService', () => {
     let service: TencentCloudCosService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [TencentCloudCosService],
         }).compile();

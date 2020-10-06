@@ -1,72 +1,69 @@
 {
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
-  "projects": {
-    "telegram-bot": {
-      "type": "library",
-      "root": "libs/telegram-bot",
-      "entryFile": "index",
-      "sourceRoot": "libs/telegram-bot/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/telegram-bot/tsconfig.lib.json"
-      }
-    },
-    "instagram-bot": {
-      "type": "library",
-      "root": "libs/instagram-bot",
-      "entryFile": "index",
-      "sourceRoot": "libs/instagram-bot/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/instagram-bot/tsconfig.lib.json"
-      }
-    },
-    "pinterest-rss": {
-      "type": "library",
-      "root": "libs/pinterest-rss",
-      "entryFile": "index",
-      "sourceRoot": "libs/pinterest-rss/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/pinterest-rss/tsconfig.lib.json"
-      }
-    },
-    "pixiv-rss": {
-      "type": "library",
-      "root": "libs/pixiv-rss",
-      "entryFile": "index",
-      "sourceRoot": "libs/pixiv-rss/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/pixiv-rss/tsconfig.lib.json"
-      }
-    },
-    "github-webhook": {
-      "type": "library",
-      "root": "libs/github-webhook",
-      "entryFile": "index",
-      "sourceRoot": "libs/github-webhook/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/github-webhook/tsconfig.lib.json"
-      }
-    },
-    "tencent-cloud-cos": {
-      "type": "library",
-      "root": "libs/tencent-cloud-cos",
-      "entryFile": "index",
-      "sourceRoot": "libs/tencent-cloud-cos/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/tencent-cloud-cos/tsconfig.lib.json"
-      }
-    },
-    "proxy-fetch": {
-      "type": "library",
-      "root": "libs/proxy-fetch",
-      "entryFile": "index",
-      "sourceRoot": "libs/proxy-fetch/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/proxy-fetch/tsconfig.lib.json"
-      }
+    "collection": "@nestjs/schematics",
+    "sourceRoot": "src",
+    "projects": {
+        "telegram-bot": {
+            "type": "library",
+            "root": "libs/telegram-bot",
+            "entryFile": "index",
+            "sourceRoot": "libs/telegram-bot/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/telegram-bot/tsconfig.lib.json"
+            }
+        },
+        "instagram-bot": {
+            "type": "library",
+            "root": "libs/instagram-bot",
+            "entryFile": "index",
+            "sourceRoot": "libs/instagram-bot/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/instagram-bot/tsconfig.lib.json"
+            }
+        },
+        "pinterest-rss": {
+            "type": "library",
+            "root": "libs/pinterest-rss",
+            "entryFile": "index",
+            "sourceRoot": "libs/pinterest-rss/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/pinterest-rss/tsconfig.lib.json"
+            }
+        },
+        "pixiv-rss": {
+            "type": "library",
+            "root": "libs/pixiv-rss",
+            "entryFile": "index",
+            "sourceRoot": "libs/pixiv-rss/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/pixiv-rss/tsconfig.lib.json"
+            }
+        },
+        "github-webhook": {
+            "type": "library",
+            "root": "libs/github-webhook",
+            "entryFile": "index",
+            "sourceRoot": "libs/github-webhook/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/github-webhook/tsconfig.lib.json"
+            }
+        },
+        "tencent-cloud-cos": {
+            "type": "library",
+            "root": "libs/tencent-cloud-cos",
+            "entryFile": "index",
+            "sourceRoot": "libs/tencent-cloud-cos/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/tencent-cloud-cos/tsconfig.lib.json"
+            }
+        },
+        "proxy-fetch": {
+            "type": "library",
+            "root": "libs/proxy-fetch",
+            "entryFile": "index",
+            "sourceRoot": "libs/proxy-fetch/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/proxy-fetch/tsconfig.lib.json"
+            }
+        }
     }
-  },
-  "compilerOptions": {
-    "webpack": true
-  }
 }

@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
-import { GithubModule } from 'app/github-webhook';
 import { UserModule } from '@/module/user.module';
-import { StaticModule } from './module/static.module';
+import { CoreModule } from '@/core/core.module';
+import { AuthStrategyModule } from '@/common/authorization/AuthStrategy.module';
+import { AssetModule } from './module/asset.module';
 import { config } from './mysql/config';
-import { JwtStrategy } from './common/authorization/JwtStrategy';
-import { UploadStaticModule } from './microservice/upload-static.module';
+import { UploadAssetModule } from './microservice/upload-asset.module';
 
 @Module({
     imports: [
@@ -15,12 +15,12 @@ import { UploadStaticModule } from './microservice/upload-static.module';
             envFilePath: ['.env'],
         }),
         TypeOrmModule.forRoot(config),
+        AuthStrategyModule,
+        CoreModule,
         PassportModule,
-        StaticModule,
+        AssetModule,
         UserModule,
-        GithubModule,
-        UploadStaticModule,
+        UploadAssetModule,
     ],
-    providers: [JwtStrategy],
 })
 export class AppModule {}

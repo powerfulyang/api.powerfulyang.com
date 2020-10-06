@@ -15,10 +15,10 @@ export class User {
     email!: string;
 
     @Column()
-    password!: string;
+    passwordSalt!: string;
 
     @Column()
-    passwordSalt!: string;
+    salt: string;
 
     @CreateDateColumn()
     createAt!: Date;

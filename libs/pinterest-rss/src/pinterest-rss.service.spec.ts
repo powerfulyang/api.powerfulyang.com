@@ -6,7 +6,7 @@ import { CoreModule } from '@/core/core.module';
 describe('PinterestRssService', () => {
     let service: PinterestRssService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [CoreModule, PinterestRssModule],
         }).compile();
