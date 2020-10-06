@@ -18,6 +18,7 @@ import {
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { sha1 } from '@powerfulyang/node-utils';
 import { UserDto } from '@/entity/dto/UserDto';
+import { Profile } from 'passport-google-oauth20';
 
 @Controller('user')
 export class UserController {
@@ -30,14 +31,12 @@ export class UserController {
 
     @Get('google/auth')
     @GoogleAuthGuard()
-    async googleAuth(@Request() req: any) {
-        this.logger.debug(req.user);
-    }
+    async googleAuth() {}
 
     @Get('google/auth/callback')
     @GoogleAuthGuard()
-    async googleAuthCallback(@Request() req: any) {
-        this.logger.debug(req.user);
+    async googleAuthCallback(@Request() req: { user: Profile }) {
+        this.logger.debug(req.user.id);
     }
 
     @Post('login')

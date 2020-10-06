@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InstagramBotService } from './instagram-bot.service';
 import { InstagramBotModule } from 'api/instagram-bot/instagram-bot.module';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 
 describe('InstagramBotService', () => {
     let service: InstagramBotService;
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [InstagramBotModule],
+            imports: [ProxyFetchModule, InstagramBotModule],
         }).compile();
 
         service = module.get<InstagramBotService>(

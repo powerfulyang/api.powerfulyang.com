@@ -1,12 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TelegramBotService } from './telegram-bot.service';
+import { ProxyFetchModule } from 'api/proxy-fetch';
+import { TelegramBotModule } from 'api/telegram-bot/telegram-bot.module';
 
 describe('TelegramBotService', () => {
     let service: TelegramBotService;
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [TelegramBotService],
+            imports: [ProxyFetchModule, TelegramBotModule],
         }).compile();
 
         service = module.get<TelegramBotService>(TelegramBotService);

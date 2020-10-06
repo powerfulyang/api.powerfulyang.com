@@ -8,6 +8,7 @@ import { AuthStrategyModule } from '@/common/authorization/AuthStrategy.module';
 import { AssetModule } from './module/asset.module';
 import { config } from './mysql/config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { UploadAssetModule } from './microservice/upload-asset.module';
             envFilePath: ['.env'],
         }),
         TypeOrmModule.forRoot(config),
+        ProxyFetchModule,
         AuthStrategyModule,
         CoreModule,
         PassportModule,

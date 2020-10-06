@@ -6,18 +6,22 @@ const Agent = require('socks5-https-client/lib/Agent');
 
 @Injectable()
 export class ProxyFetchService {
-    readonly agent = new Agent({
-        socksHost: process.env.BOT_SOCKS5_PROXY_HOST,
-        socksPort: process.env.BOT_SOCKS5_PROXY_PORT,
-    });
+    readonly agent;
 
-    proxyFetch(url: string, draft: RequestInit = {}) {
+    constructor() {
         if (
             process.env.BOT_SOCKS5_PROXY_HOST ||
             process.env.BOT_SOCKS5_PROXY_PORT
         ) {
-            draft.agent = this.agent;
+            this.agent = new Agent({
+                socksHost: process.env.BOT_SOCKS5_PROXY_HOST,
+                socksPort: process.env.BOT_SOCKS5_PROXY_PORT,
+            });
         }
+    }
+
+    proxyFetch(url: string, draft: RequestInit = {}) {
+        draft.agent = this.agent;
         return fetch(url, draft);
     }
 
