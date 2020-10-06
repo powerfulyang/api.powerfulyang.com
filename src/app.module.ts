@@ -8,7 +8,7 @@ import { AuthStrategyModule } from '@/common/authorization/AuthStrategy.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { AssetModule } from './module/asset.module';
-import { config } from './mysql/config';
+import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
 
 @Module({
@@ -17,7 +17,7 @@ import { UploadAssetModule } from './microservice/upload-asset.module';
             envFilePath: ['.env'],
         }),
         LoggerModule,
-        TypeOrmModule.forRoot(config),
+        TypeOrmModule.forRoot(mysqlConfig),
         ProxyFetchModule,
         AuthStrategyModule,
         CoreModule,
