@@ -6,8 +6,7 @@ import {
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { InstagramInterface } from 'api/instagram-bot/instagram.interface';
-
-const Agent = require('socks5-https-client/lib/Agent');
+import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()
 export class InstagramBotService {
@@ -19,19 +18,9 @@ export class InstagramBotService {
         'instagram',
     );
 
-    constructor() {
+    constructor(private proxyFetchService: ProxyFetchService) {
         this.bot.state.generateDevice(process.env.IG_USERNAME);
-        const {
-            BOT_SOCKS5_PROXY_HOST,
-            BOT_SOCKS5_PROXY_PORT,
-        } = process.env;
-        if (BOT_SOCKS5_PROXY_HOST || BOT_SOCKS5_PROXY_PORT) {
-            this.bot.request.defaults.agentClass = Agent;
-            this.bot.request.defaults.agentOptions = <any>{
-                socksHost: BOT_SOCKS5_PROXY_HOST,
-                socksPort: Number(BOT_SOCKS5_PROXY_PORT),
-            };
-        }
+        this.bot.request.defaults.agent = this.proxyFetchService.agent;
         this.bot.request.end$.subscribe(async () => {
             const serialized = await this.bot.state.serialize();
             delete serialized.constants;

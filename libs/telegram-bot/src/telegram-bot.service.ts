@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import TelegramBot from 'node-telegram-bot-api';
-
-const Agent = require('socks5-https-client/lib/Agent');
+import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()
 export class TelegramBotService {
@@ -11,26 +10,13 @@ export class TelegramBotService {
 
     private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 
-    constructor() {
-        if (
-            process.env.BOT_SOCKS5_PROXY_HOST ||
-            process.env.BOT_SOCKS5_PROXY_PORT
-        ) {
-            this.bot = new TelegramBot(this.token, {
-                polling: true,
-                request: <any>{
-                    agentClass: Agent,
-                    agentOptions: {
-                        socksHost: process.env.BOT_SOCKS5_PROXY_HOST,
-                        socksPort: Number(
-                            process.env.BOT_SOCKS5_PROXY_PORT,
-                        ),
-                    },
-                },
-            });
-        } else {
-            this.bot = new TelegramBot(this.token, { polling: true });
-        }
+    constructor(private proxyFetchService: ProxyFetchService) {
+        this.bot = new TelegramBot(this.token, {
+            polling: true,
+            request: <any>{
+                agent: this.proxyFetchService.agent,
+            },
+        });
     }
 
     async sendMessage(chatId: number, msg: string) {
