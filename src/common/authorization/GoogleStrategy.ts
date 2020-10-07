@@ -6,13 +6,17 @@ import {
     VerifyCallback,
 } from 'passport-google-oauth20';
 import { ProxyFetchService } from 'api/proxy-fetch';
+import { AppLogger } from '@/common/logger/app.logger';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(
     Strategy,
     'google',
 ) {
-    constructor(private proxyFetchService: ProxyFetchService) {
+    constructor(
+        private proxyFetchService: ProxyFetchService,
+        private logger: AppLogger,
+    ) {
         super({
             clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
             clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
@@ -20,6 +24,7 @@ export class GoogleStrategy extends PassportStrategy(
             scope: ['email', 'profile'],
         });
         this._oauth2.setAgent(this.proxyFetchService.agent);
+        this.logger.setContext(GoogleStrategy.name);
     }
 
     validate(
@@ -28,6 +33,7 @@ export class GoogleStrategy extends PassportStrategy(
         profile: Profile,
         done: VerifyCallback,
     ) {
+        this.logger.debug(profile);
         done(undefined, profile);
     }
 }
