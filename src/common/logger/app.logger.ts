@@ -2,7 +2,7 @@ import { Injectable, LoggerService, Scope } from '@nestjs/common';
 import winston, { format, Logger } from 'winston';
 import { __prod__ } from '@powerfulyang/utils';
 
-const { combine, timestamp, label, prettyPrint } = format;
+const { combine, timestamp, label, printf, colorize } = format;
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class AppLogger implements LoggerService {
@@ -14,12 +14,24 @@ export class AppLogger implements LoggerService {
     }
 
     initializeLogger(context: string) {
+        winston.addColors({
+            error: 'red',
+            warn: 'yellow',
+            info: 'cyan',
+            debug: 'green',
+        });
         this.logger = winston.createLogger({
             level: (__prod__ && 'info') || 'debug',
             format: combine(
                 label({ label: context }),
-                timestamp(),
-                prettyPrint(),
+                timestamp({
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                }),
+                colorize({ all: true }),
+                printf(
+                    (info) =>
+                        ` [${info.label}]  ${info.timestamp}  [${info.level}] --- ${info.message}`,
+                ),
             ),
             transports: [new winston.transports.Console()],
         });

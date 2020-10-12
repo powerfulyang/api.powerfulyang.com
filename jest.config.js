@@ -17,5 +17,6 @@ module.exports = {
     transform: {
         '^.+\\.(t|j)s$': 'ts-jest',
     },
+    testPathIgnorePatterns: ['node_modules'],
     testEnvironment: 'node',
 };

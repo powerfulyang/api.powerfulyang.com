@@ -85,6 +85,7 @@ export class PixivBotService {
             id: work.id,
             tags: work.tags,
             imgList: PixivBotService.getPixivCatUrl(work),
+            originUrl: `https://www.pixiv.net/artworks/${work.id}`,
         };
     }
 }
