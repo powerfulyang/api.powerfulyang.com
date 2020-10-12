@@ -44,7 +44,7 @@ export class PinterestRssService {
         });
         return urls.map((x: any) => {
             return {
-                imgUrl: x.url.replace(/236x/, 'originals'),
+                imgList: [x.url.replace(/236x/, 'originals')],
                 id: x.id,
             };
         });

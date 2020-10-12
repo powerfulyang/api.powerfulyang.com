@@ -7,6 +7,7 @@ import { CoreModule } from '@/core/core.module';
 import { AuthStrategyModule } from '@/common/authorization/AuthStrategy.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
 import { LoggerModule } from '@/common/logger/logger.module';
+import { SchedulesModule } from '@/schedules/schedules.module';
 import { AssetModule } from './module/asset.module';
 import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
@@ -25,6 +26,7 @@ import { UploadAssetModule } from './microservice/upload-asset.module';
         AssetModule,
         UserModule,
         UploadAssetModule,
+        SchedulesModule,
     ],
 })
 export class AppModule {}

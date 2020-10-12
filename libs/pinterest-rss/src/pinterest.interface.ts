@@ -41,5 +41,5 @@ export interface Item {
 
 export interface PinterestInterface {
     id: string;
-    imgUrl: string;
+    imgList: string[];
 }
