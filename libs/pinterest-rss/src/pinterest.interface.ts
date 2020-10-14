@@ -42,4 +42,6 @@ export interface Item {
 export interface PinterestInterface {
     id: string;
     imgList: string[];
+    tags: string[];
+    originUrl: string;
 }

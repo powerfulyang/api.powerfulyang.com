@@ -18,8 +18,7 @@ describe('test static service', () => {
         staticService = module.get<AssetService>(AssetService);
     });
 
-    it('test make waiting for the completion of actions, then receive a new message', function () {
-        staticService.sendMsg('test');
-        staticService.sendMsg('test2');
+    it('should be defined', function () {
+        expect(staticService).toBeDefined();
     });
 });
