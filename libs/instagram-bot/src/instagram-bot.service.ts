@@ -86,13 +86,14 @@ export class InstagramBotService {
         savedItem: SavedFeedResponseMedia,
     ): InstagramInterface {
         return {
-            id: savedItem.id,
+            id: savedItem.code,
             tags: InstagramBotService.getTags(
                 savedItem.caption?.text,
             ),
             imgList: savedItem.carousel_media?.map(
                 (x) => x.image_versions2.candidates[0].url,
             ) || [savedItem.image_versions2!.candidates[0].url],
+            originUrl: `https://www.instagram.com/p/${savedItem.code}`,
         };
     }
 }

@@ -19,6 +19,9 @@ export class Asset {
     @ManyToOne(() => Bucket)
     bucket: Bucket;
 
+    @Column({ default: '' })
+    cosUrl: string;
+
     @Column()
     origin: AssetOrigin;
 

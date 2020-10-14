@@ -1,12 +1,15 @@
 import {
     Column,
     Entity,
+    Index,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Asset } from '@/entity/asset.entity';
+import { BucketRegion } from 'cos-nodejs-sdk-v5';
 
 @Entity('bucket')
+@Index(['bucketName', 'bucketRegion'])
 export class Bucket {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -18,8 +21,5 @@ export class Bucket {
     bucketName!: string;
 
     @Column()
-    bucketRegion!: string;
-
-    @Column()
-    bucketRegionUrl!: string;
+    bucketRegion!: BucketRegion;
 }

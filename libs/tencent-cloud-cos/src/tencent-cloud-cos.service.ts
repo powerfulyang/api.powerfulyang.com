@@ -1,18 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import COS, {
     BucketACL,
+    BucketContentsOptions,
     BucketListResult,
+    BucketOptions,
     BucketRegion,
 } from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
 
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class TencentCloudCosService {
     private readonly cosUtil = new COS({
         SecretId: process.env.TENCENT_CLOUD_SECRET_ID,
         SecretKey: process.env.TENCENT_CLOUD_SECRET_KEY,
-        Protocol: 'https:',
     });
+
+    private sn = '-1253520329';
+
+    setSn(sn: string) {
+        this.sn = sn;
+    }
 
     listBuckets() {
         return promisify<BucketListResult>(
@@ -20,30 +27,32 @@ export class TencentCloudCosService {
         ).call(this.cosUtil);
     }
 
-    putBucket(Bucket: string, Region: BucketRegion) {
-        return promisify(this.cosUtil.putBucket).call(this.cosUtil, {
-            Bucket,
-            Region,
+    headBucket(options: BucketOptions) {
+        return promisify(this.cosUtil.headBucket).call(this.cosUtil, {
+            ...options,
+            Bucket: `${options.Bucket}${this.sn}`,
         });
     }
 
-    listObjects(
-        Bucket: string,
-        Region: BucketRegion,
-        Prefix?: string,
-    ) {
-        return promisify(this.cosUtil.getBucket).call(this.cosUtil, {
-            Bucket,
-            Region,
-            Prefix,
+    putBucket(options: BucketOptions) {
+        return promisify(this.cosUtil.putBucket).call(this.cosUtil, {
+            ...options,
+            Bucket: `${options.Bucket}${this.sn}`,
         });
     }
 
     deleteBucket(Bucket: string, Region: BucketRegion) {
         return promisify(this.cosUtil.deleteBucket).call(
             this.cosUtil,
-            { Bucket, Region },
+            { Bucket: `${Bucket}${this.sn}`, Region },
         );
+    }
+
+    listObjects(options: BucketContentsOptions) {
+        return promisify(this.cosUtil.getBucket).call(this.cosUtil, {
+            ...options,
+            Bucket: `${options.Bucket}${this.sn}`,
+        });
     }
 
     putBucketAcl(
@@ -53,14 +62,14 @@ export class TencentCloudCosService {
     ) {
         return promisify(this.cosUtil.putBucketAcl).call(
             this.cosUtil,
-            { Bucket, Region, ACL },
+            { Bucket: `${Bucket}${this.sn}`, Region, ACL },
         );
     }
 
     getBucketAcl(Bucket: string, Region: BucketRegion) {
         return promisify(this.cosUtil.getBucketAcl).call(
             this.cosUtil,
-            { Bucket, Region },
+            { Bucket: `${Bucket}${this.sn}`, Region },
         );
     }
 
@@ -71,7 +80,7 @@ export class TencentCloudCosService {
         Body: ReadableStream | Buffer | string,
     ) {
         return promisify(this.cosUtil.putObject).call(this.cosUtil, {
-            Bucket,
+            Bucket: `${Bucket}${this.sn}`,
             Region,
             Key,
             Body,
@@ -81,7 +90,7 @@ export class TencentCloudCosService {
     deleteObject(Bucket: string, Region: BucketRegion, Key: string) {
         return promisify(this.cosUtil.deleteObject).call(
             this.cosUtil,
-            { Bucket, Region, Key },
+            { Bucket: `${Bucket}${this.sn}`, Region, Key },
         );
     }
 }

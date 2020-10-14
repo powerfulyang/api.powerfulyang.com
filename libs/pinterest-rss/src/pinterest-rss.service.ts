@@ -46,6 +46,8 @@ export class PinterestRssService {
             return {
                 imgList: [x.url.replace(/236x/, 'originals')],
                 id: x.id,
+                tags: [],
+                originUrl: `https://www.pinterest.com/pin/${x.id}`,
             };
         });
     }

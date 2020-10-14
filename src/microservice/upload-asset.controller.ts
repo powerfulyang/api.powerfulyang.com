@@ -6,18 +6,29 @@ import {
     RmqContext,
 } from '@nestjs/microservices';
 import { COS_UPLOAD_MSG_PATTERN } from '@/constants/constants';
+import { AppLogger } from '@/common/logger/app.logger';
 import { UploadAssetService } from './upload-asset.service';
 
 @Controller()
 export class UploadAssetController {
-    constructor(private uploadStaticService: UploadAssetService) {}
+    constructor(
+        private uploadStaticService: UploadAssetService,
+        private logger: AppLogger,
+    ) {
+        this.logger.setContext(UploadAssetController.name);
+    }
 
     @MessagePattern(COS_UPLOAD_MSG_PATTERN)
     async getNotifications(
-        @Payload() data: number[],
+        @Payload() data: any,
         @Ctx() context: RmqContext,
     ) {
-        await this.uploadStaticService.persistent(data.toString());
+        this.logger.debug(
+            `${
+                this.getNotifications.name
+            } ---> to persistent ${JSON.stringify(data)}`,
+        );
+        await this.uploadStaticService.persistent(data);
         const message = context.getMessage();
         const channel = context.getChannelRef();
         return channel.ack(message);
