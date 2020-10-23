@@ -18,7 +18,7 @@ import { UploadAssetModule } from './microservice/upload-asset.module';
             envFilePath: ['.env'],
         }),
         LoggerModule,
-        TypeOrmModule.forRoot(mysqlConfig),
+        TypeOrmModule.forRoot(mysqlConfig()),
         ProxyFetchModule,
         AuthStrategyModule,
         CoreModule,

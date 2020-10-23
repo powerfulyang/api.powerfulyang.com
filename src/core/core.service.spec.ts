@@ -1,6 +1,6 @@
 import { CoreService } from '@/core/core.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AssetOrigin } from '@/enum/AssetOrigin';
+import { AssetBucket } from '@/enum/AssetBucket';
 import { AppModule } from '@/app.module';
 
 describe('core service test', function () {
@@ -16,7 +16,7 @@ describe('core service test', function () {
 
     it('should getBucket', async function () {
         await expect(
-            service.getBotBucket(AssetOrigin.pixiv),
+            service.getBotBucket(AssetBucket.pixiv),
         ).resolves.toBeDefined();
     });
 });
