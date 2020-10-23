@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
-import { AssetOrigin } from '@/enum/AssetOrigin';
+import { AssetBucket } from '@/enum/AssetBucket';
 import { SUCCESS } from '@/constants/constants';
 import { Cron } from '@nestjs/schedule';
 
@@ -18,7 +18,7 @@ export class InstagramScheduleService {
     async bot() {
         try {
             await this.coreService.botBaseService(
-                AssetOrigin.instagram,
+                AssetBucket.instagram,
             );
         } catch (e) {
             this.logger.error(this.bot.name, e);

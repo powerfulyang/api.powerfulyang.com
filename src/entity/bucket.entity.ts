@@ -9,7 +9,7 @@ import { Asset } from '@/entity/asset.entity';
 import { BucketRegion } from 'cos-nodejs-sdk-v5';
 
 @Entity('bucket')
-@Index(['bucketName', 'bucketRegion'])
+@Index(['bucketName', 'bucketRegion'], { unique: true })
 export class Bucket {
     @PrimaryGeneratedColumn()
     id!: number;

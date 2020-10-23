@@ -1,10 +1,12 @@
 import { Injectable, Scope } from '@nestjs/common';
 import COS, {
-    BucketACL,
+    BucketACLOptions,
     BucketContentsOptions,
     BucketListResult,
     BucketOptions,
     BucketRegion,
+    DeleteObjectOptions,
+    UploadBucketObjectOptions,
 } from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
 
@@ -55,42 +57,31 @@ export class TencentCloudCosService {
         });
     }
 
-    putBucketAcl(
-        Bucket: string,
-        Region: BucketRegion,
-        ACL: BucketACL,
-    ) {
+    putBucketAcl(options: BucketACLOptions) {
         return promisify(this.cosUtil.putBucketAcl).call(
             this.cosUtil,
-            { Bucket: `${Bucket}${this.sn}`, Region, ACL },
+            { ...options, Bucket: `${options.Bucket}${this.sn}` },
         );
     }
 
-    getBucketAcl(Bucket: string, Region: BucketRegion) {
+    getBucketAcl(options: BucketOptions) {
         return promisify(this.cosUtil.getBucketAcl).call(
             this.cosUtil,
-            { Bucket: `${Bucket}${this.sn}`, Region },
+            { ...options, Bucket: `${options.Bucket}${this.sn}` },
         );
     }
 
-    putObject(
-        Bucket: string,
-        Region: BucketRegion,
-        Key: string,
-        Body: ReadableStream | Buffer | string,
-    ) {
+    putObject(options: UploadBucketObjectOptions) {
         return promisify(this.cosUtil.putObject).call(this.cosUtil, {
-            Bucket: `${Bucket}${this.sn}`,
-            Region,
-            Key,
-            Body,
+            ...options,
+            Bucket: `${options.Bucket}${this.sn}`,
         });
     }
 
-    deleteObject(Bucket: string, Region: BucketRegion, Key: string) {
+    deleteObject(options: DeleteObjectOptions) {
         return promisify(this.cosUtil.deleteObject).call(
             this.cosUtil,
-            { Bucket: `${Bucket}${this.sn}`, Region, Key },
+            { ...options, Bucket: `${options.Bucket}${this.sn}` },
         );
     }
 }

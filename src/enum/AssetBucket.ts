@@ -1,4 +1,4 @@
-export enum AssetOrigin {
+export enum AssetBucket {
     instagram = 'instagram',
     pixiv = 'pixiv',
     pinterest = 'pinterest',

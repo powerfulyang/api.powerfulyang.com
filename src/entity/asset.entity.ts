@@ -7,7 +7,6 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { AssetOrigin } from '@/enum/AssetOrigin';
 import { Bucket } from './bucket.entity';
 
 @Entity('asset')
@@ -21,9 +20,6 @@ export class Asset {
 
     @Column({ default: '' })
     cosUrl: string;
-
-    @Column()
-    origin: AssetOrigin;
 
     @Column()
     originUrl: string;

@@ -10,7 +10,7 @@ describe('test static service', () => {
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [
-                TypeOrmModule.forRoot(mysqlConfig),
+                TypeOrmModule.forRoot(mysqlConfig()),
                 AssetModule,
                 CoreModule,
             ],

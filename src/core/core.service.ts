@@ -4,7 +4,7 @@ import {
     MICROSERVICE_NAME,
 } from '@/constants/constants';
 import { ClientProxy } from '@nestjs/microservices';
-import { AssetOrigin } from '@/enum/AssetOrigin';
+import { AssetBucket } from '@/enum/AssetBucket';
 import { Asset } from '@/entity/asset.entity';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
@@ -24,6 +24,8 @@ import { PinterestRssService } from 'api/pinterest-rss';
 import { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
 import { Bucket } from '@/entity/bucket.entity';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
+
+const Region = 'ap-shanghai';
 
 @Injectable()
 export class CoreService {
@@ -47,7 +49,7 @@ export class CoreService {
     notifyCos(notification: {
         sha1: string;
         suffix: string;
-        origin: AssetOrigin;
+        bucket: AssetBucket;
     }) {
         return this.microserviceClient.emit(
             COS_UPLOAD_MSG_PATTERN,
@@ -56,51 +58,46 @@ export class CoreService {
     }
 
     private async initBucket() {
-        for (const origin of Object.keys(AssetOrigin)) {
+        for (const bucket of Object.keys(AssetBucket)) {
             let res: any;
             try {
-                res = await this.tencentCloudCosService.headBucket(
-                    origin,
-                    'ap-shanghai',
-                );
+                res = await this.tencentCloudCosService.headBucket({
+                    Bucket: bucket,
+                    Region,
+                });
             } catch (e) {
                 res = e;
             }
             if (res.statusCode !== HttpStatus.OK) {
-                await this.tencentCloudCosService.putBucket(
-                    origin,
-                    'ap-shanghai',
-                );
-                await this.tencentCloudCosService.putBucketAcl(
-                    origin,
-                    'ap-shanghai',
-                    'public-read',
-                );
+                await this.tencentCloudCosService.putBucket({
+                    Bucket: bucket,
+                    Region,
+                });
             }
-            const bucket = await this.bucketDao.findOne({
-                bucketName: origin,
-                bucketRegion: 'ap-shanghai',
+            const bucketEntity = await this.bucketDao.findOne({
+                bucketName: bucket,
+                bucketRegion: Region,
             });
-            if (!bucket) {
+            if (!bucketEntity) {
                 await this.bucketDao.insert({
-                    bucketName: origin,
-                    bucketRegion: 'ap-shanghai',
+                    bucketName: bucket,
+                    bucketRegion: Region,
                 });
             }
         }
     }
 
     @Memoize()
-    async getBotBucket(origin: string) {
+    async getBotBucket(bucket: string) {
         await this.initBucket();
         this.logger.debug('init buckets complete!');
         return this.bucketDao.findOne({
-            bucketName: origin,
-            bucketRegion: 'ap-shanghai',
+            bucketName: bucket,
+            bucketRegion: Region,
         });
     }
 
-    async botBaseService(origin: AssetOrigin) {
+    async botBaseService(bucket: AssetBucket) {
         if (__dev__) {
             this.logger.debug('dev mode will not run schedule!');
             return;
@@ -108,24 +105,24 @@ export class CoreService {
         const max = await this.assetDao.findOne({
             order: { id: 'DESC' },
             where: {
-                origin,
+                origin: bucket,
             },
         });
         let undoes: PinterestInterface[] = [];
         const headers = { refer: '' };
-        switch (origin) {
-            case AssetOrigin.instagram:
+        switch (bucket) {
+            case AssetBucket.instagram:
                 undoes = await this.instagramBotService.fetchUndo(
                     max?.sn,
                 );
                 break;
-            case AssetOrigin.pinterest:
+            case AssetBucket.pinterest:
                 undoes = await this.pinterestRssService.fetchUndo(
                     max?.sn,
                 );
                 headers.refer = 'https://www.pinterest.com/';
                 break;
-            case AssetOrigin.pixiv:
+            case AssetBucket.pixiv:
                 undoes = await this.pixivBotService.fetchUndo(
                     max?.sn,
                 );
@@ -138,7 +135,6 @@ export class CoreService {
             asset.sn = undo.id;
             asset.originUrl = undo.originUrl;
             asset.tags = undo.tags;
-            asset.origin = origin;
             for (const imgUrl of undo.imgList) {
                 const res = await this.proxyFetchService.proxyFetch(
                     imgUrl,
@@ -158,11 +154,11 @@ export class CoreService {
                 this.notifyCos({
                     sha1: asset.sha1,
                     suffix: asset.fileSuffix,
-                    origin,
+                    bucket,
                 });
                 asset.pHash = await pHash(buffer);
             }
-            asset.bucket = (await this.getBotBucket(origin))!;
+            asset.bucket = (await this.getBotBucket(bucket))!;
             this.assetDao.insert(asset);
         }
     }
