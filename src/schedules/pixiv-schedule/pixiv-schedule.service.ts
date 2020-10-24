@@ -14,7 +14,7 @@ export class PixivScheduleService {
         this.logger.setContext(PixivScheduleService.name);
     }
 
-    @Cron('* 30 * * * *')
+    @Cron('0 30 * * * *')
     async bot() {
         try {
             await this.coreService.botBaseService(AssetBucket.pixiv);

@@ -12,6 +12,7 @@ import { Asset } from '@/entity/asset.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Bucket } from '@/entity/bucket.entity';
 import { TencentCloudCosModule } from 'api/tencent-cloud-cos';
+import { CoreController } from '@/core/core.controller';
 import { CoreService } from './core.service';
 
 @Global()
@@ -38,5 +39,6 @@ import { CoreService } from './core.service';
     ],
     providers: [CoreService],
     exports: [CoreService],
+    controllers: [CoreController],
 })
 export class CoreModule {}

@@ -14,7 +14,7 @@ export class PinterestScheduleService {
         this.logger.setContext(PinterestScheduleService.name);
     }
 
-    @Cron('* 45 * * * *')
+    @Cron('0 45 * * * *')
     async bot() {
         try {
             await this.coreService.botBaseService(

@@ -33,7 +33,9 @@ export class GoogleStrategy extends PassportStrategy(
         profile: Profile,
         done: VerifyCallback,
     ) {
-        this.logger.debug(profile);
+        this.logger.debug(
+            `displayName->${profile.displayName}, openid->${profile.id}`,
+        );
         done(undefined, profile);
     }
 }

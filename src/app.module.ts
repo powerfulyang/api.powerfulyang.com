@@ -2,15 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from '@/module/user.module';
 import { CoreModule } from '@/core/core.module';
-import { AuthStrategyModule } from '@/common/authorization/AuthStrategy.module';
+import { StrategyModule } from '@/common/authorization/strategy.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { SchedulesModule } from '@/schedules/schedules.module';
-import { AssetModule } from './module/asset.module';
 import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
+import { UserModule } from './module/user/user.module';
 
 @Module({
     imports: [
@@ -20,10 +19,9 @@ import { UploadAssetModule } from './microservice/upload-asset.module';
         LoggerModule,
         TypeOrmModule.forRoot(mysqlConfig()),
         ProxyFetchModule,
-        AuthStrategyModule,
+        StrategyModule,
         CoreModule,
         PassportModule,
-        AssetModule,
         UserModule,
         UploadAssetModule,
         SchedulesModule,
