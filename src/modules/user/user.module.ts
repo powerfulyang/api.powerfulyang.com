@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@/entity/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { UserService } from '@/module/user/user.service';
+import { UserService } from '@/modules/user/user.service';
 import { jwtSecretConfig } from '@/configuration/jwt.config';
 import { UserController } from './user.controller';
 

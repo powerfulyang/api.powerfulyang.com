@@ -3,9 +3,10 @@ import {
     Controller,
     Get,
     Post,
-    Redirect,
+    Query,
     Req,
     Res,
+    UseInterceptors,
 } from '@nestjs/common';
 import { User } from '@/entity/user.entity';
 import {
@@ -16,10 +17,12 @@ import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/entity/dto/UserDto';
 import { Profile } from 'passport-google-oauth20';
 import { AppLogger } from '@/common/logger/app.logger';
-import { UserService } from '@/module/user/user.service';
+import { UserService } from '@/modules/user/user.service';
 import { Response } from 'express';
 import { Authorization } from '@/constants/constants';
-import { pick } from 'ramda';
+import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
+import { __dev__ } from '@powerfulyang/utils';
+import { stringify } from 'qs';
 
 @Controller('user')
 export class UserController {
@@ -38,7 +41,6 @@ export class UserController {
 
     @Get('google/auth/callback')
     @GoogleAuthGuard()
-    @Redirect()
     async googleAuthCallback(
         @Req() req: Request & { user: Profile },
         @Res() res: Response,
@@ -49,21 +51,42 @@ export class UserController {
             profile,
         );
         res.cookie(Authorization, token);
-        return { url: 'https://dev.powerfulyang.com/user/current' };
+        res.redirect(
+            (
+                (__dev__ && 'http://localhost:8000') ||
+                'https://admin.powerfulyang.com'
+            ).concat(`?${stringify({ [Authorization]: token })}`),
+        );
     }
 
     @Post('login')
-    @Redirect()
-    async login(@Body() user: UserDto, @Res() res: Response) {
+    @UseInterceptors(CookieInterceptor)
+    async login(@Body() user: UserDto) {
         this.logger.info(`${user.email} try to login in!!!`);
-        const token = this.userService.generateAuthorization(user);
-        res.cookie(Authorization, token);
-        return { url: 'https://dev.powerfulyang.com/user/current' };
+        const userInfo = await this.userService.login(user);
+        const token = this.userService.generateAuthorization(
+            userInfo,
+        );
+        return {
+            ...this.userService.pickLoginUserInfo(userInfo),
+            cookie: [Authorization, token],
+        };
     }
 
     @Get('current')
     @JwtAuthGuard()
-    current(@UserFromAuth() user: User) {
-        return pick(['id', 'nickname', 'email'])(user);
+    @UseInterceptors(CookieInterceptor)
+    current(
+        @UserFromAuth() user: User,
+        @Query(Authorization) token: string,
+    ) {
+        let cookie;
+        if (token) {
+            cookie = [Authorization, token];
+        }
+        return Object.assign(
+            this.userService.pickLoginUserInfo(user),
+            { cookie },
+        );
     }
 }
