@@ -3,6 +3,7 @@ import { Transport } from '@nestjs/microservices';
 import { ValidationPipe } from '@nestjs/common';
 import { CatchFilter } from '@/common/filter/catch.filter';
 import { AppLogger } from '@/common/logger/app.logger';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
@@ -22,6 +23,7 @@ async function bootstrap(): Promise<void> {
     });
     await app.startAllMicroservicesAsync();
     app.enableCors();
+    app.use(cookieParser());
     app.useGlobalFilters(
         new CatchFilter(new AppLogger().setContext(CatchFilter.name)),
     );

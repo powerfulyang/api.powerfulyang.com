@@ -1,11 +1,12 @@
-import { Injectable, LoggerService, Scope } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import winston, { format, Logger } from 'winston';
 import { __prod__ } from '@powerfulyang/utils';
+import { getStringVal } from '@/utils/getStringVal';
 
 const { combine, timestamp, label, printf, colorize } = format;
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class AppLogger implements LoggerService {
+export class AppLogger {
     private logger: Logger;
 
     setContext(context: string) {
@@ -30,14 +31,19 @@ export class AppLogger implements LoggerService {
                 colorize({ all: true }),
                 printf(
                     (info) =>
-                        ` [${info.label}]  ${info.timestamp}  [${info.level}] --- ${info.message}`,
+                        ` [${info.label}]  ${info.timestamp}  [${
+                            info.level
+                        }] --- ${info.message} ${
+                            getStringVal(info.stack) &&
+                            '\r\n'.concat(getStringVal(info.stack))
+                        } `,
                 ),
             ),
             transports: [new winston.transports.Console()],
         });
     }
 
-    error(message: any, trace: string) {
+    error(message: any, trace: Error) {
         this.logger.error(message, trace);
     }
 

@@ -14,7 +14,7 @@ export class InstagramScheduleService {
         this.logger.setContext(InstagramScheduleService.name);
     }
 
-    @Cron('* 15 * * * *')
+    @Cron('0 15 * * * *')
     async bot() {
         try {
             await this.coreService.botBaseService(

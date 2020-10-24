@@ -18,11 +18,20 @@ export class User {
     passwordSalt!: string;
 
     @Column()
-    salt: string;
+    password!: string;
+
+    @Column()
+    nickname: string;
+
+    @Column()
+    avatar: string;
 
     @CreateDateColumn()
     createAt!: Date;
 
     @UpdateDateColumn()
     updateAt!: Date;
+
+    @Column({ unique: true })
+    googleOpenId: string;
 }

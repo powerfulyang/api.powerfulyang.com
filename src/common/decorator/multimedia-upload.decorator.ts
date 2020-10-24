@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-export const MultimediaUpload = () => {
+export const MultiMediaUpload = () => {
     return UseInterceptors(
         FileInterceptor('file', {
             fileFilter: (_req, file, cb) => {
