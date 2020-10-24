@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { UnauthorizedException, Injectable } from '@nestjs/common';
 import { User } from '@/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,6 +6,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Profile } from 'passport-google-oauth20';
 import { getStringVal } from '@/utils/getStringVal';
 import { getRandomString, sha1 } from '@powerfulyang/node-utils';
+import { UserDto } from '@/entity/dto/UserDto';
+import { pick } from 'ramda';
 
 @Injectable()
 export class UserService {
@@ -48,5 +50,19 @@ export class UserService {
         password: string = getRandomString(20),
     ) {
         return sha1(password, salt);
+    }
+
+    async login(user: UserDto) {
+        const { email, password } = user;
+        const userInfo = await this.userDao.findOneOrFail({ email });
+        const userPassword = sha1(password, userInfo.passwordSalt);
+        if (userPassword === userInfo.password) {
+            return userInfo;
+        }
+        throw new UnauthorizedException('密码错误！');
+    }
+
+    pickLoginUserInfo(user: User) {
+        return pick(['id', 'nickname', 'email'])(user);
     }
 }

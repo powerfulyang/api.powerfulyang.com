@@ -15,7 +15,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
                 (request: Request) => {
                     return (
                         request?.cookies?.[Authorization] ||
-                        request?.header(Authorization)
+                        request?.header(Authorization) ||
+                        request?.query?.[Authorization]
                     );
                 },
             ]),
@@ -24,9 +25,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         this.logger.setContext(JwtStrategy.name);
     }
 
-    validate(user: User): User {
-        // to check use status;
-        this.logger.debug(`[user id is ${user.id}]->login success!`);
+    validate(user: User) {
+        // to check user status;
+        this.logger.debug(`[user id is ${user.id}]-> query current!`);
         return user;
     }
 }
