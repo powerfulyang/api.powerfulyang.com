@@ -15,11 +15,12 @@ export class CatchFilter<T extends HttpException>
     }
 
     catch(exception: T, host: ArgumentsHost) {
-        this.logger.error('error', exception);
+        this.logger.error(exception);
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
-        const statusCode = exception.getStatus() || 500;
+        const statusCode =
+            exception.getStatus?.call(exception) || 500;
         const { message } = exception;
         response.status(statusCode).json({
             statusCode,
