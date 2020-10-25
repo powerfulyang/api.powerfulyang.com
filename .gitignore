@@ -44,3 +44,4 @@ upload/
 
 .cookies/*
 assets/*
+!assets/04.ico

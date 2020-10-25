@@ -9,15 +9,15 @@
         "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
         "lint": "eslint src --ext .ts libs --ext .ts --fix",
         "start:dev": "rimraf dist && nest start -p tsconfig.build.json --watch",
-        "start:prod": "node dist/main.js",
+        "start:prod": "node dist/src/main.js",
         "build": "rimraf dist && nest build -p tsconfig.build.json",
         "test": "jest --detectOpenHandles",
         "test:cov": "jest --coverage",
         "test:e2e": "jest --config test/jest-e2e.json"
     },
     "dependencies": {
-        "@powerfulyang/node-utils": "^0.2.1",
-        "@powerfulyang/utils": "^0.7.1",
+        "@powerfulyang/node-utils": "^0.2.2",
+        "@powerfulyang/utils": "^0.7.2",
         "@nestjs/common": "^7.4.4",
         "@nestjs/config": "^0.5.0",
         "@nestjs/core": "^7.4.4",
@@ -54,7 +54,7 @@
         "ramda": "^0.27.1"
     },
     "devDependencies": {
-        "@powerfulyang/lint": "^0.2.1",
+        "@powerfulyang/lint": "^0.2.2",
         "@nestjs/cli": "^7.5.1",
         "@nestjs/schematics": "^7.1.2",
         "@nestjs/testing": "^7.4.4",

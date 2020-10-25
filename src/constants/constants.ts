@@ -5,3 +5,4 @@ export const COS_UPLOAD_MSG_PATTERN = 'COS_UPLOAD_MSG_PATTERN';
 export const SUCCESS = 'SUCCESS';
 
 export const Authorization = 'authorization';
+export const Region = 'ap-shanghai';

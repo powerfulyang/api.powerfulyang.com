@@ -43,8 +43,12 @@ export class AppLogger {
         });
     }
 
-    error(message: any, trace: Error) {
-        this.logger.error(message, trace);
+    error(message: any, trace?: any) {
+        if (message) {
+            this.logger.error(message, trace);
+        } else {
+            this.logger.error(trace);
+        }
     }
 
     warn(message: any) {

@@ -19,14 +19,14 @@ describe('InstagramBotService', () => {
     it('should fetch all saved be defined', async () => {
         await expect(
             service.fetchUndo().then((res) => res.pop()!.id),
-        ).resolves.toBe('2210206425515440308_8404550374');
+        ).resolves.toBe('B6sOwipIji0');
     });
 
     it('should fetch undo saved be defined', async () => {
         await expect(
             service
-                .fetchUndo('2210206425515440308_8404550374')
+                .fetchUndo('CFfMG6eBAyh')
                 .then((res) => res.pop()!.id),
-        ).resolves.toBe('2215773060626406515_25727629870');
+        ).resolves.toBe('CF4guRfB61D');
     });
 });
