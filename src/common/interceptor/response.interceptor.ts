@@ -21,7 +21,7 @@ export class ResponseInterceptor implements NestInterceptor {
         return next.handle().pipe(
             map((data) => {
                 if (data) {
-                    this.logger.debug(
+                    this.logger.info(
                         `response->${JSON.stringify(data)}`,
                     );
                     return {

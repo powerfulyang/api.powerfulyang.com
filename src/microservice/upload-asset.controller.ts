@@ -23,7 +23,7 @@ export class UploadAssetController {
         @Payload() data: any,
         @Ctx() context: RmqContext,
     ) {
-        this.logger.debug(
+        this.logger.info(
             `${
                 this.getNotifications.name
             } ---> to persistent ${JSON.stringify(data)}`,

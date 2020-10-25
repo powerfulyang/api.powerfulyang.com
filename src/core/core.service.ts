@@ -90,8 +90,8 @@ export class CoreService {
     @Memoize()
     async getBotBucket(bucketName: string) {
         await this.initBucket();
-        this.logger.debug('init buckets complete!');
-        return this.bucketDao.findOne({
+        this.logger.info('init buckets complete!');
+        return this.bucketDao.findOneOrFail({
             bucketName,
             bucketRegion: Region,
         });
@@ -102,7 +102,7 @@ export class CoreService {
         let res = await this.proxyFetchService.proxyFetch(imgUrl, {
             headers,
         });
-        this.logger.debug(`fetch img status code -> ${res.status}`);
+        this.logger.info(`fetch img status code -> ${res.status}`);
         if (res.status !== HttpStatus.OK) {
             count++;
             if (count >= 2) {
@@ -150,7 +150,7 @@ export class CoreService {
                 break;
             default:
         }
-        this.logger.debug(`undoes count -> ${undoes.length}`);
+        this.logger.info(`undoes count -> ${undoes.length}`);
         for (const undo of undoes.reverse()) {
             this.logger.debug(
                 `[${bucketName}] -> ${undo.id} -> ${undo.imgList}`,
@@ -177,9 +177,9 @@ export class CoreService {
                         ),
                         buffer,
                     );
-                    asset.bucket = (await this.getBotBucket(
+                    asset.bucket = await this.getBotBucket(
                         bucketName,
-                    ))!;
+                    );
                     try {
                         await this.assetDao.insert(asset);
                         this.notifyCos({
