@@ -11,7 +11,7 @@ export const mysqlConfig = (): TypeOrmModuleOptions => {
         username: process.env.MYSQL_USER || 'root',
         password: process.env.MYSQL_PASSWORD || 'root',
         database: process.env.MYSQL_DATABASE || 'test',
-        timezone: '+08:00',
+        timezone: '+00:00',
         synchronize: __dev__ && true,
         logging: false,
         entities: [join(__dirname, '../**/**.entity{.ts,.js}')],

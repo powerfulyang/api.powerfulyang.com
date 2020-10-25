@@ -68,7 +68,7 @@ export class UserController {
             userInfo,
         );
         return {
-            ...this.userService.pickLoginUserInfo(userInfo),
+            ...userInfo,
             cookie: [Authorization, token],
         };
     }

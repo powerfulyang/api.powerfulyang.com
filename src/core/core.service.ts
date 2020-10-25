@@ -177,19 +177,21 @@ export class CoreService {
                         ),
                         buffer,
                     );
+                    asset.bucket = (await this.getBotBucket(
+                        bucketName,
+                    ))!;
+                    try {
+                        await this.assetDao.insert(asset);
+                        this.notifyCos({
+                            sha1: asset.sha1,
+                            suffix: asset.fileSuffix,
+                            bucketName,
+                        });
+                    } catch (e) {
+                        this.logger.error(e);
+                    }
                 } catch (e) {
                     this.logger.error('fetchImgBuffer error', e);
-                }
-                asset.bucket = (await this.getBotBucket(bucketName))!;
-                try {
-                    await this.assetDao.insert(asset);
-                    this.notifyCos({
-                        sha1: asset.sha1,
-                        suffix: asset.fileSuffix,
-                        bucketName,
-                    });
-                } catch (e) {
-                    this.logger.error(e);
                 }
             }
         }
