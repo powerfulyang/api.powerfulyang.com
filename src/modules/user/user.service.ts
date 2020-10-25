@@ -36,8 +36,9 @@ export class UserService {
         return this.generateAuthorization(user);
     }
 
-    generateAuthorization(userInfo: User) {
-        return this.jwtService.sign({ ...userInfo });
+    generateAuthorization(userInfo: Partial<User>) {
+        const user = this.pickLoginUserInfo(userInfo);
+        return this.jwtService.sign(user);
     }
 
     generateDefaultPassword(draft: User) {
@@ -57,12 +58,12 @@ export class UserService {
         const userInfo = await this.userDao.findOneOrFail({ email });
         const userPassword = sha1(password, userInfo.passwordSalt);
         if (userPassword === userInfo.password) {
-            return userInfo;
+            return this.pickLoginUserInfo(userInfo);
         }
         throw new UnauthorizedException('密码错误！');
     }
 
-    pickLoginUserInfo(user: User) {
-        return pick(['id', 'nickname', 'email'])(user);
+    pickLoginUserInfo(user: Partial<User>) {
+        return pick(['id', 'nickname', 'email', 'createAt'])(user);
     }
 }
