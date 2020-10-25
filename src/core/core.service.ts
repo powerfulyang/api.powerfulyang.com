@@ -2,6 +2,7 @@ import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import {
     COS_UPLOAD_MSG_PATTERN,
     MICROSERVICE_NAME,
+    Region,
 } from '@/constants/constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { AssetBucket } from '@/enum/AssetBucket';
@@ -13,7 +14,8 @@ import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { pHash, sha1 } from '@powerfulyang/node-utils';
 import {
-    __dev__,
+    __prod__,
+    __test__,
     getImageSuffix,
     Memoize,
 } from '@powerfulyang/utils';
@@ -24,8 +26,6 @@ import { PinterestRssService } from 'api/pinterest-rss';
 import { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
 import { Bucket } from '@/entity/bucket.entity';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-
-const Region = 'ap-shanghai';
 
 @Injectable()
 export class CoreService {
@@ -49,7 +49,7 @@ export class CoreService {
     notifyCos(notification: {
         sha1: string;
         suffix: string;
-        bucket: AssetBucket;
+        bucketName: AssetBucket;
     }) {
         return this.microserviceClient.emit(
             COS_UPLOAD_MSG_PATTERN,
@@ -88,29 +88,50 @@ export class CoreService {
     }
 
     @Memoize()
-    async getBotBucket(bucket: string) {
+    async getBotBucket(bucketName: string) {
         await this.initBucket();
         this.logger.debug('init buckets complete!');
         return this.bucketDao.findOne({
-            bucketName: bucket,
+            bucketName,
             bucketRegion: Region,
         });
     }
 
-    async botBaseService(bucket: AssetBucket) {
-        if (__dev__) {
+    async fetchImgBuffer(imgUrl: string, headers: any) {
+        let count = 0;
+        let res = await this.proxyFetchService.proxyFetch(imgUrl, {
+            headers,
+        });
+        this.logger.debug(`fetch img status code -> ${res.status}`);
+        if (res.status !== HttpStatus.OK) {
+            count++;
+            if (count >= 2) {
+                throw new Error('get img deny!');
+            }
+            const newUrl = imgUrl.replace(/(jpg)$/, 'png');
+            res = await this.fetchImgBuffer(newUrl, headers);
+        }
+        return res;
+    }
+
+    async botBaseService(bucketName: AssetBucket) {
+        if (!__prod__ && !__test__) {
             this.logger.debug('dev mode will not run schedule!');
             return;
         }
+        const bucket = await this.bucketDao.findOne({
+            bucketName,
+            bucketRegion: Region,
+        });
         const max = await this.assetDao.findOne({
             order: { id: 'DESC' },
             where: {
-                origin: bucket,
+                bucket,
             },
         });
         let undoes: PinterestInterface[] = [];
         const headers = { refer: '' };
-        switch (bucket) {
+        switch (bucketName) {
             case AssetBucket.instagram:
                 undoes = await this.instagramBotService.fetchUndo(
                     max?.sn,
@@ -129,37 +150,48 @@ export class CoreService {
                 break;
             default:
         }
-        for (const undo of undoes) {
-            this.logger.debug(undo);
-            const asset = new Asset();
-            asset.sn = undo.id;
-            asset.originUrl = undo.originUrl;
-            asset.tags = undo.tags;
+        this.logger.debug(`undoes count -> ${undoes.length}`);
+        for (const undo of undoes.reverse()) {
+            this.logger.debug(
+                `[${bucketName}] -> ${undo.id} -> ${undo.imgList}`,
+            );
             for (const imgUrl of undo.imgList) {
-                const res = await this.proxyFetchService.proxyFetch(
-                    imgUrl,
-                    { headers },
-                );
-                const buffer = await res.buffer();
-                asset.sha1 = sha1(buffer);
-                asset.fileSuffix = getImageSuffix(buffer);
-                writeFileSync(
-                    join(
-                        process.cwd(),
-                        'assets',
-                        asset.sha1 + asset.fileSuffix,
-                    ),
-                    buffer,
-                );
-                this.notifyCos({
-                    sha1: asset.sha1,
-                    suffix: asset.fileSuffix,
-                    bucket,
-                });
-                asset.pHash = await pHash(buffer);
+                const asset = new Asset();
+                asset.sn = undo.id;
+                asset.originUrl = undo.originUrl;
+                asset.tags = undo.tags;
+                try {
+                    const res = await this.fetchImgBuffer(
+                        imgUrl,
+                        headers,
+                    );
+                    const buffer = await res.buffer();
+                    asset.sha1 = sha1(buffer);
+                    asset.fileSuffix = getImageSuffix(buffer);
+                    asset.pHash = await pHash(buffer);
+                    writeFileSync(
+                        join(
+                            process.cwd(),
+                            'assets',
+                            asset.sha1 + asset.fileSuffix,
+                        ),
+                        buffer,
+                    );
+                } catch (e) {
+                    this.logger.error('fetchImgBuffer error', e);
+                }
+                asset.bucket = (await this.getBotBucket(bucketName))!;
+                try {
+                    await this.assetDao.insert(asset);
+                    this.notifyCos({
+                        sha1: asset.sha1,
+                        suffix: asset.fileSuffix,
+                        bucketName,
+                    });
+                } catch (e) {
+                    this.logger.error(e);
+                }
             }
-            asset.bucket = (await this.getBotBucket(bucket))!;
-            this.assetDao.insert(asset);
         }
     }
 }

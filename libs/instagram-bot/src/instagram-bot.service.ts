@@ -61,7 +61,7 @@ export class InstagramBotService {
         do {
             const pageSaved = await savedFeed.items();
             for (let i = 0; i < pageSaved.length; i++) {
-                if (pageSaved[i].id === lastId) {
+                if (pageSaved[i].code === lastId) {
                     signal = false;
                     break;
                 }
@@ -79,7 +79,9 @@ export class InstagramBotService {
         const tagsText = text
             ?.replace(/[\n\r]/, '')
             .match(/#[^#]*/gi);
-        return (tagsText || []).map((x) => x.trim());
+        return (tagsText || []).map((x) =>
+            x.trim().replace(/^#/, ''),
+        );
     }
 
     private static getDetailFromSavedMedia(

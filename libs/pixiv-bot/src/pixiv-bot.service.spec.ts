@@ -19,6 +19,6 @@ describe('PixivRssService', () => {
             service
                 .fetchUndo('73500666')
                 .then((res) => res.pop()!.id),
-        ).resolves.toBe('84710311');
+        ).resolves.toBe('39715681');
     });
 });

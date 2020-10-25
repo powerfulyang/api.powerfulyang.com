@@ -21,21 +21,21 @@ export class UploadAssetService {
     async persistent(data: {
         sha1: string;
         suffix: string;
-        bucket: string;
+        bucketName: string;
     }) {
         const filename = `${data.sha1}${data.suffix}`;
         const buffer = readFileSync(
             join(process.cwd(), 'assets', filename),
         );
         const res = await this.tencentCloudCosService.putObject({
-            Bucket: data.bucket,
+            Bucket: data.bucketName,
             Region: 'ap-shanghai',
             Key: filename,
             Body: buffer,
         });
         await this.assetDao.update(
-            { cosUrl: res.Location },
             { sha1: data.sha1 },
+            { cosUrl: `https://${res.Location}` },
         );
     }
 }

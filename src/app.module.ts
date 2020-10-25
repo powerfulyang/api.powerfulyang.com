@@ -8,10 +8,12 @@ import { ProxyFetchModule } from 'api/proxy-fetch';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { SchedulesModule } from '@/schedules/schedules.module';
 import { GithubModule } from 'app/github-webhook';
+import { AppLogger } from '@/common/logger/app.logger';
 import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
+import { AssetModule } from './modules/asset/asset.module';
 
 @Module({
     imports: [
@@ -29,6 +31,12 @@ import { BucketModule } from './modules/bucket/bucket.module';
         SchedulesModule,
         GithubModule,
         BucketModule,
+        AssetModule,
     ],
 })
-export class AppModule {}
+export class AppModule {
+    constructor(private logger: AppLogger) {
+        this.logger.setContext(AppModule.name);
+        this.logger.debug(`NODE_ENV -> ${process.env.NODE_ENV}`);
+    }
+}

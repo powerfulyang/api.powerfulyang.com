@@ -17,7 +17,7 @@ export class TencentCloudCosService {
         SecretKey: process.env.TENCENT_CLOUD_SECRET_KEY,
     });
 
-    private sn = '-1253520329';
+    private sn = process.env.TENCENT_CLOUD_COS_SN;
 
     setSn(sn: string) {
         this.sn = sn;

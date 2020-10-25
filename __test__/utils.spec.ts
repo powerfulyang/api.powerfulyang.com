@@ -6,4 +6,13 @@ describe('utils test', function () {
             '425a666053295fecbdd5815872ccb9a6196b5df2',
         );
     });
+
+    it('str replace', function () {
+        const imgUrl =
+            'https://i.pinimg.com/236x/79/93/6a/79936a4f9dd7217e85bd3ea6948561b8.jpg';
+        const newUrl = imgUrl.replace(/(jpg)$/, 'png');
+        expect(newUrl).toBe(
+            'https://i.pinimg.com/236x/79/93/6a/79936a4f9dd7217e85bd3ea6948561b8.png',
+        );
+    });
 });
