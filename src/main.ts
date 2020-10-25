@@ -23,7 +23,10 @@ async function bootstrap(): Promise<void> {
         },
     });
     await app.startAllMicroservicesAsync();
-    app.enableCors();
+    app.enableCors({
+        origin: 'https://admin.powerfulyang.com',
+        credentials: true,
+    });
     app.use(cookieParser());
     app.useGlobalInterceptors(
         new ResponseInterceptor(new AppLogger()),
