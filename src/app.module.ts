@@ -14,6 +14,8 @@ import { SchedulesModule } from '@/schedules/schedules.module';
 import { GithubModule } from 'app/github-webhook';
 import { AppLogger } from '@/common/logger/app.logger';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
@@ -39,6 +41,9 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
         BucketModule,
         AssetModule,
         ScheduleModule,
+        ServeStaticModule.forRoot({
+            rootPath: join(process.cwd(), 'assets'),
+        }),
     ],
 })
 export class AppModule implements NestModule {
