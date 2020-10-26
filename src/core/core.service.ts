@@ -17,7 +17,6 @@ import {
     __prod__,
     __test__,
     getImageSuffix,
-    Memoize,
 } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -44,6 +43,9 @@ export class CoreService {
         private tencentCloudCosService: TencentCloudCosService,
     ) {
         this.logger.setContext(CoreService.name);
+        this.initBucket().then(() => {
+            this.logger.info('init buckets complete!');
+        });
     }
 
     notifyCos(notification: {
@@ -87,10 +89,7 @@ export class CoreService {
         }
     }
 
-    @Memoize()
-    async getBotBucket(bucketName: string) {
-        await this.initBucket();
-        this.logger.info('init buckets complete!');
+    getBotBucket(bucketName: string) {
         return this.bucketDao.findOneOrFail({
             bucketName,
             bucketRegion: Region,
@@ -179,6 +178,9 @@ export class CoreService {
                     );
                     asset.bucket = await this.getBotBucket(
                         bucketName,
+                    );
+                    this.logger.info(
+                        `bucket => ${JSON.stringify(asset.bucket)}`,
                     );
                     try {
                         await this.assetDao.insert(asset);

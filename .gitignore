@@ -44,4 +44,6 @@ upload/
 
 .cookies/*
 assets/*
-!assets/04.ico
+!assets/favicon.ico
+!assets/robots.txt
+!assets/index.html

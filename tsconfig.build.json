@@ -4,5 +4,6 @@
         "strict": false,
         "sourceMap": false
     },
-    "include": ["src/**/*.ts", "libs/**/*.ts"]
+    "include": ["src/**/*.ts", "libs/**/*.ts"],
+    "exclude": ["**/*.spec.ts"]
 }

@@ -9,6 +9,7 @@ import { InstagramScheduleService } from '@/schedules/instagram-schedule/instagr
 import { PinterestScheduleService } from '@/schedules/pinterest-schedule/pinterest-schedule.service';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { SUCCESS } from '@/constants/constants';
 
 @Controller('schedule')
 @JwtAuthGuard()
@@ -36,5 +37,6 @@ export class ScheduleController {
             default:
                 throw new ForbiddenException();
         }
+        return SUCCESS;
     }
 }

@@ -10,7 +10,9 @@ export class RequestMiddleware implements NestMiddleware {
 
     use(req: Request, _res: Response, next: () => void) {
         next();
-        const { ip, url } = req;
-        this.logger.info(`ip [${ip}] request url [${url}]`);
+        const { headers, url } = req;
+        this.logger.info(
+            `request url => ${url}; request ip => ${headers?.['x-real-ip']}`,
+        );
     }
 }
