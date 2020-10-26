@@ -11,5 +11,10 @@ import { PinterestScheduleService } from './pinterest-schedule/pinterest-schedul
         InstagramScheduleService,
         PinterestScheduleService,
     ],
+    exports: [
+        PixivScheduleService,
+        InstagramScheduleService,
+        PinterestScheduleService,
+    ],
 })
 export class SchedulesModule {}
