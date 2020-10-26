@@ -1,6 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
+import { findIpInfo } from '@/utils/ipdb';
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
@@ -11,8 +12,22 @@ export class RequestMiddleware implements NestMiddleware {
     use(req: Request, _res: Response, next: () => void) {
         next();
         const { headers, url } = req;
+        const ip = headers?.['x-real-ip'];
         this.logger.info(
-            `request url => ${url}; request ip => ${headers?.['x-real-ip']}`,
+            `request url => [${url}]; request ip => [${ip}]`,
         );
+        const ipInfo = findIpInfo(ip);
+        if (ipInfo.code === 0) {
+            const {
+                city_name,
+                country_name,
+                isp_domain,
+                owner_domain,
+                region_name,
+            } = ipInfo.data;
+            this.logger.info(
+                `${country_name}-${region_name}-${city_name} === ${owner_domain}-${isp_domain}`,
+            );
+        }
     }
 }

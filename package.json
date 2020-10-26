@@ -52,7 +52,9 @@
         "express": "^4.17.1",
         "cookie-parser": "^1.4.5",
         "ramda": "^0.27.1",
-        "@nestjs/serve-static": "^2.1.3"
+        "@nestjs/serve-static": "^2.1.3",
+        "ipdb": "^0.3.3",
+        "qqwry.ipdb": "^2020.10.25"
     },
     "devDependencies": {
         "@powerfulyang/lint": "^0.2.2",
