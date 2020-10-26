@@ -68,13 +68,18 @@ export class CoreService {
                     Region,
                 });
             } catch (e) {
+                this.logger.error('headBucket', e);
                 res = e;
             }
             if (res.statusCode !== HttpStatus.OK) {
-                await this.tencentCloudCosService.putBucket({
-                    Bucket: bucket,
-                    Region,
-                });
+                try {
+                    await this.tencentCloudCosService.putBucket({
+                        Bucket: bucket,
+                        Region,
+                    });
+                } catch (e) {
+                    this.logger.error('putBucket', e);
+                }
             }
             const bucketEntity = await this.bucketDao.findOne({
                 bucketName: bucket,
