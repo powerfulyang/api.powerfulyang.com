@@ -64,6 +64,15 @@
             "compilerOptions": {
                 "tsConfigPath": "libs/proxy-fetch/tsconfig.lib.json"
             }
+        },
+        "upd-server": {
+            "type": "library",
+            "root": "libs/udp-server",
+            "entryFile": "index",
+            "sourceRoot": "libs/udp-server/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/udp-server/tsconfig.lib.json"
+            }
         }
     }
 }
