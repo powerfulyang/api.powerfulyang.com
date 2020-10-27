@@ -1,25 +1,23 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
-  "rootDir": ".",
-  "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
-  "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  },
-  "moduleNameMapper": {
-    "api/instagram-bot/(.*)": "<rootDir>/../libs/instagram-bot/src/$1",
-    "api/instagram-bot": "<rootDir>/../libs/instagram-bot/src",
-    "api/pinterest-rss/(.*)": "<rootDir>/../libs/pinterest-rss/src/$1",
-    "api/pinterest-rss": "<rootDir>/../libs/pinterest-rss/src",
-    "api/pixiv-rss/(.*)": "<rootDir>/../libs/pixiv-rss/src/$1",
-    "api/pixiv-rss": "<rootDir>/../libs/pixiv-rss/src",
-    "api/tencent-cloud-cos/(.*)": "<rootDir>/../libs/tencent-cloud-cos/src/$1",
-    "api/tencent-cloud-cos": "<rootDir>/../libs/tencent-cloud-cos/src",
-    "api/proxy-fetch/(.*)": "<rootDir>/../libs/proxy-fetch/src/$1",
-    "api/proxy-fetch": "<rootDir>/../libs/proxy-fetch/src"
-  }
+    "moduleFileExtensions": ["js", "json", "ts"],
+    "rootDir": ".",
+    "testEnvironment": "node",
+    "testRegex": ".e2e-spec.ts$",
+    "transform": {
+        "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+        "api/instagram-bot/(.*)": "<rootDir>/../libs/instagram-bot/src/$1",
+        "api/instagram-bot": "<rootDir>/../libs/instagram-bot/src",
+        "api/pinterest-rss/(.*)": "<rootDir>/../libs/pinterest-rss/src/$1",
+        "api/pinterest-rss": "<rootDir>/../libs/pinterest-rss/src",
+        "api/pixiv-rss/(.*)": "<rootDir>/../libs/pixiv-rss/src/$1",
+        "api/pixiv-rss": "<rootDir>/../libs/pixiv-rss/src",
+        "api/tencent-cloud-cos/(.*)": "<rootDir>/../libs/tencent-cloud-cos/src/$1",
+        "api/tencent-cloud-cos": "<rootDir>/../libs/tencent-cloud-cos/src",
+        "api/proxy-fetch/(.*)": "<rootDir>/../libs/proxy-fetch/src/$1",
+        "api/proxy-fetch": "<rootDir>/../libs/proxy-fetch/src",
+        "api/upd-server/(.*)": "<rootDir>/../libs/upd-server/src/$1",
+        "api/upd-server": "<rootDir>/../libs/upd-server/src"
+    }
 }

@@ -1,5 +1,6 @@
 import { sha1 } from '@powerfulyang/node-utils';
 import { findIpInfo } from '@/utils/ipdb';
+import { createSocket } from 'dgram';
 
 describe('utils test', function () {
     it('sha1', function () {
@@ -30,5 +31,9 @@ describe('utils test', function () {
                 region_name: '美国',
             },
         });
+    });
+
+    it('udp request', function () {
+        createSocket('udp4').send('你好', 30000, 'localhost');
     });
 });

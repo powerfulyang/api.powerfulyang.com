@@ -36,7 +36,9 @@
                 "libs/tencent-cloud-cos/src/*"
             ],
             "api/proxy-fetch": ["libs/proxy-fetch/src"],
-            "api/proxy-fetch/*": ["libs/proxy-fetch/src/*"]
+            "api/proxy-fetch/*": ["libs/proxy-fetch/src/*"],
+            "api/udp-server": ["libs/udp-server/src"],
+            "api/udp-server/*": ["libs/udp-server/src/*"]
         }
     },
     "exclude": ["node_modules", "dist"],

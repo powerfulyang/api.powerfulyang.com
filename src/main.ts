@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { CatchFilter } from '@/common/filter/catch.filter';
 import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
+import { __dev__ } from '@powerfulyang/utils';
 import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
 async function bootstrap(): Promise<void> {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, {
+        logger: __dev__ && new Logger(),
+    });
     app.connectMicroservice({
         transport: Transport.RMQ,
         options: {
