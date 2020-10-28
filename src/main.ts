@@ -6,6 +6,8 @@ import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { __dev__ } from '@powerfulyang/utils';
+import rateLimit from 'express-rate-limit';
+import csurf from 'csurf';
 import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
@@ -36,6 +38,13 @@ async function bootstrap(): Promise<void> {
     );
     app.useGlobalPipes(new ValidationPipe());
     app.useGlobalFilters(new CatchFilter(new AppLogger()));
+    app.use(csurf());
+    app.use(
+        rateLimit({
+            windowMs: 15 * 60 * 1000, // 15 minutes
+            max: 100, // limit each IP to 100 requests per windowMs
+        }),
+    );
     await app.listen(3001);
 }
 (async (): Promise<void> => {
