@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AppLogger } from '@/common/logger/app.logger';
-import { ReturnTypedFunction } from '@powerfulyang/utils/src/types/Function';
+import { ReturnTypedFunction } from '@powerfulyang/utils';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {

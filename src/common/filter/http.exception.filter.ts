@@ -2,14 +2,16 @@ import {
     ArgumentsHost,
     Catch,
     ExceptionFilter,
+    HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
 
-@Catch()
-export class CatchFilter<T extends Error> implements ExceptionFilter {
+@Catch(HttpException)
+export class HttpExceptionFilter<T extends HttpException>
+    implements ExceptionFilter {
     constructor(private logger: AppLogger) {
-        this.logger.setContext(CatchFilter.name);
+        this.logger.setContext(HttpExceptionFilter.name);
     }
 
     catch(exception: T, host: ArgumentsHost) {
@@ -17,11 +19,9 @@ export class CatchFilter<T extends Error> implements ExceptionFilter {
         this.logger.error(exception);
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
-        const statusCode = 500;
-        const { message } = exception;
+        const statusCode = exception.getStatus();
         response.status(statusCode).json({
-            statusCode,
-            message,
+            ...(exception.getResponse() as object),
             timestamp: new Date().toISOString(),
             path: request.url,
         });
