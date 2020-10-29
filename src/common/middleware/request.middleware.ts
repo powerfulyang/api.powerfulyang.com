@@ -11,10 +11,10 @@ export class RequestMiddleware implements NestMiddleware {
 
     use(req: Request, _res: Response, next: () => void) {
         next();
-        const { headers, url } = req;
-        const ip = headers?.['x-real-ip'];
+        const { headers, url, ip } = req;
+        const ipAddress = headers?.['x-real-ip'] || ip;
         this.logger.info(
-            `request url => [${url}]; request ip => [${ip}]`,
+            `request url => [${url}]; request ip => [${ipAddress}]`,
         );
         const ipInfo = findIpInfo(ip);
         if (ipInfo.code === 0) {

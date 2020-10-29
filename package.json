@@ -57,7 +57,8 @@
         "qqwry.ipdb": "^2020.10.25",
         "dgram": "^1.0.1",
         "csurf": "^1.11.0",
-        "express-rate-limit": "^5.1.3"
+        "express-rate-limit": "^5.1.3",
+        "express-session": "^1.17.1"
     },
     "devDependencies": {
         "@powerfulyang/lint": "^0.2.3",
@@ -82,6 +83,7 @@
         "@types/cookie-parser": "^1.4.2",
         "@types/ramda": "^0.27.30",
         "@types/csurf": "^1.9.36",
-        "@types/express-rate-limit": "^5.1.0"
+        "@types/express-rate-limit": "^5.1.0",
+        "@types/express-session": "^1.17.0"
     }
 }

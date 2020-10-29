@@ -5,8 +5,9 @@ import {
     NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AppLogger } from '@/common/logger/app.logger';
+import { ReturnTypedFunction } from '@powerfulyang/utils/src/types/Function';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -19,6 +20,14 @@ export class ResponseInterceptor implements NestInterceptor {
         next: CallHandler,
     ): Observable<any> {
         return next.handle().pipe(
+            tap(() => {
+                const ctx = _context.switchToHttp();
+                const response = ctx.getResponse();
+                const request = ctx.getRequest() as {
+                    csrfToken: ReturnTypedFunction<string>;
+                };
+                response.cookie('_csrf_token', request.csrfToken());
+            }),
             map((data) => {
                 if (data) {
                     this.logger.info(

@@ -20,7 +20,10 @@ export class CookieInterceptor implements NestInterceptor {
                 if (data.cookie) {
                     const ctx = context.switchToHttp();
                     const response = ctx.getResponse<Response>();
-                    response.cookie(data.cookie[0], data.cookie[1]);
+                    response.cookie(data.cookie[0], data.cookie[1], {
+                        httpOnly: true,
+                        sameSite: true,
+                    });
                 }
             }),
             map((data) => omit(['cookie'])(data)),
