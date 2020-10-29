@@ -1,13 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { CatchFilter } from '@/common/filter/catch.filter';
 import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { __dev__ } from '@powerfulyang/utils';
 import rateLimit from 'express-rate-limit';
-import csurf from 'csurf';
+import csrf from 'csurf';
+import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
+import { CatchFilter } from '@/common/filter/catch.filter';
 import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
@@ -32,17 +33,27 @@ async function bootstrap(): Promise<void> {
         origin: 'https://admin.powerfulyang.com',
         credentials: true,
     });
-    app.use(cookieParser());
+
+    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
+    app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
     app.useGlobalInterceptors(
         new ResponseInterceptor(new AppLogger()),
     );
-    app.useGlobalPipes(new ValidationPipe());
-    app.useGlobalFilters(new CatchFilter(new AppLogger()));
-    app.use(csurf());
+
     app.use(
         rateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
             max: 100, // limit each IP to 100 requests per windowMs
+        }),
+    );
+    app.use(cookieParser());
+    app.use(
+        csrf({
+            cookie: true,
+            value(req) {
+                return req.cookies._csrf_token;
+            },
         }),
     );
     await app.listen(3001);
