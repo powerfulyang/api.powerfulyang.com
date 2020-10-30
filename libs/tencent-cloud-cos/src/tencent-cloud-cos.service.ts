@@ -1,4 +1,4 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import COS, {
     BucketACLOptions,
     BucketContentsOptions,
@@ -9,8 +9,9 @@ import COS, {
     UploadBucketObjectOptions,
 } from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
+import { GetObjectUrlOptions } from 'api/tencent-cloud-cos/type';
 
-@Injectable({ scope: Scope.TRANSIENT })
+@Injectable()
 export class TencentCloudCosService {
     private readonly cosUtil = new COS({
         SecretId: process.env.TENCENT_CLOUD_SECRET_ID,
@@ -82,6 +83,16 @@ export class TencentCloudCosService {
         return promisify(this.cosUtil.deleteObject).call(
             this.cosUtil,
             { ...options, Bucket: `${options.Bucket}${this.sn}` },
+        );
+    }
+
+    getObjectUrl(options: GetObjectUrlOptions) {
+        return promisify(this.cosUtil.getObjectUrl).call(
+            this.cosUtil,
+            {
+                ...options,
+                Bucket: `${options.Bucket}${this.sn}`,
+            },
         );
     }
 }

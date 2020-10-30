@@ -34,12 +34,13 @@ async function bootstrap(): Promise<void> {
         credentials: true,
     });
 
-    app.useGlobalPipes(new ValidationPipe());
-    app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
-    app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
     app.useGlobalInterceptors(
         new ResponseInterceptor(new AppLogger()),
     );
+
+    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
+    app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
 
     app.use(
         rateLimit({

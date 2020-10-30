@@ -17,4 +17,14 @@ describe('TencentCloudCosService', () => {
     it('get Service', async () => {
         await expect(service.listBuckets()).resolves.toBeDefined();
     });
+
+    it('getObjectUrl', async function () {
+        await expect(
+            service.getObjectUrl({
+                Bucket: 'gallery',
+                Region: 'ap-shanghai',
+                Key: '00057bc319afb8c68d14a9d0883b94ab8601a903.jpg',
+            }),
+        ).resolves.toHaveProperty('Url');
+    });
 });

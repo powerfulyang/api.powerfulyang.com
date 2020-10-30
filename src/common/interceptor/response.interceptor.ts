@@ -26,6 +26,7 @@ export class ResponseInterceptor implements NestInterceptor {
                 const request = ctx.getRequest() as {
                     csrfToken: ReturnTypedFunction<string>;
                 };
+                this.logger.debug('generate csrf token!');
                 response.cookie('_csrf_token', request.csrfToken());
             }),
             map((data) => {

@@ -1,4 +1,9 @@
 declare module 'cos-nodejs-sdk-v5' {
+    import {
+        GetObjectUrlData,
+        GetObjectUrlOptions,
+    } from 'api/tencent-cloud-cos/type';
+
     export type BucketACL =
         | 'private'
         | 'public-read'
@@ -553,6 +558,14 @@ declare module 'cos-nodejs-sdk-v5' {
         public restartTask(taskId: string): void;
         // 监听事件
         public on(eventName: string, cb: Function): void;
+
+        public getObjectUrl(
+            options: GetObjectUrlOptions,
+            cb: (
+                err: COSError | null,
+                data: GetObjectUrlData,
+            ) => void,
+        ): void;
     }
 
     export default COS;
