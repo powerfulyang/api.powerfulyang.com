@@ -1,7 +1,15 @@
 declare module 'cos-nodejs-sdk-v5' {
     import {
+        GetBucketCorsData,
+        GetBucketCorsOptions,
+        GetBucketRefererData,
+        GetBucketRefererOptions,
         GetObjectUrlData,
         GetObjectUrlOptions,
+        PutBucketCorsData,
+        PutBucketCorsOptions,
+        PutBucketRefererData,
+        PutBucketRefererOptions,
     } from 'api/tencent-cloud-cos/type';
 
     export type BucketACL =
@@ -91,7 +99,7 @@ declare module 'cos-nodejs-sdk-v5' {
 
     export interface BucketResult {
         Name: string;
-        Location: string;
+        Location: BucketRegion;
         CreationDate: string;
     }
 
@@ -100,7 +108,7 @@ declare module 'cos-nodejs-sdk-v5' {
             ID: string;
             DisplayName: string;
         };
-        Buckets: [];
+        Buckets: BucketResult[];
     }
 
     export interface CreateBucketOptions {
@@ -564,6 +572,38 @@ declare module 'cos-nodejs-sdk-v5' {
             cb: (
                 err: COSError | null,
                 data: GetObjectUrlData,
+            ) => void,
+        ): void;
+
+        public putBucketCors(
+            options: PutBucketCorsOptions,
+            cb: (
+                err: COSError | null,
+                data: PutBucketCorsData,
+            ) => void,
+        ): void;
+
+        public putBucketReferer(
+            options: PutBucketRefererOptions,
+            cb: (
+                err: COSError | null,
+                data: PutBucketRefererData,
+            ) => void,
+        ): void;
+
+        public getBucketCors(
+            options: GetBucketCorsOptions,
+            cb: (
+                err: COSError | null,
+                data: GetBucketCorsData,
+            ) => void,
+        ): void;
+
+        public getBucketReferer(
+            options: GetBucketRefererOptions,
+            cb: (
+                err: COSError | null,
+                data: GetBucketRefererData,
             ) => void,
         ): void;
     }

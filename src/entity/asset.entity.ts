@@ -21,6 +21,9 @@ export class Asset {
     @Column({ default: '' })
     cosUrl: string;
 
+    @Column({ default: '', length: 400 })
+    objectUrl: string;
+
     @Column()
     originUrl: string;
 
