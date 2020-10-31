@@ -16,7 +16,7 @@ export class RequestMiddleware implements NestMiddleware {
         this.logger.info(
             `request url => [${url}]; request ip => [${ipAddress}]`,
         );
-        const ipInfo = findIpInfo(ip);
+        const ipInfo = findIpInfo(ipAddress);
         if (ipInfo.code === 0) {
             const {
                 city_name,

@@ -8,5 +8,6 @@ import { AssetController } from './asset.controller';
     imports: [TypeOrmModule.forFeature([Asset])],
     providers: [AssetService],
     controllers: [AssetController],
+    exports: [AssetService],
 })
 export class AssetModule {}

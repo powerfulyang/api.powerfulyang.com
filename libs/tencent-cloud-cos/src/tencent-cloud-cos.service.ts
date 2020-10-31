@@ -5,11 +5,18 @@ import COS, {
     BucketListResult,
     BucketOptions,
     BucketRegion,
+    DeleteMultipleObjectOptions,
     DeleteObjectOptions,
     UploadBucketObjectOptions,
 } from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
-import { GetObjectUrlOptions } from 'api/tencent-cloud-cos/type';
+import {
+    GetBucketCorsOptions,
+    GetBucketRefererOptions,
+    GetObjectUrlOptions,
+    PutBucketCorsOptions,
+    PutBucketRefererOptions,
+} from 'api/tencent-cloud-cos/type';
 
 @Injectable()
 export class TencentCloudCosService {
@@ -65,6 +72,13 @@ export class TencentCloudCosService {
         );
     }
 
+    putBucketCors(options: PutBucketCorsOptions) {
+        return promisify(this.cosUtil.putBucketCors).call(
+            this.cosUtil,
+            { ...options, Bucket: `${options.Bucket}${this.sn}` },
+        );
+    }
+
     getBucketAcl(options: BucketOptions) {
         return promisify(this.cosUtil.getBucketAcl).call(
             this.cosUtil,
@@ -86,8 +100,45 @@ export class TencentCloudCosService {
         );
     }
 
+    deleteMultipleObject(options: DeleteMultipleObjectOptions) {
+        return promisify(this.cosUtil.deleteMultipleObject).call(
+            this.cosUtil,
+            {
+                ...options,
+                Bucket: `${options.Bucket}${this.sn}`,
+            },
+        );
+    }
+
     getObjectUrl(options: GetObjectUrlOptions) {
         return promisify(this.cosUtil.getObjectUrl).call(
+            this.cosUtil,
+            {
+                ...options,
+                Bucket: `${options.Bucket}${this.sn}`,
+            },
+        );
+    }
+
+    putBucketReferer(options: PutBucketRefererOptions) {
+        return promisify(this.cosUtil.putBucketReferer).call(
+            this.cosUtil,
+            { ...options, Bucket: `${options.Bucket}${this.sn}` },
+        );
+    }
+
+    getBucketCors(options: GetBucketCorsOptions) {
+        return promisify(this.cosUtil.getBucketCors).call(
+            this.cosUtil,
+            {
+                ...options,
+                Bucket: `${options.Bucket}${this.sn}`,
+            },
+        );
+    }
+
+    getBucketReferer(options: GetBucketRefererOptions) {
+        return promisify(this.cosUtil.getBucketReferer).call(
             this.cosUtil,
             {
                 ...options,
