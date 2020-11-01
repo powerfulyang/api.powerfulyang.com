@@ -6,10 +6,14 @@ import { Request } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Authorization } from '@/constants/constants';
 import { jwtSecretConfig } from '@/configuration/jwt.config';
+import { UserService } from '@/modules/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-    constructor(private logger: AppLogger) {
+    constructor(
+        private logger: AppLogger,
+        private userService: UserService,
+    ) {
         super({
             jwtFromRequest: ExtractJwt.fromExtractors([
                 (request: Request) => {
@@ -25,9 +29,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         this.logger.setContext(JwtStrategy.name);
     }
 
-    validate(user: User) {
+    async validate(user: User) {
         // to check user status;
         this.logger.debug(`[user id is ${user.id}]-> query current!`);
-        return user;
+        return this.userService.queryUserInfo(user.id);
     }
 }

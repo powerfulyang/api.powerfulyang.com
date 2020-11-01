@@ -8,13 +8,17 @@ import { getStringVal } from '@/utils/getStringVal';
 import { getRandomString, sha1 } from '@powerfulyang/node-utils';
 import { UserDto } from '@/entity/dto/UserDto';
 import { pick } from 'ramda';
+import { AppLogger } from '@/common/logger/app.logger';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User) private userDao: Repository<User>,
         private jwtService: JwtService,
-    ) {}
+        private logger: AppLogger,
+    ) {
+        this.logger.setContext(UserService.name);
+    }
 
     async googleUserRelation(profile: Profile) {
         const openid = profile.id;
@@ -64,6 +68,18 @@ export class UserService {
     }
 
     pickLoginUserInfo(user: Partial<User>) {
-        return pick(['id', 'nickname', 'email', 'createAt'])(user);
+        const currentUser = pick([
+            'id',
+            'nickname',
+            'email',
+            'avatar',
+            'createAt',
+        ])(user);
+        this.logger.debug(currentUser);
+        return currentUser;
+    }
+
+    queryUserInfo(id: number) {
+        return this.userDao.findOneOrFail(id);
     }
 }

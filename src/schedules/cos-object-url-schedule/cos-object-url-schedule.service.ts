@@ -3,6 +3,7 @@ import { AssetService } from '@/modules/asset/asset.service';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Interval } from '@nestjs/schedule';
 import { AppLogger } from '@/common/logger/app.logger';
+import { __dev__ } from '@powerfulyang/utils';
 
 @Injectable()
 export class CosObjectUrlScheduleService {
@@ -16,6 +17,10 @@ export class CosObjectUrlScheduleService {
 
     @Interval(60 * 60 * 24 * 999)
     async refreshObjectUrl() {
+        if (__dev__) {
+            this.logger.debug('not run in dev mode!');
+            return;
+        }
         const assets = await this.assetService.assetDao.find({
             relations: ['bucket'],
         });
