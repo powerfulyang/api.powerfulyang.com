@@ -35,7 +35,6 @@ export class PinterestRssService {
         originJson: RSSPinterestInterface,
     ): PinterestInterface[] {
         const urls = originJson.rss.channel[0].item.map((x: any) => {
-            // TODO to note the tip
             // ?<=  ?  ?= to get ? search
             return {
                 url: x.description[0].match(/(?<=src=").+?(?=")/)[0],

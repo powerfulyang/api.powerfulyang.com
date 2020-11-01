@@ -3,7 +3,7 @@ import { AssetService } from '@/modules/asset/asset.service';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Interval } from '@nestjs/schedule';
 import { AppLogger } from '@/common/logger/app.logger';
-import { __dev__ } from '@powerfulyang/utils';
+import { __prod__ } from '@powerfulyang/utils';
 
 @Injectable()
 export class CosObjectUrlScheduleService {
@@ -13,12 +13,17 @@ export class CosObjectUrlScheduleService {
         private readonly logger: AppLogger,
     ) {
         this.logger.setContext(CosObjectUrlScheduleService.name);
+        this.refreshObjectUrl().then(() => {
+            this.logger.info(
+                '每次重启的时候需要刷新一下 object url!',
+            );
+        });
     }
 
     @Interval(60 * 60 * 24 * 999)
     async refreshObjectUrl() {
-        if (__dev__) {
-            this.logger.debug('not run in dev mode!');
+        if (!__prod__) {
+            this.logger.debug('only run in prod mode!');
             return;
         }
         const assets = await this.assetService.assetDao.find({
