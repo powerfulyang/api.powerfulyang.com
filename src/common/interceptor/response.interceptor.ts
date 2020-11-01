@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AppLogger } from '@/common/logger/app.logger';
 import { ReturnTypedFunction } from '@powerfulyang/utils';
+import { Response } from 'express';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -21,13 +22,21 @@ export class ResponseInterceptor implements NestInterceptor {
     ): Observable<any> {
         return next.handle().pipe(
             tap(() => {
-                const ctx = _context.switchToHttp();
-                const response = ctx.getResponse();
-                const request = ctx.getRequest() as {
-                    csrfToken: ReturnTypedFunction<string>;
-                };
-                this.logger.debug('generate csrf token!');
-                response.cookie('_csrf_token', request.csrfToken());
+                this.logger.debug(`in ${ResponseInterceptor.name}`);
+            }),
+            tap((data) => {
+                if (data) {
+                    const ctx = _context.switchToHttp();
+                    const response = ctx.getResponse<Response>();
+                    const request = ctx.getRequest() as {
+                        csrfToken: ReturnTypedFunction<string>;
+                    };
+                    this.logger.debug('generate csrf token!');
+                    response.cookie(
+                        '_csrf_token',
+                        request.csrfToken(),
+                    );
+                }
             }),
             map((data) => {
                 if (data) {

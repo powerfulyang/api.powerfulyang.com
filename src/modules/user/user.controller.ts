@@ -5,7 +5,6 @@ import {
     Post,
     Query,
     Req,
-    Res,
     UseInterceptors,
 } from '@nestjs/common';
 import { User } from '@/entity/user.entity';
@@ -18,11 +17,11 @@ import { UserDto } from '@/entity/dto/UserDto';
 import { Profile } from 'passport-google-oauth20';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
-import { Response } from 'express';
 import { Authorization } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { __dev__ } from '@powerfulyang/utils';
 import { stringify } from 'qs';
+import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 
 @Controller('user')
 export class UserController {
@@ -41,22 +40,22 @@ export class UserController {
 
     @Get('google/auth/callback')
     @GoogleAuthGuard()
+    @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
     async googleAuthCallback(
         @Req() req: Request & { user: Profile },
-        @Res() res: Response,
     ) {
         const profile = req.user;
         // if not register to add user!
         const token = await this.userService.googleUserRelation(
             profile,
         );
-        res.cookie(Authorization, token);
-        res.redirect(
-            (
+        return {
+            cookie: [Authorization, token],
+            redirect: (
                 (__dev__ && 'http://localhost:8000') ||
                 'https://admin.powerfulyang.com'
             ).concat(`?${stringify({ [Authorization]: token })}`),
-        );
+        };
     }
 
     @Post('login')

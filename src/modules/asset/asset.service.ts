@@ -11,6 +11,9 @@ export class AssetService {
     ) {}
 
     list(pagination: Pagination) {
-        return this.assetDao.findAndCount(pagination);
+        return this.assetDao.findAndCount({
+            ...pagination,
+            order: { id: 'DESC' },
+        });
     }
 }
