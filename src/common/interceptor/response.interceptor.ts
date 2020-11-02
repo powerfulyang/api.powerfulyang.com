@@ -40,9 +40,6 @@ export class ResponseInterceptor implements NestInterceptor {
             }),
             map((data) => {
                 if (data) {
-                    this.logger.info(
-                        `response->${JSON.stringify(data)}`,
-                    );
                     return {
                         status: 'ok',
                         data,
