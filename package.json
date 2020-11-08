@@ -8,7 +8,7 @@
   "scripts": {
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint src --ext .ts libs --ext .ts --fix",
-    "start:dev": "nest start -p tsconfig.build.json --debug --watch",
+    "start:dev": "nest start -p tsconfig.json --debug --watch",
     "start:prod": "node dist/src/main.js",
     "build": "rimraf dist && nest build -p tsconfig.build.json",
     "test": "jest --detectOpenHandles",
