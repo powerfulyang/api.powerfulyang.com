@@ -16,6 +16,9 @@ import { MenuController } from './menu/menu.controller';
             useFactory: () => {
                 return {
                     secret: jwtSecretConfig(),
+                    signOptions: {
+                        expiresIn: '30m',
+                    },
                 };
             },
         }),

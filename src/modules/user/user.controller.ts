@@ -22,6 +22,7 @@ import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { __dev__ } from '@powerfulyang/utils';
 import { stringify } from 'qs';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
+import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
 
 @Controller('user')
 export class UserController {
@@ -87,5 +88,11 @@ export class UserController {
             this.userService.pickLoginUserInfo(user),
             { cookie },
         );
+    }
+
+    @Post('logout')
+    @UseInterceptors(CookieClearInterceptor)
+    logout() {
+        return { cookie: Authorization };
     }
 }

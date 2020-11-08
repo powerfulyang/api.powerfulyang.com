@@ -3,7 +3,6 @@ import { Transport } from '@nestjs/microservices';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
-import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { __dev__ } from '@powerfulyang/utils';
 import rateLimit from 'express-rate-limit';
 import csrf from 'csurf';
@@ -34,10 +33,6 @@ async function bootstrap(): Promise<void> {
         credentials: true,
     });
 
-    app.useGlobalInterceptors(
-        new ResponseInterceptor(new AppLogger()),
-    );
-
     app.useGlobalPipes(new ValidationPipe());
     app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
     app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
@@ -61,5 +56,5 @@ async function bootstrap(): Promise<void> {
 }
 
 (async (): Promise<void> => {
-  await bootstrap();
+    await bootstrap();
 })();
