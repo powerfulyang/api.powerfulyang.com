@@ -17,6 +17,9 @@ import { RequestMiddleware } from '@/common/middleware/request.middleware';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UdpServerModule } from 'api/udp-server';
+import { TelegramBotModule } from 'api/telegram-bot';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
@@ -46,8 +49,15 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
             rootPath: join(process.cwd(), 'assets'),
         }),
         UdpServerModule,
+        TelegramBotModule,
         // TODO redis
         // TODO elasticsearch
+    ],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseInterceptor,
+        },
     ],
 })
 export class AppModule implements NestModule {

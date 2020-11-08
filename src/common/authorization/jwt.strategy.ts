@@ -29,9 +29,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         this.logger.setContext(JwtStrategy.name);
     }
 
-    async validate(user: User) {
+    async validate(user: User & { iat: number; exp: number }) {
         // to check user status;
         this.logger.debug(`[user id is ${user.id}]-> query current!`);
-        return this.userService.queryUserInfo(user.id);
+        return {
+            ...(await this.userService.queryUserInfo(user.id)),
+            exp: user.exp,
+        };
     }
 }

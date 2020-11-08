@@ -2,10 +2,14 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
 import { findIpInfo } from '@/utils/ipdb';
+import { TelegramBotService } from 'api/telegram-bot';
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
-    constructor(private logger: AppLogger) {
+    constructor(
+        private logger: AppLogger,
+        private telegramBotService: TelegramBotService,
+    ) {
         this.logger.setContext(RequestMiddleware.name);
     }
 
@@ -13,9 +17,8 @@ export class RequestMiddleware implements NestMiddleware {
         next();
         const { headers, url, ip } = req;
         const ipAddress = headers?.['x-real-ip'] || ip;
-        this.logger.info(
-            `request url => [${url}]; request ip => [${ipAddress}]`,
-        );
+        const log = `request url => [${url}]; request ip => [${ipAddress}]`;
+        this.logger.info(log);
         const ipInfo = findIpInfo(ipAddress);
         if (ipInfo.code === 0) {
             const {
@@ -25,9 +28,13 @@ export class RequestMiddleware implements NestMiddleware {
                 owner_domain,
                 region_name,
             } = ipInfo.data;
-            this.logger.info(
-                `${country_name}-${region_name}-${city_name} === ${owner_domain}-${isp_domain}`,
-            );
+            const ipLog = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
+            this.logger.info(ipLog);
+            this.telegramBotService
+                .sendToMe(`${log} | ${ipLog}`)
+                .catch((e) => {
+                    this.logger.error('telegram send error', e);
+                });
         }
     }
 }
