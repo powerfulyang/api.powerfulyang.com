@@ -24,19 +24,28 @@ export class UploadAssetService {
         suffix: string;
         bucketName: string;
     }) {
-        const filename = `${data.sha1}${data.suffix}`;
+        const Key = `${data.sha1}${data.suffix}`;
         const buffer = readFileSync(
-            join(process.cwd(), 'assets', filename),
+            join(process.cwd(), 'assets', Key),
         );
+        const Bucket = data.bucketName;
         const res = await this.tencentCloudCosService.putObject({
-            Bucket: data.bucketName,
+            Bucket,
             Region,
-            Key: filename,
+            Key,
             Body: buffer,
+        });
+        const {
+            Url: objectUrl,
+        } = await this.tencentCloudCosService.getObjectUrl({
+            Bucket,
+            Region,
+            Key,
+            Expires: 60 * 60 * 24, // 1day
         });
         await this.assetDao.update(
             { sha1: data.sha1 },
-            { cosUrl: `https://${res.Location}` },
+            { cosUrl: `https://${res.Location}`, objectUrl },
         );
     }
 }
