@@ -2,9 +2,11 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '@/entity/role.entity';
 
 @Entity('user')
 export class User {
@@ -34,4 +36,7 @@ export class User {
 
     @Column({ unique: true })
     googleOpenId: string;
+
+    @OneToOne(() => Role)
+    role: Role;
 }
