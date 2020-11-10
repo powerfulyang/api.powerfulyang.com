@@ -4,12 +4,10 @@ import {
     Entity,
     JoinTable,
     ManyToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { Menu } from '@/entity/menu.entity';
-import { User } from '@/entity/user.entity';
 
 @Entity('role')
 export class Role {
@@ -28,7 +26,4 @@ export class Role {
     @ManyToMany(() => Menu)
     @JoinTable()
     menus: Menu[];
-
-    @OneToOne(() => User)
-    user: User;
 }

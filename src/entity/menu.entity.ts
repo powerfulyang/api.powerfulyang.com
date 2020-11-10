@@ -32,6 +32,9 @@ export class Menu {
     @TreeParent()
     parent: Menu;
 
+    @Column({ nullable: true })
+    readonly parentId: number;
+
     @CreateDateColumn()
     createAt: Date;
 
