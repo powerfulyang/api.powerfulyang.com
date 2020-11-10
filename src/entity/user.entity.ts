@@ -2,7 +2,8 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToOne,
+    JoinTable,
+    ManyToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -37,6 +38,7 @@ export class User {
     @Column({ unique: true })
     googleOpenId: string;
 
-    @OneToOne(() => Role)
-    role: Role;
+    @ManyToMany(() => Role)
+    @JoinTable()
+    roles: Role[];
 }
