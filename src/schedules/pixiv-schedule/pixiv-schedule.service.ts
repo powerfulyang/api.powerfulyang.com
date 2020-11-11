@@ -7,20 +7,17 @@ import { AssetBucket } from '@/enum/AssetBucket';
 
 @Injectable()
 export class PixivScheduleService {
-    constructor(
-        private logger: AppLogger,
-        private coreService: CoreService,
-    ) {
-        this.logger.setContext(PixivScheduleService.name);
-    }
+  constructor(private logger: AppLogger, private coreService: CoreService) {
+    this.logger.setContext(PixivScheduleService.name);
+  }
 
-    @Cron('0 30 * * * *')
-    async bot() {
-        try {
-            await this.coreService.botBaseService(AssetBucket.pixiv);
-        } catch (e) {
-            this.logger.error(this.bot.name, e);
-        }
-        return SUCCESS;
+  @Cron('0 30 * * * *')
+  async bot() {
+    try {
+      await this.coreService.botBaseService(AssetBucket.pixiv);
+    } catch (e) {
+      this.logger.error(this.bot.name, e);
     }
+    return SUCCESS;
+  }
 }

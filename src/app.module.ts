@@ -1,8 +1,4 @@
-import {
-    MiddlewareConsumer,
-    Module,
-    NestModule,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@nestjs/config';
@@ -28,44 +24,43 @@ import { AssetModule } from './modules/asset/asset.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 
 @Module({
-    imports: [
-        ConfigModule.forRoot({
-            envFilePath: ['.env'],
-        }),
-        LoggerModule,
-        TypeOrmModule.forRoot(mysqlConfig()),
-        ProxyFetchModule,
-        StrategyModule,
-        CoreModule,
-        PassportModule,
-        UserModule,
-        UploadAssetModule,
-        SchedulesModule,
-        GithubModule,
-        BucketModule,
-        AssetModule,
-        ScheduleModule,
-        ServeStaticModule.forRoot({
-            rootPath: join(process.cwd(), 'assets'),
-        }),
-        UdpServerModule,
-        TelegramBotModule,
-        // TODO redis
-        // TODO elasticsearch
-    ],
-    providers: [
-        {
-            provide: APP_INTERCEPTOR,
-            useClass: ResponseInterceptor,
-        },
-    ],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+    }),
+    LoggerModule,
+    TypeOrmModule.forRoot(mysqlConfig()),
+    ProxyFetchModule,
+    StrategyModule,
+    CoreModule,
+    PassportModule,
+    UserModule,
+    UploadAssetModule,
+    SchedulesModule,
+    GithubModule,
+    BucketModule,
+    AssetModule,
+    ScheduleModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'assets'),
+    }),
+    UdpServerModule,
+    TelegramBotModule,
+    // TODO elasticsearch
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
-    constructor(private logger: AppLogger) {
-        this.logger.setContext(AppModule.name);
-    }
+  constructor(private logger: AppLogger) {
+    this.logger.setContext(AppModule.name);
+  }
 
-    configure(consumer: MiddlewareConsumer) {
-        consumer.apply(RequestMiddleware).forRoutes('*');
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestMiddleware).forRoutes('*');
+  }
 }

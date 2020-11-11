@@ -1,47 +1,47 @@
 export interface RSSPinterestInterface {
-    rss: RSS;
+  rss: RSS;
 }
 
 export interface RSS {
-    $: RSSClass;
-    channel: Channel[];
+  $: RSSClass;
+  channel: Channel[];
 }
 
 export interface RSSClass {
-    version: string;
-    'xmlns:atom': string;
+  version: string;
+  'xmlns:atom': string;
 }
 
 export interface Channel {
-    'atom:link': AtomLinkElement[];
-    description: string[];
-    item: Item[];
-    language: string[];
-    lastBuildDate: string[];
-    link: string[];
-    title: string[];
+  'atom:link': AtomLinkElement[];
+  description: string[];
+  item: Item[];
+  language: string[];
+  lastBuildDate: string[];
+  link: string[];
+  title: string[];
 }
 
 export interface AtomLinkElement {
-    $: AtomLink;
+  $: AtomLink;
 }
 
 export interface AtomLink {
-    href: string;
-    rel: string;
+  href: string;
+  rel: string;
 }
 
 export interface Item {
-    description: string[];
-    guid: string[];
-    link: string[];
-    pubDate: string[];
-    title: string[];
+  description: string[];
+  guid: string[];
+  link: string[];
+  pubDate: string[];
+  title: string[];
 }
 
 export interface PinterestInterface {
-    id: string;
-    imgList: string[];
-    tags: string[];
-    originUrl: string;
+  id: string;
+  imgList: string[];
+  tags: string[];
+  originUrl: string;
 }

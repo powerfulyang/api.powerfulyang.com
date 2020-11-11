@@ -10,31 +10,28 @@ import { UserService } from '@/modules/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-    constructor(
-        private logger: AppLogger,
-        private userService: UserService,
-    ) {
-        super({
-            jwtFromRequest: ExtractJwt.fromExtractors([
-                (request: Request) => {
-                    return (
-                        request?.cookies?.[Authorization] ||
-                        request?.header(Authorization) ||
-                        request?.query?.[Authorization]
-                    );
-                },
-            ]),
-            secretOrKey: jwtSecretConfig(),
-        });
-        this.logger.setContext(JwtStrategy.name);
-    }
+  constructor(private logger: AppLogger, private userService: UserService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => {
+          return (
+            request?.cookies?.[Authorization] ||
+            request?.header(Authorization) ||
+            request?.query?.[Authorization]
+          );
+        },
+      ]),
+      secretOrKey: jwtSecretConfig(),
+    });
+    this.logger.setContext(JwtStrategy.name);
+  }
 
-    async validate(user: User & { iat: number; exp: number }) {
-        // to check user status;
-        this.logger.debug(`[user id is ${user.id}]-> query current!`);
-        return {
-            ...(await this.userService.queryUserInfo(user.id)),
-            exp: user.exp,
-        };
-    }
+  async validate(user: User & { iat: number; exp: number }) {
+    // to check user status;
+    this.logger.debug(`[user id is ${user.id}]-> query current!`);
+    return {
+      ...(await this.userService.queryUserInfo(user.id)),
+      exp: user.exp,
+    };
+  }
 }

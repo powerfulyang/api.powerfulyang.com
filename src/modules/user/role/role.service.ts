@@ -5,16 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RoleService {
-    constructor(
-        @InjectRepository(Role)
-        readonly roleDao: Repository<Role>,
-    ) {}
+  constructor(
+    @InjectRepository(Role)
+    readonly roleDao: Repository<Role>,
+  ) {}
 
-    setRoleMenu(role: Role) {
-        return this.roleDao.save(role);
-    }
+  setRoleMenu(role: Role) {
+    return this.roleDao.save(role);
+  }
 
-    getDefaultRole() {
-        return this.roleDao.findOneOrFail({ roleName: 'default' });
-    }
+  getDefaultRole() {
+    return this.roleDao.findOneOrFail({ roleName: 'default' });
+  }
 }

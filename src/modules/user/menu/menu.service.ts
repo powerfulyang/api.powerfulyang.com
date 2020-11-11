@@ -5,12 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class MenuService {
-    constructor(
-        @InjectRepository(Menu)
-        readonly menuDao: TreeRepository<Menu>,
-    ) {}
+  constructor(
+    @InjectRepository(Menu)
+    readonly menuDao: TreeRepository<Menu>,
+  ) {}
 
-    menus() {
-        return this.menuDao.findTrees();
-    }
+  menus() {
+    return this.menuDao.findTrees();
+  }
 }

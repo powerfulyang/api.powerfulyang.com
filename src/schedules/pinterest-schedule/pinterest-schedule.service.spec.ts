@@ -4,19 +4,17 @@ import { SUCCESS } from '@/constants/constants';
 import { AppModule } from '@/app.module';
 
 describe('PinterestScheduleService', () => {
-    let service: PinterestScheduleService;
+  let service: PinterestScheduleService;
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [AppModule],
-        }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
 
-        service = module.get<PinterestScheduleService>(
-            PinterestScheduleService,
-        );
-    });
+    service = module.get<PinterestScheduleService>(PinterestScheduleService);
+  });
 
-    it('should be defined', async () => {
-        await expect(service.bot()).resolves.toBe(SUCCESS);
-    });
+  it('should be defined', async () => {
+    await expect(service.bot()).resolves.toBe(SUCCESS);
+  });
 });

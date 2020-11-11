@@ -4,10 +4,10 @@ import { Pagination } from '@/common/decorator/pagination.decorator';
 
 @Controller('asset')
 export class AssetController {
-    constructor(private assetService: AssetService) {}
+  constructor(private assetService: AssetService) {}
 
-    @Get()
-    list(@Pagination() pagination: Pagination) {
-        return this.assetService.list(pagination);
-    }
+  @Get()
+  list(@Pagination() pagination: Pagination) {
+    return this.assetService.list(pagination);
+  }
 }

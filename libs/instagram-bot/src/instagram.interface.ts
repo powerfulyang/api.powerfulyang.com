@@ -1,6 +1,6 @@
 export interface InstagramInterface {
-    id: string;
-    imgList: string[];
-    tags: string[];
-    originUrl: string;
+  id: string;
+  imgList: string[];
+  tags: string[];
+  originUrl: string;
 }

@@ -1,9 +1,4 @@
-import {
-    Controller,
-    ForbiddenException,
-    Get,
-    Param,
-} from '@nestjs/common';
+import { Controller, ForbiddenException, Get, Param } from '@nestjs/common';
 import { PixivScheduleService } from '@/schedules/pixiv-schedule/pixiv-schedule.service';
 import { InstagramScheduleService } from '@/schedules/instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from '@/schedules/pinterest-schedule/pinterest-schedule.service';
@@ -17,38 +12,38 @@ import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule
 @Controller('schedule')
 @JwtAuthGuard()
 export class ScheduleController {
-    constructor(
-        private pixivScheduleService: PixivScheduleService,
-        private instagramScheduleService: InstagramScheduleService,
-        private pinterestScheduleService: PinterestScheduleService,
-        private udpScheduleService: UdpScheduleService,
-        private cosObjectUrlScheduleService: CosObjectUrlScheduleService,
-    ) {}
+  constructor(
+    private pixivScheduleService: PixivScheduleService,
+    private instagramScheduleService: InstagramScheduleService,
+    private pinterestScheduleService: PinterestScheduleService,
+    private udpScheduleService: UdpScheduleService,
+    private cosObjectUrlScheduleService: CosObjectUrlScheduleService,
+  ) {}
 
-    @Get(':scheduleType')
-    async RunScheduleByRequest(
-        @Param('scheduleType')
-        scheduleType: AssetBucket & OtherSchedule,
-    ) {
-        switch (scheduleType) {
-            case AssetBucket.instagram:
-                await this.instagramScheduleService.bot();
-                break;
-            case AssetBucket.pinterest:
-                await this.pinterestScheduleService.bot();
-                break;
-            case AssetBucket.pixiv:
-                await this.pixivScheduleService.bot();
-                break;
-            case OtherSchedule.udp:
-                await this.udpScheduleService.healthCheck();
-                break;
-            case OtherSchedule.cosObjectUrlRefresh:
-                await this.cosObjectUrlScheduleService.refreshObjectUrl();
-                break;
-            default:
-                throw new ForbiddenException();
-        }
-        return SUCCESS;
+  @Get(':scheduleType')
+  async RunScheduleByRequest(
+    @Param('scheduleType')
+    scheduleType: AssetBucket & OtherSchedule,
+  ) {
+    switch (scheduleType) {
+      case AssetBucket.instagram:
+        await this.instagramScheduleService.bot();
+        break;
+      case AssetBucket.pinterest:
+        await this.pinterestScheduleService.bot();
+        break;
+      case AssetBucket.pixiv:
+        await this.pixivScheduleService.bot();
+        break;
+      case OtherSchedule.udp:
+        await this.udpScheduleService.healthCheck();
+        break;
+      case OtherSchedule.cosObjectUrlRefresh:
+        await this.cosObjectUrlScheduleService.refreshObjectUrl();
+        break;
+      default:
+        throw new ForbiddenException();
     }
+    return SUCCESS;
+  }
 }

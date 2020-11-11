@@ -7,22 +7,17 @@ import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class InstagramScheduleService {
-    constructor(
-        private logger: AppLogger,
-        private coreService: CoreService,
-    ) {
-        this.logger.setContext(InstagramScheduleService.name);
-    }
+  constructor(private logger: AppLogger, private coreService: CoreService) {
+    this.logger.setContext(InstagramScheduleService.name);
+  }
 
-    @Cron('0 15 * * * *')
-    async bot() {
-        try {
-            await this.coreService.botBaseService(
-                AssetBucket.instagram,
-            );
-        } catch (e) {
-            this.logger.error(this.bot.name, e);
-        }
-        return SUCCESS;
+  @Cron('0 15 * * * *')
+  async bot() {
+    try {
+      await this.coreService.botBaseService(AssetBucket.instagram);
+    } catch (e) {
+      this.logger.error(this.bot.name, e);
     }
+    return SUCCESS;
+  }
 }

@@ -9,21 +9,21 @@ import { User } from '@/entity/user.entity';
 @Controller('menu')
 @JwtAuthGuard()
 export class MenuController {
-    constructor(
-        private readonly menuService: MenuService,
-        private readonly userService: UserService,
-        private readonly logger: AppLogger,
-    ) {
-        this.logger.setContext(MenuController.name);
-    }
+  constructor(
+    private readonly menuService: MenuService,
+    private readonly userService: UserService,
+    private readonly logger: AppLogger,
+  ) {
+    this.logger.setContext(MenuController.name);
+  }
 
-    @Get()
-    menus() {
-        return this.menuService.menus();
-    }
+  @Get()
+  menus() {
+    return this.menuService.menus();
+  }
 
-    @Get('current')
-    currentMenus(@UserFromAuth() user: User) {
-        return this.userService.getUserMenus(user.id);
-    }
+  @Get('current')
+  currentMenus(@UserFromAuth() user: User) {
+    return this.userService.getUserMenus(user.id);
+  }
 }

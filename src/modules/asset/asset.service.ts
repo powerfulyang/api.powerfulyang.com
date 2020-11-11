@@ -6,14 +6,12 @@ import { Pagination } from '@/common/decorator/pagination.decorator';
 
 @Injectable()
 export class AssetService {
-    constructor(
-        @InjectRepository(Asset) readonly assetDao: Repository<Asset>,
-    ) {}
+  constructor(@InjectRepository(Asset) readonly assetDao: Repository<Asset>) {}
 
-    list(pagination: Pagination) {
-        return this.assetDao.findAndCount({
-            ...pagination,
-            order: { id: 'DESC' },
-        });
-    }
+  list(pagination: Pagination) {
+    return this.assetDao.findAndCount({
+      ...pagination,
+      order: { id: 'DESC' },
+    });
+  }
 }

@@ -4,19 +4,17 @@ import { AppModule } from '@/app.module';
 import { SUCCESS } from '@/constants/constants';
 
 describe('PixivScheduleService', () => {
-    let service: PixivScheduleService;
+  let service: PixivScheduleService;
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [AppModule],
-        }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
 
-        service = module.get<PixivScheduleService>(
-            PixivScheduleService,
-        );
-    });
+    service = module.get<PixivScheduleService>(PixivScheduleService);
+  });
 
-    it('should be defined', async () => {
-        await expect(service.bot()).resolves.toBe(SUCCESS);
-    });
+  it('should be defined', async () => {
+    await expect(service.bot()).resolves.toBe(SUCCESS);
+  });
 });

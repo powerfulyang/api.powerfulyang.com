@@ -7,22 +7,17 @@ import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class PinterestScheduleService {
-    constructor(
-        private logger: AppLogger,
-        private coreService: CoreService,
-    ) {
-        this.logger.setContext(PinterestScheduleService.name);
-    }
+  constructor(private logger: AppLogger, private coreService: CoreService) {
+    this.logger.setContext(PinterestScheduleService.name);
+  }
 
-    @Cron('0 45 * * * *')
-    async bot() {
-        try {
-            await this.coreService.botBaseService(
-                AssetBucket.pinterest,
-            );
-        } catch (e) {
-            this.logger.error(this.bot.name, e);
-        }
-        return SUCCESS;
+  @Cron('0 45 * * * *')
+  async bot() {
+    try {
+      await this.coreService.botBaseService(AssetBucket.pinterest);
+    } catch (e) {
+      this.logger.error(this.bot.name, e);
     }
+    return SUCCESS;
+  }
 }

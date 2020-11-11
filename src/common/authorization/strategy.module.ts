@@ -5,8 +5,8 @@ import { UserModule } from '@/modules/user/user.module';
 
 @Global()
 @Module({
-    imports: [UserModule],
-    providers: [JwtStrategy, GoogleStrategy],
-    exports: [JwtStrategy, GoogleStrategy],
+  imports: [UserModule],
+  providers: [JwtStrategy, GoogleStrategy],
+  exports: [JwtStrategy, GoogleStrategy],
 })
 export class StrategyModule {}

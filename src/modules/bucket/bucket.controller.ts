@@ -5,10 +5,10 @@ import { BucketService } from '@/modules/bucket/bucket.service';
 @Controller('bucket')
 @JwtAuthGuard()
 export class BucketController {
-    constructor(private readonly bucketService: BucketService) {}
+  constructor(private readonly bucketService: BucketService) {}
 
-    @Get()
-    list() {
-        return this.bucketService.list();
-    }
+  @Get()
+  list() {
+    return this.bucketService.list();
+  }
 }

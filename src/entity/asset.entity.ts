@@ -1,53 +1,53 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Bucket } from './bucket.entity';
 
 @Entity('asset')
 export class Asset {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @JoinColumn()
-    @ManyToOne(() => Bucket)
-    bucket: Bucket;
+  @JoinColumn()
+  @ManyToOne(() => Bucket)
+  bucket: Bucket;
 
-    @Column({ default: '' })
-    cosUrl: string;
+  @Column({ default: '' })
+  cosUrl: string;
 
-    @Column({ default: '', length: 400 })
-    objectUrl: string;
+  @Column({ default: '', length: 400 })
+  objectUrl: string;
 
-    @Column()
-    originUrl: string;
+  @Column()
+  originUrl: string;
 
-    @Column()
-    sn: string;
+  @Column()
+  sn: string;
 
-    @Column({ type: 'json' })
-    tags: string[];
+  @Column({ type: 'json' })
+  tags: string[];
 
-    @Column({ default: '' })
-    comment: string;
+  @Column({ default: '' })
+  comment: string;
 
-    @Column()
-    fileSuffix: string;
+  @Column()
+  fileSuffix: string;
 
-    @Column({ unique: true })
-    sha1: string;
+  @Column({ unique: true })
+  sha1: string;
 
-    @Column()
-    pHash: string;
+  @Column()
+  pHash: string;
 
-    @CreateDateColumn()
-    createAt: Date;
+  @CreateDateColumn()
+  createAt: Date;
 
-    @UpdateDateColumn()
-    updateAt: Date;
+  @UpdateDateColumn()
+  updateAt: Date;
 }
