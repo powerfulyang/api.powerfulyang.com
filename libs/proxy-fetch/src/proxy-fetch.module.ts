@@ -3,7 +3,7 @@ import { ProxyFetchService } from './proxy-fetch.service';
 
 @Global()
 @Module({
-    providers: [ProxyFetchService],
-    exports: [ProxyFetchService],
+  providers: [ProxyFetchService],
+  exports: [ProxyFetchService],
 })
 export class ProxyFetchModule {}

@@ -13,21 +13,21 @@ import { RoleService } from './role/role.service';
 import { RoleController } from './role/role.controller';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([User, Menu, Role]),
-        JwtModule.registerAsync({
-            useFactory: () => {
-                return {
-                    secret: jwtSecretConfig(),
-                    signOptions: {
-                        expiresIn: '30m',
-                    },
-                };
-            },
-        }),
-    ],
-    controllers: [UserController, MenuController, RoleController],
-    providers: [UserService, MenuService, RoleService],
-    exports: [UserService],
+  imports: [
+    TypeOrmModule.forFeature([User, Menu, Role]),
+    JwtModule.registerAsync({
+      useFactory: () => {
+        return {
+          secret: jwtSecretConfig(),
+          signOptions: {
+            expiresIn: '30m',
+          },
+        };
+      },
+    }),
+  ],
+  controllers: [UserController, MenuController, RoleController],
+  providers: [UserService, MenuService, RoleService],
+  exports: [UserService],
 })
 export class UserModule {}

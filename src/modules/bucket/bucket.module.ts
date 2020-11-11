@@ -6,11 +6,8 @@ import { BucketService } from './bucket.service';
 import { BucketController } from './bucket.controller';
 
 @Module({
-    imports: [
-        TencentCloudCosModule,
-        TypeOrmModule.forFeature([Bucket]),
-    ],
-    providers: [BucketService],
-    controllers: [BucketController],
+  imports: [TencentCloudCosModule, TypeOrmModule.forFeature([Bucket])],
+  providers: [BucketService],
+  controllers: [BucketController],
 })
 export class BucketModule {}

@@ -1,29 +1,29 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinTable,
-    ManyToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Menu } from '@/entity/menu.entity';
 
 @Entity('role')
 export class Role {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    roleName: string;
+  @Column()
+  roleName: string;
 
-    @CreateDateColumn()
-    createAt: Date;
+  @CreateDateColumn()
+  createAt: Date;
 
-    @UpdateDateColumn()
-    updateAt: Date;
+  @UpdateDateColumn()
+  updateAt: Date;
 
-    @ManyToMany(() => Menu)
-    @JoinTable()
-    menus: Menu[];
+  @ManyToMany(() => Menu)
+  @JoinTable()
+  menus: Menu[];
 }

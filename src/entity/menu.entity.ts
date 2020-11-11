@@ -1,43 +1,43 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    Tree,
-    TreeChildren,
-    TreeParent,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('menu')
 @Tree('closure-table')
 export class Menu {
-    constructor(menuName?: string, path?: string) {
-        this.menuName = menuName;
-        this.path = path;
-    }
+  constructor(menuName?: string, path?: string) {
+    this.menuName = menuName;
+    this.path = path;
+  }
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ unique: true })
-    menuName?: string;
+  @Column({ unique: true })
+  menuName?: string;
 
-    @Column()
-    path?: string;
+  @Column()
+  path?: string;
 
-    @TreeChildren()
-    children: Menu[];
+  @TreeChildren()
+  children: Menu[];
 
-    @TreeParent()
-    parent: Menu;
+  @TreeParent()
+  parent: Menu;
 
-    @Column({ nullable: true })
-    readonly parentId: number;
+  @Column({ nullable: true })
+  readonly parentId: number;
 
-    @CreateDateColumn()
-    createAt: Date;
+  @CreateDateColumn()
+  createAt: Date;
 
-    @UpdateDateColumn()
-    updateAt: Date;
+  @UpdateDateColumn()
+  updateAt: Date;
 }

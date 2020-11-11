@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProxyFetchService } from './proxy-fetch.service';
 
 describe('ProxyFetchService', () => {
-    let service: ProxyFetchService;
+  let service: ProxyFetchService;
 
-    beforeAll(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [ProxyFetchService],
-        }).compile();
+  beforeAll(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [ProxyFetchService],
+    }).compile();
 
-        service = module.get<ProxyFetchService>(ProxyFetchService);
-    });
+    service = module.get<ProxyFetchService>(ProxyFetchService);
+  });
 
-    it('should be defined', () => {
-        expect(service).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
 });

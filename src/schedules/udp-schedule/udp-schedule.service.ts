@@ -6,19 +6,16 @@ import { AppLogger } from '@/common/logger/app.logger';
 
 @Injectable()
 export class UdpScheduleService {
-    constructor(
-        private udpServerService: UdpServerService,
-        private readonly logger: AppLogger,
-    ) {
-        this.logger.setContext(UdpScheduleService.name);
-    }
+  constructor(private udpServerService: UdpServerService, private readonly logger: AppLogger) {
+    this.logger.setContext(UdpScheduleService.name);
+  }
 
-    @Interval(12 * 60 * 60 * 1000)
-    healthCheck() {
-        if (__dev__) {
-            this.logger.debug('not run in dev mode!');
-            return;
-        }
-        this.udpServerService.send('health check!');
+  @Interval(12 * 60 * 60 * 1000)
+  healthCheck() {
+    if (__dev__) {
+      this.logger.debug('not run in dev mode!');
+      return;
     }
+    this.udpServerService.send('health check!');
+  }
 }

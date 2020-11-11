@@ -10,42 +10,34 @@ import { Region } from '@/constants/constants';
 
 @Injectable()
 export class UploadAssetService {
-    constructor(
-        @InjectRepository(Asset)
-        private assetDao: Repository<Asset>,
-        private logger: AppLogger,
-        private tencentCloudCosService: TencentCloudCosService,
-    ) {
-        this.logger.setContext(UploadAssetService.name);
-    }
+  constructor(
+    @InjectRepository(Asset)
+    private assetDao: Repository<Asset>,
+    private logger: AppLogger,
+    private tencentCloudCosService: TencentCloudCosService,
+  ) {
+    this.logger.setContext(UploadAssetService.name);
+  }
 
-    async persistent(data: {
-        sha1: string;
-        suffix: string;
-        bucketName: string;
-    }) {
-        const Key = `${data.sha1}${data.suffix}`;
-        const buffer = readFileSync(
-            join(process.cwd(), 'assets', Key),
-        );
-        const Bucket = data.bucketName;
-        const res = await this.tencentCloudCosService.putObject({
-            Bucket,
-            Region,
-            Key,
-            Body: buffer,
-        });
-        const {
-            Url: objectUrl,
-        } = await this.tencentCloudCosService.getObjectUrl({
-            Bucket,
-            Region,
-            Key,
-            Expires: 60 * 60 * 24, // 1day
-        });
-        await this.assetDao.update(
-            { sha1: data.sha1 },
-            { cosUrl: `https://${res.Location}`, objectUrl },
-        );
-    }
+  async persistent(data: { sha1: string; suffix: string; bucketName: string }) {
+    const Key = `${data.sha1}${data.suffix}`;
+    const buffer = readFileSync(join(process.cwd(), 'assets', Key));
+    const Bucket = data.bucketName;
+    const res = await this.tencentCloudCosService.putObject({
+      Bucket,
+      Region,
+      Key,
+      Body: buffer,
+    });
+    const { Url: objectUrl } = await this.tencentCloudCosService.getObjectUrl({
+      Bucket,
+      Region,
+      Key,
+      Expires: 60 * 60 * 24, // 1day
+    });
+    await this.assetDao.update(
+      { sha1: data.sha1 },
+      { cosUrl: `https://${res.Location}`, objectUrl },
+    );
+  }
 }

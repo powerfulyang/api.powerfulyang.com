@@ -1,17 +1,6 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Post,
-    Query,
-    Req,
-    UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, UseInterceptors } from '@nestjs/common';
 import { User } from '@/entity/user.entity';
-import {
-    GoogleAuthGuard,
-    JwtAuthGuard,
-} from '@/common/decorator/auth-guard.decorator';
+import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/entity/dto/UserDto';
 import { Profile } from 'passport-google-oauth20';
@@ -26,73 +15,57 @@ import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interc
 
 @Controller('user')
 export class UserController {
-    constructor(
-        private userService: UserService,
-        private logger: AppLogger,
-    ) {
-        this.logger.setContext(UserController.name);
-    }
+  constructor(private userService: UserService, private logger: AppLogger) {
+    this.logger.setContext(UserController.name);
+  }
 
-    @Get('google/auth')
-    @GoogleAuthGuard()
-    async googleAuth() {
-        //
-    }
+  @Get('google/auth')
+  @GoogleAuthGuard()
+  async googleAuth() {
+    //
+  }
 
-    @Get('google/auth/callback')
-    @GoogleAuthGuard()
-    @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
-    async googleAuthCallback(
-        @Req() req: Request & { user: Profile },
-    ) {
-        const profile = req.user;
-        // if not register to add user!
-        const token = await this.userService.googleUserRelation(
-            profile,
-        );
-        return {
-            cookie: [Authorization, token],
-            redirect: (
-                (__dev__ && 'http://localhost:8000') ||
-                'https://admin.powerfulyang.com'
-            ).concat(`?${stringify({ [Authorization]: token })}`),
-        };
-    }
+  @Get('google/auth/callback')
+  @GoogleAuthGuard()
+  @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
+  async googleAuthCallback(@Req() req: Request & { user: Profile }) {
+    const profile = req.user;
+    // if not register to add user!
+    const token = await this.userService.googleUserRelation(profile);
+    return {
+      cookie: [Authorization, token],
+      redirect: ((__dev__ && 'http://localhost:8000') || 'https://admin.powerfulyang.com').concat(
+        `?${stringify({ [Authorization]: token })}`,
+      ),
+    };
+  }
 
-    @Post('login')
-    @UseInterceptors(CookieInterceptor)
-    async login(@Body() user: UserDto) {
-        this.logger.info(`${user.email} try to login in!!!`);
-        const userInfo = await this.userService.login(user);
-        const token = this.userService.generateAuthorization(
-            userInfo,
-        );
-        return {
-            ...userInfo,
-            cookie: [Authorization, token],
-        };
-    }
+  @Post('login')
+  @UseInterceptors(CookieInterceptor)
+  async login(@Body() user: UserDto) {
+    this.logger.info(`${user.email} try to login in!!!`);
+    const userInfo = await this.userService.login(user);
+    const token = this.userService.generateAuthorization(userInfo);
+    return {
+      ...userInfo,
+      cookie: [Authorization, token],
+    };
+  }
 
-    @Get('current')
-    @JwtAuthGuard()
-    @UseInterceptors(CookieInterceptor)
-    current(
-        @UserFromAuth() user: User,
-        @Query(Authorization) token: string,
-    ) {
-        let cookie;
-        if (token) {
-            cookie = [Authorization, token];
-        }
-        return Object.assign(
-            this.userService.pickLoginUserInfo(user),
-            { cookie },
-        );
+  @Get('current')
+  @JwtAuthGuard()
+  @UseInterceptors(CookieInterceptor)
+  current(@UserFromAuth() user: User, @Query(Authorization) token: string) {
+    let cookie;
+    if (token) {
+      cookie = [Authorization, token];
     }
+    return Object.assign(this.userService.pickLoginUserInfo(user), { cookie });
+  }
 
-    @Post('logout')
-    @UseInterceptors(CookieClearInterceptor)
-    logout() {
-        return { cookie: Authorization };
-    }
+  @Post('logout')
+  @UseInterceptors(CookieClearInterceptor)
+  logout() {
+    return { cookie: Authorization };
+  }
 }

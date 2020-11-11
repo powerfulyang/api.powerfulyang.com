@@ -5,33 +5,33 @@ import { Role } from '@/entity/role.entity';
 import { MenuService } from '@/modules/user/menu/menu.service';
 
 describe('RoleService', () => {
-    let service: RoleService;
-    let menuService: MenuService;
+  let service: RoleService;
+  let menuService: MenuService;
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [AppModule],
-        }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
 
-        service = module.get<RoleService>(RoleService);
-        menuService = module.get<MenuService>(MenuService);
-    });
+    service = module.get<RoleService>(RoleService);
+    menuService = module.get<MenuService>(MenuService);
+  });
 
-    it('setRoleMenu', async () => {
-        const menus = await menuService.menuDao.find();
-        const role = new Role();
-        role.menus = menus;
-        role.roleName = 'admin';
-        await service.setRoleMenu(role);
-        expect(role).toBeDefined();
-    });
+  it('setRoleMenu', async () => {
+    const menus = await menuService.menuDao.find();
+    const role = new Role();
+    role.menus = menus;
+    role.roleName = 'admin';
+    await service.setRoleMenu(role);
+    expect(role).toBeDefined();
+  });
 
-    it('generate default role', async () => {
-        const menus = await menuService.menuDao.find();
-        const role = new Role();
-        role.menus = menus;
-        role.roleName = 'default';
-        await service.setRoleMenu(role);
-        expect(role).toBeDefined();
-    });
+  it('generate default role', async () => {
+    const menus = await menuService.menuDao.find();
+    const role = new Role();
+    role.menus = menus;
+    role.roleName = 'default';
+    await service.setRoleMenu(role);
+    expect(role).toBeDefined();
+  });
 });

@@ -6,11 +6,8 @@ import { UploadAssetController } from './upload-asset.controller';
 import { UploadAssetService } from './upload-asset.service';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Asset]),
-        TencentCloudCosModule,
-    ],
-    controllers: [UploadAssetController],
-    providers: [UploadAssetService],
+  imports: [TypeOrmModule.forFeature([Asset]), TencentCloudCosModule],
+  controllers: [UploadAssetController],
+  providers: [UploadAssetService],
 })
 export class UploadAssetModule {}

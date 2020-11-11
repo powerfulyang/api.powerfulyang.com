@@ -1,44 +1,44 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinTable,
-    ManyToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '@/entity/role.entity';
 
 @Entity('user')
 export class User {
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @Column()
-    email!: string;
+  @Column()
+  email!: string;
 
-    @Column()
-    passwordSalt!: string;
+  @Column()
+  passwordSalt!: string;
 
-    @Column()
-    password!: string;
+  @Column()
+  password!: string;
 
-    @Column()
-    nickname: string;
+  @Column()
+  nickname: string;
 
-    @Column()
-    avatar: string;
+  @Column()
+  avatar: string;
 
-    @CreateDateColumn()
-    createAt!: Date;
+  @CreateDateColumn()
+  createAt!: Date;
 
-    @UpdateDateColumn()
-    updateAt!: Date;
+  @UpdateDateColumn()
+  updateAt!: Date;
 
-    @Column({ unique: true })
-    googleOpenId: string;
+  @Column({ unique: true })
+  googleOpenId: string;
 
-    @ManyToMany(() => Role)
-    @JoinTable()
-    roles: Role[];
+  @ManyToMany(() => Role)
+  @JoinTable()
+  roles: Role[];
 }

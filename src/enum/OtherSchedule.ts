@@ -1,4 +1,4 @@
 export enum OtherSchedule {
-    'udp' = 'udp',
-    'cosObjectUrlRefresh' = 'cosObjectUrlRefresh',
+  'udp' = 'udp',
+  'cosObjectUrlRefresh' = 'cosObjectUrlRefresh',
 }

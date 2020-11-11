@@ -12,49 +12,49 @@ import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
 async function bootstrap(): Promise<void> {
-    const app = await NestFactory.create(AppModule, {
-        logger: __dev__ && new Logger(),
-    });
-    app.connectMicroservice({
-        transport: Transport.RMQ,
-        options: {
-            urls: RMQ_URLS,
-            queue: RMQ_QUEUE,
-            queueOptions: {
-                durable: false,
-            },
-            noAck: false,
-            prefetchCount: 1,
-        },
-    });
-    await app.startAllMicroservicesAsync();
-    app.enableCors({
-        origin: 'https://admin.powerfulyang.com',
-        credentials: true,
-    });
+  const app = await NestFactory.create(AppModule, {
+    logger: __dev__ && new Logger(),
+  });
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: RMQ_URLS,
+      queue: RMQ_QUEUE,
+      queueOptions: {
+        durable: false,
+      },
+      noAck: false,
+      prefetchCount: 1,
+    },
+  });
+  await app.startAllMicroservicesAsync();
+  app.enableCors({
+    origin: 'https://admin.powerfulyang.com',
+    credentials: true,
+  });
 
-    app.useGlobalPipes(new ValidationPipe());
-    app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
-    app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
+  app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
 
-    app.use(
-        rateLimit({
-            windowMs: 5 * 60 * 1000, // 15 minutes
-            max: 100, // limit each IP to 100 requests per windowMs
-        }),
-    );
-    app.use(cookieParser());
-    app.use(
-        csrf({
-            cookie: true,
-            value(req) {
-                return req.cookies._csrf_token;
-            },
-        }),
-    );
-    await app.listen(3001);
+  app.use(
+    rateLimit({
+      windowMs: 5 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    }),
+  );
+  app.use(cookieParser());
+  app.use(
+    csrf({
+      cookie: true,
+      value(req) {
+        return req.cookies._csrf_token;
+      },
+    }),
+  );
+  await app.listen(3001);
 }
 
 (async (): Promise<void> => {
-    await bootstrap();
+  await bootstrap();
 })();

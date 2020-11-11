@@ -10,25 +10,20 @@ import { UdpScheduleService } from './udp-schedule/udp-schedule.service';
 import { CosObjectUrlScheduleService } from './cos-object-url-schedule/cos-object-url-schedule.service';
 
 @Module({
-    imports: [
-        ScheduleModule.forRoot(),
-        UdpServerModule,
-        AssetModule,
-        TencentCloudCosModule,
-    ],
-    providers: [
-        PixivScheduleService,
-        InstagramScheduleService,
-        PinterestScheduleService,
-        UdpScheduleService,
-        CosObjectUrlScheduleService,
-    ],
-    exports: [
-        PixivScheduleService,
-        InstagramScheduleService,
-        PinterestScheduleService,
-        UdpScheduleService,
-        CosObjectUrlScheduleService,
-    ],
+  imports: [ScheduleModule.forRoot(), UdpServerModule, AssetModule, TencentCloudCosModule],
+  providers: [
+    PixivScheduleService,
+    InstagramScheduleService,
+    PinterestScheduleService,
+    UdpScheduleService,
+    CosObjectUrlScheduleService,
+  ],
+  exports: [
+    PixivScheduleService,
+    InstagramScheduleService,
+    PinterestScheduleService,
+    UdpScheduleService,
+    CosObjectUrlScheduleService,
+  ],
 })
 export class SchedulesModule {}
