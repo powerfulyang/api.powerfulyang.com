@@ -10,4 +10,9 @@ export class AssetController {
   list(@Pagination() pagination: Pagination) {
     return this.assetService.list(pagination);
   }
+
+  @Get('pHash/distance')
+  async pHashMap() {
+    return this.assetService.pHashMap();
+  }
 }
