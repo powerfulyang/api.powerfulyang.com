@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { hammingDistance } from '@powerfulyang/node-utils';
+import { Memoize } from '@powerfulyang/utils';
 
 @Injectable()
 export class AssetService {
@@ -16,6 +17,12 @@ export class AssetService {
     });
   }
 
+  @Memoize()
+  all() {
+    return this.assetDao.find();
+  }
+
+  @Memoize()
   async pHashMap() {
     const assets = await this.assetDao.find();
     const distanceMap = new Map();
