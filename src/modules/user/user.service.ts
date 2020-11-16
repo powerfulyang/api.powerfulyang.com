@@ -11,6 +11,7 @@ import { flatten, pick } from 'ramda';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Menu } from '@/entity/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
+import { CacheService } from '@/core/cache/cache.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,7 @@ export class UserService {
     private jwtService: JwtService,
     private logger: AppLogger,
     private readonly roleService: RoleService,
+    private cacheService: CacheService,
   ) {
     this.logger.setContext(UserService.name);
   }
@@ -108,5 +110,25 @@ export class UserService {
       parentEl.children = [...(parentEl.children || []), menu];
     });
     return root;
+  }
+
+  updatePassword(id: number, password: string) {
+    const user = new User();
+    user.passwordSalt = getRandomString();
+    user.password = this.generatePassword(user.passwordSalt, password);
+    return this.userDao.update(id, user);
+  }
+
+  async cacheUsers() {
+    const users = await this.userDao.find();
+    return Promise.all(
+      users.map((user) => {
+        return this.cacheService.hashSet('users', user.id, user);
+      }),
+    );
+  }
+
+  getCachedUsers(id: number) {
+    return this.cacheService.hashGet<User>('users', id);
   }
 }

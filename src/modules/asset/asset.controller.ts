@@ -11,6 +11,11 @@ export class AssetController {
     return this.assetService.list(pagination);
   }
 
+  @Get('all')
+  all() {
+    return this.assetService.all();
+  }
+
   @Get('pHash/distance')
   async pHashMap() {
     return this.assetService.pHashMap();

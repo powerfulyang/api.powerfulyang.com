@@ -28,4 +28,16 @@ describe('UserService', () => {
     const menus = await service.getUserMenus(1);
     expect(menus).toBeDefined();
   });
+
+  it('update password', async function () {
+    const results = await service.updatePassword(1, 'password');
+    expect(results).toHaveProperty('affected', 1);
+  });
+
+  it('cacheUsers', async function () {
+    const res = await service.cacheUsers();
+    expect(res.every((item) => item === 0)).toBeTruthy();
+    const cachedUser = await service.getCachedUsers(1);
+    expect(cachedUser).toBeDefined();
+  });
 });
