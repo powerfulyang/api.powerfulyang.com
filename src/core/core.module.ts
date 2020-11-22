@@ -10,6 +10,7 @@ import { Bucket } from '@/entity/bucket.entity';
 import { TencentCloudCosModule } from 'api/tencent-cloud-cos';
 import { CoreController } from '@/core/core.controller';
 import redisStore from 'cache-manager-redis-store';
+import { PostModule } from '@/modules/post/post.module';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
@@ -40,6 +41,7 @@ import { CacheService } from './cache/cache.service';
       port: 6379,
       ttl: Infinity,
     }),
+    PostModule,
   ],
   providers: [CoreService, CacheService],
   exports: [CoreService, CacheService],

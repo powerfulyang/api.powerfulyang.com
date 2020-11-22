@@ -1,6 +1,6 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Profile, Strategy } from 'passport-google-oauth20';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { AppLogger } from '@/common/logger/app.logger';
 
@@ -17,8 +17,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     this.logger.setContext(GoogleStrategy.name);
   }
 
-  validate(_accessToken: string, _refreshToken: string, profile: Profile, done: VerifyCallback) {
+  validate(_accessToken: string, _refreshToken: string, _param: any, profile: Profile) {
     this.logger.debug(`displayName->${profile.displayName}, openid->${profile.id}`);
-    done(undefined, profile);
+    return profile;
   }
 }
