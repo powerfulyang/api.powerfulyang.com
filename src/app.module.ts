@@ -22,6 +22,7 @@ import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
 import { AssetModule } from './modules/asset/asset.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
     }),
     UdpServerModule,
     TelegramBotModule,
+    PostModule,
     // TODO elasticsearch
   ],
   providers: [

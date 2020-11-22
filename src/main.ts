@@ -33,6 +33,8 @@ async function bootstrap(): Promise<void> {
     credentials: true,
   });
 
+  app.setGlobalPrefix('api');
+
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
   app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
