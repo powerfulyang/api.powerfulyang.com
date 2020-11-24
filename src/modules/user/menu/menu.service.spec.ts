@@ -25,4 +25,15 @@ describe('MenuService', () => {
     const menus = await service.menuDao.save([galleryListMenu, pHashMenu]);
     expect(menus).toBeDefined();
   });
+
+  it('patch menus 2020-11-24 16:29', async function () {
+    const postMenu = new Menu('post', '/post');
+    await service.menuDao.save(postMenu);
+    const postsMenu = new Menu('posts', '/post/list');
+    postsMenu.parent = postMenu;
+    const postCreateMenu = new Menu('post-create', '/post/create');
+    postCreateMenu.parent = postMenu;
+    const menus = await service.menuDao.save([postsMenu, postCreateMenu]);
+    expect(menus).toBeDefined();
+  });
 });
