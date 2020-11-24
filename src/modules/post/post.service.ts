@@ -21,7 +21,7 @@ export class PostService {
   }
 
   getAll(post?: PostDto) {
-    return this.postDao.find(post);
+    return this.postDao.find({ where: post, order: { id: 'DESC' } });
   }
 
   get(draft: Posts) {

@@ -26,7 +26,7 @@ export class CookieInterceptor implements NestInterceptor {
             sameSite: true,
             secure: __prod__ && true,
             domain: 'powerfulyang.com',
-            expires: new Date('2100-01-01 00:00:00Z'),
+            expires: new Date('2030-01-01 00:00:00Z'),
           });
         }
       }),
