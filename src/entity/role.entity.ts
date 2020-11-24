@@ -14,7 +14,7 @@ export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   roleName: string;
 
   @CreateDateColumn()

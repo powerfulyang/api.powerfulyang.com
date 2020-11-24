@@ -19,9 +19,12 @@ describe('RoleService', () => {
 
   it('setRoleMenu', async () => {
     const menus = await menuService.menuDao.find();
-    const role = new Role();
-    role.menus = menus;
-    role.roleName = 'admin';
+    let role = await service.roleDao.findOne({ roleName: 'admin' });
+    if (!role) {
+      role = new Role();
+      role.menus = menus;
+      role.roleName = 'admin';
+    }
     await service.setRoleMenu(role);
     expect(role).toBeDefined();
   });
