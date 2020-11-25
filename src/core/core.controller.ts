@@ -13,7 +13,10 @@ export class CoreController {
 
   @Get('posts')
   posts() {
-    return this.postService.getAll();
+    return this.postService.postDao.find({
+      select: ['id', 'title', 'createAt'],
+      order: { id: 'DESC' },
+    });
   }
 
   @Get('posts/:id')

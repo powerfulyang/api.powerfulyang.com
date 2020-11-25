@@ -215,7 +215,6 @@ declare module 'cos-nodejs-sdk-v5' {
     GrantWriteAcp?: string;
     GrantFullControl?: string;
     StorageClass?: string;
-    // TODO: 允许用户自定义的头部信息，将作为对象的元数据保存，大小限制2KB
     // x-cos-meta-*
     onTaskReady?: (taskId: string) => void;
     onProgress?: (progressData: {
@@ -262,7 +261,6 @@ declare module 'cos-nodejs-sdk-v5' {
     ContentDisposition: string;
     ContentEncoding: string;
     Expires: string;
-    // TODO: 用户自定义的元数据
     // x-cos-meta-*
     'x-cos-storage-class': string;
     NotModified: boolean;
@@ -285,7 +283,6 @@ declare module 'cos-nodejs-sdk-v5' {
     CopySourceIfUnmodifiedSince?: string;
     CopySourceIfMatch?: string;
     CopySourceIfNoneMatch?: string;
-    // TODO: 其他自定义的文件头部
     // x-cos-meta-*
   }
 

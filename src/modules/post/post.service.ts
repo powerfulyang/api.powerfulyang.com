@@ -6,7 +6,7 @@ import { PostDto } from '@/entity/dto/PostDto';
 
 @Injectable()
 export class PostService {
-  constructor(@InjectRepository(Posts) private postDao: Repository<Posts>) {}
+  constructor(@InjectRepository(Posts) readonly postDao: Repository<Posts>) {}
 
   createPost(post: Posts) {
     return this.postDao.save(post);
