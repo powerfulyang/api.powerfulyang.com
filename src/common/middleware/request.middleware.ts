@@ -11,19 +11,22 @@ export class RequestMiddleware implements NestMiddleware {
   }
 
   use(req: Request, _res: Response, next: () => void) {
-    next();
     const { headers, url, ip } = req;
-    const ipAddress = headers?.['x-real-ip'] || ip;
-    const log = `request url => [${url}]; request ip => [${ipAddress}]`;
+    const requestIp = headers?.['x-real-ip'] || ip;
+    const log = `request url => [${url}]; request ip => [${requestIp}]`;
     this.logger.info(log);
-    const ipInfo = findIpInfo(ipAddress);
+    const ipInfo = findIpInfo(requestIp);
+    let requestAddress = '';
     if (ipInfo.code === 0) {
       const { city_name, country_name, isp_domain, owner_domain, region_name } = ipInfo.data;
-      const ipLog = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
-      this.logger.info(ipLog);
-      this.telegramBotService.sendToMe(`${log} | ${ipLog}`).catch((e) => {
+      const address = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
+      requestAddress = address;
+      this.logger.info(address);
+      this.telegramBotService.sendToMe(`${log} | ${address}`).catch((e) => {
         this.logger.error('telegram send error', e);
       });
     }
+    Reflect.set(req, 'extend', { ip: requestIp, address: requestAddress });
+    next();
   }
 }

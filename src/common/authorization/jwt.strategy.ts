@@ -7,6 +7,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { Authorization } from '@/constants/constants';
 import { jwtSecretConfig } from '@/configuration/jwt.config';
 import { UserService } from '@/modules/user/user.service';
+import { ReqExtend } from '@/type/ReqExtend';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -22,16 +23,19 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         },
       ]),
       secretOrKey: jwtSecretConfig(),
+      passReqToCallback: true,
     });
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate(user: User & { iat: number; exp: number }) {
+  async validate({ extend }: ReqExtend, user: User & { iat: number; exp: number }) {
     // to check user status;
     this.logger.debug(`[user id is ${user.id}]-> query current!`);
-    return {
-      ...(await this.userService.queryUserInfo(user.id)),
-      exp: user.exp,
-    };
+    const resUser = await this.userService.getCachedUsers(user.id);
+    await this.userService.userDao.update(user.id, {
+      lastIp: extend.ip,
+      lastAddress: extend.address,
+    });
+    return Object.assign(resUser, { exp: user.exp });
   }
 }

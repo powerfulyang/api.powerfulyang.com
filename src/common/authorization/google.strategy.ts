@@ -18,7 +18,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   validate(_accessToken: string, _refreshToken: string, _param: any, profile: Profile) {
-    this.logger.debug(`displayName->${profile.displayName}, openid->${profile.id}`);
+    this.logger.info(`displayName->${profile.displayName}, openid->${profile.id}`);
     return profile;
   }
 }

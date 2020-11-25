@@ -12,6 +12,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { Menu } from '@/entity/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 
 @Injectable()
 export class UserService {
@@ -39,7 +40,7 @@ export class UserService {
       user.googleOpenId = openid;
       user.roles = [await this.roleService.getDefaultRole()];
       this.generateDefaultPassword(user);
-      user = await this.userDao.save(user);
+      await this.createUser(user);
     }
     return this.generateAuthorization(user);
   }
@@ -123,12 +124,18 @@ export class UserService {
     const users = await this.userDao.find();
     return Promise.all(
       users.map((user) => {
-        return this.cacheService.hashSet('users', user.id, user);
+        return this.cacheService.hashSet(REDIS_KEYS.USERS, user.id, user);
       }),
     );
   }
 
   getCachedUsers(id: number) {
-    return this.cacheService.hashGet<User>('users', id);
+    return this.cacheService.hashGet<User>(REDIS_KEYS.USERS, id);
+  }
+
+  async createUser(user: User) {
+    await this.userDao.save(user);
+    // add to cache
+    this.cacheService.hashSet(REDIS_KEYS.USERS, user.id, user);
   }
 }

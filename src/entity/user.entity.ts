@@ -29,6 +29,12 @@ export class User {
   @Column()
   avatar: string;
 
+  @Column({ default: '' })
+  lastIp: string;
+
+  @Column({ default: '' })
+  lastAddress: string;
+
   @CreateDateColumn()
   createAt!: Date;
 
