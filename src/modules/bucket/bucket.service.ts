@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
 import { find } from 'ramda';
 import { produce } from 'immer';
+import { Memoize } from '@powerfulyang/utils';
 
 @Injectable()
 export class BucketService {
@@ -76,6 +77,7 @@ export class BucketService {
     return this.bucketDao.find();
   }
 
+  @Memoize()
   list() {
     return this.fetchAllBuckets();
   }
