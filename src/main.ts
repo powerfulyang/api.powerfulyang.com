@@ -18,7 +18,7 @@ async function bootstrap(): Promise<void> {
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      urls: RMQ_URLS,
+      urls: RMQ_URLS(),
       queue: RMQ_QUEUE,
       queueOptions: {
         durable: false,

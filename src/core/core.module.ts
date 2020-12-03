@@ -11,6 +11,7 @@ import { TencentCloudCosModule } from 'api/tencent-cloud-cos';
 import { CoreController } from '@/core/core.controller';
 import redisStore from 'cache-manager-redis-store';
 import { PostModule } from '@/modules/post/post.module';
+import { redisConfig } from '@/configuration/redis.config';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
@@ -22,7 +23,7 @@ import { CacheService } from './cache/cache.service';
         name: MICROSERVICE_NAME,
         transport: Transport.RMQ,
         options: {
-          urls: RMQ_URLS,
+          urls: RMQ_URLS(),
           queue: RMQ_QUEUE,
           queueOptions: {
             durable: false,
@@ -37,8 +38,7 @@ import { CacheService } from './cache/cache.service';
     TencentCloudCosModule,
     CacheModule.register({
       store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      ...redisConfig(),
       ttl: Infinity,
     }),
     PostModule,
