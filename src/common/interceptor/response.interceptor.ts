@@ -16,9 +16,10 @@ export class ResponseInterceptor implements NestInterceptor {
 
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = _context.switchToHttp();
+    this.logger.debug(`handle in ${ResponseInterceptor.name}`);
     return next.handle().pipe(
       tap(() => {
-        this.logger.debug(`in ${ResponseInterceptor.name}`);
+        this.logger.debug(`tap in ${ResponseInterceptor.name}`);
       }),
       tap(async () => {
         // check token expire time;
