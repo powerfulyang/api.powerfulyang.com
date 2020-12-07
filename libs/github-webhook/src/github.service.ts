@@ -16,7 +16,7 @@ export class GithubService {
 
   dealWebHook<T extends WebhookPayload>(payload: Payload<T>, type: EventType) {
     switch (type) {
-      // TODO
+      // TODO format send msg
       default: {
         return this.sendToMe(payload, type);
       }
