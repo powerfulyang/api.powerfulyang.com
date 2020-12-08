@@ -27,4 +27,8 @@ export class PostService {
   get(draft: Posts) {
     return this.postDao.findOneOrFail(draft);
   }
+
+  publicRead(post: Posts) {
+    return this.postDao.findOneOrFail(post);
+  }
 }
