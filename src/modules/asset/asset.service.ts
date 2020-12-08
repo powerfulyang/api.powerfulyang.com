@@ -17,7 +17,6 @@ export class AssetService {
     });
   }
 
-  @Memoize()
   all() {
     return this.assetDao.find();
   }

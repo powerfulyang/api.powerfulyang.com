@@ -7,7 +7,7 @@ import { Profile } from 'passport-google-oauth20';
 import { getStringVal } from '@/utils/getStringVal';
 import { getRandomString, sha1 } from '@powerfulyang/node-utils';
 import { UserDto } from '@/entity/dto/UserDto';
-import { flatten, pick } from 'ramda';
+import { flatten, groupBy, map, pick } from 'ramda';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Menu } from '@/entity/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
@@ -124,21 +124,22 @@ export class UserService {
   }
 
   async cacheUsers() {
+    this.cacheService.del(REDIS_KEYS.USERS);
     const users = await this.userDao.find();
-    return Promise.all(
-      users.map((user) => {
-        return this.cacheService.hashSet(REDIS_KEYS.USERS, user.id, user);
-      }),
+    const usersMap = groupBy<User>((user) => String(user.id), users);
+    return this.cacheService.hMSet(
+      REDIS_KEYS.USERS,
+      map((user) => JSON.stringify(user.pop()), usersMap),
     );
   }
 
   getCachedUsers(id: number) {
-    return this.cacheService.hashGet<User>(REDIS_KEYS.USERS, id);
+    return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
   }
 
   async createUser(user: User) {
     await this.userDao.save(user);
     // add to cache
-    this.cacheService.hashSet(REDIS_KEYS.USERS, user.id, user);
+    this.cacheService.hSet(REDIS_KEYS.USERS, user.id, user);
   }
 }
