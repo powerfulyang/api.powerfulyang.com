@@ -24,6 +24,6 @@ export class CoreController {
   @Get('posts/:id')
   @PathViewCount()
   post(@Param() post: Posts) {
-    return this.postService.get(post);
+    return this.postService.publicRead(post);
   }
 }
