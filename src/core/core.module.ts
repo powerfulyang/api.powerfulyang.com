@@ -12,6 +12,7 @@ import { CoreController } from '@/core/core.controller';
 import redisStore from 'cache-manager-redis-store';
 import { PostModule } from '@/modules/post/post.module';
 import { redisConfig } from '@/configuration/redis.config';
+import { PathViewCountModule } from '@/modules/path.view.count/path.view.count.module';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
@@ -42,6 +43,7 @@ import { CacheService } from './cache/cache.service';
       ttl: Infinity,
     }),
     PostModule,
+    PathViewCountModule,
   ],
   providers: [CoreService, CacheService],
   exports: [CoreService, CacheService],

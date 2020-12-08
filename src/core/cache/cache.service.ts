@@ -2,6 +2,7 @@ import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { RedisClient } from 'redis';
 import { promisify } from 'util';
 import { AppLogger } from '@/common/logger/app.logger';
+import { RedisValue } from '@/type/RedisValue';
 
 @Injectable()
 export class CacheService {
@@ -18,13 +19,29 @@ export class CacheService {
     this.redisClient = this.redisStore.store.getClient();
   }
 
-  hashSet<T = any>(hash: string, key: string | number, val: T) {
+  hSet<T = any>(hash: string, hKey: string | number, val: T) {
     const value = JSON.stringify(val);
-    return promisify(<any>this.redisClient.hset).call(this.redisClient, hash, key, value);
+    return promisify(<any>this.redisClient.hset).call(this.redisClient, hash, hKey, value);
   }
 
-  async hashGet<T = any>(hash: string, key: string | number): Promise<T> {
-    const val = await promisify(this.redisClient.hget).call(this.redisClient, hash, <any>key);
+  async hGet<T = any>(hash: string, hKey: string | number): Promise<T> {
+    const val = await promisify(this.redisClient.hget).call(this.redisClient, hash, <any>hKey);
     return JSON.parse(val);
+  }
+
+  hMSet(hash: string, map: Record<string, RedisValue>) {
+    return promisify(<any>this.redisClient.hmset).call(this.redisClient, hash, map);
+  }
+
+  sAdd(sKey: string, arr: RedisValue[] | RedisValue) {
+    return promisify(<any>this.redisClient.sadd).call(this.redisClient, sKey, arr);
+  }
+
+  sCard(sKey: string) {
+    return promisify(this.redisClient.scard).call(this.redisClient, sKey);
+  }
+
+  del(key: string) {
+    return promisify(<any>this.redisClient.del).call(this.redisClient, key);
   }
 }
