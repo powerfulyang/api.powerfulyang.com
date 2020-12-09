@@ -15,10 +15,7 @@ export class CoreController {
   @Get('posts')
   @PathViewCount()
   posts() {
-    return this.postService.postDao.find({
-      select: ['id', 'title', 'createAt'],
-      order: { id: 'DESC' },
-    });
+    return this.postService.publicList();
   }
 
   @Get('posts/:id')

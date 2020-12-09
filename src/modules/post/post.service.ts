@@ -31,4 +31,12 @@ export class PostService {
   publicRead(post: Posts) {
     return this.postDao.findOneOrFail(post);
   }
+
+  async publicList() {
+    const posts = await this.postDao.find({
+      select: ['id', 'title', 'createAt'],
+      order: { id: 'DESC' },
+    });
+    return { posts };
+  }
 }
