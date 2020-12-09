@@ -16,6 +16,7 @@ import { UdpServerModule } from 'api/udp-server';
 import { TelegramBotModule } from 'api/telegram-bot';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
+import { PathViewCountModule } from '@/modules/path.view.count/path.view.count.module';
 import { mysqlConfig } from './configuration/mysql.config';
 import { UploadAssetModule } from './microservice/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
@@ -23,6 +24,7 @@ import { BucketModule } from './modules/bucket/bucket.module';
 import { AssetModule } from './modules/asset/asset.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { PostModule } from './modules/post/post.module';
+import { PublicModule } from './public/public.module';
 
 @Module({
   imports: [
@@ -48,7 +50,8 @@ import { PostModule } from './modules/post/post.module';
     UdpServerModule,
     TelegramBotModule,
     PostModule,
-    // TODO elasticsearch
+    PublicModule,
+    PathViewCountModule,
   ],
   providers: [
     {

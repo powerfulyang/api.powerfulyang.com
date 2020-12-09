@@ -44,7 +44,9 @@ export class PathViewCountService {
     const result = await this.cacheService.sAdd(redisKey, ipLong);
     const viewCount = await this.cacheService.sCard(redisKey);
     if (result > 0) {
-      this.pathViewCountDao.insert({ ip: ipLong, path }).catch();
+      this.pathViewCountDao.insert({ ip: ipLong, path }).catch(() => {
+        this.logger.error(`error insert: ip=>${ipLong}, path=>${path}`);
+      });
     }
     return viewCount;
   }

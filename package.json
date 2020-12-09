@@ -26,6 +26,8 @@
     "@nestjs/schedule": "^0.4.1",
     "@nestjs/serve-static": "^2.1.3",
     "@nestjs/typeorm": "^7.1.5",
+    "@nestjs/elasticsearch": "^7.1.0",
+    "@elastic/elasticsearch": "^7.10.0",
     "@powerfulyang/node-utils": "^0.2.4",
     "@powerfulyang/utils": "^0.7.4",
     "@types/passport-google-oauth20": "^2.0.4",
