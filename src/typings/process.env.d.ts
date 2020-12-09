@@ -17,5 +17,8 @@ declare namespace NodeJS {
 
     REDIS_HOST: string;
     REDIS_PORT: string;
+
+    ELASTICSEARCH_HOST: string;
+    ELASTICSEARCH_PORT: string;
   }
 }

@@ -1,11 +1,14 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
-import { Posts } from '@/entity/posts.entity';
 import { PathViewCount } from '@/common/decorator/path-view-count.decorator';
+import { Posts } from '@/entity/posts.entity';
+import { AppLogger } from '@/common/logger/app.logger';
 
-@Controller()
-export class CoreController {
-  constructor(private postService: PostService) {}
+@Controller('public')
+export class PublicController {
+  constructor(private postService: PostService, private logger: AppLogger) {
+    this.logger.setContext(PublicController.name);
+  }
 
   @Get('hello')
   hello() {
