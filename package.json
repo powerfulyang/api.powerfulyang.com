@@ -63,7 +63,8 @@
     "socks5-https-client": "^1.2.1",
     "typeorm": "^0.2.29",
     "winston": "^3.3.3",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "nodejieba": "^2.5.1"
   },
   "devDependencies": {
     "@powerfulyang/lint": "^0.2.4",
