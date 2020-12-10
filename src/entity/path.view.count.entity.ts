@@ -14,7 +14,7 @@ export class PathViewCount {
   @Column()
   path: string;
 
-  @Column()
+  @Column({ type: 'bigint' })
   ip: number;
 
   @CreateDateColumn()
