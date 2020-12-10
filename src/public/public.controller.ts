@@ -1,12 +1,12 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { PostService } from '@/modules/post/post.service';
 import { PathViewCount } from '@/common/decorator/path-view-count.decorator';
 import { Posts } from '@/entity/posts.entity';
 import { AppLogger } from '@/common/logger/app.logger';
+import { PublicService } from '@/public/public.service';
 
 @Controller()
 export class PublicController {
-  constructor(private postService: PostService, private logger: AppLogger) {
+  constructor(private publicService: PublicService, private logger: AppLogger) {
     this.logger.setContext(PublicController.name);
   }
 
@@ -18,12 +18,12 @@ export class PublicController {
   @Get('posts')
   @PathViewCount()
   posts() {
-    return this.postService.publicList();
+    return this.publicService.getAllPublicPosts();
   }
 
   @Get('posts/:id')
   @PathViewCount()
   post(@Param() post: Posts) {
-    return this.postService.publicRead(post);
+    return this.publicService.getPublicPostById(post);
   }
 }

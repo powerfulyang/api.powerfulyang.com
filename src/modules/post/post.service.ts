@@ -29,7 +29,10 @@ export class PostService {
   }
 
   publicRead(post: Posts) {
-    return this.postDao.findOneOrFail(post);
+    return this.postDao.findOneOrFail({
+      ...post,
+      relations: ['user'],
+    });
   }
 
   async publicList() {
