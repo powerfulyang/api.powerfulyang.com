@@ -30,7 +30,7 @@ export class PostService {
 
   publicRead(post: Posts) {
     return this.postDao.findOneOrFail({
-      ...post,
+      where: { id: post.id },
       relations: ['user'],
     });
   }
