@@ -23,7 +23,7 @@ export class CookieInterceptor implements NestInterceptor {
           const response = ctx.getResponse<Response>();
           response.cookie(data.cookie[0], data.cookie[1], {
             httpOnly: true,
-            sameSite: true,
+            sameSite: __prod__ && true,
             secure: __prod__ && true,
             domain: 'powerfulyang.com',
             expires: new Date('2030-01-01 00:00:00Z'),
