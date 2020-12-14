@@ -9,6 +9,9 @@ export class PostService {
   constructor(@InjectRepository(Posts) readonly postDao: Repository<Posts>) {}
 
   createPost(post: Posts) {
+    if (post.id) {
+      return this.postDao.update(post.id, post);
+    }
     return this.postDao.save(post);
   }
 

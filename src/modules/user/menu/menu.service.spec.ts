@@ -31,7 +31,7 @@ describe('MenuService', () => {
     await service.menuDao.save(postMenu);
     const postsMenu = new Menu('posts', '/post/list');
     postsMenu.parent = postMenu;
-    const postCreateMenu = new Menu('post-create', '/post/create');
+    const postCreateMenu = new Menu('post-publish', '/post/publish');
     postCreateMenu.parent = postMenu;
     const menus = await service.menuDao.save([postsMenu, postCreateMenu]);
     expect(menus).toBeDefined();
