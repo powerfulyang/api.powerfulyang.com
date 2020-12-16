@@ -8,9 +8,12 @@ import { PostDto } from '@/entity/dto/PostDto';
 export class PostService {
   constructor(@InjectRepository(Posts) readonly postDao: Repository<Posts>) {}
 
-  createPost(post: Posts) {
+  async createPost(post: Posts) {
     if (post.id) {
-      return this.postDao.update(post.id, post);
+      const findPost = await this.postDao.findOneOrFail(post.id);
+      findPost.content = post.content;
+      findPost.tags = post.tags;
+      return this.postDao.save(findPost);
     }
     return this.postDao.save(post);
   }
