@@ -11,10 +11,7 @@ import { CatchFilter } from '@/common/filter/catch.filter';
 import { AppModule } from './app.module';
 import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
-if (__dev__) {
-  // eslint-disable-next-line import/no-extraneous-dependencies,global-require
-  require('source-map-support').install();
-}
+require('source-map-support').install();
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
