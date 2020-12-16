@@ -14,6 +14,8 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const statusCode = exception.getStatus();
+    // 出现错误 从cookie中删除_csrf  TODO 先简单处理
+    response.removeHeader('set-cookie');
     response.status(statusCode).json({
       ...(exception.getResponse() as object),
       timestamp: new Date().toISOString(),

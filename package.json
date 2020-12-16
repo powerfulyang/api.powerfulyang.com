@@ -66,7 +66,8 @@
     "typeorm": "^0.2.29",
     "winston": "^3.3.3",
     "xml2js": "^0.4.23",
-    "nodejieba": "^2.5.1"
+    "nodejieba": "^2.5.1",
+    "source-map-support": "^0.5.19"
   },
   "devDependencies": {
     "@powerfulyang/lint": "^0.2.4",
@@ -94,7 +95,6 @@
     "@types/express-rate-limit": "^5.1.0",
     "@types/express-session": "^1.17.2",
     "ts-node": "^9.0.0",
-    "tsconfig-paths": "^3.9.0",
-    "source-map-support": "^0.5.19"
+    "tsconfig-paths": "^3.9.0"
   }
 }
