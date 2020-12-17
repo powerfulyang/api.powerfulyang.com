@@ -31,7 +31,7 @@ async function bootstrap(): Promise<void> {
   });
   await app.startAllMicroservicesAsync();
   app.enableCors({
-    origin: 'https://admin.powerfulyang.com',
+    origin: 'http://dev.powerfulyang.com:3000',
     credentials: true,
   });
 
