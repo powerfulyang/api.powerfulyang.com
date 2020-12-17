@@ -21,7 +21,7 @@ export class ResponseInterceptor implements NestInterceptor {
       tap(() => {
         this.logger.debug(`tap in ${ResponseInterceptor.name}`);
       }),
-      tap(async () => {
+      tap(() => {
         // check token expire time;
         const request = ctx.getRequest<{
           user: { exp: number } & User;
