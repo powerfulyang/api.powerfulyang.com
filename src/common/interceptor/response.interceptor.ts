@@ -31,8 +31,8 @@ export class ResponseInterceptor implements NestInterceptor {
           const { user } = request;
           const ValidPeriod = user.exp - Date.now() / 1000;
           this.logger.debug(`token 剩余有效期 ${ValidPeriod}`);
-          if (ValidPeriod < 10 * 60) {
-            // 小于10分钟 refresh token
+          if (ValidPeriod < 6 * 60 * 60) {
+            // 小于6小时 refresh token
             const authorization = this.userService.generateAuthorization(user);
             response.cookie(Authorization, authorization);
           }
