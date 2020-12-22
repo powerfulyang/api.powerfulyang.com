@@ -20,7 +20,7 @@ import { RoleController } from './role/role.controller';
         return {
           secret: jwtSecretConfig(),
           signOptions: {
-            expiresIn: '30m',
+            expiresIn: '1d',
           },
         };
       },
