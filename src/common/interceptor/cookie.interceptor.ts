@@ -26,7 +26,7 @@ export class CookieInterceptor implements NestInterceptor {
             sameSite: __prod__ && true,
             secure: __prod__ && true,
             domain: 'powerfulyang.com',
-            maxAge: 24 * 60 * 60,
+            maxAge: 24 * 60 * 60 * 1000,
           });
         }
       }),
