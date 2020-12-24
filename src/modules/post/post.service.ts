@@ -13,6 +13,7 @@ export class PostService {
       const findPost = await this.postDao.findOneOrFail(post.id);
       findPost.content = post.content;
       findPost.tags = post.tags;
+      findPost.title = post.title;
       return this.postDao.save(findPost);
     }
     return this.postDao.save(post);
