@@ -14,11 +14,16 @@ declare namespace NodeJS {
 
     RABBIT_MQ_HOST: string;
     RABBIT_MQ_PORT: string;
+    RABBIT_MQ_USER: string;
+    RABBIT_MQ_PASS: string;
 
     REDIS_HOST: string;
     REDIS_PORT: string;
+    REDIS_PASS: string;
 
     ELASTICSEARCH_HOST: string;
     ELASTICSEARCH_PORT: string;
+    ELASTICSEARCH_USER: string;
+    ELASTICSEARCH_PASS: string;
   }
 }

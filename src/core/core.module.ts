@@ -1,6 +1,5 @@
 import { CacheModule, Global, Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MICROSERVICE_NAME, RMQ_QUEUE, RMQ_URLS } from '@/constants/constants';
+import { ClientsModule } from '@nestjs/microservices';
 import { PixivBotModule } from 'api/pixiv-bot';
 import { InstagramBotModule } from 'api/instagram-bot';
 import { PinterestRssModule } from 'api/pinterest-rss';
@@ -12,35 +11,24 @@ import redisStore from 'cache-manager-redis-store';
 import { redisConfig } from '@/configuration/redis.config';
 import { SearchService } from '@/core/search/search.service';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
-import { elasticsearchConfig } from '@/configuration/elasticsearchConfig';
+import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
+import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
 @Global()
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: MICROSERVICE_NAME,
-        transport: Transport.RMQ,
-        options: {
-          urls: RMQ_URLS(),
-          queue: RMQ_QUEUE,
-          queueOptions: {
-            durable: false,
-          },
-        },
-      },
-    ]),
+    ClientsModule.register([rabbitmqClientConfig()]),
     PixivBotModule,
     InstagramBotModule,
     PinterestRssModule,
     TypeOrmModule.forFeature([Asset, Bucket]),
     TencentCloudCosModule,
-    CacheModule.register({
-      store: redisStore,
-      ...redisConfig(),
-      ttl: Infinity,
+    CacheModule.registerAsync({
+      useFactory: () => {
+        return { store: redisStore, ...redisConfig(), ttl: Infinity };
+      },
     }),
     ElasticsearchModule.registerAsync({
       useFactory: () => {
