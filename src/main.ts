@@ -1,5 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
@@ -8,8 +7,8 @@ import rateLimit from 'express-rate-limit';
 import csrf from 'csurf';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { CatchFilter } from '@/common/filter/catch.filter';
+import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { AppModule } from './app.module';
-import { RMQ_QUEUE, RMQ_URLS } from './constants/constants';
 
 require('source-map-support').install();
 
@@ -17,18 +16,7 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
     logger: __dev__ && new Logger(),
   });
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: RMQ_URLS(),
-      queue: RMQ_QUEUE,
-      queueOptions: {
-        durable: false,
-      },
-      noAck: false,
-      prefetchCount: 1,
-    },
-  });
+  app.connectMicroservice(rabbitmqServerConfig());
   await app.startAllMicroservicesAsync();
   app.enableCors({
     origin: 'https://admin.powerfulyang.com',
