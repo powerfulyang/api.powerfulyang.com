@@ -14,8 +14,6 @@ declare namespace NodeJS {
 
     RABBIT_MQ_HOST: string;
     RABBIT_MQ_PORT: string;
-    RABBIT_MQ_USER: string;
-    RABBIT_MQ_PASS: string;
 
     REDIS_HOST: string;
     REDIS_PORT: string;

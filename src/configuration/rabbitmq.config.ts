@@ -5,9 +5,7 @@ import { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
 const getRmqHost = (): RmqUrl => {
   const hostname = process.env.RABBIT_MQ_HOST;
   const port = Number(process.env.RABBIT_MQ_PORT);
-  const username = process.env.RABBIT_MQ_USER;
-  const password = process.env.RABBIT_MQ_PASS;
-  return { hostname, port, username, password };
+  return { hostname, port };
 };
 
 export const rabbitmqClientConfig = (): RmqOptions & { name: string } => {
