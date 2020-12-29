@@ -1,9 +1,13 @@
-import { Global, Module } from '@nestjs/common';
-import { ProxyFetchService } from './proxy-fetch.service';
+import { DynamicModule } from '@nestjs/common';
+import { ProxyFetchService } from 'api/proxy-fetch/proxy-fetch.service';
 
-@Global()
-@Module({
-  providers: [ProxyFetchService],
-  exports: [ProxyFetchService],
-})
-export class ProxyFetchModule {}
+export class ProxyFetchModule {
+  static forRoot(): DynamicModule {
+    return {
+      module: ProxyFetchModule,
+      global: true,
+      providers: [ProxyFetchService],
+      exports: [ProxyFetchService],
+    };
+  }
+}

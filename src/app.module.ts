@@ -33,7 +33,7 @@ import { PublicModule } from './public/public.module';
     }),
     LoggerModule,
     TypeOrmModule.forRoot(mysqlConfig()),
-    ProxyFetchModule,
+    ProxyFetchModule.forRoot(),
     StrategyModule,
     CoreModule,
     PassportModule,

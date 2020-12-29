@@ -8,7 +8,7 @@ describe('TelegramBotService', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ProxyFetchModule, TelegramBotModule],
+      imports: [ProxyFetchModule.forRoot(), TelegramBotModule],
     }).compile();
 
     service = module.get<TelegramBotService>(TelegramBotService);
