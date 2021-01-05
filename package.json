@@ -41,7 +41,6 @@
     "cos-nodejs-sdk-v5": "^2.8.3",
     "csurf": "^1.11.0",
     "dayjs": "^1.9.7",
-    "dgram": "^1.0.1",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.3",
     "express-session": "^1.17.1",
