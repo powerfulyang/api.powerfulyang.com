@@ -21,6 +21,11 @@ export class PublicController {
     return this.publicService.getAllPublicPosts();
   }
 
+  @Get('posts/tags')
+  tags() {
+    return this.publicService.postsTags();
+  }
+
   @Get('posts/:id')
   @PathViewCount()
   post(@Param() post: Posts) {

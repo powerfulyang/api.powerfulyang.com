@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PublicService } from './public.service';
+import { AppModule } from '@/app.module';
 
 describe('PublicService', () => {
   let service: PublicService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PublicService],
+      imports: [AppModule],
     }).compile();
 
     service = module.get<PublicService>(PublicService);
@@ -14,5 +15,10 @@ describe('PublicService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('all tags', async () => {
+    const countTags = await service.postsTags();
+    expect(countTags).toBeDefined();
   });
 });
