@@ -17,4 +17,13 @@ describe('core service test', function () {
   it('should getBucket', async function () {
     await expect(service.getBotBucket(AssetBucket.pixiv)).resolves.toBeDefined();
   });
+
+  it('notifyCos', async function () {
+    const res = await service.notifyCos({
+      sha1: '11111',
+      suffix: '2222',
+      bucketName: AssetBucket.gallery,
+    });
+    expect(res).toBeDefined();
+  });
 });

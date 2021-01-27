@@ -49,4 +49,8 @@ export class PostService {
     });
     return { posts };
   }
+
+  tagsArray() {
+    return this.postDao.find({ select: ['tags'] });
+  }
 }
