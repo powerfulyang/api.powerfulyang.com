@@ -8,8 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Asset } from '@/entity/asset.entity';
-import { BucketRegion } from 'cos-nodejs-sdk-v5';
-import { GetBucketCorsData, GetBucketRefererData } from 'api/tencent-cloud-cos/type';
+import { BucketRegion, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
 
 @Entity('bucket')
 @Index(['bucketName', 'bucketRegion'], { unique: true })

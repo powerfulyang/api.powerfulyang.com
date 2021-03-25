@@ -8,6 +8,7 @@ import { find } from 'ramda';
 import { produce } from 'immer';
 import { Memoize } from '@powerfulyang/utils';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
 
 @Injectable()
 export class BucketService {
@@ -33,21 +34,21 @@ export class BucketService {
         Region: bucket.bucketRegion,
       });
     });
-    const listBucketAcl = await Promise.all(listBucketAclPromises);
+    const listBucketAcl: BucketACLDetailResult[] = await Promise.all(listBucketAclPromises);
     const listBucketCorsPromises = list.map((bucket) => {
       return this.tencentCloudCosService.getBucketCors({
         Bucket: bucket.bucketName,
         Region: bucket.bucketRegion,
       });
     });
-    const listBucketCors = await Promise.all(listBucketCorsPromises);
+    const listBucketCors: GetBucketCorsData[] = await Promise.all(listBucketCorsPromises);
     const listBucketRefererPromises = list.map((bucket) => {
       return this.tencentCloudCosService.getBucketReferer({
         Bucket: bucket.bucketName,
         Region: bucket.bucketRegion,
       });
     });
-    const listBucketReferer = await Promise.all(listBucketRefererPromises);
+    const listBucketReferer: GetBucketRefererData[] = await Promise.all(listBucketRefererPromises);
     const arr = list.map((bucket, index) => ({
       ...bucket,
       acl: listBucketAcl[index].ACL,
