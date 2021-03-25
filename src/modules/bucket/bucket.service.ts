@@ -7,6 +7,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { find } from 'ramda';
 import { produce } from 'immer';
 import { Memoize } from '@powerfulyang/utils';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
 export class BucketService {
@@ -32,33 +33,30 @@ export class BucketService {
         Region: bucket.bucketRegion,
       });
     });
-    const listBucketAcl = (await Promise.all(listBucketAclPromises)) as any;
+    const listBucketAcl = await Promise.all(listBucketAclPromises);
     const listBucketCorsPromises = list.map((bucket) => {
       return this.tencentCloudCosService.getBucketCors({
         Bucket: bucket.bucketName,
         Region: bucket.bucketRegion,
       });
     });
-    const listBucketCors = (await Promise.all(listBucketCorsPromises)) as any;
+    const listBucketCors = await Promise.all(listBucketCorsPromises);
     const listBucketRefererPromises = list.map((bucket) => {
       return this.tencentCloudCosService.getBucketReferer({
         Bucket: bucket.bucketName,
         Region: bucket.bucketRegion,
       });
     });
-    const listBucketReferer = (await Promise.all(listBucketRefererPromises)) as any;
+    const listBucketReferer = await Promise.all(listBucketRefererPromises);
     const arr = list.map((bucket, index) => ({
       ...bucket,
       acl: listBucketAcl[index].ACL,
       cors: listBucketCors[index].CORSRules,
-      referer: produce(
-        listBucketReferer[index].RefererConfiguration,
-        (draft: { DomainList: { Domains: any[] } }) => {
-          draft.DomainList.Domains = draft.DomainList.Domains.map((domain) =>
-            Object.values(domain).join(''),
-          );
-        },
-      ),
+      referer: produce(listBucketReferer[index].RefererConfiguration, (draft) => {
+        draft.DomainList.Domains = draft.DomainList.Domains.map((domain) =>
+          Object.values(domain).join(''),
+        );
+      }),
     }));
     this.logger.debug(arr);
     const bs: Bucket[] = await this.bucketDao.find();
@@ -69,9 +67,12 @@ export class BucketService {
         bs,
       );
       if (bucket) {
-        await this.bucketDao.update({ bucketName, bucketRegion }, b);
+        await this.bucketDao.update(
+          { bucketName, bucketRegion },
+          b as QueryDeepPartialEntity<Bucket>,
+        );
       } else {
-        await this.bucketDao.insert(b);
+        await this.bucketDao.insert(b as QueryDeepPartialEntity<Bucket>);
       }
     }
     return this.bucketDao.find();
