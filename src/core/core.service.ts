@@ -67,19 +67,19 @@ export class CoreService {
         }
       }
       const bucketEntity = await this.bucketDao.findOne({
-        bucketName: bucket,
+        bucketName: bucket as AssetBucket,
         bucketRegion: Region,
       });
       if (!bucketEntity) {
         await this.bucketDao.insert({
-          bucketName: bucket,
+          bucketName: bucket as AssetBucket,
           bucketRegion: Region,
         });
       }
     }
   }
 
-  getBotBucket(bucketName: string) {
+  getBotBucket(bucketName: AssetBucket) {
     return this.bucketDao.findOneOrFail({
       bucketName,
       bucketRegion: Region,
@@ -101,6 +101,26 @@ export class CoreService {
       res = await this.fetchImgBuffer(newUrl, headers);
     }
     return res;
+  }
+
+  async initManualUpload(buffer: Buffer) {
+    const asset = new Asset();
+    asset.bucket = await this.getBotBucket(AssetBucket.upload);
+    asset.sha1 = sha1(buffer);
+    asset.fileSuffix = getImageSuffix(buffer);
+    asset.pHash = await pHash(buffer);
+    writeFileSync(join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix), buffer);
+    try {
+      await this.assetDao.insert(asset);
+      this.notifyCos({
+        sha1: asset.sha1,
+        suffix: asset.fileSuffix,
+        bucketName: asset.bucket.bucketName,
+      });
+    } catch (e) {
+      this.logger.error(e);
+    }
+    return asset;
   }
 
   async botBaseService(bucketName: AssetBucket) {

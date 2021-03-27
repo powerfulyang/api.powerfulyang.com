@@ -4,7 +4,6 @@ import COS, {
   BucketContentsOptions,
   BucketListResult,
   BucketOptions,
-  BucketRegion,
   DeleteMultipleObjectOptions,
   DeleteObjectOptions,
   GetBucketCorsOptions,
@@ -15,6 +14,7 @@ import COS, {
   UploadBucketObjectOptions,
 } from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
+import { BucketRegion } from 'api/tencent-cloud-cos/cos-nodejs-sdk-v5';
 
 @Injectable()
 export class TencentCloudCosService {

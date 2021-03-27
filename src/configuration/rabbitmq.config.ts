@@ -1,4 +1,4 @@
-import { MICROSERVICE_NAME, RMQ_QUEUE } from '@/constants/constants';
+import { RMQ_QUEUE } from '@/constants/constants';
 import { RmqOptions, Transport } from '@nestjs/microservices';
 import { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
 
@@ -8,9 +8,8 @@ const getRmqHost = (): RmqUrl => {
   return { hostname, port };
 };
 
-export const rabbitmqClientConfig = (): RmqOptions & { name: string } => {
+export const rabbitmqClientConfig = (): RmqOptions => {
   return {
-    name: MICROSERVICE_NAME,
     transport: Transport.RMQ,
     options: {
       urls: [getRmqHost()],

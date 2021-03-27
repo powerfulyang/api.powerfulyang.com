@@ -13,13 +13,21 @@ import { SearchService } from '@/core/search/search.service';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
 import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
+import { MICROSERVICE_NAME } from '@/constants/constants';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
 @Global()
 @Module({
   imports: [
-    ClientsModule.register([rabbitmqClientConfig()]),
+    ClientsModule.registerAsync([
+      {
+        name: MICROSERVICE_NAME,
+        useFactory() {
+          return rabbitmqClientConfig();
+        },
+      },
+    ]),
     PixivBotModule,
     InstagramBotModule,
     PinterestRssModule,

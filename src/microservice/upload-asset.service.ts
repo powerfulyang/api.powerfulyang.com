@@ -7,6 +7,7 @@ import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Region } from '@/constants/constants';
+import { UploadFileMsg } from '@/type/UploadFile';
 
 @Injectable()
 export class UploadAssetService {
@@ -19,7 +20,7 @@ export class UploadAssetService {
     this.logger.setContext(UploadAssetService.name);
   }
 
-  async persistent(data: { sha1: string; suffix: string; bucketName: string }) {
+  async persistent(data: UploadFileMsg) {
     const Key = `${data.sha1}${data.suffix}`;
     const buffer = readFileSync(join(process.cwd(), 'assets', Key));
     const Bucket = data.bucketName;

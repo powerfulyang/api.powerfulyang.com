@@ -5,10 +5,15 @@ import { Repository } from 'typeorm';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { hammingDistance } from '@powerfulyang/node-utils';
 import { Memoize } from '@powerfulyang/utils';
+import { UploadFile } from '@/type/UploadFile';
+import { CoreService } from '@/core/core.service';
 
 @Injectable()
 export class AssetService {
-  constructor(@InjectRepository(Asset) readonly assetDao: Repository<Asset>) {}
+  constructor(
+    @InjectRepository(Asset) readonly assetDao: Repository<Asset>,
+    private coreService: CoreService,
+  ) {}
 
   list(pagination: Pagination) {
     return this.assetDao.findAndCount({
@@ -57,5 +62,12 @@ export class AssetService {
       obj[key] = val;
     });
     return obj;
+  }
+
+  async saveAsset(files: UploadFile[]) {
+    for (const file of files) {
+      await this.coreService.initManualUpload(file.buffer);
+    }
+    return 'success';
   }
 }

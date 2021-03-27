@@ -7,8 +7,8 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { find } from 'ramda';
 import { produce } from 'immer';
 import { Memoize } from '@powerfulyang/utils';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
+import { AssetBucket } from '@/enum/AssetBucket';
 
 @Injectable()
 export class BucketService {
@@ -24,7 +24,7 @@ export class BucketService {
   private async fetchAllBuckets() {
     const buckets = await this.tencentCloudCosService.listBuckets();
     const list = buckets.Buckets.map((bucket) => ({
-      bucketName: bucket.Name.replace(/(-\d{10})$/, ''),
+      bucketName: bucket.Name.replace(/(-\d{10})$/, '') as AssetBucket,
       bucketRegion: bucket.Location,
       createAt: bucket.CreationDate,
     }));
@@ -54,9 +54,10 @@ export class BucketService {
       acl: listBucketAcl[index].ACL,
       cors: listBucketCors[index].CORSRules,
       referer: produce(listBucketReferer[index].RefererConfiguration, (draft) => {
-        draft.DomainList.Domains = draft.DomainList.Domains.map((domain) =>
-          Object.values(domain).join(''),
-        );
+        draft.DomainList &&
+          (draft.DomainList.Domains = draft.DomainList.Domains.map((domain) =>
+            Object.values(domain).join(''),
+          ));
       }),
     }));
     this.logger.debug(arr);
@@ -67,13 +68,8 @@ export class BucketService {
         (a) => a.bucketName === bucketName && a.bucketRegion === bucketRegion,
         bs,
       );
-      if (bucket) {
-        await this.bucketDao.update(
-          { bucketName, bucketRegion },
-          b as QueryDeepPartialEntity<Bucket>,
-        );
-      } else {
-        await this.bucketDao.insert(b as QueryDeepPartialEntity<Bucket>);
+      if (!bucket) {
+        await this.bucketDao.insert({ bucketName, bucketRegion });
       }
     }
     return this.bucketDao.find();
