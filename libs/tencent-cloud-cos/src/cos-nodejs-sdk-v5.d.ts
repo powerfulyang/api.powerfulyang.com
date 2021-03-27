@@ -1,3 +1,12 @@
+export type BucketRegion =
+  | 'ap-beijing-1'
+  | 'ap-beijing'
+  | 'ap-nanjing'
+  | 'ap-shanghai'
+  | 'ap-guangzhou'
+  | 'ap-chengdu'
+  | 'ap-chongqing';
+
 declare module 'cos-nodejs-sdk-v5' {
   export interface BaseCosOptions {
     Bucket: string;
@@ -58,15 +67,6 @@ declare module 'cos-nodejs-sdk-v5' {
   }
 
   export type BucketACL = 'private' | 'public-read' | 'public-read-write' | 'authenticated-read';
-
-  export type BucketRegion =
-    | 'ap-beijing-1'
-    | 'ap-beijing'
-    | 'ap-nanjing'
-    | 'ap-shanghai'
-    | 'ap-guangzhou'
-    | 'ap-chengdu'
-    | 'ap-chongqing';
 
   export type BucketObjectACL =
     | 'default'

@@ -24,14 +24,14 @@ export class Asset {
   @Column({ default: '', length: 400 })
   objectUrl: string;
 
-  @Column()
+  @Column({ default: '' })
   originUrl: string;
 
-  @Column()
+  @Column({ default: '' })
   sn: string;
 
   @Column({ type: 'json' })
-  tags: string[];
+  tags: string[] = [];
 
   @Column({ default: '' })
   comment: string;

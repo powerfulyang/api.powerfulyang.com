@@ -18,7 +18,6 @@
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
     "strict": true,
-    "allowJs": true,
     "skipLibCheck": true,
     "paths": {
       "api/telegram-bot": ["libs/telegram-bot/src"],

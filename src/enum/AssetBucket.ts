@@ -3,4 +3,5 @@ export enum AssetBucket {
   pixiv = 'pixiv',
   pinterest = 'pinterest',
   gallery = 'gallery',
+  upload = 'upload',
 }

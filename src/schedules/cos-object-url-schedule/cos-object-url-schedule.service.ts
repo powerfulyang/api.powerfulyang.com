@@ -36,7 +36,7 @@ export class CosObjectUrlScheduleService {
       });
       const objectUrl = Url;
       this.logger.debug(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
-      this.assetService.assetDao.update(asset.id, {
+      await this.assetService.assetDao.update(asset.id, {
         objectUrl,
       });
     }
