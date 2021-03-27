@@ -3,7 +3,7 @@ import { AssetService } from '@/modules/asset/asset.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 import { UploadFile } from '@/type/UploadFile';
-import {JwtAuthGuard} from "@/common/decorator/auth-guard.decorator";
+import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 
 @Controller('asset')
 @JwtAuthGuard()
