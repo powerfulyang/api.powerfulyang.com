@@ -7,6 +7,7 @@ import { hammingDistance } from '@powerfulyang/node-utils';
 import { Memoize } from '@powerfulyang/utils';
 import { UploadFile } from '@/type/UploadFile';
 import { CoreService } from '@/core/core.service';
+import { SUCCESS } from '@/constants/constants';
 
 @Injectable()
 export class AssetService {
@@ -68,6 +69,6 @@ export class AssetService {
     for (const file of files) {
       await this.coreService.initManualUpload(file.buffer);
     }
-    return 'success';
+    return SUCCESS;
   }
 }
