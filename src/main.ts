@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppLogger } from '@/common/logger/app.logger';
+import cookieParser from 'cookie-parser';
 import { __dev__ } from '@powerfulyang/utils';
 import rateLimit from 'express-rate-limit';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
@@ -33,6 +34,7 @@ async function bootstrap(): Promise<void> {
       max: 100, // limit each IP to 100 requests per windowMs
     }),
   );
+  app.use(cookieParser());
   await app.listen(3001);
 }
 
