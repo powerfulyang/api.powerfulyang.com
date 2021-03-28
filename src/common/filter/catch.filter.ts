@@ -14,6 +14,8 @@ export class CatchFilter<T extends Error> implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const statusCode = 500;
+    // 出现错误 从cookie中删除_csrf  TODO 先简单处理
+    response.removeHeader('set-cookie');
     const { message } = exception;
     response.status(statusCode).json({
       statusCode,

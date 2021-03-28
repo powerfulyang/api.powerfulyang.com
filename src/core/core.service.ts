@@ -110,16 +110,12 @@ export class CoreService {
     asset.fileSuffix = getImageSuffix(buffer);
     asset.pHash = await pHash(buffer);
     writeFileSync(join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix), buffer);
-    try {
-      await this.assetDao.insert(asset);
-      this.notifyCos({
-        sha1: asset.sha1,
-        suffix: asset.fileSuffix,
-        bucketName: asset.bucket.bucketName,
-      });
-    } catch (e) {
-      this.logger.error(e);
-    }
+    await this.assetDao.insert(asset);
+    this.notifyCos({
+      sha1: asset.sha1,
+      suffix: asset.fileSuffix,
+      bucketName: asset.bucket.bucketName,
+    });
     return asset;
   }
 
