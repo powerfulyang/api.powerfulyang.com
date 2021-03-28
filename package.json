@@ -37,6 +37,7 @@
     "cache-manager": "^3.4.1",
     "cache-manager-redis-store": "^2.0.0",
     "class-validator": "^0.13.1",
+    "cookie-parser": "^1.4.5",
     "cos-nodejs-sdk-v5": "^2.9.12",
     "dayjs": "^1.10.4",
     "express": "^4.17.1",
