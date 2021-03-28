@@ -2,8 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AppLogger } from '@/common/logger/app.logger';
-import { ReturnTypedFunction } from '@powerfulyang/utils';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { UserService } from '@/modules/user/user.service';
 import { User } from '@/entity/user.entity';
 import { Authorization } from '@/constants/constants';
@@ -17,16 +16,17 @@ export class ResponseInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = _context.switchToHttp();
     this.logger.debug(`handle in ${ResponseInterceptor.name}`);
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest() as {
+      user: { exp: number } & User;
+    } & Request;
+
     return next.handle().pipe(
       tap(() => {
         this.logger.debug(`tap in ${ResponseInterceptor.name}`);
       }),
       tap(() => {
         // check token expire time;
-        const request = ctx.getRequest<{
-          user: { exp: number } & User;
-        }>();
-        const response = ctx.getResponse<Response>();
         if (request.user) {
           const { user } = request;
           const ValidPeriod = user.exp - Date.now() / 1000;
@@ -38,21 +38,13 @@ export class ResponseInterceptor implements NestInterceptor {
           }
         }
       }),
-      tap((data) => {
-        if (data) {
-          const response = ctx.getResponse<Response>();
-          const request = ctx.getRequest() as {
-            csrfToken: ReturnTypedFunction<string>;
-          };
-          this.logger.debug('generate csrf token!');
-          response.cookie('_csrf_token', request.csrfToken());
-        }
-      }),
       map((data) => {
         if (data) {
           return {
             status: 'ok',
             data,
+            timestamp: new Date().toISOString(),
+            path: request.url,
           };
         }
         return data;
