@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UploadedFiles } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UploadedFiles } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
@@ -29,5 +29,10 @@ export class AssetController {
   @ImagesInterceptor()
   saveAsset(@UploadedFiles() files: UploadFile[]) {
     return this.assetService.saveAsset(files);
+  }
+
+  @Delete()
+  deleteAsset(@Body('id') id: number) {
+    return this.assetService.deleteAsset(id);
   }
 }
