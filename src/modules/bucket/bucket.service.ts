@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Bucket } from '@/entity/bucket.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,9 +6,9 @@ import { Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
 import { find } from 'ramda';
 import { produce } from 'immer';
-import { Memoize } from '@powerfulyang/utils';
 import { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
 import { AssetBucket } from '@/enum/AssetBucket';
+import { SUCCESS } from '@/constants/constants';
 
 @Injectable()
 export class BucketService {
@@ -72,11 +72,23 @@ export class BucketService {
         await this.bucketDao.insert({ bucketName, bucketRegion });
       }
     }
-    return this.bucketDao.find();
+    return arr;
   }
 
-  @Memoize()
   list() {
     return this.fetchAllBuckets();
+  }
+
+  async createBucket(bucket: Bucket) {
+    const res = await this.tencentCloudCosService.putBucket({
+      Region: bucket.bucketRegion,
+      Bucket: bucket.bucketName,
+    });
+    if (res.statusCode === HttpStatus.OK) {
+      await this.bucketDao.insert(bucket);
+    } else {
+      throw new ServiceUnavailableException('创建bucket失败');
+    }
+    return SUCCESS;
   }
 }
