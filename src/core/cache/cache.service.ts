@@ -19,6 +19,14 @@ export class CacheService {
     this.redisClient = this.redisStore.store.getClient();
   }
 
+  set(key: string, value: string) {
+    return promisify(this.redisClient.set).call(this.redisClient, key, value);
+  }
+
+  get(key: string) {
+    return promisify(this.redisClient.get).call(this.redisClient, key);
+  }
+
   hSet<T = any>(hash: string, hKey: string | number, val: T) {
     const value = JSON.stringify(val);
     return promisify(<any>this.redisClient.hset).call(this.redisClient, hash, hKey, value);

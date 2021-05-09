@@ -4,19 +4,24 @@ import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()
 export class TelegramBotService {
-  private readonly bot?: TelegramBot;
+  private bot?: TelegramBot;
 
-  private readonly token = process.env.TELEGRAM_BOT_TOKEN;
+  private readonly token = process.env.TELEGRAM_BOT_TOKEN!;
 
   private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 
   constructor(private proxyFetchService: ProxyFetchService) {
-    this.bot = new TelegramBot(this.token, {
-      polling: true,
-      request: <any>{
-        agent: this.proxyFetchService.agent,
-      },
-    });
+    this.initBot();
+  }
+
+  initBot() {
+    if (!this.bot) {
+      this.bot = new TelegramBot(this.token, {
+        request: <any>{
+          agent: this.proxyFetchService.agent,
+        },
+      });
+    }
   }
 
   async sendMessage(chatId: number, msg: string) {
