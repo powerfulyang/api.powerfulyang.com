@@ -6,7 +6,6 @@ import { CoreModule } from '@/core/core.module';
 import { StrategyModule } from '@/common/authorization/strategy.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
 import { LoggerModule } from '@/common/logger/logger.module';
-import { SchedulesModule } from '@/schedules/schedules.module';
 import { GithubModule } from 'app/github-webhook';
 import { AppLogger } from '@/common/logger/app.logger';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';
@@ -17,12 +16,12 @@ import { TelegramBotModule } from 'api/telegram-bot';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { PathViewCountModule } from '@/modules/path.view.count/path.view.count.module';
+import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { mysqlConfig } from './configuration/mysql.config';
-import { UploadAssetModule } from './microservice/upload-asset.module';
+import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
 import { AssetModule } from './modules/asset/asset.module';
-import { ScheduleModule } from './modules/schedule/schedule.module';
 import { PostModule } from './modules/post/post.module';
 import { PublicModule } from './public/public.module';
 
@@ -39,11 +38,9 @@ import { PublicModule } from './public/public.module';
     PassportModule,
     UserModule,
     UploadAssetModule,
-    SchedulesModule,
     GithubModule,
     BucketModule,
     AssetModule,
-    ScheduleModule,
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'assets'),
     }),
@@ -52,6 +49,7 @@ import { PublicModule } from './public/public.module';
     PostModule,
     PublicModule,
     PathViewCountModule,
+    ScheduleModule,
   ],
   providers: [
     {

@@ -1,5 +1,6 @@
-declare namespace NodeJS {
-  interface ProcessEnv {
+declare const process: {
+  env: {
+    NODE_ENV: string;
     JWT_SECRET: string;
 
     GOOGLE_OAUTH_CLIENT_ID: string;
@@ -23,5 +24,5 @@ declare namespace NodeJS {
     ELASTICSEARCH_PORT: string;
     ELASTICSEARCH_USER: string;
     ELASTICSEARCH_PASS: string;
-  }
-}
+  };
+};

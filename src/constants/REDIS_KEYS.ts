@@ -4,4 +4,6 @@ export class REDIS_KEYS {
   static PATH_VIEW_COUNT_PREFIX = (path: string) => {
     return `path_view_count_prefix_${path}`;
   };
+
+  static COMMON_NODE = 'common_node_uniq';
 }

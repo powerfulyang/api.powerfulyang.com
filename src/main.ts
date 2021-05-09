@@ -35,7 +35,7 @@ async function bootstrap(): Promise<void> {
     }),
   );
   app.use(cookieParser());
-  await app.listen(3001);
+  await app.listen(process.env.PORT || 3001);
 }
 
 (async (): Promise<void> => {

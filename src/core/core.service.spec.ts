@@ -2,6 +2,7 @@ import { CoreService } from '@/core/core.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { AppModule } from '@/app.module';
+import { MessagePatterns } from '@/constants/MessagePatterns';
 
 describe('core service test', function () {
   let service: CoreService;
@@ -24,6 +25,11 @@ describe('core service test', function () {
       suffix: '2222',
       bucketName: AssetBucket.gallery,
     });
+    expect(res).toBeDefined();
+  });
+
+  it('emit hello', async function () {
+    const res = await service.microserviceClient.emit(MessagePatterns.test, '');
     expect(res).toBeDefined();
   });
 });

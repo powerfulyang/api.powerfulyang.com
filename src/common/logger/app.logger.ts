@@ -59,8 +59,4 @@ export class AppLogger {
   debug(message: any) {
     this.logger.debug(message);
   }
-
-  log(message: any) {
-    this.logger.log(message);
-  }
 }

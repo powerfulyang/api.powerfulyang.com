@@ -17,7 +17,7 @@ export class PinterestRssService {
 
   async fetchUndo(lastId?: string): Promise<PinterestInterface[]> {
     const allPosts = await this.fetchAll();
-    const undoPosts = [];
+    const undoPosts: PinterestInterface[] = [];
     for (let i = 0; i < allPosts.length; i++) {
       if (allPosts[i].id === lastId) {
         break;

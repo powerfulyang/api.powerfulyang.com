@@ -12,7 +12,7 @@ export class InstagramBotService {
   private readonly cookiePath = join(process.cwd(), '.cookies', 'instagram');
 
   constructor(private proxyFetchService: ProxyFetchService) {
-    this.bot.state.generateDevice(process.env.IG_USERNAME);
+    this.bot.state.generateDevice(process.env.IG_USERNAME!);
     this.bot.request.defaults.agent = this.proxyFetchService.agent;
     this.bot.request.end$.subscribe(async () => {
       const serialized = await this.bot.state.serialize();
@@ -34,7 +34,7 @@ export class InstagramBotService {
       }
     }
     if (shouldLogin) {
-      await this.bot.account.login(process.env.IG_USERNAME, process.env.IG_PASSWORD);
+      await this.bot.account.login(process.env.IG_USERNAME!, process.env.IG_PASSWORD!);
     }
   }
 

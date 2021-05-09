@@ -31,4 +31,9 @@ export class PublicController {
   post(@Param() post: Posts) {
     return this.publicService.getPublicPostById(post);
   }
+
+  @Get('common-node')
+  isCommonNode() {
+    return this.publicService.isCommonNode();
+  }
 }

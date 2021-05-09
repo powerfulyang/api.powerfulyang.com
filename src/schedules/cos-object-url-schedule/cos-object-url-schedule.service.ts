@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { Interval } from '@nestjs/schedule';
+import { Interval, Timeout } from '@nestjs/schedule';
 import { AppLogger } from '@/common/logger/app.logger';
-import { __prod__ } from '@powerfulyang/utils';
+import { COMMON_CODE_UUID } from '@/utils/uuid';
+import { CoreService } from '@/core/core.service';
 
 @Injectable()
 export class CosObjectUrlScheduleService {
@@ -11,17 +12,15 @@ export class CosObjectUrlScheduleService {
     private assetService: AssetService,
     private tencentCloudCosService: TencentCloudCosService,
     private readonly logger: AppLogger,
+    private readonly coreService: CoreService,
   ) {
     this.logger.setContext(CosObjectUrlScheduleService.name);
-    this.refreshObjectUrl().then(() => {
-      this.logger.info('每次重启的时候需要刷新一下 object url!');
-    });
   }
 
   @Interval(60 * 60 * 24 * 999)
   async refreshObjectUrl() {
-    if (!__prod__) {
-      this.logger.debug('only run in prod mode!');
+    const uuid = await this.coreService.getCommonNodeUuid();
+    if (uuid !== COMMON_CODE_UUID) {
       return;
     }
     const assets = await this.assetService.assetDao.find({
@@ -35,10 +34,17 @@ export class CosObjectUrlScheduleService {
         Expires: 60 * 60 * 24, // 1day
       });
       const objectUrl = Url;
-      this.logger.debug(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
+      this.logger.info(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
       await this.assetService.assetDao.update(asset.id, {
         objectUrl,
       });
     }
+  }
+
+  @Timeout(0)
+  refresh() {
+    this.refreshObjectUrl().then(() => {
+      this.logger.info('每次重启的时候需要刷新一下 object url!');
+    });
   }
 }

@@ -9,7 +9,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { pHash, sha1 } from '@powerfulyang/node-utils';
-import { __prod__, __test__, getImageSuffix } from '@powerfulyang/utils';
+import { __prod__, getImageSuffix } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstagramBotService } from 'api/instagram-bot';
@@ -17,6 +17,9 @@ import { PinterestRssService } from 'api/pinterest-rss';
 import { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
 import { Bucket } from '@/entity/bucket.entity';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
+import { CacheService } from '@/core/cache/cache.service';
+import { COMMON_CODE_UUID } from '@/utils/uuid';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 
 @Injectable()
 export class CoreService {
@@ -33,11 +36,27 @@ export class CoreService {
     private bucketDao: Repository<Bucket>,
     private proxyFetchService: ProxyFetchService,
     private tencentCloudCosService: TencentCloudCosService,
+    private cacheService: CacheService,
   ) {
     this.logger.setContext(CoreService.name);
+    this.setCommonNodeUuid().then((uuid) => {
+      this.logger.info(`node uuid => ${uuid}`);
+    });
     this.initBucket().then(() => {
       this.logger.info('init buckets complete!');
     });
+  }
+
+  async setCommonNodeUuid() {
+    this.logger.info(`当前环境====>${process.env.NODE_ENV}`);
+    if (__prod__) {
+      await this.cacheService.set(REDIS_KEYS.COMMON_NODE, COMMON_CODE_UUID);
+    }
+    return COMMON_CODE_UUID;
+  }
+
+  getCommonNodeUuid() {
+    return this.cacheService.get(REDIS_KEYS.COMMON_NODE);
   }
 
   notifyCos(notification: { sha1: string; suffix: string; bucketName: AssetBucket }) {
@@ -120,10 +139,6 @@ export class CoreService {
   }
 
   async botBaseService(bucketName: AssetBucket) {
-    if (!__prod__ && !__test__) {
-      this.logger.debug('dev mode will not run schedule!');
-      return;
-    }
     const bucket = await this.bucketDao.findOne({
       bucketName,
       bucketRegion: Region,

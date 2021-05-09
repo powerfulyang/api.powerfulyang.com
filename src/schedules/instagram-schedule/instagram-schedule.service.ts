@@ -4,6 +4,7 @@ import { CoreService } from '@/core/core.service';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { SUCCESS } from '@/constants/constants';
 import { Cron } from '@nestjs/schedule';
+import { COMMON_CODE_UUID } from '@/utils/uuid';
 
 @Injectable()
 export class InstagramScheduleService {
@@ -13,6 +14,10 @@ export class InstagramScheduleService {
 
   @Cron('0 15 * * * *')
   async bot() {
+    const uuid = await this.coreService.getCommonNodeUuid();
+    if (uuid !== COMMON_CODE_UUID) {
+      return SUCCESS;
+    }
     try {
       await this.coreService.botBaseService(AssetBucket.instagram);
     } catch (e) {
