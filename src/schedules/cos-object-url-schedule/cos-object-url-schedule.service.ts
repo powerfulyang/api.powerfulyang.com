@@ -23,6 +23,7 @@ export class CosObjectUrlScheduleService {
     if (uuid !== COMMON_CODE_UUID) {
       return;
     }
+    this.logger.info('this is common node!!!');
     const assets = await this.assetService.assetDao.find({
       relations: ['bucket'],
     });
@@ -41,7 +42,7 @@ export class CosObjectUrlScheduleService {
     }
   }
 
-  @Timeout(0)
+  @Timeout(10000) // 10秒之后运行
   refresh() {
     this.refreshObjectUrl().then(() => {
       this.logger.info('每次重启的时候需要刷新一下 object url!');

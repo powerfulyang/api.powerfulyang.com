@@ -9,6 +9,7 @@ import { produce } from 'immer';
 import { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { SUCCESS } from '@/constants/constants';
+import { CoreService } from '@/core/core.service';
 
 @Injectable()
 export class BucketService {
@@ -17,8 +18,12 @@ export class BucketService {
     @InjectRepository(Bucket)
     private readonly bucketDao: Repository<Bucket>,
     private readonly logger: AppLogger,
+    private coreService: CoreService,
   ) {
     this.logger.setContext(BucketService.name);
+    this.coreService.initBucket().then(() => {
+      this.logger.info('init buckets complete!');
+    });
   }
 
   private async fetchAllBuckets() {

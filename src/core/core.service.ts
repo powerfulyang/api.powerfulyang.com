@@ -42,9 +42,6 @@ export class CoreService {
     this.setCommonNodeUuid().then((uuid) => {
       this.logger.info(`node uuid => ${uuid}`);
     });
-    this.initBucket().then(() => {
-      this.logger.info('init buckets complete!');
-    });
   }
 
   async setCommonNodeUuid() {
@@ -63,7 +60,7 @@ export class CoreService {
     return this.microserviceClient.emit(COS_UPLOAD_MSG_PATTERN, notification);
   }
 
-  private async initBucket() {
+  async initBucket() {
     for (const bucket of Object.keys(AssetBucket)) {
       let res: any;
       try {
