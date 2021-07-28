@@ -12,10 +12,15 @@ import { User } from '@/entity/user.entity';
 @Entity()
 export class Todo {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   info: string;
+
+  @Column({
+    default: '',
+  })
+  desc?: string;
 
   @JoinColumn()
   @ManyToOne(() => User)
@@ -26,11 +31,11 @@ export class Todo {
   updateBy: User;
 
   @CreateDateColumn()
-  createAt: Date;
+  createAt?: Date;
 
   @Column()
-  deadline: Date;
+  deadline?: Date;
 
   @UpdateDateColumn()
-  updateAt: Date;
+  updateAt?: Date;
 }
