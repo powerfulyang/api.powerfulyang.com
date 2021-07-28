@@ -16,7 +16,7 @@ async function bootstrap(): Promise<void> {
     logger: __dev__ && new Logger(),
   });
   app.connectMicroservice(rabbitmqServerConfig());
-  await app.startAllMicroservicesAsync();
+  await app.startAllMicroservices();
   app.enableCors({
     origin: 'https://admin.powerfulyang.com',
     credentials: true,
