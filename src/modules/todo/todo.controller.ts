@@ -1,9 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 
 @Controller('todo')
+@JwtAuthGuard()
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 

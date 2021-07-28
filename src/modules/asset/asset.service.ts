@@ -91,4 +91,8 @@ export class AssetService {
     }
     return SUCCESS;
   }
+
+  async randomAsset() {
+    return this.assetDao.createQueryBuilder().orderBy('RAND()').limit(1).getOneOrFail();
+  }
 }

@@ -7,7 +7,11 @@ import rateLimit from 'express-rate-limit';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { CatchFilter } from '@/common/filter/catch.filter';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
+import dayjs from 'dayjs';
+import quarterOfYear = require('dayjs/plugin/quarterOfYear');
 import { AppModule } from './app.module';
+
+dayjs.extend(quarterOfYear);
 
 require('source-map-support').install();
 

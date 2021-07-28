@@ -15,22 +15,26 @@ import { User } from '@/entity/user.entity';
 @Entity()
 export class Feed {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   content: string;
 
-  @ManyToMany(() => Asset)
+  @ManyToMany(() => Asset, (assert) => assert.id)
   @JoinTable()
-  assets: Asset[];
+  assets?: Asset[];
+
+  static readonly relationColumnAssets = 'assets';
 
   @JoinColumn()
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.id)
   createBy: User;
 
+  static readonly relationColumnCreateBy = 'createBy';
+
   @CreateDateColumn()
-  createAt: Date;
+  createAt?: Date;
 
   @UpdateDateColumn()
-  updateAt: Date;
+  updateAt?: Date;
 }

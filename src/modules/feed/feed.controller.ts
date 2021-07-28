@@ -1,9 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
 
 @Controller('feed')
+@JwtAuthGuard()
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
@@ -14,7 +16,7 @@ export class FeedController {
 
   @Get()
   findAll() {
-    return this.feedService.findAll();
+    return this.feedService.relationQuery();
   }
 
   @Get(':id')
