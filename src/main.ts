@@ -22,7 +22,11 @@ async function bootstrap(): Promise<void> {
   app.connectMicroservice(rabbitmqServerConfig());
   await app.startAllMicroservices();
   app.enableCors({
-    origin: 'https://admin.powerfulyang.com',
+    origin: [
+      'https://admin.powerfulyang.com',
+      'https://powerfulyang.com',
+      'https://dev.powerfulyang.com',
+    ],
     credentials: true,
   });
 
