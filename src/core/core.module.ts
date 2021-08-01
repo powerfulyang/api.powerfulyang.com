@@ -14,6 +14,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
 import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
 import { MICROSERVICE_NAME } from '@/constants/constants';
+import { Feed } from '@/modules/feed/entities/feed.entity';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
@@ -31,7 +32,7 @@ import { CacheService } from './cache/cache.service';
     PixivBotModule,
     InstagramBotModule,
     PinterestRssModule,
-    TypeOrmModule.forFeature([Asset, Bucket]),
+    TypeOrmModule.forFeature([Asset, Bucket, Feed]),
     TencentCloudCosModule,
     CacheModule.registerAsync({
       useFactory: () => {
