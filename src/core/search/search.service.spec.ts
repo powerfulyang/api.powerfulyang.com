@@ -17,4 +17,14 @@ describe('SearchService', () => {
     const result = await service.query();
     expect(result).toBeDefined();
   });
+
+  it('index feed', async function () {
+    const result = await service.createFeedIndex();
+    expect(result).toBeDefined();
+  });
+
+  it('search feed', async function () {
+    const result = await service.searchFeedByContent('我的第一条说说! #第一条说说');
+    expect(result).toBeDefined();
+  });
 });
