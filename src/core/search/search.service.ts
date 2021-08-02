@@ -19,6 +19,21 @@ export class SearchService {
     return this.elasticsearchService.search();
   }
 
+  async parseAndPrepareData() {
+    const body = [] as any[];
+    const feeds = await this.feedDao.find();
+    feeds.forEach((item) => {
+      body.push(
+        { index: { _index: 'feed', _id: item.id } },
+        {
+          content: item.content,
+          id: item.id,
+        },
+      );
+    });
+    return body;
+  }
+
   async createFeedIndex() {
     const checkIndex = await this.elasticsearchService.indices.exists({ index: 'feed' });
     if (checkIndex.statusCode === 404) {
@@ -71,7 +86,7 @@ export class SearchService {
           }
         },
       );
-      const body = await this.feedDao.find();
+      const body = await this.parseAndPrepareData();
       this.elasticsearchService.bulk(
         {
           index: 'feed',
@@ -84,7 +99,13 @@ export class SearchService {
         },
       );
     }
-    return 'ok';
+    return checkIndex.statusCode;
+  }
+
+  deleteFeedIndex() {
+    return this.elasticsearchService.indices.delete({
+      index: 'feed',
+    });
   }
 
   async searchFeedByContent(content: string) {

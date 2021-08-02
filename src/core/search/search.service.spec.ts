@@ -23,6 +23,11 @@ describe('SearchService', () => {
     expect(result).toBeDefined();
   });
 
+  it('delete feed index', async function () {
+    const result = await service.deleteFeedIndex();
+    expect(result).toBeDefined();
+  });
+
   it('search feed', async function () {
     const result = await service.searchFeedByContent('我的第一条说说! #第一条说说');
     expect(result).toBeDefined();
