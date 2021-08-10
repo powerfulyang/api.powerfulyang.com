@@ -1,15 +1,20 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { mergeMap, tap } from 'rxjs/operators';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Request, Response } from 'express';
 import { UserService } from '@/modules/user/user.service';
-import { User } from '@/entity/user.entity';
 import { Authorization } from '@/constants/constants';
+import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
+import { ReqExtend } from '@/type/ReqExtend';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
-  constructor(private logger: AppLogger, private userService: UserService) {
+  constructor(
+    private logger: AppLogger,
+    private userService: UserService,
+    private pathViewCountService: PathViewCountService,
+  ) {
     this.logger.setContext(ResponseInterceptor.name);
   }
 
@@ -17,9 +22,9 @@ export class ResponseInterceptor implements NestInterceptor {
     const ctx = _context.switchToHttp();
     this.logger.debug(`handle in ${ResponseInterceptor.name}`);
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest() as {
-      user: { exp: number } & User;
-    } & Request;
+    const request = ctx.getRequest<Request & ReqExtend>();
+    const path = request.url;
+    const { ip } = request.extend;
 
     return next.handle().pipe(
       tap(() => {
@@ -38,13 +43,15 @@ export class ResponseInterceptor implements NestInterceptor {
           }
         }
       }),
-      map((data) => {
+      mergeMap(async (data) => {
+        const count = await this.pathViewCountService.handlePathViewCount(path, ip);
         if (data) {
           return {
             status: 'ok',
             data,
             timestamp: new Date().toISOString(),
             path: request.url,
+            pathViewCount: count,
           };
         }
         return data;

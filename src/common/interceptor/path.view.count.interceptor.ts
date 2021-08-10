@@ -3,12 +3,11 @@ import { Observable } from 'rxjs';
 import { ReqExtend } from '@/type/ReqExtend';
 import { Request } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
-import { mergeMap, tap } from 'rxjs/operators';
-import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class PathViewCountInterceptor implements NestInterceptor {
-  constructor(private logger: AppLogger, private pathViewCountService: PathViewCountService) {
+  constructor(private logger: AppLogger) {
     this.logger.setContext(PathViewCountInterceptor.name);
   }
 
@@ -22,10 +21,7 @@ export class PathViewCountInterceptor implements NestInterceptor {
       tap(() => {
         this.logger.debug(`${path} viewed by ${ip}`);
       }),
-      mergeMap(async (data) => {
-        const count = await this.pathViewCountService.handlePathViewCount(path, ip);
-        return Object.assign(data, { pathViewCount: count });
-      }),
+      map((data) => data),
     );
   }
 }
