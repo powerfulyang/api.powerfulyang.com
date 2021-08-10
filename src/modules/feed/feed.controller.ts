@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { PathViewCount } from '@/common/decorator/path-view-count.decorator';
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
@@ -15,11 +16,13 @@ export class FeedController {
   }
 
   @Get()
+  @PathViewCount()
   findAll() {
     return this.feedService.relationQuery();
   }
 
   @Get(':id')
+  @PathViewCount()
   findOne(@Param('id') id: string) {
     return this.feedService.findOne(+id);
   }

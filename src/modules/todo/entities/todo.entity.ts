@@ -26,9 +26,13 @@ export class Todo {
   @ManyToOne(() => User)
   createBy: User;
 
+  static readonly relationColumnCreateBy = 'createBy';
+
   @JoinColumn()
   @ManyToOne(() => User)
   updateBy: User;
+
+  static readonly relationColumnUpdateBy = 'updateBy';
 
   @CreateDateColumn()
   createAt?: Date;

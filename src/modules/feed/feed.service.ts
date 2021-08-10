@@ -30,7 +30,9 @@ export class FeedService {
   }
 
   findOne(id: number) {
-    return this.feedDao.findOne(id);
+    return this.feedDao.findOne(id, {
+      relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
+    });
   }
 
   update(id: number, updateFeedDto: UpdateFeedDto) {

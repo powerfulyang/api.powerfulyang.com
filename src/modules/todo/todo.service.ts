@@ -61,11 +61,15 @@ export class TodoService {
   }
 
   findAll() {
-    return this.todoDao.findAndCount();
+    return this.todoDao.findAndCount({
+      relations: [Todo.relationColumnCreateBy, Todo.relationColumnUpdateBy],
+    });
   }
 
   findOne(id: number) {
-    return this.todoDao.findOne(id);
+    return this.todoDao.findOne(id, {
+      relations: [Todo.relationColumnCreateBy, Todo.relationColumnUpdateBy],
+    });
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
