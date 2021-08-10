@@ -60,8 +60,8 @@ export class TodoService {
     return this.todoDao.save(todo);
   }
 
-  findAll() {
-    return this.todoDao.findAndCount({
+  relationQuery() {
+    return this.todoDao.find({
       relations: [Todo.relationColumnCreateBy, Todo.relationColumnUpdateBy],
     });
   }

@@ -18,7 +18,7 @@ export class TodoController {
   @Get()
   @PathViewCount()
   findAll() {
-    return this.todoService.findAll();
+    return this.todoService.relationQuery();
   }
 
   @Get(':id')
