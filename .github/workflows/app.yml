@@ -38,3 +38,4 @@ jobs:
             docker pull ${{ matrix.docker-repository }}
             cd ~/applications
             docker-compose up -d --force-recreate api.powerfulyang.com
+            docker image prune -a -f
