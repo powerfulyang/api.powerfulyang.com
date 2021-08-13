@@ -61,7 +61,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.3.0",
     "sharp": "^0.28.3",
-    "socks5-https-client": "^1.2.1",
+    "socks-proxy-agent": "^6.0.0",
     "source-map-support": "^0.5.19",
     "typeorm": "^0.2.36",
     "uuid": "^8.3.2",

@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { parseString } from 'xml2js';
 import fetch, { RequestInit } from 'node-fetch';
-
-const Agent = require('socks5-https-client/lib/Agent');
+import { SocksProxyAgent } from 'socks-proxy-agent';
 
 @Injectable()
 export class ProxyFetchService {
@@ -10,9 +9,9 @@ export class ProxyFetchService {
 
   constructor() {
     if (process.env.BOT_SOCKS5_PROXY_HOST || process.env.BOT_SOCKS5_PROXY_PORT) {
-      this.agent = new Agent({
-        socksHost: process.env.BOT_SOCKS5_PROXY_HOST,
-        socksPort: process.env.BOT_SOCKS5_PROXY_PORT,
+      this.agent = new SocksProxyAgent({
+        host: process.env.BOT_SOCKS5_PROXY_HOST,
+        port: process.env.BOT_SOCKS5_PROXY_PORT,
       });
     }
   }
