@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseInterceptors } from '@nestjs/common';
 import { User } from '@/entity/user.entity';
 import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
@@ -11,6 +11,7 @@ import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
 import { Request } from 'express';
+import passport from 'passport';
 
 @Controller('user')
 export class UserController {
@@ -19,9 +20,11 @@ export class UserController {
   }
 
   @Get('google/auth')
-  @GoogleAuthGuard()
-  async googleAuth() {
-    //
+  async googleAuth(@Req() req: Request, @Res() res) {
+    const { redirect } = req.query;
+    passport.authenticate('google', {
+      state: Buffer.from(<string>redirect).toString('base64'),
+    })(req, res);
   }
 
   @Get('google/auth/callback')
@@ -30,10 +33,12 @@ export class UserController {
   async googleAuthCallback(@Req() req: Request & { user: Profile }) {
     const profile = req.user;
     // if not register to add user!
+    const { state } = req.query;
+    const redirect = Buffer.from(<string>state, 'base64').toString();
     const token = await this.userService.googleUserRelation(profile);
     return {
       cookie: [Authorization, token],
-      redirect: 'https://admin.powerfulyang.com',
+      redirect,
     };
   }
 
