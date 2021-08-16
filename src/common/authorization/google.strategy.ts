@@ -17,7 +17,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     this.logger.setContext(GoogleStrategy.name);
   }
 
-  validate(_: any, __: any, profile: Profile) {
+  async validate(_: any, __: any, profile: Profile) {
     this.logger.info(`displayName->${profile.displayName}, openid->${profile.id}`);
     return profile;
   }

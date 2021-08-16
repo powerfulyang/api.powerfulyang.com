@@ -2,20 +2,27 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '@/entity/user.entity';
 
 @Entity()
-export class PathViewCount {
+export class Family {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text' })
-  path: string;
+  @Column({ unique: true })
+  name: string;
 
-  @Column({ type: 'bigint' })
-  ip: number;
+  @Column()
+  description: string;
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  members: User[];
 
   @CreateDateColumn()
   createAt: Date;

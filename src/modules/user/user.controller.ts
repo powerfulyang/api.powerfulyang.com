@@ -10,6 +10,7 @@ import { Authorization } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {

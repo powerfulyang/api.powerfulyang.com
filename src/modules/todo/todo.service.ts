@@ -60,9 +60,10 @@ export class TodoService {
     return this.todoDao.save(todo);
   }
 
-  relationQuery() {
+  relationQuery(todo: Partial<Todo>) {
     return this.todoDao.find({
       relations: [Todo.relationColumnCreateBy, Todo.relationColumnUpdateBy],
+      where: todo,
     });
   }
 
