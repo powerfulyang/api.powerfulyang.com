@@ -11,7 +11,7 @@ export class PathViewCount {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'text' })
   path: string;
 
   @Column({ type: 'bigint' })
