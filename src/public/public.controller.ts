@@ -1,12 +1,17 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { PathViewCount } from '@/common/decorator/path-view-count.decorator';
 import { Posts } from '@/entity/posts.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { PublicService } from '@/public/public.service';
+import { Pagination } from '@/common/decorator/pagination.decorator';
+import { AssetService } from '@/modules/asset/asset.service';
 
 @Controller()
 export class PublicController {
-  constructor(private publicService: PublicService, private logger: AppLogger) {
+  constructor(
+    private publicService: PublicService,
+    private logger: AppLogger,
+    private assetService: AssetService,
+  ) {
     this.logger.setContext(PublicController.name);
   }
 
@@ -16,7 +21,6 @@ export class PublicController {
   }
 
   @Get('posts')
-  @PathViewCount()
   posts() {
     return this.publicService.getAllPublicPosts();
   }
@@ -27,9 +31,13 @@ export class PublicController {
   }
 
   @Get('posts/:id')
-  @PathViewCount()
   post(@Param() post: Posts) {
     return this.publicService.getPublicPostById(post);
+  }
+
+  @Get('gallery')
+  gallery(@Pagination() pagination: Pagination) {
+    return this.assetService.list(pagination);
   }
 
   @Get('common-node')

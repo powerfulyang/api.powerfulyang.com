@@ -20,7 +20,7 @@ export class Feed {
   @Column()
   content: string;
 
-  @ManyToMany(() => Asset, (assert) => assert.id)
+  @ManyToMany(() => Asset)
   @JoinTable()
   assets?: Asset[];
 
