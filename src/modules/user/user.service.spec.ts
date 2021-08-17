@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { AppModule } from '@/app.module';
 import { RoleService } from '@/modules/user/role/role.service';
+import { User } from '@/entity/user.entity';
 
 describe('UserService', () => {
   let service: UserService;
@@ -39,5 +40,13 @@ describe('UserService', () => {
     expect(result).toBe('OK');
     const cachedUser = await service.getCachedUsers(1);
     expect(cachedUser).toHaveProperty('id', 1);
+  });
+
+  it('generate random password', () => {
+    const user = new User();
+    service.generateDefaultPassword(user);
+    const { password, passwordSalt } = user;
+    const bool = service.verifyPassword(passwordSalt, passwordSalt, password);
+    expect(bool).toBeTruthy();
   });
 });
