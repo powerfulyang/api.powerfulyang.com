@@ -55,18 +55,23 @@ export class UserService {
 
   generateDefaultPassword(draft: User) {
     draft.passwordSalt = getRandomString();
-    draft.password = this.generatePassword(draft.passwordSalt);
+    draft.password = this.generatePassword(draft.passwordSalt, draft.passwordSalt);
   }
 
   generatePassword(salt: string, password: string = getRandomString(20)) {
     return sha1(password, salt);
   }
 
+  verifyPassword(password: string, salt: string, saltedPassword) {
+    const tmp = sha1(password, salt);
+    return tmp === saltedPassword;
+  }
+
   async login(user: UserDto) {
     const { email, password } = user;
     const userInfo = await this.userDao.findOneOrFail({ email });
-    const userPassword = sha1(password, userInfo.passwordSalt);
-    if (userPassword === userInfo.password) {
+    const bool = this.verifyPassword(password, userInfo.passwordSalt, userInfo.password);
+    if (bool) {
       return this.pickLoginUserInfo(userInfo);
     }
     throw new UnauthorizedException('密码错误！');
