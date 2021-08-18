@@ -31,7 +31,7 @@ describe('TodoService', () => {
   });
 
   it('post a todo item', async function () {
-    const user = await userService.queryUserInfo(1);
+    const user = await userService.queryUser(1);
     const res = await service.initTodo({
       period: TodoPeriod.Today,
       info: '今天下班前完成提交。',

@@ -35,7 +35,7 @@ export class CosObjectUrlScheduleService {
         Expires: 60 * 60 * 24, // 1day
       });
       const objectUrl = Url;
-      this.logger.info(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
+      this.logger.debug(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
       await this.assetService.assetDao.update(asset.id, {
         objectUrl,
       });

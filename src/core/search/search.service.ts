@@ -13,6 +13,7 @@ export class SearchService {
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
   ) {
     this.logger.setContext(SearchService.name);
+    // TODO 初始化 index
   }
 
   query() {

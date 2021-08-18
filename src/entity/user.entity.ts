@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '@/entity/role.entity';
+import { Family } from '@/entity/family.entity';
 
 @Entity('user')
 export class User {
@@ -47,4 +48,12 @@ export class User {
   @ManyToMany(() => Role)
   @JoinTable()
   roles: Role[];
+
+  @ManyToMany(() => Family, (family) => family.members)
+  @JoinTable()
+  families: Family[];
+
+  static RelationColumnFamilies = 'families';
+
+  static RelationColumnFamilyMembers = 'families.members';
 }
