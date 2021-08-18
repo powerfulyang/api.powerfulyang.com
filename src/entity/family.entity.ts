@@ -2,8 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,16 +17,15 @@ export class Family {
   @Column({ unique: true })
   name: string;
 
-  @Column()
+  @Column({ default: '' })
   description: string;
-
-  @ManyToMany(() => User)
-  @JoinTable()
-  members: User[];
 
   @CreateDateColumn()
   createAt: Date;
 
   @UpdateDateColumn()
   updateAt: Date;
+
+  @ManyToMany(() => User, (user) => user.families)
+  members: User[];
 }

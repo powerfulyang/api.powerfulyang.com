@@ -13,12 +13,16 @@ import { Menu } from '@/entity/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { Family } from '@/entity/family.entity';
+import { PlainStaticProperties } from '@/utils/plain.static.properties';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     readonly userDao: Repository<User>,
+    @InjectRepository(Family)
+    private readonly familyDao: Repository<Family>,
     private jwtService: JwtService,
     private logger: AppLogger,
     private readonly roleService: RoleService,
@@ -83,12 +87,24 @@ export class UserService {
     return currentUser;
   }
 
-  queryUserInfo(id: number) {
+  queryUser(id: number) {
     return this.userDao.findOneOrFail(id);
   }
 
-  setUserRole(user: User) {
+  saveUser(user: User) {
     return this.userDao.save(user);
+  }
+
+  cascadeGetUser() {
+    return this.userDao.findOneOrFail();
+  }
+
+  cascadeUpdateUser(user: User) {
+    return this.saveUser(user);
+  }
+
+  setUserRole(user: User) {
+    return this.saveUser(user);
   }
 
   async getUserMenus(id: number) {
@@ -130,7 +146,9 @@ export class UserService {
 
   async cacheUsers() {
     this.cacheService.del(REDIS_KEYS.USERS);
-    const users = await this.userDao.find();
+    const users = await this.userDao.find({
+      relations: PlainStaticProperties(User),
+    });
     const usersMap = groupBy<User>((user) => String(user.id), users);
     return this.cacheService.hMSet(
       REDIS_KEYS.USERS,
@@ -138,13 +156,28 @@ export class UserService {
     );
   }
 
-  getCachedUsers(id: number) {
+  getCachedUsers(id: User['id']) {
     return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
   }
 
   async createUser(user: User) {
-    await this.userDao.save(user);
+    const newUser = await this.saveUser(user);
     // add to cache
     this.cacheService.hSet(REDIS_KEYS.USERS, user.id, user);
+    return newUser;
+  }
+
+  saveFamily(family: Family) {
+    return this.familyDao.save(family);
+  }
+
+  queryFamily(id: Family['id']) {
+    return this.familyDao.findOneOrFail(id);
+  }
+
+  async relationQueryUserAllFamilyMembers(id: User['id']) {
+    return this.userDao.findOneOrFail(id, {
+      relations: [User.RelationColumnFamilies, User.RelationColumnFamilyMembers],
+    });
   }
 }

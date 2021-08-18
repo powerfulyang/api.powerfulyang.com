@@ -1,5 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { User } from '@/entity/user.entity';
+import { pluck } from 'ramda';
+import { In } from 'typeorm';
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
@@ -15,8 +19,10 @@ export class FeedController {
   }
 
   @Get()
-  findAll() {
-    return this.feedService.relationQuery();
+  findAll(@FamilyMembersFromAuth() users: User[]) {
+    return this.feedService.relationQuery({
+      createBy: In(pluck('id', users)),
+    });
   }
 
   @Get(':id')

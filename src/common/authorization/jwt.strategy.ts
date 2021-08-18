@@ -28,9 +28,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     // to check user status;
     this.logger.debug(`[user id is ${user.id}]-> query current!`);
     const resUser = await this.userService.getCachedUsers(user.id);
-    await this.userService.userDao.update(user.id, {
-      lastIp: extend.ip,
-      lastAddress: extend.address,
+    process.nextTick(() => {
+      this.userService.userDao.update(user.id, {
+        lastIp: extend.ip,
+        lastAddress: extend.address,
+      });
     });
     return Object.assign(resUser, { exp: user.exp });
   }

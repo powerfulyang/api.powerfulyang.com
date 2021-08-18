@@ -18,16 +18,14 @@ export class RequestMiddleware implements NestMiddleware {
     let requestAddress = '';
     if (ipInfo.code === 0) {
       const { city_name, country_name, isp_domain, owner_domain, region_name } = ipInfo.data;
-      const address = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
-      requestAddress = address;
-      this.logger.info(address);
+      requestAddress = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
     }
     Reflect.set(req, 'extend', { ip: requestIp, address: requestAddress });
     next();
     const { url } = req;
-    const log = `request url => [${url}]; request ip => [${requestIp}]`;
+    const log = `request url => [${url}]; request ip => [${requestIp}]; request address => [${requestAddress}]`;
     this.logger.info(log);
-    this.telegramBotService.sendToMe(`${log} | ${requestAddress}`).catch((e) => {
+    this.telegramBotService.sendToMe(log).catch((e) => {
       this.logger.error('telegram send error', e);
     });
   }

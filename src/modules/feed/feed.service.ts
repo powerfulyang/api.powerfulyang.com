@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Feed } from '@/modules/feed/entities/feed.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UpdateFeedDto } from './dto/update-feed.dto';
 import { CreateFeedDto } from './dto/create-feed.dto';
@@ -23,9 +23,10 @@ export class FeedService {
     return this.feedDao.findAndCount();
   }
 
-  relationQuery() {
+  relationQuery(where: FindManyOptions<Feed>['where']) {
     return this.feedDao.find({
       relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
+      where,
     });
   }
 

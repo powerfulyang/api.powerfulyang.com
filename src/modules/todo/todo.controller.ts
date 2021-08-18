@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
+import { In } from 'typeorm';
+import { pluck } from 'ramda';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -17,9 +19,9 @@ export class TodoController {
   }
 
   @Get()
-  findAll(@UserFromAuth() user: User) {
+  findAll(@FamilyMembersFromAuth() users: User[]) {
     return this.todoService.relationQuery({
-      createBy: user,
+      createBy: In(pluck('id', users)),
     });
   }
 

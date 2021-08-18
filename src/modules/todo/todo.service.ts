@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from '@/modules/todo/entities/todo.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
 import { TodoPeriod } from '@/modules/todo/entities/period.enum';
 import dayjs from 'dayjs';
+import { PlainStaticProperties } from '@/utils/plain.static.properties';
+import { User } from '@/entity/user.entity';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { CreateTodoDto } from './dto/create-todo.dto';
 
@@ -60,10 +62,10 @@ export class TodoService {
     return this.todoDao.save(todo);
   }
 
-  relationQuery(todo: Partial<Todo>) {
+  relationQuery(where: FindManyOptions<Todo>['where']) {
     return this.todoDao.find({
-      relations: [Todo.relationColumnCreateBy, Todo.relationColumnUpdateBy],
-      where: todo,
+      relations: PlainStaticProperties(Todo),
+      where,
     });
   }
 
