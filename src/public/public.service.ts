@@ -30,8 +30,7 @@ export class PublicService {
     return countBy(trim)(allTags);
   }
 
-  async isCommonNode() {
-    const uuid = await this.coreService.getCommonNodeUuid();
-    return uuid === COMMON_CODE_UUID;
+  isCommonNode() {
+    return this.coreService.isCommonNode();
   }
 }

@@ -9,7 +9,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { pHash, sha1 } from '@powerfulyang/node-utils';
-import { __prod__, getImageSuffix } from '@powerfulyang/utils';
+import { getImageSuffix } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstagramBotService } from 'api/instagram-bot';
@@ -46,14 +46,17 @@ export class CoreService {
 
   async setCommonNodeUuid() {
     this.logger.info(`当前环境====>${process.env.NODE_ENV}`);
-    if (__prod__) {
-      await this.cacheService.set(REDIS_KEYS.COMMON_NODE, COMMON_CODE_UUID);
-    }
+    await this.cacheService.set(REDIS_KEYS.COMMON_NODE, COMMON_CODE_UUID);
     return COMMON_CODE_UUID;
   }
 
   getCommonNodeUuid() {
     return this.cacheService.get(REDIS_KEYS.COMMON_NODE);
+  }
+
+  async isCommonNode() {
+    const uuid = await this.getCommonNodeUuid();
+    return uuid === COMMON_CODE_UUID;
   }
 
   notifyCos(notification: { sha1: string; suffix: string; bucketName: AssetBucket }) {
