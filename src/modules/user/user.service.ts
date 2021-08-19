@@ -29,9 +29,6 @@ export class UserService {
     private cacheService: CacheService,
   ) {
     this.logger.setContext(UserService.name);
-    this.cacheUsers().then(() => {
-      this.logger.info('cache users in redis success!');
-    });
   }
 
   async googleUserRelation(profile: Profile) {
