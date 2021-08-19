@@ -16,16 +16,19 @@ export class User {
   id!: number;
 
   @Column()
-  email!: string;
+  email: string;
 
   @Column()
-  passwordSalt!: string;
+  passwordSalt: string;
 
   @Column()
-  password!: string;
+  password: string;
 
   @Column()
   nickname: string;
+
+  @Column({ default: '' })
+  bio: string;
 
   @Column()
   avatar: string;
@@ -37,10 +40,10 @@ export class User {
   lastAddress: string;
 
   @CreateDateColumn()
-  createAt!: Date;
+  createAt: Date;
 
   @UpdateDateColumn()
-  updateAt!: Date;
+  updateAt: Date;
 
   @Column({ unique: true })
   googleOpenId: string;
