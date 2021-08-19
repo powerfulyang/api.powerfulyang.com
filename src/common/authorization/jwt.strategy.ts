@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate({ extend }: ReqExtend, user: User & { iat: number; exp: number }) {
     // to check user status;
-    this.logger.debug(`[user id is ${user.id}]-> query current!`);
+    this.logger.debug(`user query [ id: ${user.id} ] !`);
     const resUser = await this.userService.getCachedUsers(user.id);
     process.nextTick(() => {
       this.userService.userDao.update(user.id, {

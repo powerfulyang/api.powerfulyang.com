@@ -2,13 +2,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '@/entity/role.entity';
 import { Family } from '@/entity/family.entity';
+import { Asset } from '@/entity/asset.entity';
 
 @Entity('user')
 export class User {
@@ -29,6 +32,12 @@ export class User {
 
   @Column({ default: '' })
   bio: string;
+
+  @JoinColumn()
+  @OneToOne(() => Asset)
+  timelineBackground: Asset;
+
+  static RelationColumnTimelineBackground = 'timelineBackground';
 
   @Column()
   avatar: string;
