@@ -82,8 +82,16 @@ export class UserService {
   }
 
   pickLoginUserInfo(user: Partial<User>) {
-    const currentUser = pick(['id', 'nickname', 'email', 'avatar', 'createAt'])(user);
-    this.logger.debug(currentUser);
+    const currentUser = pick([
+      'id',
+      'nickname',
+      'email',
+      'avatar',
+      'createAt',
+      'bio',
+      'timelineBackground',
+    ])(user);
+    this.logger.debug(`current user is [ name: ${currentUser.nickname} ]`);
     return currentUser;
   }
 
