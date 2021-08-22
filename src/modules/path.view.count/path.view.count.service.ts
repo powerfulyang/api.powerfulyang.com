@@ -16,9 +16,6 @@ export class PathViewCountService {
     private readonly logger: AppLogger,
   ) {
     this.logger.setContext(PathViewCountService.name);
-    this.cache().then(() => {
-      this.logger.info('path view count map cached success!');
-    });
   }
 
   async cache() {
