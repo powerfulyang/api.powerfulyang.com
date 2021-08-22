@@ -25,7 +25,6 @@ import { AssetModule } from './modules/asset/asset.module';
 import { PostModule } from './modules/post/post.module';
 import { PublicModule } from './public/public.module';
 import { FeedModule } from './modules/feed/feed.module';
-import { TodoModule } from './modules/todo/todo.module';
 
 @Module({
   imports: [
@@ -50,7 +49,6 @@ import { TodoModule } from './modules/todo/todo.module';
     PathViewCountModule,
     ScheduleModule,
     FeedModule,
-    TodoModule,
     BootstrapModule,
   ],
   providers: [
@@ -63,7 +61,9 @@ import { TodoModule } from './modules/todo/todo.module';
 export class AppModule implements NestModule {
   constructor(private logger: AppLogger, private bootstrapService: BootstrapService) {
     this.logger.setContext(AppModule.name);
-    this.bootstrapService.bootstrap();
+    this.bootstrapService.bootstrap().then(() => {
+      this.logger.info('load bootstrap scripts!');
+    });
   }
 
   configure(consumer: MiddlewareConsumer) {
