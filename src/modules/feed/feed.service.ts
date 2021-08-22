@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 import { FindManyOptions, Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
+import { User } from '@/entity/user.entity';
 import { UpdateFeedDto } from './dto/update-feed.dto';
 import { CreateFeedDto } from './dto/create-feed.dto';
 
@@ -19,6 +20,13 @@ export class FeedService {
     return this.feedDao.save(createFeedDto);
   }
 
+  postNewFeed(createFeedDto: CreateFeedDto, user: User) {
+    return this.feedDao.save({
+      ...createFeedDto,
+      createBy: user,
+    });
+  }
+
   findAll() {
     return this.feedDao.findAndCount();
   }
@@ -27,6 +35,9 @@ export class FeedService {
     return this.feedDao.find({
       relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
       where,
+      order: {
+        id: 'DESC',
+      },
     });
   }
 

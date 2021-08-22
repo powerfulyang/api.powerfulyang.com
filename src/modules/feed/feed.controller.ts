@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
 import { pluck } from 'ramda';
 import { In } from 'typeorm';
@@ -14,8 +14,8 @@ export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
   @Post()
-  create(@Body() createFeedDto: CreateFeedDto) {
-    return this.feedService.create(createFeedDto);
+  create(@Body() createFeedDto: CreateFeedDto, @UserFromAuth(['id']) user: User) {
+    return this.feedService.postNewFeed(createFeedDto, user);
   }
 
   @Get()
