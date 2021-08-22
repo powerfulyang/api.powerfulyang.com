@@ -9,7 +9,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { pHash, sha1 } from '@powerfulyang/node-utils';
-import { getImageSuffix } from '@powerfulyang/utils';
+import { __prod__, getImageSuffix } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstagramBotService } from 'api/instagram-bot';
@@ -57,6 +57,11 @@ export class CoreService {
   async isCommonNode() {
     const uuid = await this.getCommonNodeUuid();
     return uuid === COMMON_CODE_UUID;
+  }
+
+  async isProdCommonNode() {
+    const bool = await this.isCommonNode();
+    return bool && __prod__;
   }
 
   notifyCos(notification: { sha1: string; suffix: string; bucketName: AssetBucket }) {

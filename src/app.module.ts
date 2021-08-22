@@ -16,6 +16,8 @@ import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { PathViewCountModule } from '@/modules/path.view.count/path.view.count.module';
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { OrmModule } from '@/core/orm.module';
+import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
+import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
@@ -49,6 +51,7 @@ import { TodoModule } from './modules/todo/todo.module';
     ScheduleModule,
     FeedModule,
     TodoModule,
+    BootstrapModule,
   ],
   providers: [
     {
@@ -58,8 +61,9 @@ import { TodoModule } from './modules/todo/todo.module';
   ],
 })
 export class AppModule implements NestModule {
-  constructor(private logger: AppLogger) {
+  constructor(private logger: AppLogger, private bootstrapService: BootstrapService) {
     this.logger.setContext(AppModule.name);
+    this.bootstrapService.bootstrap();
   }
 
   configure(consumer: MiddlewareConsumer) {

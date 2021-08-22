@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { Interval, Timeout } from '@nestjs/schedule';
+import { Interval } from '@nestjs/schedule';
 import { AppLogger } from '@/common/logger/app.logger';
-import { COMMON_CODE_UUID } from '@/utils/uuid';
 import { CoreService } from '@/core/core.service';
 
 @Injectable()
@@ -19,8 +18,8 @@ export class CosObjectUrlScheduleService {
 
   @Interval(60 * 60 * 24 * 999)
   async refreshObjectUrl() {
-    const uuid = await this.coreService.getCommonNodeUuid();
-    if (uuid !== COMMON_CODE_UUID) {
+    const bool = await this.coreService.isProdCommonNode();
+    if (!bool) {
       return;
     }
     this.logger.info('this is common node!!!');
@@ -40,12 +39,5 @@ export class CosObjectUrlScheduleService {
         objectUrl,
       });
     }
-  }
-
-  @Timeout(10000) // 10秒之后运行
-  refresh() {
-    this.refreshObjectUrl().then(() => {
-      this.logger.info('每次重启的时候需要刷新一下 object url!');
-    });
   }
 }
