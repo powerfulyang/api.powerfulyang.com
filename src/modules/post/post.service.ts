@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Posts } from '@/entity/posts.entity';
+import { Post } from '@/entity/post.entity';
 import { Repository } from 'typeorm';
 import { PostDto } from '@/entity/dto/PostDto';
 
 @Injectable()
 export class PostService {
-  constructor(@InjectRepository(Posts) readonly postDao: Repository<Posts>) {}
+  constructor(@InjectRepository(Post) readonly postDao: Repository<Post>) {}
 
-  async createPost(post: Posts) {
+  async createPost(post: Post) {
     if (post.id) {
       const findPost = await this.postDao.findOneOrFail(post.id);
       findPost.content = post.content;
@@ -19,11 +19,11 @@ export class PostService {
     return this.postDao.save(post);
   }
 
-  deletePost(draft: Posts) {
+  deletePost(draft: Post) {
     return this.postDao.delete(draft);
   }
 
-  updatePost(post: Posts) {
+  updatePost(post: Post) {
     return this.postDao.update(post.id, post);
   }
 
@@ -31,14 +31,14 @@ export class PostService {
     return this.postDao.find({ where: post, order: { id: 'DESC' } });
   }
 
-  get(draft: Posts) {
+  get(draft: Post) {
     return this.postDao.findOneOrFail(draft);
   }
 
-  publicRead(post: Posts) {
+  publicRead(post: Post) {
     return this.postDao.findOneOrFail({
-      where: { id: post.id },
-      relations: ['user'],
+      where: { id: post.id, public: true },
+      relations: [Post.RelationColumnCreateBy],
     });
   }
 
@@ -46,11 +46,14 @@ export class PostService {
     const posts = await this.postDao.find({
       select: ['id', 'title', 'createAt'],
       order: { id: 'DESC' },
+      where: {
+        public: true,
+      },
     });
     return { posts };
   }
 
-  tagsArray() {
-    return this.postDao.find({ select: ['tags'] });
+  tagsArray(justPublic: boolean = true) {
+    return this.postDao.find({ select: ['tags'], where: { public: justPublic } });
   }
 }

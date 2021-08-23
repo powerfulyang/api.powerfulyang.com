@@ -1,7 +1,7 @@
-import { Posts } from '@/entity/posts.entity';
+import { Post } from '@/entity/post.entity';
 import { Length } from 'class-validator';
 
-export class PostDto extends Posts {
+export class PostDto extends Post {
   @Length(1, 100)
   title: string;
 

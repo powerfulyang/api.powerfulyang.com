@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { AppLogger } from '@/common/logger/app.logger';
 import { PostService } from '@/modules/post/post.service';
-import { Posts } from '@/entity/posts.entity';
+import { Post } from '@/entity/post.entity';
 import { countBy, flatten, map, prop, trim } from 'ramda';
 import { CoreService } from '@/core/core.service';
-import { COMMON_CODE_UUID } from '@/utils/uuid';
+import { FeedService } from '@/modules/feed/feed.service';
 
 @Injectable()
 export class PublicService {
@@ -12,19 +12,20 @@ export class PublicService {
     private logger: AppLogger,
     private postService: PostService,
     private coreService: CoreService,
+    private readonly feedService: FeedService,
   ) {
     this.logger.setContext(PublicService.name);
   }
 
-  getAllPublicPosts() {
+  getAllPublicPost() {
     return this.postService.publicList();
   }
 
-  getPublicPostById(post: Posts) {
+  getPublicPostById(post: Post) {
     return this.postService.publicRead(post);
   }
 
-  async postsTags() {
+  async getPublicPostTags() {
     const tagsArr = await this.postService.tagsArray();
     const allTags = flatten(map(prop('tags'), tagsArr));
     return countBy(trim)(allTags);
@@ -32,5 +33,9 @@ export class PublicService {
 
   isCommonNode() {
     return this.coreService.isCommonNode();
+  }
+
+  async getAllPublicFeed() {
+    return this.feedService.publicList();
   }
 }

@@ -31,7 +31,7 @@ export class FeedService {
     return this.feedDao.findAndCount();
   }
 
-  relationQuery(where: FindManyOptions<Feed>['where']) {
+  relationQuery(where?: FindManyOptions<Feed>['where']) {
     return this.feedDao.find({
       relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
       where,
@@ -53,5 +53,14 @@ export class FeedService {
 
   remove(id: number) {
     return this.feedDao.delete(id);
+  }
+
+  publicList() {
+    return this.feedDao.find({
+      relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 }

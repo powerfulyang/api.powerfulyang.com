@@ -1,11 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { Posts } from '@/entity/posts.entity';
+import { Post } from '@/entity/post.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { PublicService } from '@/public/public.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { AssetService } from '@/modules/asset/asset.service';
 
-@Controller()
+@Controller('public')
 export class PublicController {
   constructor(
     private publicService: PublicService,
@@ -20,19 +20,24 @@ export class PublicController {
     return 'Hello World!!!';
   }
 
-  @Get('posts')
-  posts() {
-    return this.publicService.getAllPublicPosts();
+  @Get('post')
+  AllPublicPost() {
+    return this.publicService.getAllPublicPost();
   }
 
-  @Get('posts/tags')
+  @Get('post/tags')
   tags() {
-    return this.publicService.postsTags();
+    return this.publicService.getPublicPostTags();
   }
 
-  @Get('posts/:id')
-  post(@Param() post: Posts) {
+  @Get('post/:id')
+  post(@Param() post: Post) {
     return this.publicService.getPublicPostById(post);
+  }
+
+  @Get('feed')
+  AllPublicFeed() {
+    return this.publicService.getAllPublicFeed();
   }
 
   @Get('gallery')
