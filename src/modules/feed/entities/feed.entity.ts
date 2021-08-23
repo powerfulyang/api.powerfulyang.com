@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -13,6 +14,7 @@ import { Asset } from '@/entity/asset.entity';
 import { User } from '@/entity/user.entity';
 
 @Entity()
+@Index(['content', 'createBy'], { unique: true })
 export class Feed {
   @PrimaryGeneratedColumn()
   id?: number;
@@ -24,10 +26,13 @@ export class Feed {
   @JoinTable()
   assets?: Asset[];
 
+  @Column({ default: true })
+  public: boolean;
+
   static readonly relationColumnAssets = 'assets';
 
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User)
   createBy: User;
 
   static readonly relationColumnCreateBy = 'createBy';

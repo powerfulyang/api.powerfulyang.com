@@ -10,9 +10,9 @@ import {
 } from 'typeorm';
 import { User } from '@/entity/user.entity';
 
-@Entity('posts')
-@Index(['title', 'user'], { unique: true })
-export class Posts {
+@Entity('post')
+@Index(['title', 'createBy'], { unique: true })
+export class Post {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,9 +25,14 @@ export class Posts {
   @Column({ type: 'json', nullable: true })
   tags: string[];
 
+  @Column({ default: true })
+  public: boolean;
+
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.id)
-  user: User;
+  @ManyToOne(() => User)
+  createBy: User;
+
+  static RelationColumnCreateBy = 'createBy';
 
   @CreateDateColumn()
   createAt: Date;
