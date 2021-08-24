@@ -4,7 +4,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Request, Response } from 'express';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization } from '@/constants/constants';
+import { Authorization, CookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
 import { ReqExtend } from '@/type/ReqExtend';
 
@@ -39,7 +39,7 @@ export class ResponseInterceptor implements NestInterceptor {
           if (ValidPeriod < 6 * 60 * 60) {
             // 小于6小时 refresh token
             const authorization = this.userService.generateAuthorization(user);
-            response.cookie(Authorization, authorization);
+            response.cookie(Authorization, authorization, CookieOptions);
           }
         }
       }),
