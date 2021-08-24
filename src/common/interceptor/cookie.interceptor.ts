@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { map, tap } from 'rxjs/operators';
 import { omit } from 'ramda';
 import { AppLogger } from '@/common/logger/app.logger';
-import { __prod__ } from '@powerfulyang/utils';
+import { CookieOptions } from '@/constants/constants';
 
 @Injectable()
 export class CookieInterceptor implements NestInterceptor {
@@ -21,13 +21,7 @@ export class CookieInterceptor implements NestInterceptor {
         if (data.cookie) {
           const ctx = context.switchToHttp();
           const response = ctx.getResponse<Response>();
-          response.cookie(data.cookie[0], data.cookie[1], {
-            httpOnly: true,
-            sameSite: __prod__ && true,
-            secure: __prod__ && true,
-            domain: 'powerfulyang.com',
-            maxAge: 24 * 60 * 60 * 1000,
-          });
+          response.cookie(data.cookie[0], data.cookie[1], CookieOptions);
         }
       }),
       map((data) => omit(['cookie'])(data)),
