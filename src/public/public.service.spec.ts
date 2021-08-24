@@ -18,7 +18,7 @@ describe('PublicService', () => {
   });
 
   it('all tags', async () => {
-    const countTags = await service.postsTags();
+    const countTags = await service.getPublicPostTags();
     expect(countTags).toBeDefined();
   });
 });
