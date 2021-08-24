@@ -57,7 +57,11 @@ export class FeedService {
 
   publicList() {
     return this.feedDao.find({
-      relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
+      relations: [
+        Feed.relationColumnCreateBy,
+        Feed.relationColumnAssets,
+        `${Feed.relationColumnCreateBy}.${User.RelationColumnTimelineBackground}`,
+      ],
       order: {
         id: 'DESC',
       },
