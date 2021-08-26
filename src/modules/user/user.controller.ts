@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import { User } from '@/entity/user.entity';
 import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
@@ -56,13 +56,8 @@ export class UserController {
 
   @Get('current')
   @JwtAuthGuard()
-  @UseInterceptors(CookieInterceptor)
-  current(@UserFromAuth() user: User, @Query(Authorization) token: string) {
-    let cookie;
-    if (token) {
-      cookie = [Authorization, token];
-    }
-    return Object.assign(this.userService.pickLoginUserInfo(user), { cookie });
+  async current(@UserFromAuth() user: User) {
+    return this.userService.getUserInfo(user.id);
   }
 
   @Post('logout')
