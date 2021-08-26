@@ -21,7 +21,7 @@ export class CookieClearInterceptor implements NestInterceptor {
         if (data.cookie) {
           const ctx = context.switchToHttp();
           const response = ctx.getResponse<Response>();
-          response.cookie(data.cookie, '', CookieOptions);
+          response.cookie(data.cookie, '', Object.assign(CookieOptions, { maxAge: 0 }));
         }
       }),
       map((data) => omit(['cookie'])(data)),
