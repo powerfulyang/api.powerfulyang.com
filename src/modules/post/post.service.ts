@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '@/entity/post.entity';
-import { Repository } from 'typeorm';
-import { PostDto } from '@/entity/dto/PostDto';
+import { FindManyOptions, Repository } from 'typeorm';
+import { pluck } from 'ramda';
 
 @Injectable()
 export class PostService {
@@ -27,8 +27,8 @@ export class PostService {
     return this.postDao.update(post.id, post);
   }
 
-  getAll(post?: PostDto) {
-    return this.postDao.find({ where: post, order: { id: 'DESC' } });
+  getAll(where?: FindManyOptions<Post>['where']) {
+    return this.postDao.find({ where, order: { id: 'DESC' } });
   }
 
   get(draft: Post) {
@@ -42,11 +42,12 @@ export class PostService {
     });
   }
 
-  async publicList() {
+  async publicList(query: Post) {
     const posts = await this.postDao.find({
       select: ['id', 'title', 'createAt'],
       order: { id: 'DESC' },
       where: {
+        ...query,
         public: true,
       },
     });
@@ -55,5 +56,14 @@ export class PostService {
 
   tagsArray(justPublic: boolean = true) {
     return this.postDao.find({ select: ['tags'], where: { public: justPublic } });
+  }
+
+  async getPublishedYears() {
+    const res: Array<Pick<Post, 'publishYear'>> = await this.postDao
+      .createQueryBuilder()
+      .select(['publishYear'])
+      .distinct(true)
+      .getRawMany();
+    return pluck('publishYear')(res);
   }
 }

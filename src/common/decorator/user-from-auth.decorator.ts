@@ -14,7 +14,7 @@ export const UserFromAuth = createParamDecorator(
   },
 );
 
-export const FamilyMembersFromAuth = createParamDecorator((_, ctx: ExecutionContext) => {
+export const FamilyMembersFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {
   const { user } = ctx.switchToHttp().getRequest<Request>();
   return getUserFamiliesMembers(user);
 });

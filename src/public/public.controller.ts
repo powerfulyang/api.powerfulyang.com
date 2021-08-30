@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { Post } from '@/entity/post.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { PublicService } from '@/public/public.service';
@@ -21,8 +21,13 @@ export class PublicController {
   }
 
   @Get('post')
-  AllPublicPost() {
-    return this.publicService.getAllPublicPost();
+  AllPublicPost(@Query() query: Post) {
+    return this.publicService.getAllPublicPost(query);
+  }
+
+  @Get('post/years')
+  getPostPublishedYears() {
+    return this.publicService.getPublishedYears();
   }
 
   @Get('post/tags')
