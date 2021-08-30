@@ -28,6 +28,9 @@ export class Post {
   @Column({ default: true })
   public: boolean;
 
+  @Column({ default: () => `'${new Date().getFullYear()}'` })
+  publishYear: string;
+
   @JoinColumn()
   @ManyToOne(() => User)
   createBy: User;

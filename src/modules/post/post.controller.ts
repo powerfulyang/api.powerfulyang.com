@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Post as PostDecorator, Query } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
 import { PostDto } from '@/entity/dto/PostDto';
 import { Post } from '@/entity/post.entity';
+import { In } from 'typeorm';
+import { pluck } from 'ramda';
 
 @Controller('post')
 @JwtAuthGuard()
@@ -18,9 +20,11 @@ export class PostController {
   }
 
   @Get()
-  getAll(@UserFromAuth(['id']) user: User, @Query() draft: Post) {
-    draft.createBy = user;
-    return this.postService.getAll(draft);
+  getAll(@FamilyMembersFromAuth() users: User[], @Query() post: Post) {
+    return this.postService.getAll({
+      ...post,
+      createBy: In(pluck('id', users)),
+    });
   }
 
   @Get(':id')

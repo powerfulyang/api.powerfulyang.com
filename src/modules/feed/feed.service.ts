@@ -62,6 +62,7 @@ export class FeedService {
         Feed.relationColumnAssets,
         `${Feed.relationColumnCreateBy}.${User.RelationColumnTimelineBackground}`,
       ],
+      where: { public: true },
       order: {
         id: 'DESC',
       },

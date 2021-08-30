@@ -17,8 +17,8 @@ export class PublicService {
     this.logger.setContext(PublicService.name);
   }
 
-  getAllPublicPost() {
-    return this.postService.publicList();
+  getAllPublicPost(query: Post) {
+    return this.postService.publicList(query);
   }
 
   getPublicPostById(post: Post) {
@@ -37,5 +37,9 @@ export class PublicService {
 
   async getAllPublicFeed() {
     return this.feedService.publicList();
+  }
+
+  getPublishedYears() {
+    return this.postService.getPublishedYears();
   }
 }
