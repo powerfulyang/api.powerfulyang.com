@@ -5,7 +5,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -34,7 +34,7 @@ export class User {
   bio: string;
 
   @JoinColumn()
-  @OneToOne(() => Asset)
+  @ManyToOne(() => Asset)
   timelineBackground: Asset;
 
   static RelationColumnTimelineBackground = 'timelineBackground';
