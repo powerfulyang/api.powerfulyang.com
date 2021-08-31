@@ -128,17 +128,25 @@ export class CoreService {
   }
 
   async initManualUpload(buffer: Buffer) {
-    const asset = new Asset();
+    let asset = new Asset();
     asset.bucket = await this.getBotBucket(AssetBucket.upload);
     asset.sha1 = sha1(buffer);
     asset.fileSuffix = getImageSuffix(buffer);
     asset.pHash = await pHash(buffer);
     writeFileSync(join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix), buffer);
-    await this.assetDao.insert(asset);
-    this.notifyCos({
+    try {
+      await this.assetDao.insert(asset);
+      this.notifyCos({
+        sha1: asset.sha1,
+        suffix: asset.fileSuffix,
+        bucketName: asset.bucket.bucketName,
+      });
+    } catch (e) {
+      // duplicate entry
+      this.logger.error(e);
+    }
+    asset = await this.assetDao.findOneOrFail({
       sha1: asset.sha1,
-      suffix: asset.fileSuffix,
-      bucketName: asset.bucket.bucketName,
     });
     return asset;
   }

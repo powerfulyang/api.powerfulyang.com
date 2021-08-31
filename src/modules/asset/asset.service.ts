@@ -68,10 +68,12 @@ export class AssetService {
   }
 
   async saveAsset(files: UploadFile[]) {
+    const assets: Asset[] = [];
     for (const file of files) {
-      await this.coreService.initManualUpload(file.buffer);
+      const asset = await this.coreService.initManualUpload(file.buffer);
+      assets.push(asset);
     }
-    return SUCCESS;
+    return assets;
   }
 
   async deleteAsset(id: number) {
