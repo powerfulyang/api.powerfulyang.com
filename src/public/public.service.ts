@@ -26,7 +26,7 @@ export class PublicService {
   }
 
   async getPublicPostTags() {
-    const tagsArr = await this.postService.tagsArray();
+    const tagsArr = await this.postService.tagsArray(true);
     const allTags = flatten(map(prop('tags'), tagsArr));
     return countBy(trim)(allTags);
   }
@@ -40,6 +40,6 @@ export class PublicService {
   }
 
   getPublishedYears() {
-    return this.postService.getPublishedYears();
+    return this.postService.publicPublishedYears();
   }
 }

@@ -159,7 +159,9 @@ export class UserService {
 
   async cacheUsers() {
     this.cacheService.del(REDIS_KEYS.USERS);
-    const users = await this.userDao.find();
+    const users = await this.userDao.find({
+      relations: PlainStaticProperties(User),
+    });
     const usersMap = groupBy<User>((user) => String(user.id), users);
     return this.cacheService.hMSet(
       REDIS_KEYS.USERS,

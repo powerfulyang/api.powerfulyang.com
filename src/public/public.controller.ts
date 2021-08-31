@@ -45,9 +45,9 @@ export class PublicController {
     return this.publicService.getAllPublicFeed();
   }
 
-  @Get('gallery')
+  @Get('asset')
   gallery(@Pagination() pagination: Pagination) {
-    return this.assetService.list(pagination);
+    return this.assetService.publicList(pagination);
   }
 
   @Get('common-node')

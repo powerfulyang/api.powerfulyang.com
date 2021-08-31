@@ -1,23 +1,41 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { Asset } from '@/entity/asset.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { hammingDistance } from '@powerfulyang/node-utils';
 import { UploadFile } from '@/type/UploadFile';
 import { CoreService } from '@/core/core.service';
 import { SUCCESS } from '@/constants/constants';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
+import { Bucket } from '@/entity/bucket.entity';
+import { pluck } from 'ramda';
 
 @Injectable()
 export class AssetService {
   constructor(
     @InjectRepository(Asset) readonly assetDao: Repository<Asset>,
+    @InjectRepository(Bucket) readonly bucketDao: Repository<Bucket>,
     private coreService: CoreService,
     private tencentCloudCosService: TencentCloudCosService,
   ) {}
 
-  list(pagination: Pagination) {
+  async publicList(pagination: Pagination) {
+    const buckets = await this.bucketDao.find({
+      where: {
+        public: true,
+      },
+    });
+    return this.assetDao.findAndCount({
+      ...pagination,
+      order: { id: 'DESC' },
+      where: {
+        bucket: In(pluck('id', buckets)),
+      },
+    });
+  }
+
+  async list(pagination: Pagination) {
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
@@ -68,10 +86,12 @@ export class AssetService {
   }
 
   async saveAsset(files: UploadFile[]) {
+    const assets: Asset[] = [];
     for (const file of files) {
-      await this.coreService.initManualUpload(file.buffer);
+      const asset = await this.coreService.initManualUpload(file.buffer);
+      assets.push(asset);
     }
-    return SUCCESS;
+    return assets;
   }
 
   async deleteAsset(id: number) {
