@@ -5,7 +5,6 @@ import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-fro
 import { User } from '@/entity/user.entity';
 import { PostDto } from '@/entity/dto/PostDto';
 import { Post } from '@/entity/post.entity';
-import { In } from 'typeorm';
 import { pluck } from 'ramda';
 
 @Controller('post')
@@ -21,12 +20,20 @@ export class PostController {
 
   @Get()
   getAll(@FamilyMembersFromAuth() users: User[], @Query() post: Post) {
-    return this.postService.getAll({
-      ...post,
-      createBy: In(pluck('id', users)),
-    });
+    return this.postService.getAllPostByUserIds(pluck('id', users), post);
   }
 
+  @Get('years')
+  getPublishedYears(@FamilyMembersFromAuth() users: User[]) {
+    return this.postService.getPublishedYears(pluck('id', users));
+  }
+
+  @Get('tags')
+  getPublishedTags(@FamilyMembersFromAuth() users: User[]) {
+    return this.postService.getPublishedTags(pluck('id', users));
+  }
+
+  @Get()
   @Get(':id')
   get(@Param() draft: Post, @UserFromAuth(['id']) user: User) {
     draft.createBy = user;

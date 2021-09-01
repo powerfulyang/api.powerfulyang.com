@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Feed } from '@/modules/feed/entities/feed.entity';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, In, Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
 import { User } from '@/entity/user.entity';
 import { UpdateFeedDto } from './dto/update-feed.dto';
@@ -41,6 +41,18 @@ export class FeedService {
     });
   }
 
+  relationQueryByUserIds(ids: User['id'][]) {
+    return this.feedDao.find({
+      relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
+      where: {
+        createBy: In(ids),
+      },
+      order: {
+        id: 'DESC',
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.feedDao.findOne(id, {
       relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
@@ -57,11 +69,7 @@ export class FeedService {
 
   publicList() {
     return this.feedDao.find({
-      relations: [
-        Feed.relationColumnCreateBy,
-        Feed.relationColumnAssets,
-        `${Feed.relationColumnCreateBy}.${User.RelationColumnTimelineBackground}`,
-      ],
+      relations: [Feed.relationColumnCreateBy, Feed.relationColumnAssets],
       where: { public: true },
       order: {
         id: 'DESC',

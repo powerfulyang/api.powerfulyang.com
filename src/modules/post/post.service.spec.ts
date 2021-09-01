@@ -18,7 +18,7 @@ describe('PostService', () => {
   });
 
   it('getPublishedYears', async () => {
-    const res = await service.getPublishedYears();
+    const res = await service.publicPublishedYears();
     expect(res).toBeDefined();
   });
 });

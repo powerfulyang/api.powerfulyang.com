@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '@/entity/post.entity';
-import { FindManyOptions, Repository } from 'typeorm';
-import { pluck } from 'ramda';
+import { In, Repository } from 'typeorm';
+import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
+import { User } from '@/entity/user.entity';
 
 @Injectable()
 export class PostService {
@@ -27,12 +28,16 @@ export class PostService {
     return this.postDao.update(post.id, post);
   }
 
-  getAll(where?: FindManyOptions<Post>['where']) {
-    return this.postDao.find({ where, order: { id: 'DESC' } });
+  getAllPostByUserIds(ids: User['id'][], post: Post) {
+    return this.postDao.find({
+      select: ['id', 'title', 'createAt'],
+      order: { id: 'DESC' },
+      where: { ...post, createBy: In(ids) },
+    });
   }
 
   get(draft: Post) {
-    return this.postDao.findOneOrFail(draft);
+    return this.postDao.findOneOrFail(draft, { relations: [Post.RelationColumnCreateBy] });
   }
 
   publicRead(post: Post) {
@@ -42,8 +47,8 @@ export class PostService {
     });
   }
 
-  async publicList(query: Post) {
-    const posts = await this.postDao.find({
+  publicList(query: Post) {
+    return this.postDao.find({
       select: ['id', 'title', 'createAt'],
       order: { id: 'DESC' },
       where: {
@@ -51,14 +56,31 @@ export class PostService {
         public: true,
       },
     });
-    return { posts };
   }
 
   tagsArray(justPublic: boolean = true) {
     return this.postDao.find({ select: ['tags'], where: { public: justPublic } });
   }
 
-  async getPublishedYears() {
+  async getPublishedTags(ids: User['id'][]) {
+    const tagsArr = await this.postDao.find({ select: ['tags'], where: { createBy: In(ids) } });
+    const allTags = flatten(map(prop('tags'), tagsArr));
+    return countBy(trim)(allTags);
+  }
+
+  async getPublishedYears(ids: User['id'][]) {
+    const res: Array<Pick<Post, 'publishYear'>> = await this.postDao
+      .createQueryBuilder()
+      .select(['publishYear'])
+      .where('createById in (:...ids)', {
+        ids,
+      })
+      .distinct(true)
+      .getRawMany();
+    return pluck('publishYear')(res);
+  }
+
+  async publicPublishedYears() {
     const res: Array<Pick<Post, 'publishYear'>> = await this.postDao
       .createQueryBuilder()
       .select(['publishYear'])

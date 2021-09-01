@@ -27,13 +27,15 @@ export class Bucket {
   @Column()
   bucketRegion!: BucketRegion;
 
+  @Column({ default: true })
+  public: boolean;
+
   acl: string;
 
   cors: Pick<GetBucketCorsData, 'CORSRules'>;
 
   referer: Pick<GetBucketRefererData, 'RefererConfiguration'>;
 
-  @Column({ type: 'json' })
   @CreateDateColumn()
   createAt: Date;
 

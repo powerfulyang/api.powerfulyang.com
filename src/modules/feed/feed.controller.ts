@@ -1,10 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
 import { pluck } from 'ramda';
-import { In } from 'typeorm';
-import { Feed } from '@/modules/feed/entities/feed.entity';
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
@@ -20,11 +18,8 @@ export class FeedController {
   }
 
   @Get()
-  findAll(@FamilyMembersFromAuth() users: User[], @Query() feed: Feed) {
-    return this.feedService.relationQuery({
-      ...feed,
-      createBy: In(pluck('id', users)),
-    });
+  findAll(@FamilyMembersFromAuth() users: User[]) {
+    return this.feedService.relationQueryByUserIds(pluck('id', users));
   }
 
   @Get(':id')
