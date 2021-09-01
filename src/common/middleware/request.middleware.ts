@@ -13,17 +13,17 @@ export class RequestMiddleware implements NestMiddleware {
   use(req: Request, _res: Response, next: () => void) {
     // 此时还没有进路由
     const { headers, ip } = req;
-    const requestIp = headers?.['x-real-ip'] || ip;
-    const ipInfo = findIpInfo(requestIp);
-    let requestAddress = '';
+    const xRealIp = headers?.['x-real-ip'] || ip;
+    const ipInfo = findIpInfo(xRealIp);
+    let address = '';
     if (ipInfo.code === 0) {
       const { city_name, country_name, isp_domain, owner_domain, region_name } = ipInfo.data;
-      requestAddress = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
+      address = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
     }
-    Reflect.set(req, 'extend', { ip: requestIp, address: requestAddress });
+    Reflect.set(req, 'extend', { ip, xRealIp, address });
     next();
     const { url } = req;
-    const log = `request url => [${url}]; request ip => [${requestIp}]; request address => [${requestAddress}]`;
+    const log = `request url => [${url}]; request ip => [${ip}]; xRealIp => [${xRealIp}] ; request address => [${address}]`;
     this.logger.info(log);
     this.telegramBotService.sendToMe(log).catch((e) => {
       this.logger.error('telegram send error', e);
