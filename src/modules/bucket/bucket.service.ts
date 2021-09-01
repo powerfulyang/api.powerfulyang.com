@@ -21,9 +21,6 @@ export class BucketService {
     private coreService: CoreService,
   ) {
     this.logger.setContext(BucketService.name);
-    this.coreService.initBucket().then(() => {
-      this.logger.info('init buckets complete!');
-    });
   }
 
   private async fetchAllBuckets() {

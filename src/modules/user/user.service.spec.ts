@@ -34,7 +34,7 @@ describe('UserService', () => {
   });
 
   it('update password', async function () {
-    const results = await service.updatePassword(1, 'password');
+    const results = await service.updatePassword(4, 'yxw@zhj20210528');
     expect(results).toHaveProperty('affected', 1);
   });
 

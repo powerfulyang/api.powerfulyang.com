@@ -22,13 +22,17 @@ export class BootstrapService {
       this.cacheUsers();
       this.refreshObjectUrl();
       this.cachePathViewCount();
+      this.initBucket();
     }, 1000 * 10);
   }
 
-  refreshObjectUrl() {
-    this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
-      this.logger.info('每次重启的时候需要刷新一下 object url!');
-    });
+  async refreshObjectUrl() {
+    const bool = await this.coreService.isCommonNode();
+    if (bool) {
+      this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
+        this.logger.info('每次重启的时候需要刷新一下 object url!');
+      });
+    }
   }
 
   async cacheUsers() {
@@ -41,9 +45,21 @@ export class BootstrapService {
     }
   }
 
-  cachePathViewCount() {
-    this.pathViewCountService.cache().then(() => {
-      this.logger.info('path view count map cached success!');
-    });
+  async cachePathViewCount() {
+    const bool = await this.coreService.isCommonNode();
+    if (bool) {
+      this.pathViewCountService.cache().then(() => {
+        this.logger.info('path view count map cached success!');
+      });
+    }
+  }
+
+  async initBucket() {
+    const bool = await this.coreService.isCommonNode();
+    if (bool) {
+      this.coreService.initBucket().then(() => {
+        this.logger.info('init buckets complete!');
+      });
+    }
   }
 }
