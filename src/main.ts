@@ -3,7 +3,6 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
 import { __dev__ } from '@powerfulyang/utils';
-import rateLimit from 'express-rate-limit';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { CatchFilter } from '@/common/filter/catch.filter';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
@@ -36,12 +35,6 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
   app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
 
-  app.use(
-    rateLimit({
-      windowMs: 5 * 60 * 1000, // 15 minutes
-      max: 100, // limit each IP to 100 requests per windowMs
-    }),
-  );
   app.use(cookieParser());
   await app.listen(process.env.PORT || 3001);
 }

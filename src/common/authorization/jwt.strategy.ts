@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const resUser = await this.userService.getCachedUsers(user.id);
     process.nextTick(() => {
       this.userService.userDao.update(user.id, {
-        lastIp: extend.ip,
+        lastIp: extend.xRealIp,
         lastAddress: extend.address,
       });
     });
