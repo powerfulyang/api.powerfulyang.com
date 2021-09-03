@@ -13,8 +13,9 @@ describe('AssetService', () => {
     service = module.get<AssetService>(AssetService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('deleteAsset', async () => {
+    const res = await service.deleteAsset([]);
+    expect(res).toBeDefined();
   });
 
   it('pHashMap', async function () {

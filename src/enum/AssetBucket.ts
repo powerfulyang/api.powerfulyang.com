@@ -4,4 +4,7 @@ export enum AssetBucket {
   pinterest = 'pinterest',
   gallery = 'gallery',
   upload = 'upload',
+  public = 'pubic',
+  timeline = 'timeline',
+  post = 'post',
 }

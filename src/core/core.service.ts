@@ -20,6 +20,7 @@ import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { CacheService } from '@/core/cache/cache.service';
 import { COMMON_CODE_UUID } from '@/utils/uuid';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
 
 @Injectable()
 export class CoreService {
@@ -37,6 +38,7 @@ export class CoreService {
     private proxyFetchService: ProxyFetchService,
     private tencentCloudCosService: TencentCloudCosService,
     private cacheService: CacheService,
+    private readonly uploadStaticService: UploadAssetService,
   ) {
     this.logger.setContext(CoreService.name);
     this.setCommonNodeUuid().then((uuid) => {
@@ -77,7 +79,7 @@ export class CoreService {
           Region,
         });
       } catch (e) {
-        this.logger.error('headBucket', e);
+        this.logger.info(`headBucket error code is [${e.name}]`);
         res = e;
       }
       if (res.statusCode !== HttpStatus.OK) {
@@ -127,20 +129,29 @@ export class CoreService {
     return res;
   }
 
-  async initManualUpload(buffer: Buffer) {
+  async initManualUpload(
+    buffer: Buffer,
+    async: boolean = true,
+    bucketName: AssetBucket = AssetBucket.upload,
+  ) {
     let asset = new Asset();
-    asset.bucket = await this.getBotBucket(AssetBucket.upload);
+    asset.bucket = await this.getBotBucket(bucketName);
     asset.sha1 = sha1(buffer);
     asset.fileSuffix = getImageSuffix(buffer);
     asset.pHash = await pHash(buffer);
     writeFileSync(join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix), buffer);
     try {
       await this.assetDao.insert(asset);
-      this.notifyCos({
+      const data = {
         sha1: asset.sha1,
         suffix: asset.fileSuffix,
         bucketName: asset.bucket.bucketName,
-      });
+      };
+      if (async) {
+        this.notifyCos(data);
+      } else {
+        await this.uploadStaticService.persistent(data);
+      }
     } catch (e) {
       // duplicate entry
       this.logger.error(e);

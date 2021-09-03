@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
 import { PostDto } from '@/entity/dto/PostDto';
-import { Post } from '@/entity/post.entity';
+import { Post } from '@/modules/post/entities/post.entity';
 import { pluck } from 'ramda';
 
 @Controller('post')
@@ -15,7 +15,7 @@ export class PostController {
   @PostDecorator()
   createPost(@Body() draft: PostDto, @UserFromAuth(['id']) user: User) {
     draft.createBy = user;
-    return this.postService.createPost(draft);
+    return this.postService.publishPost(draft);
   }
 
   @Get()

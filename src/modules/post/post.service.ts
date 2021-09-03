@@ -1,23 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from '@/entity/post.entity';
+import { Post } from '@/modules/post/entities/post.entity';
 import { In, Repository } from 'typeorm';
 import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
 import { User } from '@/entity/user.entity';
+import { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 
 @Injectable()
 export class PostService {
-  constructor(@InjectRepository(Post) readonly postDao: Repository<Post>) {}
+  constructor(@InjectRepository(Post) private readonly postDao: Repository<Post>) {}
 
-  async createPost(post: Post) {
+  async publishPost(post: PublishPostDto) {
     if (post.id) {
       const findPost = await this.postDao.findOneOrFail(post.id);
       findPost.content = post.content;
-      findPost.tags = post.tags;
+      if (post.tags) {
+        findPost.tags = post.tags;
+      }
       findPost.title = post.title;
       return this.postDao.save(findPost);
     }
-    return this.postDao.save(post);
+    const toSave = this.postDao.create(post);
+    return this.postDao.save(toSave);
   }
 
   deletePost(draft: Post) {
@@ -64,7 +68,7 @@ export class PostService {
 
   async getPublishedTags(ids: User['id'][]) {
     const tagsArr = await this.postDao.find({ select: ['tags'], where: { createBy: In(ids) } });
-    const allTags = flatten(map(prop('tags'), tagsArr));
+    const allTags = flatten(map(prop('tags'))(tagsArr));
     return countBy(trim)(allTags);
   }
 

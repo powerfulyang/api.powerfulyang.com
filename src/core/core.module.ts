@@ -15,6 +15,7 @@ import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
 import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
 import { MICROSERVICE_NAME } from '@/constants/constants';
 import { Feed } from '@/modules/feed/entities/feed.entity';
+import { UploadAssetModule } from '@/microservice/handleAsset/upload-asset.module';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
 
@@ -44,6 +45,7 @@ import { CacheService } from './cache/cache.service';
         return elasticsearchConfig();
       },
     }),
+    UploadAssetModule,
   ],
   providers: [CoreService, CacheService, SearchService],
   exports: [CoreService, CacheService, SearchService],
