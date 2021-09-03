@@ -13,8 +13,12 @@ describe('PostService', () => {
     service = module.get<PostService>(PostService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('create new post', async () => {
+    const res = await service.publishPost({
+      content: 'test content',
+      title: 'test title',
+    });
+    expect(res).toBeDefined();
   });
 
   it('getPublishedYears', async () => {

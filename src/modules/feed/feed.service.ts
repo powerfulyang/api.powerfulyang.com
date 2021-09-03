@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Feed } from '@/modules/feed/entities/feed.entity';
-import { FindManyOptions, In, Repository } from 'typeorm';
+import { FindManyOptions, In, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';
 import { User } from '@/entity/user.entity';
 import { UpdateFeedDto } from './dto/update-feed.dto';
@@ -63,8 +63,9 @@ export class FeedService {
     return this.feedDao.update(id, updateFeedDto);
   }
 
-  remove(id: number) {
-    return this.feedDao.delete(id);
+  @Transaction()
+  batchRemove(ids: number[], @TransactionRepository(Feed) feedRepository?: Repository<Feed>) {
+    return feedRepository!.delete(ids);
   }
 
   publicList() {

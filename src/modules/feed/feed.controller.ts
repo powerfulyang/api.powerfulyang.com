@@ -34,6 +34,6 @@ export class FeedController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.feedService.remove(+id);
+    return this.feedService.batchRemove([+id]);
   }
 }

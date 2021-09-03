@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -28,7 +29,7 @@ export class Post {
   @Column({ default: true })
   public: boolean;
 
-  @Column({ default: () => `'${new Date().getFullYear()}'` })
+  @Column()
   publishYear: string;
 
   @JoinColumn()
@@ -42,4 +43,14 @@ export class Post {
 
   @UpdateDateColumn()
   updateAt: Date;
+
+  @BeforeInsert()
+  beforeInsert() {
+    if (!this.publishYear) {
+      this.publishYear = String(new Date().getFullYear());
+    }
+    if (!this.tags?.length) {
+      this.tags = ['这个人居然不写标签'];
+    }
+  }
 }

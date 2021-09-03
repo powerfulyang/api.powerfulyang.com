@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { Post } from '@/entity/post.entity';
+import { Post } from '@/modules/post/entities/post.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { PublicService } from '@/public/public.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';

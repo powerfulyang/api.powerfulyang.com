@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { Asset } from '@/entity/asset.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { hammingDistance } from '@powerfulyang/node-utils';
 import { UploadFile } from '@/type/UploadFile';
@@ -10,6 +10,7 @@ import { SUCCESS } from '@/constants/constants';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Bucket } from '@/entity/bucket.entity';
 import { pluck } from 'ramda';
+import { AssetBucket } from '@/enum/AssetBucket';
 
 @Injectable()
 export class AssetService {
@@ -94,20 +95,38 @@ export class AssetService {
     return assets;
   }
 
-  async deleteAsset(id: number) {
-    const asset = await this.assetDao.findOneOrFail(id, {
-      relations: ['bucket'],
-    });
-    const res = await this.tencentCloudCosService.deleteObject({
-      Key: `${asset.sha1}${asset.fileSuffix}`,
-      Bucket: asset.bucket.bucketName,
-      Region: asset.bucket.bucketRegion,
-    });
-    const databaseOperation = await this.assetDao.delete(id);
-    if (res.statusCode !== HttpStatus.NO_CONTENT) {
-      throw new ServiceUnavailableException(
-        `删除cos源文件失败, 数据库删除${databaseOperation.affected}行`,
-      );
+  async saveAssetToBucket(files: UploadFile[], bucketName: AssetBucket) {
+    const assets: Asset[] = [];
+    for (const file of files) {
+      const asset = await this.coreService.initManualUpload(file.buffer, false, bucketName);
+      assets.push(asset);
+    }
+    return assets;
+  }
+
+  /**
+   * 批量删除 asset
+   * @param ids
+   * @param assetRepository
+   */
+  @Transaction()
+  async deleteAsset(
+    ids: number[],
+    @TransactionRepository(Asset) assetRepository?: Repository<Asset>,
+  ) {
+    for (const id of ids) {
+      const asset = await assetRepository!.findOneOrFail(id, {
+        relations: ['bucket'],
+      });
+      const res = await this.tencentCloudCosService.deleteObject({
+        Key: `${asset.sha1}${asset.fileSuffix}`,
+        Bucket: asset.bucket.bucketName,
+        Region: asset.bucket.bucketRegion,
+      });
+      await assetRepository!.delete(id);
+      if (res.statusCode !== HttpStatus.NO_CONTENT) {
+        throw new ServiceUnavailableException(`删除cos源文件失败, 数据库回滚`);
+      }
     }
     return SUCCESS;
   }

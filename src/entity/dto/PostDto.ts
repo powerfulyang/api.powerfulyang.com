@@ -1,4 +1,4 @@
-import { Post } from '@/entity/post.entity';
+import { Post } from '@/modules/post/entities/post.entity';
 import { Length } from 'class-validator';
 
 export class PostDto extends Post {

@@ -43,4 +43,9 @@ describe('FeedService', () => {
     const res = await service.relationQuery();
     expect(res).toBeDefined();
   });
+
+  it('cascade delete posts', async function () {
+    const res = await service.batchRemove([16, 20, 21]);
+    expect(res).toBeDefined();
+  });
 });

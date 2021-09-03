@@ -22,7 +22,7 @@ export class Feed {
   @Column()
   content: string;
 
-  @ManyToMany(() => Asset)
+  @ManyToMany(() => Asset, { onDelete: 'CASCADE' })
   @JoinTable()
   assets?: Asset[];
 

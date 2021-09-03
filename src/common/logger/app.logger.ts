@@ -41,10 +41,10 @@ export class AppLogger {
   }
 
   error(message: any, trace?: any) {
-    if (message) {
+    if (typeof message === 'string') {
       this.logger.error(message, trace);
     } else {
-      this.logger.error(trace);
+      this.logger.error(message);
     }
   }
 
