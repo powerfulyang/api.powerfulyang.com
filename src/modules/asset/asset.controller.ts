@@ -21,6 +21,11 @@ export class AssetController {
     return this.assetService.all();
   }
 
+  @Get(':id')
+  getAssetById(@Param('id') id: string) {
+    return this.assetService.findById(+id);
+  }
+
   @Get('pHash/distance')
   async pHashMap() {
     return this.assetService.pHashMap();

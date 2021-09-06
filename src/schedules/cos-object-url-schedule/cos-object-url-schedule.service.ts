@@ -23,9 +23,7 @@ export class CosObjectUrlScheduleService {
       return;
     }
     this.logger.info('this is common node!!!');
-    const assets = await this.assetService.assetDao.find({
-      relations: ['bucket'],
-    });
+    const assets = await this.assetService.all();
     for (const asset of assets) {
       const { Url } = await this.tencentCloudCosService.getObjectUrl({
         Bucket: asset.bucket.bucketName,
@@ -35,7 +33,7 @@ export class CosObjectUrlScheduleService {
       });
       const objectUrl = Url;
       this.logger.debug(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
-      await this.assetService.assetDao.update(asset.id, {
+      await this.assetService.update(asset.id, {
         objectUrl,
       });
     }
