@@ -15,8 +15,8 @@ import { AssetBucket } from '@/enum/AssetBucket';
 @Injectable()
 export class AssetService {
   constructor(
-    @InjectRepository(Asset) readonly assetDao: Repository<Asset>,
-    @InjectRepository(Bucket) readonly bucketDao: Repository<Bucket>,
+    @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
+    @InjectRepository(Bucket) private readonly bucketDao: Repository<Bucket>,
     private coreService: CoreService,
     private tencentCloudCosService: TencentCloudCosService,
   ) {}
@@ -44,7 +44,9 @@ export class AssetService {
   }
 
   all() {
-    return this.assetDao.find();
+    return this.assetDao.find({
+      relations: ['bucket'],
+    });
   }
 
   async pHashMap() {
@@ -133,5 +135,13 @@ export class AssetService {
 
   async randomAsset() {
     return this.assetDao.createQueryBuilder().orderBy('RAND()').limit(1).getOneOrFail();
+  }
+
+  update(id: Asset['id'], asset: Partial<Asset>) {
+    return this.assetDao.update(id, asset);
+  }
+
+  findById(id: Asset['id']) {
+    return this.assetDao.findOneOrFail(id);
   }
 }
