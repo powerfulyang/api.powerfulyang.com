@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@/entity/user.entity';
+import { Asset } from '@/entity/asset.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })
@@ -35,6 +36,10 @@ export class Post {
   @JoinColumn()
   @ManyToOne(() => User)
   createBy: User;
+
+  @JoinColumn()
+  @ManyToOne(() => Asset)
+  poster: Asset;
 
   static RelationColumnCreateBy = 'createBy';
 
