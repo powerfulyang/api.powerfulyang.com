@@ -5,12 +5,20 @@ import { In, Repository } from 'typeorm';
 import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
 import { User } from '@/entity/user.entity';
 import { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
+import { AssetService } from '@/modules/asset/asset.service';
 
 @Injectable()
 export class PostService {
-  constructor(@InjectRepository(Post) private readonly postDao: Repository<Post>) {}
+  constructor(
+    @InjectRepository(Post) private readonly postDao: Repository<Post>,
+    private readonly assetService: AssetService,
+  ) {}
 
   async publishPost(post: PublishPostDto) {
+    if (!post.poster) {
+      const randomAsset = await this.assetService.randomAsset();
+      Reflect.set(post, 'poster', randomAsset);
+    }
     if (post.id) {
       const findPost = await this.postDao.findOneOrFail(post.id);
       findPost.content = post.content;
@@ -34,7 +42,8 @@ export class PostService {
 
   getAllPostByUserIds(ids: User['id'][], post: Post) {
     return this.postDao.find({
-      select: ['id', 'title', 'createAt'],
+      select: ['id', 'title', 'createAt', 'poster'],
+      relations: ['poster'],
       order: { id: 'DESC' },
       where: { ...post, createBy: In(ids) },
     });
@@ -53,7 +62,8 @@ export class PostService {
 
   publicList(query: Post) {
     return this.postDao.find({
-      select: ['id', 'title', 'createAt'],
+      select: ['id', 'title', 'createAt', 'poster'],
+      relations: ['poster'],
       order: { id: 'DESC' },
       where: {
         ...query,
