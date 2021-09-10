@@ -3,7 +3,7 @@ import { AssetService } from '@/modules/asset/asset.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 import { UploadFile } from '@/type/UploadFile';
-import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AssetBucket } from '@/enum/AssetBucket';
 
 @Controller('asset')
@@ -19,6 +19,12 @@ export class AssetController {
   @Get('all')
   all() {
     return this.assetService.all();
+  }
+
+  @Get('sync')
+  @AdminAuthGuard()
+  syncAllFromCos() {
+    return this.assetService.syncFromCos();
   }
 
   @Get(':id')
@@ -47,6 +53,7 @@ export class AssetController {
   }
 
   @Delete()
+  @AdminAuthGuard()
   deleteAsset(@Body('id') id: number, @Body('ids') ids: number[]) {
     return this.assetService.deleteAsset(ids || [id]);
   }
