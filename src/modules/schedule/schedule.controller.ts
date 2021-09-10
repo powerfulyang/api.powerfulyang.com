@@ -3,7 +3,7 @@ import { PixivScheduleService } from '@/schedules/pixiv-schedule/pixiv-schedule.
 import { InstagramScheduleService } from '@/schedules/instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from '@/schedules/pinterest-schedule/pinterest-schedule.service';
 import { AssetBucket } from '@/enum/AssetBucket';
-import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import {AdminAuthGuard, JwtAuthGuard} from '@/common/decorator/auth-guard.decorator';
 import { SUCCESS } from '@/constants/constants';
 import { OtherSchedule } from '@/enum/OtherSchedule';
 import { UdpScheduleService } from '@/schedules/udp-schedule/udp-schedule.service';
@@ -21,6 +21,7 @@ export class ScheduleController {
   ) {}
 
   @Get(':scheduleType')
+  @AdminAuthGuard()
   async RunScheduleByRequest(
     @Param('scheduleType')
     scheduleType: AssetBucket & OtherSchedule,

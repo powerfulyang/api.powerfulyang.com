@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post as PostDecorator, Query } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
-import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import {AdminAuthGuard, JwtAuthGuard} from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
 import { PostDto } from '@/entity/dto/PostDto';
@@ -41,6 +41,7 @@ export class PostController {
   }
 
   @Delete(':id')
+  @AdminAuthGuard()
   deletePost(@Param() draft: Post, @UserFromAuth(['id']) user: User) {
     draft.createBy = user;
     return this.postService.deletePost(draft);

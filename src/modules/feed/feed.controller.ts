@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import {AdminAuthGuard, JwtAuthGuard} from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/entity/user.entity';
 import { pluck } from 'ramda';
@@ -28,11 +28,13 @@ export class FeedController {
   }
 
   @Patch(':id')
+  @AdminAuthGuard()
   update(@Param('id') id: string, @Body() updateFeedDto: UpdateFeedDto) {
     return this.feedService.update(+id, updateFeedDto);
   }
 
   @Delete(':id')
+  @AdminAuthGuard()
   remove(@Param('id') id: string) {
     return this.feedService.batchRemove([+id]);
   }

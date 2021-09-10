@@ -10,12 +10,15 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
 
   catch(exception: T, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    this.logger.error(exception);
+    this.logger.error(exception.message, exception.stack);
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const statusCode = exception.getStatus();
+    const { message } = exception;
     response.status(statusCode).json({
-      ...(exception.getResponse() as object),
+      status: 'error',
+      statusCode,
+      message,
       timestamp: new Date().toISOString(),
       path: request.url,
     });

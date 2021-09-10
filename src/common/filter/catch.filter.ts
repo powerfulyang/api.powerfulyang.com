@@ -16,6 +16,7 @@ export class CatchFilter<T extends Error> implements ExceptionFilter {
     const statusCode = 500;
     const { message } = exception;
     response.status(statusCode).json({
+      status: 'error',
       statusCode,
       message,
       timestamp: new Date().toISOString(),

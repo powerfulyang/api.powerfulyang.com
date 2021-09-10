@@ -11,6 +11,9 @@ import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Bucket } from '@/entity/bucket.entity';
 import { pluck } from 'ramda';
 import { AssetBucket } from '@/enum/AssetBucket';
+import { existsSync, writeFileSync } from 'fs';
+import { join } from 'path';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class AssetService {
@@ -143,5 +146,20 @@ export class AssetService {
 
   findById(id: Asset['id']) {
     return this.assetDao.findOneOrFail(id);
+  }
+
+  async syncFromCos() {
+    const all = await this.assetDao.find();
+    for (const asset of all) {
+      const path = join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix);
+      const exist = existsSync(path);
+      if (!exist) {
+        // 需要下载下来
+        const res = await fetch(asset.objectUrl);
+        const buffer = await res.buffer();
+        writeFileSync(path, buffer);
+      }
+    }
+    return SUCCESS;
   }
 }
