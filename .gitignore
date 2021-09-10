@@ -47,3 +47,5 @@ assets/*
 !assets/favicon.ico
 !assets/robots.txt
 !assets/index.html
+
+/build
