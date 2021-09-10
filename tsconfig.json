@@ -41,5 +41,5 @@
     }
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*.ts", "__test__", "libs/**/*.ts", "test"]
+  "include": ["src/**/*.ts", "__test__", "libs/**/*.ts", "test", "addon.api/**/*.ts"]
 }
