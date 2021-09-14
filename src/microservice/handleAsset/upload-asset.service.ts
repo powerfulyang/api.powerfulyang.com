@@ -21,7 +21,7 @@ export class UploadAssetService {
   }
 
   async persistent(data: UploadFileMsg) {
-    const Key = `${data.sha1}${data.suffix}`;
+    const Key = `${data.sha1}.${data.suffix}`;
     const buffer = readFileSync(join(process.cwd(), 'assets', Key));
     const Bucket = data.bucketName;
     const res = await this.tencentCloudCosService.putObject({

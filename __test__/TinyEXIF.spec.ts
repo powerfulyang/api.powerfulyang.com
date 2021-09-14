@@ -6,7 +6,7 @@ describe('C艹', () => {
   it('getEXIF', async () => {
     const path = join(process.cwd(), 'assets', 'test.jpg');
     const metadata = await sharp(path).metadata();
-    const width = getEXIF(path);
-    expect(metadata.width).toBe(width);
+    const exif = getEXIF(path);
+    expect(metadata.width).toBe(exif.ImageWidth);
   });
 });

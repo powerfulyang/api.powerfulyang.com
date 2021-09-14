@@ -151,7 +151,7 @@ export class AssetService {
   async syncFromCos() {
     const all = await this.assetDao.find();
     for (const asset of all) {
-      const path = join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix);
+      const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
       const exist = existsSync(path);
       if (!exist) {
         // 需要下载下来

@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, UnsupportedMediaTypeException } from '@nestjs/common';
 import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME, Region } from '@/constants/constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { AssetBucket } from '@/enum/AssetBucket';
@@ -9,7 +9,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { pHash, sha1 } from '@powerfulyang/node-utils';
-import { __prod__, getImageSuffix } from '@powerfulyang/utils';
+import { __prod__ } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstagramBotService } from 'api/instagram-bot';
@@ -21,6 +21,7 @@ import { CacheService } from '@/core/cache/cache.service';
 import { COMMON_CODE_UUID } from '@/utils/uuid';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
+import sharp from 'sharp';
 
 @Injectable()
 export class CoreService {
@@ -137,9 +138,14 @@ export class CoreService {
     let asset = new Asset();
     asset.bucket = await this.getBotBucket(bucketName);
     asset.sha1 = sha1(buffer);
-    asset.fileSuffix = getImageSuffix(buffer);
+    const s = sharp(buffer);
+    const { format } = await s.metadata();
+    if (!format) {
+      throw new UnsupportedMediaTypeException();
+    }
+    asset.fileSuffix = format;
     asset.pHash = await pHash(buffer);
-    writeFileSync(join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix), buffer);
+    writeFileSync(join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`), buffer);
     try {
       await this.assetDao.insert(asset);
       const data = {
@@ -199,10 +205,14 @@ export class CoreService {
         try {
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();
+          const s = await sharp(buffer).metadata();
           asset.sha1 = sha1(buffer);
-          asset.fileSuffix = getImageSuffix(buffer);
+          if (!s.format) {
+            throw new UnsupportedMediaTypeException();
+          }
+          asset.fileSuffix = s.format;
           asset.pHash = await pHash(buffer);
-          writeFileSync(join(process.cwd(), 'assets', asset.sha1 + asset.fileSuffix), buffer);
+          writeFileSync(join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`), buffer);
           asset.bucket = await this.getBotBucket(bucketName);
           this.logger.info(`bucket => ${JSON.stringify(asset.bucket)}`);
           try {
