@@ -28,7 +28,7 @@ export class CosObjectUrlScheduleService {
       const { Url } = await this.tencentCloudCosService.getObjectUrl({
         Bucket: asset.bucket.bucketName,
         Region: asset.bucket.bucketRegion,
-        Key: `${asset.sha1}${asset.fileSuffix}`,
+        Key: `${asset.sha1}.${asset.fileSuffix}`,
         Expires: 60 * 60 * 24, // 1day
       });
       const objectUrl = Url;
