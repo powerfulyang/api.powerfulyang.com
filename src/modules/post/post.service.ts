@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from '@/modules/post/entities/post.entity';
 import { In, Repository } from 'typeorm';
 import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Asset } from '@/entity/asset.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { readFileSync } from 'fs';

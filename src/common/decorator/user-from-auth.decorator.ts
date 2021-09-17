@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { pick } from 'ramda';
 import { Request } from '@/type/express';
 import { getUserFamiliesMembers } from '@/utils/user.uti';

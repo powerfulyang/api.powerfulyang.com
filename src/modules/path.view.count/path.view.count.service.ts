@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { PathViewCount } from '@/entity/path.view.count.entity';
+import { PathViewCount } from '@/modules/path.view.count/entities/path.view.count.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CacheService } from '@/core/cache/cache.service';
 import { AppLogger } from '@/common/logger/app.logger';

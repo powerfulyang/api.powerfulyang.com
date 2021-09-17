@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { UserService } from '@/modules/user/user.service';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 
 @Controller('menu')
 @JwtAuthGuard()

@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PathViewCount } from '@/entity/path.view.count.entity';
+import { PathViewCount } from '@/modules/path.view.count/entities/path.view.count.entity';
 import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
 
 @Global()

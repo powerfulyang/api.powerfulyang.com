@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MenuService } from './menu.service';
 import { AppModule } from '@/app.module';
-import { Menu } from '@/entity/menu.entity';
+import { Menu } from '@/modules/user/entities/menu.entity';
 
 describe('MenuService', () => {
   let service: MenuService;

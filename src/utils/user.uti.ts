@@ -1,4 +1,4 @@
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { flatten } from 'ramda';
 
 export const getUserFamiliesMembers = (user: User) => {

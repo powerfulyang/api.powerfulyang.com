@@ -1,4 +1,4 @@
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { IsEmail } from 'class-validator';
 
 export class UserDto extends User {

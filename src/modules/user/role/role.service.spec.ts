@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoleService } from './role.service';
 import { AppModule } from '@/app.module';
-import { Role } from '@/entity/role.entity';
+import { Role } from '@/modules/user/entities/role.entity';
 import { MenuService } from '@/modules/user/menu/menu.service';
 
 describe('RoleService', () => {

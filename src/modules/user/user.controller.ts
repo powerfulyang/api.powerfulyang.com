@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Req, Res, UseInterceptors } from '@nestjs/common';
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
-import { UserDto } from '@/entity/dto/UserDto';
+import { UserDto } from '@/modules/user/dto/UserDto';
 import { Profile } from 'passport-google-oauth20';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';

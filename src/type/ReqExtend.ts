@@ -1,4 +1,4 @@
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 
 export type ReqExtend = {
   extend: {

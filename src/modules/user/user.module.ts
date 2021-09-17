@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '@/modules/user/user.service';
 import { jwtSecretConfig } from '@/configuration/jwt.config';
-import { Menu } from '@/entity/menu.entity';
-import { Role } from '@/entity/role.entity';
-import { Family } from '@/entity/family.entity';
+import { Menu } from '@/modules/user/entities/menu.entity';
+import { Role } from '@/modules/user/entities/role.entity';
+import { Family } from '@/modules/user/entities/family.entity';
 import { UserController } from './user.controller';
 import { MenuService } from './menu/menu.service';
 import { MenuController } from './menu/menu.controller';

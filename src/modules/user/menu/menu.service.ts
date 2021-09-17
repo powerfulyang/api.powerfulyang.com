@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TreeRepository } from 'typeorm';
-import { Menu } from '@/entity/menu.entity';
+import { Menu } from '@/modules/user/entities/menu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Memoize } from '@powerfulyang/utils';
 

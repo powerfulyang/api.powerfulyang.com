@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '@/entity/role.entity';
-import { Family } from '@/entity/family.entity';
-import { Asset } from '@/entity/asset.entity';
+import { Role } from '@/modules/user/entities/role.entity';
+import { Family } from '@/modules/user/entities/family.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 
 @Entity('user')
 export class User {

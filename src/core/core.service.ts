@@ -2,7 +2,7 @@ import { HttpStatus, Inject, Injectable, UnsupportedMediaTypeException } from '@
 import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME, Region } from '@/constants/constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { AssetBucket } from '@/enum/AssetBucket';
-import { Asset } from '@/entity/asset.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { AppLogger } from '@/common/logger/app.logger';
@@ -15,7 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestRssService } from 'api/pinterest-rss';
 import { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
-import { Bucket } from '@/entity/bucket.entity';
+import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { CacheService } from '@/core/cache/cache.service';
 import { COMMON_CODE_UUID } from '@/utils/uuid';

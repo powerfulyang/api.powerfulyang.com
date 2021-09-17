@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { Bucket } from '@/entity/bucket.entity';
+import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AppLogger } from '@/common/logger/app.logger';

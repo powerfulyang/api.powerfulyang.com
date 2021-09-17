@@ -1,9 +1,15 @@
 FROM node:lts-alpine3.14
 
+# fix cannot run in wd
+# 还有另外一个办法 把 `WORKDIR` 修改成 package.json->name => api.powerfulyang.com
+USER powerfulyang
+
 WORKDIR /usr/app
 
 COPY package.json .
 COPY package-lock.json .
+COPY addon.api/ ./addon.api/
+COPY binding.gyp binding.gyp
 
 
 RUN apk add --no-cache tzdata \
@@ -18,7 +24,7 @@ RUN apk add --no-cache tzdata \
     --repository https://dl-3.alpinelinux.org/alpine/edge/main vips-dev \
     && apk add --no-cache --virtual native-deps \
          g++ gcc libgcc libstdc++ linux-headers make python3 \
-    && npm ci --production --quiet \
+    && npm ci --quiet \
     && npm cache clean --force \
     && apk del native-deps g++ gcc libgcc libstdc++ linux-headers make python3
 

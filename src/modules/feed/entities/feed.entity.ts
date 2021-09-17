@@ -9,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Asset } from '@/entity/asset.entity';
-import { User } from '@/entity/user.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { User } from '@/modules/user/entities/user.entity';
 
 @Entity()
 export class Feed {

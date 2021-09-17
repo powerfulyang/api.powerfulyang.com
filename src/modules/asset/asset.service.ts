@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { Asset } from '@/entity/asset.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { Pagination } from '@/common/decorator/pagination.decorator';
@@ -8,12 +8,14 @@ import { UploadFile } from '@/type/UploadFile';
 import { CoreService } from '@/core/core.service';
 import { SUCCESS } from '@/constants/constants';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { Bucket } from '@/entity/bucket.entity';
+import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { pluck } from 'ramda';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
+import sharp from 'sharp';
+import { getEXIF } from '../../../addon.api';
 
 @Injectable()
 export class AssetService {
@@ -158,6 +160,10 @@ export class AssetService {
         const res = await fetch(asset.objectUrl);
         const buffer = await res.buffer();
         writeFileSync(path, buffer);
+      } else {
+        const exif = getEXIF(path);
+        const metadata = await sharp(path).metadata();
+        await this.assetDao.update(asset.id, { exif, metadata });
       }
     }
     return SUCCESS;
