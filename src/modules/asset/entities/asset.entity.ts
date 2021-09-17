@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Metadata } from 'sharp';
 import { Bucket } from '../../bucket/entities/bucket.entity';
+import { Exif } from '../../../../addon.api/types/Exif';
 
 @Entity('asset')
 export class Asset {
@@ -47,7 +48,7 @@ export class Asset {
   pHash: string;
 
   @Column({ type: 'json' })
-  exif: object;
+  exif: Exif;
 
   @Column({ type: 'json' })
   metadata: Metadata;
