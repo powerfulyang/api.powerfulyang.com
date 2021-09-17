@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Menu } from '@/entity/menu.entity';
+import { Menu } from '@/modules/user/entities/menu.entity';
 
 @Entity('role')
 export class Role {

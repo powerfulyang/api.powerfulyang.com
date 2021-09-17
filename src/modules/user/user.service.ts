@@ -1,19 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@/entity/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Profile } from 'passport-google-oauth20';
 import { getStringVal } from '@/utils/getStringVal';
 import { getRandomString, sha1 } from '@powerfulyang/node-utils';
-import { UserDto } from '@/entity/dto/UserDto';
+import { UserDto } from '@/modules/user/dto/UserDto';
 import { flatten, groupBy, map, pick } from 'ramda';
 import { AppLogger } from '@/common/logger/app.logger';
-import { Menu } from '@/entity/menu.entity';
+import { Menu } from '@/modules/user/entities/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { Family } from '@/entity/family.entity';
+import { Family } from '@/modules/user/entities/family.entity';
 import { PlainStaticProperties } from '@/utils/plain.static.properties';
 
 @Injectable()

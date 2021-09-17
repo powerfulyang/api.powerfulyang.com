@@ -7,7 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Bucket } from './bucket.entity';
+import { Metadata } from 'sharp';
+import { Bucket } from '../../bucket/entities/bucket.entity';
 
 @Entity('asset')
 export class Asset {
@@ -44,6 +45,12 @@ export class Asset {
 
   @Column()
   pHash: string;
+
+  @Column({ type: 'json' })
+  exif: object;
+
+  @Column({ type: 'json' })
+  metadata: Metadata;
 
   @CreateDateColumn()
   createAt: Date;

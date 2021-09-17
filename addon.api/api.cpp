@@ -62,7 +62,10 @@ static Napi::Value getEXIF(const Napi::CallbackInfo& info) {
     o.Set("SubjectDistance",imageEXIF.SubjectDistance);
     o.Set("FocalLength",imageEXIF.FocalLength);
     o.Set("Flash",imageEXIF.Flash);
-    o.Set("SubjectArea",vectorToNapiArray(imageEXIF.SubjectArea,env));
+    if (!imageEXIF.SubjectArea.empty()) {
+        o.Set("SubjectArea",vectorToNapiArray(imageEXIF.SubjectArea,env));
+    }
+
     o.Set("MeteringMode",imageEXIF.MeteringMode);
     o.Set("LightSource",imageEXIF.LightSource);
     o.Set("ProjectionType",imageEXIF.ProjectionType);
@@ -81,33 +84,58 @@ static Napi::Value getEXIF(const Napi::CallbackInfo& info) {
     LensInfo.Set("FocalPlaneXResolution",imageEXIF.LensInfo.FocalPlaneXResolution);
     LensInfo.Set("FocalPlaneYResolution",imageEXIF.LensInfo.FocalPlaneYResolution);
     LensInfo.Set("FocalPlaneResolutionUnit",imageEXIF.LensInfo.FocalPlaneResolutionUnit);
-    LensInfo.Set("Make",imageEXIF.LensInfo.Make);
-    LensInfo.Set("Model",imageEXIF.LensInfo.Model);
+    if (!imageEXIF.LensInfo.Make.empty()) {
+        LensInfo.Set("Make",imageEXIF.LensInfo.Make);
+    }
+    if (!imageEXIF.LensInfo.Model.empty()) {
+        LensInfo.Set("Model",imageEXIF.LensInfo.Model);
+    }
+
     o.Set("LensInfo",LensInfo);
     Object GeoLocation = Object::New(env);
-    GeoLocation.Set("Latitude",imageEXIF.GeoLocation.Latitude);
-    GeoLocation.Set("Longitude",imageEXIF.GeoLocation.Longitude);
-    GeoLocation.Set("Altitude",imageEXIF.GeoLocation.Altitude);
-    GeoLocation.Set("AltitudeRef",imageEXIF.GeoLocation.AltitudeRef);
-    GeoLocation.Set("RelativeAltitude",imageEXIF.GeoLocation.RelativeAltitude);
-    GeoLocation.Set("RollDegree",imageEXIF.GeoLocation.RollDegree);
-    GeoLocation.Set("PitchDegree",imageEXIF.GeoLocation.PitchDegree);
-    GeoLocation.Set("YawDegree",imageEXIF.GeoLocation.YawDegree);
-    GeoLocation.Set("SpeedX",imageEXIF.GeoLocation.SpeedX);
-    GeoLocation.Set("SpeedY",imageEXIF.GeoLocation.SpeedY);
-    GeoLocation.Set("SpeedZ",imageEXIF.GeoLocation.SpeedZ);
+    if (imageEXIF.GeoLocation.hasLatLon()) {
+        GeoLocation.Set("Latitude",imageEXIF.GeoLocation.Latitude);
+        GeoLocation.Set("Longitude",imageEXIF.GeoLocation.Longitude);
+    }
+
+    if (imageEXIF.GeoLocation.hasAltitude()) {
+        GeoLocation.Set("Altitude",imageEXIF.GeoLocation.Altitude);
+        GeoLocation.Set("AltitudeRef",imageEXIF.GeoLocation.AltitudeRef);
+    }
+
+    if (imageEXIF.GeoLocation.hasRelativeAltitude()) {
+        GeoLocation.Set("RelativeAltitude",imageEXIF.GeoLocation.RelativeAltitude);
+    }
+
+    if (imageEXIF.GeoLocation.hasOrientation()) {
+        GeoLocation.Set("RollDegree",imageEXIF.GeoLocation.RollDegree);
+        GeoLocation.Set("PitchDegree",imageEXIF.GeoLocation.PitchDegree);
+        GeoLocation.Set("YawDegree",imageEXIF.GeoLocation.YawDegree);
+    }
+
+    if (imageEXIF.GeoLocation.hasSpeed()) {
+        GeoLocation.Set("SpeedX",imageEXIF.GeoLocation.SpeedX);
+        GeoLocation.Set("SpeedY",imageEXIF.GeoLocation.SpeedY);
+        GeoLocation.Set("SpeedZ",imageEXIF.GeoLocation.SpeedZ);
+    }
     GeoLocation.Set("AccuracyXY",imageEXIF.GeoLocation.AccuracyXY);
     GeoLocation.Set("AccuracyZ",imageEXIF.GeoLocation.AccuracyZ);
     GeoLocation.Set("GPSDOP",imageEXIF.GeoLocation.GPSDOP);
     GeoLocation.Set("GPSDifferential",imageEXIF.GeoLocation.GPSDifferential);
-    GeoLocation.Set("GPSMapDatum",imageEXIF.GeoLocation.GPSMapDatum);
-    GeoLocation.Set("GPSTimeStamp",imageEXIF.GeoLocation.GPSTimeStamp);
-    GeoLocation.Set("GPSDateStamp",imageEXIF.GeoLocation.GPSDateStamp);
+    if (!imageEXIF.GeoLocation.GPSMapDatum.empty())
+        GeoLocation.Set("GPSMapDatum",imageEXIF.GeoLocation.GPSMapDatum);
+    if (!imageEXIF.GeoLocation.GPSTimeStamp.empty())
+        GeoLocation.Set("GPSTimeStamp",imageEXIF.GeoLocation.GPSTimeStamp);
+    if (!imageEXIF.GeoLocation.GPSDateStamp.empty())
+        GeoLocation.Set("GPSDateStamp",imageEXIF.GeoLocation.GPSDateStamp);
     o.Set("GeoLocation",GeoLocation);
     Object GPano = Object::New(env);
-    GPano.Set("PosePitchDegrees",imageEXIF.GPano.PosePitchDegrees);
-    GPano.Set("PoseRollDegrees",imageEXIF.GPano.PoseRollDegrees);
+    if(imageEXIF.GPano.hasPosePitchDegrees())
+        GPano.Set("PosePitchDegrees",imageEXIF.GPano.PosePitchDegrees);
+    if(imageEXIF.GPano.hasPoseRollDegrees())
+        GPano.Set("PoseRollDegrees",imageEXIF.GPano.PoseRollDegrees);
     o.Set("GPano",GPano);
+    imageEXIF.clear();
     return o;
 }
 

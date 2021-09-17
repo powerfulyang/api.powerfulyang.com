@@ -1,5 +1,7 @@
+import { Exif } from './types/Exif';
+
 const api = require('bindings')('api');
 
-export const getEXIF = (path: string) => {
+export const getEXIF = (path: string): Exif => {
   return api.getEXIF(path);
 };

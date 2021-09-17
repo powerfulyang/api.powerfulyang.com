@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Asset } from '@/entity/asset.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
 import { BucketRegion } from 'api/tencent-cloud-cos/cos-nodejs-sdk-v5';
 import { AssetBucket } from '@/enum/AssetBucket';

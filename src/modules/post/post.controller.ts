@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post as PostDecorator, Query } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
-import {AdminAuthGuard, JwtAuthGuard} from '@/common/decorator/auth-guard.decorator';
+import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
-import { User } from '@/entity/user.entity';
-import { PostDto } from '@/entity/dto/PostDto';
+import { User } from '@/modules/user/entities/user.entity';
+import { PostDto } from '@/modules/user/dto/PostDto';
 import { Post } from '@/modules/post/entities/post.entity';
 import { pluck } from 'ramda';
 

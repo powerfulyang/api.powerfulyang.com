@@ -9,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '@/entity/user.entity';
-import { Asset } from '@/entity/asset.entity';
+import { User } from '@/modules/user/entities/user.entity';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })

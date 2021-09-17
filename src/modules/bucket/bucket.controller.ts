@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { BucketService } from '@/modules/bucket/bucket.service';
-import { Bucket } from '@/entity/bucket.entity';
+import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 
 @Controller('bucket')
 @JwtAuthGuard()
