@@ -1,10 +1,6 @@
 FROM node:lts-alpine3.14
 
-# fix cannot run in wd
-# 还有另外一个办法 把 `WORKDIR` 修改成 package.json->name => api.powerfulyang.com
-USER powerfulyang
-
-WORKDIR /usr/app
+WORKDIR /usr/app/api.powerfulyang.com
 
 COPY package.json .
 COPY package-lock.json .
