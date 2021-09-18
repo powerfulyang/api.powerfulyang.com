@@ -9,5 +9,6 @@ import { BucketController } from './bucket.controller';
   imports: [TencentCloudCosModule, TypeOrmModule.forFeature([Bucket])],
   providers: [BucketService],
   controllers: [BucketController],
+  exports: [BucketService],
 })
 export class BucketModule {}
