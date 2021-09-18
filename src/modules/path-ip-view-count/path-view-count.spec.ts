@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
+import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import { AppModule } from '@/app.module';
 
 describe('BucketService', () => {

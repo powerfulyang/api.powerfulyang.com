@@ -7,6 +7,7 @@ import { jwtSecretConfig } from '@/configuration/jwt.config';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { Role } from '@/modules/user/entities/role.entity';
 import { Family } from '@/modules/user/entities/family.entity';
+import { OauthOpenidModule } from '@/modules/oauth-openid/oauth-openid.module';
 import { UserController } from './user.controller';
 import { MenuService } from './menu/menu.service';
 import { MenuController } from './menu/menu.controller';
@@ -26,6 +27,7 @@ import { RoleController } from './role/role.controller';
         };
       },
     }),
+    OauthOpenidModule,
   ],
   controllers: [UserController, MenuController, RoleController],
   providers: [UserService, MenuService, RoleService],

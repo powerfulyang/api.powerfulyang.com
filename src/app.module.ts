@@ -13,7 +13,7 @@ import { UdpServerModule } from 'api/udp-server';
 import { TelegramBotModule } from 'api/telegram-bot';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
-import { PathViewCountModule } from '@/modules/path.view.count/path.view.count.module';
+import { PathViewCountModule } from '@/modules/path-ip-view-count/path-view-count.module';
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { OrmModule } from '@/core/orm.module';
 import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
@@ -25,6 +25,7 @@ import { AssetModule } from './modules/asset/asset.module';
 import { PostModule } from './modules/post/post.module';
 import { PublicModule } from './public/public.module';
 import { FeedModule } from './modules/feed/feed.module';
+import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { FeedModule } from './modules/feed/feed.module';
     ScheduleModule,
     FeedModule,
     BootstrapModule,
+    OauthOpenidModule,
   ],
   providers: [
     {

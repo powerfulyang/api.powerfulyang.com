@@ -2,7 +2,7 @@ import { UserService } from '@/modules/user/user.service';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
-import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
+import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

@@ -5,7 +5,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { Request, Response } from 'express';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, CookieOptions } from '@/constants/constants';
-import { PathViewCountService } from '@/modules/path.view.count/path.view.count.service';
+import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import { ReqExtend } from '@/type/ReqExtend';
 
 @Injectable()

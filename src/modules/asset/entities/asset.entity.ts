@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Metadata } from 'sharp';
+import { User } from '@/modules/user/entities/user.entity';
 import { Bucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon.api/types/Exif';
 
@@ -17,7 +18,7 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => Bucket)
+  @ManyToOne(() => Bucket, { nullable: false })
   bucket: Bucket;
 
   @Column({ default: '' })
@@ -52,6 +53,10 @@ export class Asset {
 
   @Column({ type: 'json' })
   metadata: Metadata;
+
+  @JoinColumn()
+  @ManyToOne(() => User, { nullable: false })
+  uploadBy: User;
 
   @CreateDateColumn()
   createAt: Date;
