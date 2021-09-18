@@ -93,4 +93,10 @@ export class BucketService {
     }
     return SUCCESS;
   }
+
+  getPublicBuckets() {
+    return this.bucketDao.find({
+      public: true,
+    });
+  }
 }

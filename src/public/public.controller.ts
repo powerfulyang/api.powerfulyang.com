@@ -50,6 +50,11 @@ export class PublicController {
     return this.assetService.publicList(pagination);
   }
 
+  @Get('asset/:id')
+  getAssetById(@Param('id') id: string) {
+    return this.assetService.getPublicAssetById(+id);
+  }
+
   @Get('common-node')
   isCommonNode() {
     return this.publicService.isCommonNode();

@@ -8,30 +8,26 @@ import { UploadFile } from '@/type/UploadFile';
 import { CoreService } from '@/core/core.service';
 import { SUCCESS } from '@/constants/constants';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { pluck } from 'ramda';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
 import sharp from 'sharp';
+import { BucketService } from '@/modules/bucket/bucket.service';
 import { getEXIF } from '../../../addon.api';
 
 @Injectable()
 export class AssetService {
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
-    @InjectRepository(Bucket) private readonly bucketDao: Repository<Bucket>,
-    private coreService: CoreService,
-    private tencentCloudCosService: TencentCloudCosService,
+    private readonly coreService: CoreService,
+    private readonly tencentCloudCosService: TencentCloudCosService,
+    private readonly bucketService: BucketService,
   ) {}
 
   async publicList(pagination: Pagination) {
-    const buckets = await this.bucketDao.find({
-      where: {
-        public: true,
-      },
-    });
+    const buckets = await this.bucketService.getPublicBuckets();
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
@@ -167,5 +163,15 @@ export class AssetService {
       }
     }
     return SUCCESS;
+  }
+
+  async getPublicAssetById(id: Asset['id']) {
+    const buckets = await this.bucketService.getPublicBuckets();
+    return this.assetDao.findOneOrFail({
+      where: {
+        id,
+        bucket: In(pluck('id')(buckets)),
+      },
+    });
   }
 }
