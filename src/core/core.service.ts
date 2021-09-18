@@ -22,6 +22,7 @@ import { COMMON_CODE_UUID } from '@/utils/uuid';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
 import sharp from 'sharp';
+import { getEnumKeys } from '@/utils/getClassStaticProperties';
 
 @Injectable()
 export class CoreService {
@@ -72,7 +73,7 @@ export class CoreService {
   }
 
   async initBucket() {
-    for (const bucket of Object.keys(AssetBucket)) {
+    for (const bucket of getEnumKeys(AssetBucket)) {
       let res: any;
       try {
         res = await this.tencentCloudCosService.headBucket({
@@ -143,9 +144,10 @@ export class CoreService {
     if (!format) {
       throw new UnsupportedMediaTypeException();
     }
+
     asset.fileSuffix = format;
     asset.pHash = await pHash(buffer);
-    writeFileSync(join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`), buffer);
+
     try {
       await this.assetDao.insert(asset);
       const data = {
@@ -153,6 +155,7 @@ export class CoreService {
         suffix: asset.fileSuffix,
         bucketName: asset.bucket.bucketName,
       };
+      writeFileSync(join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`), buffer);
       if (async) {
         this.notifyCos(data);
       } else {
@@ -162,6 +165,7 @@ export class CoreService {
       // duplicate entry
       this.logger.error(e);
     }
+
     asset = await this.assetDao.findOneOrFail({
       sha1: asset.sha1,
     });

@@ -15,6 +15,8 @@ import { Asset } from '@/modules/asset/entities/asset.entity';
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })
 export class Post {
+  static RelationColumnCreateBy = 'createBy';
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,14 +36,12 @@ export class Post {
   publishYear: string;
 
   @JoinColumn()
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: false })
   createBy: User;
 
   @JoinColumn()
   @ManyToOne(() => Asset)
   poster: Asset;
-
-  static RelationColumnCreateBy = 'createBy';
 
   @CreateDateColumn()
   createAt: Date;

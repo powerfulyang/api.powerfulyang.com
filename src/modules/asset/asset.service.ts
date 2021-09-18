@@ -15,6 +15,7 @@ import { join } from 'path';
 import fetch from 'node-fetch';
 import sharp from 'sharp';
 import { BucketService } from '@/modules/bucket/bucket.service';
+import { User } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
 
 @Injectable()
@@ -89,16 +90,7 @@ export class AssetService {
     return obj;
   }
 
-  async saveAsset(files: UploadFile[]) {
-    const assets: Asset[] = [];
-    for (const file of files) {
-      const asset = await this.coreService.initManualUpload(file.buffer);
-      assets.push(asset);
-    }
-    return assets;
-  }
-
-  async saveAssetToBucket(files: UploadFile[], bucketName: AssetBucket) {
+  async saveAssetToBucket(files: UploadFile[], bucketName: AssetBucket, uploadBy: User) {
     const assets: Asset[] = [];
     for (const file of files) {
       const asset = await this.coreService.initManualUpload(file.buffer, false, bucketName);
@@ -143,7 +135,9 @@ export class AssetService {
   }
 
   findById(id: Asset['id']) {
-    return this.assetDao.findOneOrFail(id);
+    return this.assetDao.findOneOrFail(id, {
+      relations: ['bucket', 'uploadBy'],
+    });
   }
 
   async syncFromCos() {
@@ -172,6 +166,7 @@ export class AssetService {
         id,
         bucket: In(pluck('id')(buckets)),
       },
+      relations: ['bucket', 'uploadBy'],
     });
   }
 }

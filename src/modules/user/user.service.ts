@@ -14,7 +14,9 @@ import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { Family } from '@/modules/user/entities/family.entity';
-import { PlainStaticProperties } from '@/utils/plain.static.properties';
+import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
+import { OauthApplication, OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
+import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
 
 @Injectable()
 export class UserService {
@@ -27,21 +29,48 @@ export class UserService {
     private logger: AppLogger,
     private readonly roleService: RoleService,
     private cacheService: CacheService,
+    private readonly oauthOpenidService: OauthOpenidService,
   ) {
     this.logger.setContext(UserService.name);
   }
 
+  private static idMapping(data: any[]) {
+    return data.reduce((draft, el, i) => {
+      draft[el.id] = i;
+      return draft;
+    }, {});
+  }
+
+  private static buildTree(menus: Set<Menu>) {
+    const menusArr = [...menus];
+    const idMapping = UserService.idMapping(menusArr);
+    const root: any[] = [];
+    menusArr.forEach((menu) => {
+      if (menu.parentId === null) {
+        root.push(menu);
+        return;
+      }
+      const parentEl = menusArr[idMapping[menu.parentId]];
+      parentEl.children = [...(parentEl.children || []), menu];
+    });
+    return root;
+  }
+
   async googleUserRelation(profile: Profile) {
     const openid = profile.id;
+    const o = await this.oauthOpenidService.findOne(openid, OauthApplication.google);
     let user = await this.userDao.findOne({
-      googleOpenId: openid,
+      id: o?.user.id,
     });
     if (!user) {
       user = new User();
       user.email = getStringVal(profile.emails?.find((email: any) => email.verified)?.value);
       user.avatar = getStringVal(profile.photos?.pop()?.value);
       user.nickname = getStringVal(profile.displayName);
-      user.googleOpenId = openid;
+      const oauthOpenid = new OauthOpenid();
+      oauthOpenid.application = OauthApplication.google;
+      oauthOpenid.openid = openid;
+      user.oauthOpenidArr = [oauthOpenid];
       user.roles = [await this.roleService.getDefaultRole()];
       this.generateDefaultPassword(user);
       await this.createUser(user);
@@ -95,7 +124,7 @@ export class UserService {
   async getUserInfo(id: User['id']) {
     const user = await this.userDao.findOneOrFail({
       where: { id },
-      relations: PlainStaticProperties(User),
+      relations: getClassStaticProperties(User),
     });
     return this.pickLoginUserInfo(user);
   }
@@ -128,28 +157,6 @@ export class UserService {
     return UserService.buildTree(menus);
   }
 
-  private static idMapping(data: any[]) {
-    return data.reduce((draft, el, i) => {
-      draft[el.id] = i;
-      return draft;
-    }, {});
-  }
-
-  private static buildTree(menus: Set<Menu>) {
-    const menusArr = [...menus];
-    const idMapping = UserService.idMapping(menusArr);
-    const root: any[] = [];
-    menusArr.forEach((menu) => {
-      if (menu.parentId === null) {
-        root.push(menu);
-        return;
-      }
-      const parentEl = menusArr[idMapping[menu.parentId]];
-      parentEl.children = [...(parentEl.children || []), menu];
-    });
-    return root;
-  }
-
   updatePassword(id: number, password: string) {
     const user = new User();
     user.passwordSalt = getRandomString();
@@ -160,7 +167,7 @@ export class UserService {
   async cacheUsers() {
     this.cacheService.del(REDIS_KEYS.USERS);
     const users = await this.userDao.find({
-      relations: PlainStaticProperties(User),
+      relations: getClassStaticProperties(User),
     });
     const usersMap = groupBy<User>((user) => String(user.id), users);
     return this.cacheService.hMSet(

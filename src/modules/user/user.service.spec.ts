@@ -4,7 +4,7 @@ import { AppModule } from '@/app.module';
 import { RoleService } from '@/modules/user/role/role.service';
 import { User } from '@/modules/user/entities/user.entity';
 import { Family } from '@/modules/user/entities/family.entity';
-import { PlainStaticProperties } from '@/utils/plain.static.properties';
+import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
 import { getUserFamiliesMembers } from '@/utils/user.uti';
 
 describe('UserService', () => {
@@ -83,7 +83,7 @@ describe('UserService', () => {
   });
 
   it('class User static property', () => {
-    const staticProperties = PlainStaticProperties(User);
+    const staticProperties = getClassStaticProperties(User);
     expect(staticProperties).toStrictEqual([
       User.RelationColumnFamilies,
       User.RelationColumnFamilyMembers,

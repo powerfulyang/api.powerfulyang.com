@@ -5,6 +5,8 @@ import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.inter
 import { UploadFile } from '@/type/UploadFile';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AssetBucket } from '@/enum/AssetBucket';
+import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { User } from '@/modules/user/entities/user.entity';
 
 @Controller('asset')
 @JwtAuthGuard()
@@ -39,8 +41,8 @@ export class AssetController {
 
   @Post()
   @ImagesInterceptor()
-  saveAsset(@UploadedFiles() files: UploadFile[]) {
-    return this.assetService.saveAsset(files);
+  saveAsset(@UploadedFiles() files: UploadFile[], @UserFromAuth() user: User) {
+    return this.assetService.saveAssetToBucket(files, AssetBucket.upload, user);
   }
 
   @Post(':bucketName')
@@ -48,8 +50,9 @@ export class AssetController {
   saveAssetToBucket(
     @UploadedFiles() files: UploadFile[],
     @Param('bucketName') bucketName: AssetBucket,
+    @UserFromAuth() user: User,
   ) {
-    return this.assetService.saveAssetToBucket(files, bucketName);
+    return this.assetService.saveAssetToBucket(files, bucketName, user);
   }
 
   @Delete()

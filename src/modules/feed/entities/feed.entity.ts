@@ -14,6 +14,10 @@ import { User } from '@/modules/user/entities/user.entity';
 
 @Entity()
 export class Feed {
+  static readonly relationColumnAssets = 'assets';
+
+  static readonly relationColumnCreateBy = 'createBy';
+
   @PrimaryGeneratedColumn()
   id?: number;
 
@@ -27,13 +31,9 @@ export class Feed {
   @Column({ default: true })
   public: boolean;
 
-  static readonly relationColumnAssets = 'assets';
-
   @JoinColumn()
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: false })
   createBy: User;
-
-  static readonly relationColumnCreateBy = 'createBy';
 
   @CreateDateColumn()
   createAt?: Date;
