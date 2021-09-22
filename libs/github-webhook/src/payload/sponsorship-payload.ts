@@ -1,4 +1,4 @@
-import { WebhookPayload } from './webhook-payload';
+import type { WebhookPayload } from './webhook-payload';
 
 export interface SponsorshipPayload extends WebhookPayload {
   action:

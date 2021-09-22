@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PinterestInterface, RSSPinterestInterface } from 'api/pinterest-rss/pinterest.interface';
+import type { PinterestInterface, RSSPinterestInterface } from 'api/pinterest-rss/pinterest.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()

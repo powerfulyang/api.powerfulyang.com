@@ -1,5 +1,6 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { Request, Response } from 'express';
+import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
+import { Catch } from '@nestjs/common';
+import type { Request, Response } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
 
 @Catch()

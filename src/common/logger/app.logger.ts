@@ -1,5 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
-import winston, { format, Logger } from 'winston';
+import type { Logger } from 'winston';
+import winston, { format } from 'winston';
 import { __prod__ } from '@powerfulyang/utils';
 import { getStringVal } from '@/utils/getStringVal';
 

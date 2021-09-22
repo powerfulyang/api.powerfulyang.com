@@ -1,18 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OauthOpenidService } from './oauth-openid.service';
+import { AppModule } from '@/app.module';
 
 describe('OauthOpenidService', () => {
   let service: OauthOpenidService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [OauthOpenidService],
+      imports: [AppModule],
     }).compile();
 
     service = module.get<OauthOpenidService>(OauthOpenidService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('get user info by google openid', async () => {
+    const res = await service.findUserByGoogleOpenid('google open id');
+    expect(res?.user).toBeDefined();
   });
 });

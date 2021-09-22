@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { __dev__ } from '@powerfulyang/utils';
 
 export const mysqlConfig = (): TypeOrmModuleOptions => {

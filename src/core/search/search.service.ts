@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { AppLogger } from '@/common/logger/app.logger';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AppLogger } from '@/common/logger/app.logger';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 
 @Injectable()

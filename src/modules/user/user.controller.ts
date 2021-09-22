@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Post, Req, Res, UseInterceptors } from '@nestjs/common';
+import type { Profile } from 'passport-google-oauth20';
+import type { Request } from 'express';
+import passport from 'passport';
 import { User } from '@/modules/user/entities/user.entity';
 import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/modules/user/dto/UserDto';
-import { Profile } from 'passport-google-oauth20';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization } from '@/constants/constants';
+import { Authorization, SERVER_HOST_DOMAIN } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
-import { Request } from 'express';
-import passport from 'passport';
 
 @Controller('user')
 export class UserController {
@@ -20,21 +20,21 @@ export class UserController {
   }
 
   @Get('google/auth')
-  async googleAuth(@Req() req: Request, @Res() res) {
-    const { redirect } = req.query;
+  async googleAuth(@Req() req: Request & { query: { redirect?: string } }, @Res() res) {
+    const { redirect = SERVER_HOST_DOMAIN } = req.query;
     passport.authenticate('google', {
-      state: Buffer.from(<string>redirect).toString('base64'),
+      state: Buffer.from(redirect).toString('base64'),
     })(req, res);
   }
 
   @Get('google/auth/callback')
   @GoogleAuthGuard()
   @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
-  async googleAuthCallback(@Req() req: Request & { user: Profile }) {
+  async googleAuthCallback(@Req() req: Request & { user: Profile; query: { state: string } }) {
     const profile = req.user;
     // if not register to add user!
     const { state } = req.query;
-    const redirect = Buffer.from(<string>state, 'base64').toString();
+    const redirect = Buffer.from(state, 'base64').toString();
     const token = await this.userService.googleUserRelation(profile);
     return {
       cookie: [Authorization, token],

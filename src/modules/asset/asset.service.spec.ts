@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
 import { AppModule } from '@/app.module';
+import { User } from '@/modules/user/entities/user.entity';
 
 describe('AssetService', () => {
   let service: AssetService;
@@ -21,5 +22,14 @@ describe('AssetService', () => {
   it('pHashMap', async function () {
     const maps = await service.pHashMap();
     expect(maps).toBeDefined();
+  });
+
+  it('update asset uploadBy', async function () {
+    const user = new User();
+    user.id = 1;
+    const res = await service.update(1, {
+      uploadBy: user,
+    });
+    expect(res).toBeDefined();
   });
 });

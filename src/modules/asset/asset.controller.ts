@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, UploadedFiles } from '@nest
 import { AssetService } from '@/modules/asset/asset.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
-import { UploadFile } from '@/type/UploadFile';
+import type { UploadFile } from '@/type/UploadFile';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';

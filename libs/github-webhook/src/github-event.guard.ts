@@ -1,10 +1,11 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import type { CanActivate, ExecutionContext} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { createHmac } from 'crypto';
-import { EventType } from './github.enum';
-import { Payload } from './github.interfaces';
-import { WebhookPayload } from './payload/webhook-payload';
+import type { EventType } from './github.enum';
+import type { Payload } from './github.interfaces';
+import type { WebhookPayload } from './payload/webhook-payload';
 
 @Injectable()
 export class GitHubEventsGuard implements CanActivate {

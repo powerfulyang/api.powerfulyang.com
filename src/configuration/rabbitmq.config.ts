@@ -1,6 +1,7 @@
+import type { RmqOptions} from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
+import type { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
 import { RMQ_QUEUE } from '@/constants/constants';
-import { RmqOptions, Transport } from '@nestjs/microservices';
-import { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
 
 const getRmqHost = (): RmqUrl => {
   const hostname = process.env.RABBIT_MQ_HOST;

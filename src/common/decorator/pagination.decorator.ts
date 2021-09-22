@@ -1,4 +1,5 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import type { ExecutionContext } from '@nestjs/common';
+import { createParamDecorator } from '@nestjs/common';
 
 export const Pagination = createParamDecorator((_data: number, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();

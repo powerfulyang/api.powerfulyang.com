@@ -1,9 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import { UserService } from '@/modules/user/user.service';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class BootstrapService {
@@ -27,7 +27,7 @@ export class BootstrapService {
   }
 
   async refreshObjectUrl() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isProdCommonNode();
     if (bool) {
       this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
         this.logger.info('每次重启的时候需要刷新一下 object url!');

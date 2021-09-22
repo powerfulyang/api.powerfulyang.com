@@ -1,10 +1,10 @@
-import { Post } from '@/modules/post/entities/post.entity';
 import { Length } from 'class-validator';
+import { Post } from '@/modules/post/entities/post.entity';
 
 export class PostDto extends Post {
   @Length(1, 100)
-  title: string;
+  declare title: string;
 
   @Length(1, 10000)
-  content: string;
+  declare content: string;
 }

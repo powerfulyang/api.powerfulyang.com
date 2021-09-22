@@ -47,14 +47,6 @@ describe('UserService', () => {
     expect(cachedUser).toHaveProperty('id', 1);
   });
 
-  it('generate random password', () => {
-    const user = new User();
-    service.generateDefaultPassword(user);
-    const { password, passwordSalt } = user;
-    const bool = service.verifyPassword(passwordSalt, passwordSalt, password);
-    expect(bool).toBeTruthy();
-  });
-
   it('create a family', async () => {
     const family = new Family();
     family.name = 'Public Home';

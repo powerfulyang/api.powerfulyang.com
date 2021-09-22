@@ -1,15 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@/modules/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Profile } from 'passport-google-oauth20';
-import { getStringVal } from '@/utils/getStringVal';
+import type { Profile } from 'passport-google-oauth20';
 import { getRandomString, sha1 } from '@powerfulyang/node-utils';
-import { UserDto } from '@/modules/user/dto/UserDto';
 import { flatten, groupBy, map, pick } from 'ramda';
+import { getStringVal } from '@/utils/getStringVal';
+import type { UserDto } from '@/modules/user/dto/UserDto';
+import { User } from '@/modules/user/entities/user.entity';
 import { AppLogger } from '@/common/logger/app.logger';
-import { Menu } from '@/modules/user/entities/menu.entity';
+import type { Menu } from '@/modules/user/entities/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
@@ -56,12 +56,25 @@ export class UserService {
     return root;
   }
 
+  generatePassword(salt: string, password: string = getRandomString(20)) {
+    return sha1(password, salt);
+  }
+
+  generateDefaultPassword() {
+    const defaultPassword = getRandomString();
+    // default password is salt
+    const passwordSalt = defaultPassword;
+    const password = this.generatePassword(defaultPassword, defaultPassword);
+    return {
+      passwordSalt,
+      password,
+    };
+  }
+
   async googleUserRelation(profile: Profile) {
     const openid = profile.id;
-    const o = await this.oauthOpenidService.findOne(openid, OauthApplication.google);
-    let user = await this.userDao.findOne({
-      id: o?.user.id,
-    });
+    const o = await this.oauthOpenidService.findUserByGoogleOpenid(openid);
+    let user = o?.user;
     if (!user) {
       user = new User();
       user.email = getStringVal(profile.emails?.find((email: any) => email.verified)?.value);
@@ -71,9 +84,17 @@ export class UserService {
       oauthOpenid.application = OauthApplication.google;
       oauthOpenid.openid = openid;
       user.oauthOpenidArr = [oauthOpenid];
-      user.roles = [await this.roleService.getDefaultRole()];
-      this.generateDefaultPassword(user);
-      await this.createUser(user);
+      const defaultRole = await this.roleService.getDefaultRole();
+      user.roles = [defaultRole];
+      const { password, passwordSalt } = this.generateDefaultPassword();
+      user.password = password;
+      user.passwordSalt = passwordSalt;
+      user = await this.createUserAndCached(user);
+      // todo 总要发一封邮件吧
+    } else {
+      // 更新头像
+      user.avatar = getStringVal(profile.photos?.pop()?.value);
+      user = await this.updateUserAndCached(user);
     }
     return this.generateAuthorization(user);
   }
@@ -83,23 +104,19 @@ export class UserService {
     return this.jwtService.sign(user);
   }
 
-  generateDefaultPassword(draft: User) {
-    draft.passwordSalt = getRandomString();
-    draft.password = this.generatePassword(draft.passwordSalt, draft.passwordSalt);
-  }
-
-  generatePassword(salt: string, password: string = getRandomString(20)) {
-    return sha1(password, salt);
-  }
-
-  verifyPassword(password: string, salt: string, saltedPassword) {
+  verifyPassword(password: string, salt: string, saltedPassword: string) {
     const tmp = sha1(password, salt);
     return tmp === saltedPassword;
   }
 
+  /**
+   * 使用邮箱密码登录
+   * 密码为 null, 禁止登录
+   * @param user
+   */
   async login(user: UserDto) {
     const { email, password } = user;
-    const userInfo = await this.userDao.findOneOrFail({ email });
+    const userInfo = await this.userDao.findOneOrFail({ email, password: Not(IsNull()) });
     const bool = this.verifyPassword(password, userInfo.passwordSalt, userInfo.password);
     if (bool) {
       return this.pickLoginUserInfo(userInfo);
@@ -135,10 +152,6 @@ export class UserService {
 
   saveUser(user: User) {
     return this.userDao.save(user);
-  }
-
-  cascadeGetUser() {
-    return this.userDao.findOneOrFail();
   }
 
   cascadeUpdateUser(user: User) {
@@ -180,11 +193,18 @@ export class UserService {
     return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
   }
 
-  async createUser(user: User) {
+  async createUserAndCached(user: User) {
     const newUser = await this.saveUser(user);
     // add to cache
     this.cacheService.hSet(REDIS_KEYS.USERS, user.id, user);
     return newUser;
+  }
+
+  async updateUserAndCached(user: User) {
+    const updatedUser = await this.saveUser(user);
+    // add to cache
+    this.cacheService.hSet(REDIS_KEYS.USERS, user.id, user);
+    return updatedUser;
   }
 
   saveFamily(family: Family) {

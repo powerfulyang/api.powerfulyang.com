@@ -1,11 +1,11 @@
-import { Post } from '@/modules/post/entities/post.entity';
 import { PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty } from 'class-validator';
+import { Post } from '@/modules/post/entities/post.entity';
 
 export class PublishPostDto extends PartialType(Post) {
   @IsNotEmpty()
-  title: string;
+  declare title: string;
 
   @IsNotEmpty()
-  content: string;
+  declare content: string;
 }

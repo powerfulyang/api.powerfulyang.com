@@ -1,11 +1,7 @@
 import { HttpStatus, Inject, Injectable, UnsupportedMediaTypeException } from '@nestjs/common';
-import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME, Region } from '@/constants/constants';
 import { ClientProxy } from '@nestjs/microservices';
-import { AssetBucket } from '@/enum/AssetBucket';
-import { Asset } from '@/modules/asset/entities/asset.entity';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
-import { AppLogger } from '@/common/logger/app.logger';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { pHash, sha1 } from '@powerfulyang/node-utils';
@@ -14,14 +10,18 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestRssService } from 'api/pinterest-rss';
-import { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
+import type { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
+import sharp from 'sharp';
+import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { CacheService } from '@/core/cache/cache.service';
 import { COMMON_CODE_UUID } from '@/utils/uuid';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
-import sharp from 'sharp';
+import { AppLogger } from '@/common/logger/app.logger';
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { AssetBucket } from '@/enum/AssetBucket';
+import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME, Region } from '@/constants/constants';
 import { getEnumKeys } from '@/utils/getClassStaticProperties';
 
 @Injectable()
@@ -80,7 +80,7 @@ export class CoreService {
           Bucket: bucket,
           Region,
         });
-      } catch (e) {
+      } catch (e: any) {
         this.logger.info(`headBucket error code is [${e.name}]`);
         res = e;
       }

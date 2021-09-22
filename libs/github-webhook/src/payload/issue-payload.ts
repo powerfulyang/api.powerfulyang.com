@@ -1,4 +1,4 @@
-import { User, WebhookPayload } from './webhook-payload';
+import type { User, WebhookPayload } from './webhook-payload';
 
 export interface Label {
   id: number;

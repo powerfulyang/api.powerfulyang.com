@@ -1,5 +1,5 @@
-import { BasicAuth } from '@elastic/elasticsearch/lib/pool';
-import { ClientOptions } from '@elastic/elasticsearch';
+import type { BasicAuth } from '@elastic/elasticsearch/lib/pool';
+import type { ClientOptions } from '@elastic/elasticsearch';
 
 export const elasticsearchConfig = (): ClientOptions => {
   const host = process.env.ELASTICSEARCH_HOST;

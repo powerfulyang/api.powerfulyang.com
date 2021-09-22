@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from '@/modules/post/entities/post.entity';
 import { In, Repository } from 'typeorm';
 import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
-import { User } from '@/modules/user/entities/user.entity';
-import { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
+import { Post } from '@/modules/post/entities/post.entity';
+import type { User } from '@/modules/user/entities/user.entity';
+import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 
 @Injectable()

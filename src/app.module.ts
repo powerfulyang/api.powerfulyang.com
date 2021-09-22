@@ -1,17 +1,18 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { CoreModule } from '@/core/core.module';
-import { StrategyModule } from '@/common/authorization/strategy.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
-import { LoggerModule } from '@/common/logger/logger.module';
 import { GithubModule } from 'app/github-webhook';
-import { AppLogger } from '@/common/logger/app.logger';
-import { RequestMiddleware } from '@/common/middleware/request.middleware';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UdpServerModule } from 'api/udp-server';
 import { TelegramBotModule } from 'api/telegram-bot';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RequestMiddleware } from '@/common/middleware/request.middleware';
+import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerModule } from '@/common/logger/logger.module';
+import { StrategyModule } from '@/common/authorization/strategy.module';
+import { CoreModule } from '@/core/core.module';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { PathViewCountModule } from '@/modules/path-ip-view-count/path-view-count.module';
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
@@ -64,7 +65,7 @@ export class AppModule implements NestModule {
   constructor(private logger: AppLogger, private bootstrapService: BootstrapService) {
     this.logger.setContext(AppModule.name);
     this.bootstrapService.bootstrap().then(() => {
-      this.logger.info('load bootstrap scripts!');
+      this.logger.info('loaded bootstrap scripts!');
     });
   }
 

@@ -23,16 +23,21 @@ export class User {
 
   static RelationColumnFamilyMembers = 'families.members';
 
+  static RelationColumnOauthOpenidArr = 'oauthOpenidArr';
+
+  static RelationColumnRoles = 'roles';
+
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
+  // 密码为 null, 则代表禁止密码登录
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   passwordSalt: string;
 
   @Column()
@@ -68,6 +73,6 @@ export class User {
   @JoinTable()
   families: Family[];
 
-  @OneToMany(() => OauthOpenid, (o) => o.user.id)
+  @OneToMany(() => OauthOpenid, (o) => o.user)
   oauthOpenidArr: OauthOpenid[];
 }

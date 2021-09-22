@@ -1,6 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { Profile, Strategy } from 'passport-google-oauth20';
+import type { Profile} from 'passport-google-oauth20';
+import { Strategy } from 'passport-google-oauth20';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { AppLogger } from '@/common/logger/app.logger';
 

@@ -8,6 +8,8 @@ export enum OauthApplication {
 @Entity()
 @Index(['application', 'openid'], { unique: true })
 export class OauthOpenid {
+  static RelationColumnUser = 'user';
+
   @PrimaryGeneratedColumn()
   id: number;
 

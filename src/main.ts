@@ -1,13 +1,14 @@
+import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { AppLogger } from '@/common/logger/app.logger';
 import cookieParser from 'cookie-parser';
 import { __dev__ } from '@powerfulyang/utils';
+import dayjs from 'dayjs';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
+import { AppLogger } from '@/common/logger/app.logger';
 import { CatchFilter } from '@/common/filter/catch.filter';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
-import dayjs from 'dayjs';
-import quarterOfYear = require('dayjs/plugin/quarterOfYear');
 import { AppModule } from './app.module';
 
 dayjs.extend(quarterOfYear);

@@ -4,7 +4,7 @@ import { GithubService } from './github.service';
 import { GitHubEventsGuard } from './github-event.guard';
 import { GithubWebhookEvents } from './github.decorator';
 import { EventType } from './github.enum';
-import { WebhookPayload } from './payload/webhook-payload';
+import type { WebhookPayload } from './payload/webhook-payload';
 
 @Controller('github-webhook')
 export class GithubController {

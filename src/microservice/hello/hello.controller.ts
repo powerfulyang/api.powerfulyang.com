@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { AppLogger } from '@/common/logger/app.logger';
 import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
+import { AppLogger } from '@/common/logger/app.logger';
 import { MessagePatterns } from '@/constants/MessagePatterns';
 
 @Controller()

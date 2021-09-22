@@ -1,21 +1,21 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { Asset } from '@/modules/asset/entities/asset.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository, Transaction, TransactionRepository } from 'typeorm';
-import { Pagination } from '@/common/decorator/pagination.decorator';
 import { hammingDistance } from '@powerfulyang/node-utils';
-import { UploadFile } from '@/type/UploadFile';
-import { CoreService } from '@/core/core.service';
-import { SUCCESS } from '@/constants/constants';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { pluck } from 'ramda';
-import { AssetBucket } from '@/enum/AssetBucket';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
 import sharp from 'sharp';
+import type { AssetBucket } from '@/enum/AssetBucket';
+import { SUCCESS } from '@/constants/constants';
+import { CoreService } from '@/core/core.service';
+import type { UploadFile } from '@/type/UploadFile';
+import type { Pagination } from '@/common/decorator/pagination.decorator';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { BucketService } from '@/modules/bucket/bucket.service';
-import { User } from '@/modules/user/entities/user.entity';
+import type { User } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
 
 @Injectable()
@@ -94,6 +94,9 @@ export class AssetService {
     const assets: Asset[] = [];
     for (const file of files) {
       const asset = await this.coreService.initManualUpload(file.buffer, false, bucketName);
+      await this.update(asset.id, {
+        uploadBy,
+      });
       assets.push(asset);
     }
     return assets;

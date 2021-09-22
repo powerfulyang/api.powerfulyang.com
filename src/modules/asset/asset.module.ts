@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Asset } from '@/modules/asset/entities/asset.entity';
 import { TencentCloudCosModule } from 'api/tencent-cloud-cos';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { BucketModule } from '@/modules/bucket/bucket.module';
 import { AssetService } from './asset.service';
 import { AssetController } from './asset.controller';

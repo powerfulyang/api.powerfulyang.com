@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createSocket } from 'dgram';
-import { VoidFunction } from '@powerfulyang/utils';
+import type { VoidFunction } from '@powerfulyang/utils';
 import { Subject } from 'rxjs';
 import { AppLogger } from '@/common/logger/app.logger';
 

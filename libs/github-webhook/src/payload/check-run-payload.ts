@@ -1,4 +1,4 @@
-import { WebhookPayload } from './webhook-payload';
+import type { WebhookPayload } from './webhook-payload';
 
 export interface CheckRunPayload extends WebhookPayload {
   action: 'created' | 'completed' | 'rerequested' | 'requested_action';

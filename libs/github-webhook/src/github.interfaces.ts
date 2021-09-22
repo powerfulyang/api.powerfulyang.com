@@ -1,4 +1,4 @@
-import { EventType } from './github.enum';
+import type { EventType } from './github.enum';
 
 export type Payload<T> = T;
 

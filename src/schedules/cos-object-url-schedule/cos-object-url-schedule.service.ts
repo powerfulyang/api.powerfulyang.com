@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { AssetService } from '@/modules/asset/asset.service';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Interval } from '@nestjs/schedule';
+import { AssetService } from '@/modules/asset/asset.service';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
 
