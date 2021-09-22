@@ -1,13 +1,13 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppLogger } from '@/common/logger/app.logger';
 import { find } from 'ramda';
 import { produce } from 'immer';
-import { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
-import { AssetBucket } from '@/enum/AssetBucket';
+import type { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
+import { AppLogger } from '@/common/logger/app.logger';
+import { Bucket } from '@/modules/bucket/entities/bucket.entity';
+import type { AssetBucket } from '@/enum/AssetBucket';
 import { SUCCESS } from '@/constants/constants';
 import { CoreService } from '@/core/core.service';
 

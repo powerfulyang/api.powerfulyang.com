@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { parseString } from 'xml2js';
-import fetch, { RequestInit } from 'node-fetch';
+import type { RequestInit } from 'node-fetch';
+import fetch from 'node-fetch';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 
 @Injectable()
@@ -23,7 +24,7 @@ export class ProxyFetchService {
 
   async proxyFetchJson<T>(url: string, draft: RequestInit = {}): Promise<T> {
     const res = await this.proxyFetch(url, draft);
-    return res.json();
+    return (await res.json()) as Promise<T>;
   }
 
   async proxyFetchJsonFromRss<T>(rssUrl: string, draft: RequestInit = {}): Promise<T> {

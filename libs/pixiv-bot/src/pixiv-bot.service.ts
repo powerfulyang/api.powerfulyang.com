@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { stringify } from 'qs';
-import { RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
-import { InstagramInterface } from 'api/instagram-bot/instagram.interface';
+import type { RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
+import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()

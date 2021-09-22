@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@/modules/user/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { User } from '@/modules/user/entities/user.entity';
 import { UserService } from '@/modules/user/user.service';
 import { jwtSecretConfig } from '@/configuration/jwt.config';
 import { Menu } from '@/modules/user/entities/menu.entity';

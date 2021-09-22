@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { TelegramBotService } from 'api/telegram-bot';
-import { Payload } from './github.interfaces';
+import type { Payload } from './github.interfaces';
 import { EventType } from './github.enum';
-import { WebhookPayload } from './payload/webhook-payload';
+import type { WebhookPayload } from './payload/webhook-payload';
 
 @Injectable()
 export class GithubService {

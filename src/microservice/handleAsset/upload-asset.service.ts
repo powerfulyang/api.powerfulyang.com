@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { AppLogger } from '@/common/logger/app.logger';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { AppLogger } from '@/common/logger/app.logger';
+import { Asset } from '@/modules/asset/entities/asset.entity';
 import { Region } from '@/constants/constants';
-import { UploadFileMsg } from '@/type/UploadFile';
+import type { UploadFileMsg } from '@/type/UploadFile';
 
 @Injectable()
 export class UploadAssetService {

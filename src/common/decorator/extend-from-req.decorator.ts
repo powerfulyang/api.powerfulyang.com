@@ -1,6 +1,7 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import type { ExecutionContext } from '@nestjs/common';
+import { createParamDecorator } from '@nestjs/common';
 import { pick } from 'ramda';
-import { ReqExtend } from '@/type/ReqExtend';
+import type { ReqExtend } from '@/type/ReqExtend';
 
 export const ExtendFromReq = createParamDecorator(
   (keys: Array<keyof ReqExtend> = [], ctx: ExecutionContext) => {

@@ -1,5 +1,5 @@
-import { RepositoryWebhookPayload } from './repository-webhook-payload';
-import { User } from './webhook-payload';
+import type { RepositoryWebhookPayload } from './repository-webhook-payload';
+import type { User } from './webhook-payload';
 
 export interface PullRequestPayload extends RepositoryWebhookPayload {
   action:

@@ -1,6 +1,6 @@
-import { OrganizationWebhookPayload } from './organization-webhook-payload';
-import { RepositoryWebhookPayload } from './repository-webhook-payload';
-import { InstallationWebhookPayload } from './installation-webhook-payload';
+import type { OrganizationWebhookPayload } from './organization-webhook-payload';
+import type { RepositoryWebhookPayload } from './repository-webhook-payload';
+import type { InstallationWebhookPayload } from './installation-webhook-payload';
 
 export interface User {
   login: string;

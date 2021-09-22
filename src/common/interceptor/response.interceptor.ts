@@ -1,12 +1,13 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import type { Observable } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
+import type { Request, Response } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
-import { Request, Response } from 'express';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, CookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
-import { ReqExtend } from '@/type/ReqExtend';
+import type { ReqExtend } from '@/type/ReqExtend';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {

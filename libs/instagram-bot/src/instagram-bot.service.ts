@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IgApiClient, SavedFeedResponseMedia } from 'instagram-private-api';
+import type { SavedFeedResponseMedia } from 'instagram-private-api';
+import { IgApiClient } from 'instagram-private-api';
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { InstagramInterface } from 'api/instagram-bot/instagram.interface';
+import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Injectable()

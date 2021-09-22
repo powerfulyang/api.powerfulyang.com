@@ -1,7 +1,7 @@
-import { User } from '@/modules/user/entities/user.entity';
 import { IsEmail } from 'class-validator';
+import { User } from '@/modules/user/entities/user.entity';
 
 export class UserDto extends User {
   @IsEmail()
-  email: string;
+  declare email: string;
 }

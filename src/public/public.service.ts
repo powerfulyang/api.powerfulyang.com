@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { countBy, flatten, map, prop, trim } from 'ramda';
 import { AppLogger } from '@/common/logger/app.logger';
 import { PostService } from '@/modules/post/post.service';
-import { Post } from '@/modules/post/entities/post.entity';
-import { countBy, flatten, map, prop, trim } from 'ramda';
+import type { Post } from '@/modules/post/entities/post.entity';
 import { CoreService } from '@/core/core.service';
 import { FeedService } from '@/modules/feed/feed.service';
 

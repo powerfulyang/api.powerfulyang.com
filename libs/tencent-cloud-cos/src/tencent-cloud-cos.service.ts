@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import COS, {
+import type {
   BucketACLOptions,
   BucketContentsOptions,
   BucketListResult,
@@ -13,8 +13,9 @@ import COS, {
   PutBucketRefererOptions,
   UploadBucketObjectOptions,
 } from 'cos-nodejs-sdk-v5';
+import COS from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
-import { BucketRegion } from 'api/tencent-cloud-cos/cos-nodejs-sdk-v5';
+import type { BucketRegion } from 'api/tencent-cloud-cos/cos-nodejs-sdk-v5';
 
 @Injectable()
 export class TencentCloudCosService {

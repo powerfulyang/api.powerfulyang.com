@@ -1,8 +1,9 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response } from 'express';
+import type { NestMiddleware } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import type { Request, Response } from 'express';
+import { TelegramBotService } from 'api/telegram-bot';
 import { AppLogger } from '@/common/logger/app.logger';
 import { findIpInfo } from '@/utils/ipdb';
-import { TelegramBotService } from 'api/telegram-bot';
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {

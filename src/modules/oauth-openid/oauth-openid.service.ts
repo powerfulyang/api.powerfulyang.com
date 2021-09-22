@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { OauthApplication, OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { OauthApplication, OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
+import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
 
 @Injectable()
 export class OauthOpenidService {
@@ -9,9 +10,13 @@ export class OauthOpenidService {
     @InjectRepository(OauthOpenid) private readonly oauthOpenidDao: Repository<OauthOpenid>,
   ) {}
 
-  findOne(openid: string, application: OauthApplication) {
+  findUserByGoogleOpenid(googleOpenid: string) {
+    return this.findOne(googleOpenid, OauthApplication.google);
+  }
+
+  private findOne(openid: string, application: OauthApplication) {
     return this.oauthOpenidDao.findOne({
-      relations: ['user'],
+      relations: [...getClassStaticProperties(OauthOpenid)],
       where: {
         openid,
         application,
