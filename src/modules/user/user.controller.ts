@@ -8,7 +8,7 @@ import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/modules/user/dto/UserDto';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization, SERVER_HOST_DOMAIN } from '@/constants/constants';
+import { Authorization, DEFAULT_REDIRECT_URL } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
@@ -21,7 +21,7 @@ export class UserController {
 
   @Get('google/auth')
   async googleAuth(@Req() req: Request & { query: { redirect?: string } }, @Res() res) {
-    const { redirect = SERVER_HOST_DOMAIN } = req.query;
+    const { redirect = DEFAULT_REDIRECT_URL } = req.query;
     passport.authenticate('google', {
       state: Buffer.from(redirect).toString('base64'),
     })(req, res);

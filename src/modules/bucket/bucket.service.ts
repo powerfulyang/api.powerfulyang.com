@@ -4,12 +4,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { find } from 'ramda';
 import { produce } from 'immer';
-import type { BucketACLDetailResult, GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
+import type {
+  BucketACLDetailResult,
+  GetBucketCorsData,
+  GetBucketRefererData,
+} from 'cos-nodejs-sdk-v5';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Bucket } from '@/modules/bucket/entities/bucket.entity';
-import type { AssetBucket } from '@/enum/AssetBucket';
-import { SUCCESS } from '@/constants/constants';
+import { AssetBucket } from '@/enum/AssetBucket';
+import { Region, SUCCESS } from '@/constants/constants';
 import { CoreService } from '@/core/core.service';
+import { getEnumKeys } from '@/utils/getClassStaticProperties';
 
 @Injectable()
 export class BucketService {
@@ -21,6 +26,64 @@ export class BucketService {
     private coreService: CoreService,
   ) {
     this.logger.setContext(BucketService.name);
+  }
+
+  list() {
+    return this.fetchAllBuckets();
+  }
+
+  async createBucket(bucket: Bucket) {
+    const res = await this.tencentCloudCosService.putBucket({
+      Region: bucket.bucketRegion,
+      Bucket: bucket.bucketName,
+    });
+    if (res.statusCode === HttpStatus.OK) {
+      await this.bucketDao.insert(bucket);
+    } else {
+      throw new ServiceUnavailableException('创建bucket失败');
+    }
+    return SUCCESS;
+  }
+
+  getPublicBuckets() {
+    return this.bucketDao.find({
+      public: true,
+    });
+  }
+
+  async initBucket() {
+    for (const bucket of getEnumKeys(AssetBucket)) {
+      let res: any;
+      try {
+        res = await this.tencentCloudCosService.headBucket({
+          Bucket: bucket,
+          Region,
+        });
+      } catch (e: any) {
+        this.logger.info(`headBucket error code is [${e.name}]`);
+        res = e;
+      }
+      if (res.statusCode !== HttpStatus.OK) {
+        try {
+          await this.tencentCloudCosService.putBucket({
+            Bucket: bucket,
+            Region,
+          });
+        } catch (e) {
+          this.logger.error('putBucket', e);
+        }
+      }
+      const bucketEntity = await this.bucketDao.findOne({
+        bucketName: bucket as AssetBucket,
+        bucketRegion: Region,
+      });
+      if (!bucketEntity) {
+        await this.bucketDao.insert({
+          bucketName: bucket as AssetBucket,
+          bucketRegion: Region,
+        });
+      }
+    }
   }
 
   private async fetchAllBuckets() {
@@ -75,28 +138,5 @@ export class BucketService {
       }
     }
     return arr;
-  }
-
-  list() {
-    return this.fetchAllBuckets();
-  }
-
-  async createBucket(bucket: Bucket) {
-    const res = await this.tencentCloudCosService.putBucket({
-      Region: bucket.bucketRegion,
-      Bucket: bucket.bucketName,
-    });
-    if (res.statusCode === HttpStatus.OK) {
-      await this.bucketDao.insert(bucket);
-    } else {
-      throw new ServiceUnavailableException('创建bucket失败');
-    }
-    return SUCCESS;
-  }
-
-  getPublicBuckets() {
-    return this.bucketDao.find({
-      public: true,
-    });
   }
 }

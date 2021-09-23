@@ -17,16 +17,6 @@ import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity
 
 @Entity('user')
 export class User {
-  static RelationColumnTimelineBackground = 'timelineBackground';
-
-  static RelationColumnFamilies = 'families';
-
-  static RelationColumnFamilyMembers = 'families.members';
-
-  static RelationColumnOauthOpenidArr = 'oauthOpenidArr';
-
-  static RelationColumnRoles = 'roles';
-
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -46,10 +36,6 @@ export class User {
   @Column({ default: '' })
   bio: string;
 
-  @JoinColumn()
-  @ManyToOne(() => Asset)
-  timelineBackground: Asset;
-
   @Column()
   avatar: string;
 
@@ -65,14 +51,18 @@ export class User {
   @UpdateDateColumn()
   updateAt: Date;
 
-  @ManyToMany(() => Role)
+  @JoinColumn()
+  @ManyToOne(() => Asset, { eager: true })
+  timelineBackground: Asset;
+
+  @ManyToMany(() => Role, { eager: true })
   @JoinTable()
   roles: Role[];
 
-  @ManyToMany(() => Family, (family) => family.members)
+  @ManyToMany(() => Family, (family) => family.members, { eager: true })
   @JoinTable()
   families: Family[];
 
-  @OneToMany(() => OauthOpenid, (o) => o.user)
+  @OneToMany(() => OauthOpenid, (o) => o.user, { eager: true })
   oauthOpenidArr: OauthOpenid[];
 }

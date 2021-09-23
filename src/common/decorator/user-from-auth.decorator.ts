@@ -3,7 +3,7 @@ import { createParamDecorator } from '@nestjs/common';
 import { pick } from 'ramda';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { Request } from '@/type/express';
-import { getUserFamiliesMembers } from '@/utils/user.uti';
+import { getUserFamiliesMembers } from '@/utils/user.util';
 
 export const UserFromAuth = createParamDecorator(
   (keys: Array<keyof User> = [], ctx: ExecutionContext) => {

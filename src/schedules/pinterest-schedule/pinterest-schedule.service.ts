@@ -4,10 +4,15 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { SUCCESS } from '@/constants/constants';
+import { AssetService } from '@/modules/asset/asset.service';
 
 @Injectable()
 export class PinterestScheduleService {
-  constructor(private logger: AppLogger, private coreService: CoreService) {
+  constructor(
+    private readonly logger: AppLogger,
+    private readonly coreService: CoreService,
+    private readonly assetService: AssetService,
+  ) {
     this.logger.setContext(PinterestScheduleService.name);
   }
 
@@ -18,7 +23,7 @@ export class PinterestScheduleService {
       return SUCCESS;
     }
     try {
-      await this.coreService.botBaseService(AssetBucket.pinterest);
+      await this.assetService.assetBotSchedule(AssetBucket.pinterest);
     } catch (e) {
       this.logger.error(this.bot.name, e);
     }

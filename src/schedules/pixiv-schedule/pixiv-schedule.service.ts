@@ -4,10 +4,15 @@ import { SUCCESS } from '@/constants/constants';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
 import { AssetBucket } from '@/enum/AssetBucket';
+import { AssetService } from '@/modules/asset/asset.service';
 
 @Injectable()
 export class PixivScheduleService {
-  constructor(private logger: AppLogger, private coreService: CoreService) {
+  constructor(
+    private readonly logger: AppLogger,
+    private readonly coreService: CoreService,
+    private readonly assetService: AssetService,
+  ) {
     this.logger.setContext(PixivScheduleService.name);
   }
 
@@ -18,7 +23,7 @@ export class PixivScheduleService {
       return SUCCESS;
     }
     try {
-      await this.coreService.botBaseService(AssetBucket.pixiv);
+      await this.assetService.assetBotSchedule(AssetBucket.pixiv);
     } catch (e) {
       this.logger.error(this.bot.name, e);
     }

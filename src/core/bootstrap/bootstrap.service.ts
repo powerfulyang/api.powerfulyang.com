@@ -4,6 +4,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
+import { BucketService } from '@/modules/bucket/bucket.service';
 
 @Injectable()
 export class BootstrapService {
@@ -13,6 +14,7 @@ export class BootstrapService {
     private readonly coreService: CoreService,
     private readonly cosObjectUrlScheduleService: CosObjectUrlScheduleService,
     private readonly pathViewCountService: PathViewCountService,
+    private readonly bucketService: BucketService,
   ) {
     this.logger.setContext(BootstrapService.name);
   }
@@ -57,7 +59,7 @@ export class BootstrapService {
   async initBucket() {
     const bool = await this.coreService.isCommonNode();
     if (bool) {
-      this.coreService.initBucket().then(() => {
+      this.bucketService.initBucket().then(() => {
         this.logger.info('init buckets complete!');
       });
     }

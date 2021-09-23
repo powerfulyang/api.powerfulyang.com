@@ -15,3 +15,5 @@ export const CookieOptions = {
   domain: SERVER_HOST_DOMAIN,
   maxAge: 24 * 60 * 60 * 1000,
 };
+
+export const DEFAULT_REDIRECT_URL = `https://${SERVER_HOST_DOMAIN}`;

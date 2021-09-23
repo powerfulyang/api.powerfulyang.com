@@ -14,17 +14,13 @@ import { User } from '@/modules/user/entities/user.entity';
 
 @Entity()
 export class Feed {
-  static readonly relationColumnAssets = 'assets';
-
-  static readonly relationColumnCreateBy = 'createBy';
-
   @PrimaryGeneratedColumn()
   id?: number;
 
   @Column()
   content: string;
 
-  @ManyToMany(() => Asset, { onDelete: 'CASCADE' })
+  @ManyToMany(() => Asset, { onDelete: 'CASCADE', eager: true })
   @JoinTable()
   assets?: Asset[];
 
@@ -32,7 +28,7 @@ export class Feed {
   public: boolean;
 
   @JoinColumn()
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User, { nullable: false, eager: true })
   createBy: User;
 
   @CreateDateColumn()
