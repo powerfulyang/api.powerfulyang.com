@@ -14,7 +14,6 @@ import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { Family } from '@/modules/user/entities/family.entity';
-import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
 import { OauthApplication, OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
 
@@ -76,7 +75,7 @@ export class UserService {
     const o = await this.oauthOpenidService.findUserByGoogleOpenid(openid);
     let user = o?.user;
     if (!user) {
-      user = new User();
+      user = this.userDao.create();
       user.email = getStringVal(profile.emails?.find((email: any) => email.verified)?.value);
       user.avatar = getStringVal(profile.photos?.pop()?.value);
       user.nickname = getStringVal(profile.displayName);
@@ -141,7 +140,6 @@ export class UserService {
   async getUserInfo(id: User['id']) {
     const user = await this.userDao.findOneOrFail({
       where: { id },
-      relations: getClassStaticProperties(User),
     });
     return this.pickLoginUserInfo(user);
   }
@@ -171,7 +169,7 @@ export class UserService {
   }
 
   updatePassword(id: number, password: string) {
-    const user = new User();
+    const user = this.userDao.create();
     user.passwordSalt = getRandomString();
     user.password = this.generatePassword(user.passwordSalt, password);
     return this.userDao.update(id, user);
@@ -179,9 +177,7 @@ export class UserService {
 
   async cacheUsers() {
     this.cacheService.del(REDIS_KEYS.USERS);
-    const users = await this.userDao.find({
-      relations: getClassStaticProperties(User),
-    });
+    const users = await this.userDao.find();
     const usersMap = groupBy<User>((user) => String(user.id), users);
     return this.cacheService.hMSet(
       REDIS_KEYS.USERS,
@@ -216,8 +212,6 @@ export class UserService {
   }
 
   async relationQueryUserAllFamilyMembers(id: User['id']) {
-    return this.userDao.findOneOrFail(id, {
-      relations: [User.RelationColumnFamilies, User.RelationColumnFamilyMembers],
-    });
+    return this.userDao.findOneOrFail(id);
   }
 }

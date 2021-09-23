@@ -50,13 +50,12 @@ export class PostService {
   }
 
   get(draft: Post) {
-    return this.postDao.findOneOrFail(draft, { relations: [Post.RelationColumnCreateBy] });
+    return this.postDao.findOneOrFail(draft);
   }
 
   publicRead(post: Post) {
     return this.postDao.findOneOrFail({
       where: { id: post.id, public: true },
-      relations: [Post.RelationColumnCreateBy],
     });
   }
 

@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Metadata } from 'sharp';
+import { pick } from 'ramda';
 import { User } from '@/modules/user/entities/user.entity';
 import { Bucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon.api/types/Exif';
@@ -48,11 +51,14 @@ export class Asset {
   @Column()
   pHash: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', select: false })
   exif: Exif;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', select: false })
   metadata: Metadata;
+
+  @Column({ type: 'json' })
+  size: Pick<Metadata, 'width' | 'height'>;
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
@@ -63,4 +69,18 @@ export class Asset {
 
   @UpdateDateColumn()
   updateAt: Date;
+
+  @BeforeInsert()
+  beforeInsert() {
+    if (this.metadata) {
+      this.size = pick(['width', 'height'])(this.metadata);
+    }
+  }
+
+  @BeforeUpdate()
+  beforeUpdate() {
+    if (this.metadata) {
+      this.size = pick(['width', 'height'])(this.metadata);
+    }
+  }
 }
