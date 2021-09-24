@@ -63,6 +63,7 @@ export class User {
   @JoinTable()
   families: Family[];
 
-  @OneToMany(() => OauthOpenid, (o) => o.user, { eager: true })
+  // 大部分时间应该不需要 { eager: true }
+  @OneToMany(() => OauthOpenid, (o) => o.user)
   oauthOpenidArr: OauthOpenid[];
 }
