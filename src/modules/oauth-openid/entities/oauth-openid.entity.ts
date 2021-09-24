@@ -18,6 +18,6 @@ export class OauthOpenid {
   openid: string;
 
   @JoinColumn()
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User, { nullable: false, eager: true })
   user: User;
 }
