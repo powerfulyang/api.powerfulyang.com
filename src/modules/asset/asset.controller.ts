@@ -5,7 +5,7 @@ import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.inter
 import type { UploadFile } from '@/type/UploadFile';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AssetBucket } from '@/enum/AssetBucket';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 
 @Controller('asset')
@@ -14,11 +14,12 @@ export class AssetController {
   constructor(private assetService: AssetService) {}
 
   @Get()
-  list(@Pagination() pagination: Pagination) {
-    return this.assetService.list(pagination);
+  list(@Pagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
+    return this.assetService.listUsersAsset(pagination, users);
   }
 
   @Get('all')
+  @AdminAuthGuard()
   all() {
     return this.assetService.all();
   }
@@ -35,6 +36,7 @@ export class AssetController {
   }
 
   @Get('pHash/distance')
+  @AdminAuthGuard()
   async pHashMap() {
     return this.assetService.pHashMap();
   }

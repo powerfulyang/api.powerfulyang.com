@@ -15,6 +15,6 @@ export class RoleService {
   }
 
   getDefaultRole() {
-    return this.roleDao.findOneOrFail({ roleName: 'default' });
+    return this.roleDao.findOneOrFail({ roleName: 'Default Role' });
   }
 }

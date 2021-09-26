@@ -30,6 +30,7 @@ import { getEXIF } from '../../../addon.api';
 import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
+import { AssetBotUserId } from '@/constants/asset';
 
 @Injectable()
 export class AssetService {
@@ -60,10 +61,13 @@ export class AssetService {
     });
   }
 
-  async list(pagination: Pagination) {
+  async listUsersAsset(pagination: Pagination, users: User[]) {
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
+      where: {
+        uploadBy: In(pluck('id', users).concat(AssetBotUserId)),
+      },
     });
   }
 
@@ -298,7 +302,7 @@ export class AssetService {
         asset.originUrl = undo.originUrl;
         asset.tags = undo.tags;
         const user = new User();
-        user.id = 5; // asset bot
+        user.id = AssetBotUserId; // asset bot
         asset.uploadBy = user;
         try {
           const res = await this.fetchImgBuffer(imgUrl, headers);

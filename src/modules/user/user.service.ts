@@ -21,13 +21,13 @@ import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service'
 export class UserService {
   constructor(
     @InjectRepository(User)
-    readonly userDao: Repository<User>,
+    private readonly userDao: Repository<User>,
     @InjectRepository(Family)
     private readonly familyDao: Repository<Family>,
-    private jwtService: JwtService,
-    private logger: AppLogger,
+    private readonly jwtService: JwtService,
+    private readonly logger: AppLogger,
     private readonly roleService: RoleService,
-    private cacheService: CacheService,
+    private readonly cacheService: CacheService,
     private readonly oauthOpenidService: OauthOpenidService,
   ) {
     this.logger.setContext(UserService.name);
@@ -62,11 +62,11 @@ export class UserService {
   generateDefaultPassword() {
     const defaultPassword = getRandomString();
     // default password is salt
-    const passwordSalt = defaultPassword;
-    const password = this.generatePassword(defaultPassword, defaultPassword);
+    const salt = defaultPassword;
+    const saltedPassword = this.generatePassword(defaultPassword, defaultPassword);
     return {
-      passwordSalt,
-      password,
+      salt,
+      saltedPassword,
     };
   }
 
@@ -83,24 +83,24 @@ export class UserService {
       oauthOpenid.application = OauthApplication.google;
       oauthOpenid.openid = openid;
       user.oauthOpenidArr = [oauthOpenid];
-      const defaultRole = await this.roleService.getDefaultRole();
-      user.roles = [defaultRole];
-      const { password, passwordSalt } = this.generateDefaultPassword();
-      user.password = password;
-      user.passwordSalt = passwordSalt;
+      user = await this.initUserDefaultProperty(user);
       user = await this.createUserAndCached(user);
-      // todo 总要发一封邮件吧
+      // todo 总要发一封邮件 告诉别人默认密码吧
     } else {
       // 更新头像
-      user.avatar = getStringVal(profile.photos?.pop()?.value);
-      user = await this.updateUserAndCached(user);
+      const u = await this.getUserCascadeFamilyInfo(user.id);
+      u.avatar = getStringVal(profile.photos?.pop()?.value);
+      user = await this.updateUserAndCached(u);
     }
     return this.generateAuthorization(user);
   }
 
-  generateAuthorization(userInfo: Partial<User>) {
-    const user = this.pickLoginUserInfo(userInfo);
-    return this.jwtService.sign(user);
+  pickUserInfo(user: Partial<User>) {
+    return pick(['id'], user);
+  }
+
+  generateAuthorization(user: Partial<User>) {
+    return this.jwtService.sign(this.pickUserInfo(user));
   }
 
   verifyPassword(password: string, salt: string, saltedPassword: string) {
@@ -115,64 +115,44 @@ export class UserService {
    */
   async login(user: UserDto) {
     const { email, password } = user;
-    const userInfo = await this.userDao.findOneOrFail({ email, password: Not(IsNull()) });
-    const bool = this.verifyPassword(password, userInfo.passwordSalt, userInfo.password);
-    if (bool) {
-      return this.pickLoginUserInfo(userInfo);
+    const userInfo = await this.userDao.findOneOrFail({
+      select: ['id', 'salt', 'saltedPassword'],
+      where: { email, saltedPassword: Not(IsNull()) },
+    });
+    const bool = this.verifyPassword(password, userInfo.salt, userInfo.saltedPassword);
+    if (!bool) {
+      throw new UnauthorizedException('密码错误！');
     }
-    throw new UnauthorizedException('密码错误！');
-  }
-
-  pickLoginUserInfo(user: Partial<User>) {
-    const currentUser = pick([
-      'id',
-      'nickname',
-      'email',
-      'avatar',
-      'createAt',
-      'bio',
-      'timelineBackground',
-    ])(user);
-    this.logger.debug(`current user is [ name: ${currentUser.nickname} ]`);
-    return currentUser;
-  }
-
-  queryUser(id: number) {
-    return this.userDao.findOneOrFail(id);
-  }
-
-  saveUser(user: User) {
-    return this.userDao.save(user);
-  }
-
-  cascadeUpdateUser(user: User) {
-    return this.saveUser(user);
-  }
-
-  setUserRole(user: User) {
-    return this.saveUser(user);
+    return userInfo;
   }
 
   async getUserMenus(id: number) {
-    const user = await this.userDao.findOneOrFail(id, {
-      relations: ['roles', 'roles.menus'],
-    });
+    const user = await this.userDao.findOneOrFail(id);
     const menus = new Set(flatten(user.roles.map((role) => role.menus)));
     return UserService.buildTree(menus);
   }
 
   updatePassword(id: number, password: string) {
-    const user = this.userDao.create();
-    user.passwordSalt = getRandomString();
-    user.password = this.generatePassword(user.passwordSalt, password);
-    return this.userDao.update(id, user);
+    const salt = getRandomString();
+    const saltedPassword = this.generatePassword(salt, password);
+    return this.userDao.update(id, { salt, saltedPassword });
+  }
+
+  getUserCascadeFamilyInfo(id: User['id']) {
+    return this.userDao.findOneOrFail(id, {
+      relations: ['families', 'families.members'],
+    });
+  }
+
+  getUsersCascadeFamilyInfo() {
+    return this.userDao.find({
+      relations: ['families', 'families.members'],
+    });
   }
 
   async cacheUsers() {
-    this.cacheService.del(REDIS_KEYS.USERS);
-    const users = await this.userDao.find({
-      relations: ['families', 'families.members'],
-    });
+    await this.cacheService.del(REDIS_KEYS.USERS);
+    const users = await this.getUsersCascadeFamilyInfo();
     const usersMap = groupBy<User>((user) => String(user.id), users);
     return this.cacheService.hMSet(
       REDIS_KEYS.USERS,
@@ -180,21 +160,35 @@ export class UserService {
     );
   }
 
-  getCachedUsers(id: User['id']) {
+  getCachedUser(id: User['id']) {
     return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
   }
 
+  async initUserDefaultProperty(draft: User) {
+    // 默认角色
+    const defaultRole = await this.roleService.getDefaultRole();
+    draft.roles = [defaultRole];
+    // 默认密码
+    const { salt, saltedPassword } = this.generateDefaultPassword();
+    draft.saltedPassword = saltedPassword;
+    draft.salt = salt;
+    // 默认家庭
+    const family = await this.familyDao.findOneOrFail({ name: 'Public Home' });
+    draft.families = [family];
+    return draft;
+  }
+
   async createUserAndCached(user: User) {
-    const newUser = await this.saveUser(user);
+    const newUser = await this.userDao.save(user);
     // add to cache
-    this.cacheService.hSet(REDIS_KEYS.USERS, user.id, user);
+    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, newUser);
     return newUser;
   }
 
   async updateUserAndCached(user: User) {
-    const updatedUser = await this.saveUser(user);
-    // add to cache
-    this.cacheService.hSet(REDIS_KEYS.USERS, user.id, user);
+    const updatedUser = await this.userDao.save(user);
+    // update to cache
+    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
     return updatedUser;
   }
 
@@ -206,7 +200,7 @@ export class UserService {
     return this.familyDao.findOneOrFail(id);
   }
 
-  async relationQueryUserAllFamilyMembers(id: User['id']) {
-    return this.userDao.findOneOrFail(id);
+  update(id: number, user: Partial<User>) {
+    return this.userDao.update(id, user);
   }
 }
