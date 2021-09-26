@@ -21,7 +21,7 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => Bucket, { nullable: false })
+  @ManyToOne(() => Bucket, { nullable: false, eager: true })
   bucket: Bucket;
 
   @Column({ default: '' })

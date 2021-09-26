@@ -4,7 +4,7 @@ import type { Request } from 'express';
 import passport from 'passport';
 import { User } from '@/modules/user/entities/user.entity';
 import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/modules/user/dto/UserDto';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
@@ -57,12 +57,18 @@ export class UserController {
   @Get('current')
   @JwtAuthGuard()
   async current(@UserFromAuth() user: User) {
-    return this.userService.getUserInfo(user.id);
+    return this.userService.pickLoginUserInfo(user);
   }
 
   @Post('logout')
   @UseInterceptors(CookieClearInterceptor)
   logout() {
     return { cookie: Authorization };
+  }
+
+  @Get('current/family/members')
+  @JwtAuthGuard()
+  async currentFamilies(@FamilyMembersFromAuth() users: User[]) {
+    return users;
   }
 }

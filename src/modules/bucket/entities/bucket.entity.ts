@@ -16,16 +16,16 @@ import { AssetBucket } from '@/enum/AssetBucket';
 @Index(['bucketName', 'bucketRegion'], { unique: true })
 export class Bucket {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @OneToMany(() => Asset, (asset) => asset.bucket)
-  assets!: Asset[];
+  assets: Asset[];
 
   @Column({ unique: true })
-  bucketName!: AssetBucket;
+  bucketName: AssetBucket;
 
   @Column()
-  bucketRegion!: BucketRegion;
+  bucketRegion: BucketRegion;
 
   @Column({ default: true })
   public: boolean;
