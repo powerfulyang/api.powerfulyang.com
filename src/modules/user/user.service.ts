@@ -137,13 +137,6 @@ export class UserService {
     return currentUser;
   }
 
-  async getUserInfo(id: User['id']) {
-    const user = await this.userDao.findOneOrFail({
-      where: { id },
-    });
-    return this.pickLoginUserInfo(user);
-  }
-
   queryUser(id: number) {
     return this.userDao.findOneOrFail(id);
   }
@@ -177,7 +170,9 @@ export class UserService {
 
   async cacheUsers() {
     this.cacheService.del(REDIS_KEYS.USERS);
-    const users = await this.userDao.find();
+    const users = await this.userDao.find({
+      relations: ['families', 'families.members'],
+    });
     const usersMap = groupBy<User>((user) => String(user.id), users);
     return this.cacheService.hMSet(
       REDIS_KEYS.USERS,

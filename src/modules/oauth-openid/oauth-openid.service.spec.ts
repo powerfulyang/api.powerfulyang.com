@@ -14,7 +14,7 @@ describe('OauthOpenidService', () => {
   });
 
   it('get user info by google openid', async () => {
-    const res = await service.findUserByGoogleOpenid('google open id');
+    const res = await service.findUserByGoogleOpenid('115587634739937046451');
     expect(res?.user).toBeDefined();
   });
 });

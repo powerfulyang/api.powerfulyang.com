@@ -23,7 +23,7 @@ export class Role {
   @UpdateDateColumn()
   updateAt: Date;
 
-  @ManyToMany(() => Menu)
+  @ManyToMany(() => Menu, { eager: true })
   @JoinTable()
   menus: Menu[];
 }

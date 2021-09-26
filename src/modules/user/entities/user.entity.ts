@@ -59,7 +59,7 @@ export class User {
   @JoinTable()
   roles: Role[];
 
-  @ManyToMany(() => Family, (family) => family.members, { eager: true })
+  @ManyToMany(() => Family, (family) => family.members, { onDelete: 'CASCADE' })
   @JoinTable()
   families: Family[];
 

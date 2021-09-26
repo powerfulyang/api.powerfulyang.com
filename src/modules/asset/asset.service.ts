@@ -176,9 +176,12 @@ export class AssetService {
         const buffer = await res.buffer();
         writeFileSync(path, buffer);
       } else {
+        // 读取元信息
         const exif = getEXIF(path);
         const metadata = await sharp(path).metadata();
-        await this.assetDao.update(asset.id, { exif, metadata });
+        asset.exif = exif;
+        asset.metadata = metadata;
+        await this.assetDao.save(asset);
       }
     }
     return SUCCESS;
@@ -236,7 +239,7 @@ export class AssetService {
     asset.pHash = await pHash(buffer);
 
     try {
-      await this.assetDao.insert(asset);
+      asset = await this.assetDao.save(asset);
       const data = {
         sha1: asset.sha1,
         suffix: asset.fileSuffix,
@@ -253,9 +256,6 @@ export class AssetService {
       this.logger.error(e);
     }
 
-    asset = await this.assetDao.findOneOrFail({
-      sha1: asset.sha1,
-    });
     return asset;
   }
 
@@ -293,7 +293,7 @@ export class AssetService {
     for (const undo of undoes.reverse()) {
       this.logger.debug(`[${bucketName}] -> ${undo.id} -> ${undo.imgList}`);
       for (const imgUrl of undo.imgList) {
-        const asset = this.assetDao.create();
+        let asset = this.assetDao.create();
         asset.sn = undo.id;
         asset.originUrl = undo.originUrl;
         asset.tags = undo.tags;
@@ -314,7 +314,7 @@ export class AssetService {
             );
             asset.bucket = await this.coreService.getBotBucket(bucketName);
             this.logger.info(`bucket => ${JSON.stringify(asset.bucket)}`);
-            await this.assetDao.insert(asset);
+            asset = await this.assetDao.save(asset);
             this.coreService.notifyCos({
               sha1: asset.sha1,
               suffix: asset.fileSuffix,
