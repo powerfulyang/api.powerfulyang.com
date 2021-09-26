@@ -3,7 +3,6 @@ import { ClientProxy } from '@nestjs/microservices';
 import { __prod__ } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { CacheService } from '@/core/cache/cache.service';
 import { COMMON_CODE_UUID } from '@/utils/uuid';
@@ -20,10 +19,8 @@ export class CoreService {
     readonly microserviceClient: ClientProxy,
     private logger: AppLogger,
     @InjectRepository(Asset)
-    private assetDao: Repository<Asset>,
     @InjectRepository(Bucket)
     private bucketDao: Repository<Bucket>,
-    private tencentCloudCosService: TencentCloudCosService,
     private cacheService: CacheService,
   ) {
     this.logger.setContext(CoreService.name);

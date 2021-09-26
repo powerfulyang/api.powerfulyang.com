@@ -25,7 +25,7 @@ export class ResponseInterceptor implements NestInterceptor {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request & ReqExtend>();
     const path = request.url;
-    const { ip } = request.extend;
+    const { xRealIp } = request.extend;
 
     return next.handle().pipe(
       tap(() => {
@@ -45,7 +45,7 @@ export class ResponseInterceptor implements NestInterceptor {
         }
       }),
       mergeMap(async (data) => {
-        const count = await this.pathViewCountService.handlePathViewCount(path, ip);
+        const count = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
         if (data) {
           return {
             status: 'ok',

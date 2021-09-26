@@ -13,7 +13,6 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { AssetBucket } from '@/enum/AssetBucket';
 import { Region, SUCCESS } from '@/constants/constants';
-import { CoreService } from '@/core/core.service';
 import { getEnumKeys } from '@/utils/getClassStaticProperties';
 
 @Injectable()
@@ -23,7 +22,6 @@ export class BucketService {
     @InjectRepository(Bucket)
     private readonly bucketDao: Repository<Bucket>,
     private readonly logger: AppLogger,
-    private coreService: CoreService,
   ) {
     this.logger.setContext(BucketService.name);
   }

@@ -23,12 +23,12 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   // 密码为 null, 则代表禁止密码登录
-  password: string;
+  saltedPassword: string;
 
-  @Column({ nullable: true })
-  passwordSalt: string;
+  @Column({ nullable: true, select: false })
+  salt: string;
 
   @Column()
   nickname: string;
