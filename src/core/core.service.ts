@@ -8,20 +8,16 @@ import { CacheService } from '@/core/cache/cache.service';
 import { COMMON_CODE_UUID } from '@/utils/uuid';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { AppLogger } from '@/common/logger/app.logger';
-import { Asset } from '@/modules/asset/entities/asset.entity';
 import type { AssetBucket } from '@/enum/AssetBucket';
 import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME, Region } from '@/constants/constants';
 
 @Injectable()
 export class CoreService {
   constructor(
-    @Inject(MICROSERVICE_NAME)
-    readonly microserviceClient: ClientProxy,
-    private logger: AppLogger,
-    @InjectRepository(Asset)
-    @InjectRepository(Bucket)
-    private bucketDao: Repository<Bucket>,
-    private cacheService: CacheService,
+    @Inject(MICROSERVICE_NAME) readonly microserviceClient: ClientProxy,
+    private readonly logger: AppLogger,
+    @InjectRepository(Bucket) private readonly bucketDao: Repository<Bucket>,
+    private readonly cacheService: CacheService,
   ) {
     this.logger.setContext(CoreService.name);
     this.setCommonNodeUuid().then((uuid) => {

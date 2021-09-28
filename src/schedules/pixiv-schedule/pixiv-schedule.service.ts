@@ -25,7 +25,7 @@ export class PixivScheduleService {
     try {
       await this.assetService.assetBotSchedule(AssetBucket.pixiv);
     } catch (e) {
-      this.logger.error(this.bot.name, e);
+      this.logger.error(e);
     }
     return SUCCESS;
   }

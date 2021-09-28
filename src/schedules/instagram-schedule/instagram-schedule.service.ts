@@ -25,7 +25,7 @@ export class InstagramScheduleService {
     try {
       await this.assetService.assetBotSchedule(AssetBucket.instagram);
     } catch (e) {
-      this.logger.error(this.bot.name, e);
+      this.logger.error(e);
     }
     return SUCCESS;
   }

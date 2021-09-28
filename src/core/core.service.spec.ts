@@ -32,4 +32,9 @@ describe('core service test', function () {
     const res = await service.microserviceClient.emit(MessagePatterns.test, '');
     expect(res).toBeDefined();
   });
+
+  it('getBotBucket', async function () {
+    const res = await service.getBotBucket(AssetBucket.pinterest);
+    expect(res).toBeDefined();
+  });
 });

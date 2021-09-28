@@ -234,22 +234,25 @@ export class AssetService {
     asset.bucket = await this.coreService.getBotBucket(bucketName);
     asset.sha1 = sha1(buffer);
     const s = sharp(buffer);
-    const { format } = await s.metadata();
-    if (!format) {
+    const metadata = await s.metadata();
+    if (!metadata.format) {
       throw new UnsupportedMediaTypeException();
     }
 
-    asset.fileSuffix = format;
+    asset.fileSuffix = metadata.format;
     asset.pHash = await pHash(buffer);
 
     try {
+      const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
+      asset.exif = getEXIF(path);
+      asset.metadata = metadata;
       asset = await this.assetDao.save(asset);
+      writeFileSync(path, buffer);
       const data = {
         sha1: asset.sha1,
         suffix: asset.fileSuffix,
         bucketName: asset.bucket.bucketName,
       };
-      writeFileSync(join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`), buffer);
       if (async) {
         this.coreService.notifyCos(data);
       } else {
@@ -307,23 +310,25 @@ export class AssetService {
         try {
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();
-          const s = await sharp(buffer).metadata();
+          const metadata = await sharp(buffer).metadata();
           asset.sha1 = sha1(buffer);
-          if (s.format) {
-            asset.fileSuffix = s.format;
+          if (metadata.format) {
+            asset.fileSuffix = metadata.format;
             asset.pHash = await pHash(buffer);
-            writeFileSync(
-              join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`),
-              buffer,
-            );
+            const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
+            asset.exif = getEXIF(path);
+            asset.metadata = metadata;
             asset.bucket = await this.coreService.getBotBucket(bucketName);
             this.logger.info(`bucket => ${JSON.stringify(asset.bucket)}`);
             asset = await this.assetDao.save(asset);
+            writeFileSync(path, buffer);
             this.coreService.notifyCos({
               sha1: asset.sha1,
               suffix: asset.fileSuffix,
               bucketName,
             });
+          } else {
+            this.logger.error(UnsupportedMediaTypeException.name);
           }
         } catch (e) {
           this.logger.error('fetchImgBuffer error', e);

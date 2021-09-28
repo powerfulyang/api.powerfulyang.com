@@ -55,7 +55,7 @@ export class UserService {
     return root;
   }
 
-  generatePassword(salt: string, password: string = getRandomString(20)) {
+  generateSaltedPassword(salt: string, password: string) {
     return sha1(password, salt);
   }
 
@@ -63,7 +63,7 @@ export class UserService {
     const defaultPassword = getRandomString();
     // default password is salt
     const salt = defaultPassword;
-    const saltedPassword = this.generatePassword(defaultPassword, defaultPassword);
+    const saltedPassword = this.generateSaltedPassword(defaultPassword, defaultPassword);
     return {
       salt,
       saltedPassword,
@@ -132,9 +132,9 @@ export class UserService {
     return UserService.buildTree(menus);
   }
 
-  updatePassword(id: number, password: string) {
+  updatePassword(id: number, password?: string) {
     const salt = getRandomString();
-    const saltedPassword = this.generatePassword(salt, password);
+    const saltedPassword = this.generateSaltedPassword(salt, password || salt);
     return this.userDao.update(id, { salt, saltedPassword });
   }
 
