@@ -25,7 +25,7 @@ export class PinterestScheduleService {
     try {
       await this.assetService.assetBotSchedule(AssetBucket.pinterest);
     } catch (e) {
-      this.logger.error(this.bot.name, e);
+      this.logger.error(e);
     }
     return SUCCESS;
   }

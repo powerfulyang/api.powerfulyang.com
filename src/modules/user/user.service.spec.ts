@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { AppModule } from '@/app.module';
-import { RoleService } from '@/modules/user/role/role.service';
 import { User } from '@/modules/user/entities/user.entity';
 import { Family } from '@/modules/user/entities/family.entity';
 import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
@@ -9,7 +8,6 @@ import { getUserFamiliesMembers } from '@/utils/user.util';
 
 describe('UserService', () => {
   let service: UserService;
-  let roleService: RoleService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -17,7 +15,6 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
-    roleService = module.get<RoleService>(RoleService);
   });
 
   it(`get user's menus`, async function () {
@@ -26,7 +23,7 @@ describe('UserService', () => {
   });
 
   it('update password', async function () {
-    const results = await service.updatePassword(4, 'test-password');
+    const results = await service.updatePassword(1);
     expect(results).toHaveProperty('affected', 1);
   });
 

@@ -45,7 +45,7 @@ export class AppLogger {
     if (typeof message === 'string') {
       this.logger.error(message, trace);
     } else {
-      this.logger.error(message);
+      this.logger.error('error', message);
     }
   }
 
