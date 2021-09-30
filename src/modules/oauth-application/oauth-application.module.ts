@@ -8,5 +8,6 @@ import { OauthApplication } from '@/modules/oauth-application/entities/oauth-app
   imports: [TypeOrmModule.forFeature([OauthApplication])],
   controllers: [OauthApplicationController],
   providers: [OauthApplicationService],
+  exports: [OauthApplicationService],
 })
 export class OauthApplicationModule {}
