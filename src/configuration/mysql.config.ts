@@ -2,6 +2,9 @@ import { join } from 'path';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { __dev__ } from '@powerfulyang/utils';
 
+/**
+ * @deprecated
+ */
 export const mysqlConfig = (): TypeOrmModuleOptions => {
   return {
     name: 'default',

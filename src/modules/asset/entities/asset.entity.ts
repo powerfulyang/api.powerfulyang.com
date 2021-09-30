@@ -12,7 +12,7 @@ import {
 import { Metadata } from 'sharp';
 import { pick } from 'ramda';
 import { User } from '@/modules/user/entities/user.entity';
-import { Bucket } from '../../bucket/entities/bucket.entity';
+import { CosBucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon.api/types/Exif';
 
 @Entity('asset')
@@ -21,8 +21,8 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => Bucket, { nullable: false, eager: true })
-  bucket: Bucket;
+  @ManyToOne(() => CosBucket, { nullable: false, eager: true })
+  bucket: CosBucket;
 
   @Column({ default: '' })
   cosUrl: string;
@@ -51,10 +51,10 @@ export class Asset {
   @Column()
   pHash: string;
 
-  @Column({ type: 'json', select: false })
+  @Column({ type: 'jsonb', select: false })
   exif: Exif;
 
-  @Column({ type: 'json', select: false })
+  @Column({ type: 'jsonb', select: false })
   metadata: Metadata;
 
   @Column({ type: 'json' })

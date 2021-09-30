@@ -124,7 +124,7 @@ export class SearchService {
       },
     });
     const { hits } = body.hits;
-    hits.forEach((item) => {
+    hits.forEach((item: { _source: any }) => {
       results.push(item._source);
     });
 

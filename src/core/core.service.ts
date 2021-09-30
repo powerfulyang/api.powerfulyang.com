@@ -1,22 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { __prod__ } from '@powerfulyang/utils';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
 import { CacheService } from '@/core/cache/cache.service';
-import { COMMON_CODE_UUID } from '@/utils/uuid';
+import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { AppLogger } from '@/common/logger/app.logger';
-import type { AssetBucket } from '@/enum/AssetBucket';
-import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME, Region } from '@/constants/constants';
+import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME } from '@/constants/constants';
+import type { UploadFileMsg } from '@/type/UploadFile';
 
 @Injectable()
 export class CoreService {
   constructor(
     @Inject(MICROSERVICE_NAME) readonly microserviceClient: ClientProxy,
     private readonly logger: AppLogger,
-    @InjectRepository(Bucket) private readonly bucketDao: Repository<Bucket>,
     private readonly cacheService: CacheService,
   ) {
     this.logger.setContext(CoreService.name);
@@ -27,8 +23,8 @@ export class CoreService {
 
   async setCommonNodeUuid() {
     this.logger.info(`当前环境====>${process.env.NODE_ENV}`);
-    await this.cacheService.set(REDIS_KEYS.COMMON_NODE, COMMON_CODE_UUID);
-    return COMMON_CODE_UUID;
+    await this.cacheService.set(REDIS_KEYS.COMMON_NODE, HOSTNAME);
+    return HOSTNAME;
   }
 
   getCommonNodeUuid() {
@@ -37,7 +33,7 @@ export class CoreService {
 
   async isCommonNode() {
     const uuid = await this.getCommonNodeUuid();
-    return uuid === COMMON_CODE_UUID;
+    return uuid === HOSTNAME;
   }
 
   async isProdCommonNode() {
@@ -45,14 +41,7 @@ export class CoreService {
     return bool && __prod__;
   }
 
-  notifyCos(notification: { sha1: string; suffix: string; bucketName: AssetBucket }) {
+  notifyCos(notification: UploadFileMsg) {
     return this.microserviceClient.emit(COS_UPLOAD_MSG_PATTERN, notification);
-  }
-
-  getBotBucket(bucketName: AssetBucket) {
-    return this.bucketDao.findOneOrFail({
-      bucketName,
-      bucketRegion: Region,
-    });
   }
 }

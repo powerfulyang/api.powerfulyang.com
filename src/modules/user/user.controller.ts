@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 import type { Profile } from 'passport-google-oauth20';
+import { Response } from 'express';
 import type { Request } from 'express';
 import passport from 'passport';
 import { User } from '@/modules/user/entities/user.entity';
@@ -8,7 +9,7 @@ import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/modules/user/dto/UserDto';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization, DEFAULT_REDIRECT_URL } from '@/constants/constants';
+import { Authorization, PRIMARY_ORIGIN } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
@@ -20,8 +21,8 @@ export class UserController {
   }
 
   @Get('google/auth')
-  async googleAuth(@Req() req: Request & { query: { redirect?: string } }, @Res() res) {
-    const { redirect = DEFAULT_REDIRECT_URL } = req.query;
+  async googleAuth(@Req() req: Request & { query: { redirect?: string } }, @Res() res: Response) {
+    const { redirect = PRIMARY_ORIGIN } = req.query;
     passport.authenticate('google', {
       state: Buffer.from(redirect).toString('base64'),
     })(req, res);

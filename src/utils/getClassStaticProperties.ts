@@ -1,6 +1,6 @@
 import { isNumeric } from '@powerfulyang/utils';
 
-export const getClassStaticProperties = (type) => {
+export const getClassStaticProperties = (type: object) => {
   return Object.keys(type)
     .filter((key) => !['name', 'prototype', 'length'].includes(key))
     .map((key) => {
@@ -8,6 +8,6 @@ export const getClassStaticProperties = (type) => {
     });
 };
 
-export const getEnumKeys = (enumDescription) => {
+export const getEnumKeys = (enumDescription: object) => {
   return Object.keys(enumDescription).filter((key) => !isNumeric(key));
 };

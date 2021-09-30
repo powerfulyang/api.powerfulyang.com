@@ -20,7 +20,7 @@ describe('FeedService', () => {
   });
 
   it('post a new story', async () => {
-    const user = await userService.queryUser(1);
+    const user = await userService.getCachedUser(1);
     const res = await service.create({
       createBy: user,
       content: '我的第一条说说! #第一条说说',
@@ -29,7 +29,7 @@ describe('FeedService', () => {
   });
 
   it('post a story with assets', async () => {
-    const user = await userService.queryUser(1);
+    const user = await userService.getCachedUser(1);
     const asset = await assetService.randomAsset();
     const res = await service.create({
       createBy: user,

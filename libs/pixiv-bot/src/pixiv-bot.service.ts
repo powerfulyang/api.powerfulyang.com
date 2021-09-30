@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { stringify } from 'qs';
-import type { RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
+import type { PixivBotApiQuery, RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
 import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
 
@@ -12,29 +11,33 @@ export class PixivBotService {
 
   private readonly defaultLimit = 48;
 
-  private parseQueryUrl(
+  private parseQueryUrl({
     offset = 0,
     limit = this.defaultLimit,
     tag = '',
     rest = 'show',
     lang = 'zh',
-  ) {
-    return `${this.pixivApiUrl}?${stringify({
+  }: Partial<PixivBotApiQuery>) {
+    const url = new URLSearchParams({
       tag,
-      offset,
-      limit,
+      offset: String(offset),
+      limit: String(limit),
       rest,
       lang,
-    })}`;
+    });
+    return `${this.pixivApiUrl}?${url.toString()}`;
   }
 
   private fetch(offset?: number) {
-    return this.proxyFetchService.proxyFetchJson<RESPixivInterface>(this.parseQueryUrl(offset), {
-      headers: {
-        cookie: process.env.PIXIV_BOT_COOKIE!,
-        'user-agent': `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36`,
+    return this.proxyFetchService.proxyFetchJson<RESPixivInterface>(
+      this.parseQueryUrl({ offset }),
+      {
+        headers: {
+          cookie: process.env.PIXIV_BOT_COOKIE,
+          'user-agent': `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36`,
+        },
       },
-    });
+    );
   }
 
   async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {

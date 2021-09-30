@@ -4,9 +4,9 @@ export const COS_UPLOAD_MSG_PATTERN = 'COS_UPLOAD_MSG_PATTERN';
 export const SUCCESS = 'SUCCESS';
 
 export const Authorization = 'authorization';
-export const Region = 'ap-shanghai';
 
 export const { SERVER_HOST_DOMAIN } = process.env;
+export const WILDCARD_HOST_DOMAIN = `*.${SERVER_HOST_DOMAIN}`;
 
 export const CookieOptions = {
   httpOnly: true,
@@ -16,4 +16,5 @@ export const CookieOptions = {
   maxAge: 24 * 60 * 60 * 1000,
 };
 
-export const DEFAULT_REDIRECT_URL = `https://${SERVER_HOST_DOMAIN}`;
+export const PRIMARY_ORIGIN = `https://${SERVER_HOST_DOMAIN}`;
+export const WILDCARD_ORIGIN = `https://${WILDCARD_HOST_DOMAIN}`;

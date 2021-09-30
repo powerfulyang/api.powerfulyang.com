@@ -5,6 +5,7 @@ import { CoreService } from '@/core/core.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import { BucketService } from '@/modules/bucket/bucket.service';
+import { RoleService } from '@/modules/user/role/role.service';
 
 @Injectable()
 export class BootstrapService {
@@ -15,6 +16,7 @@ export class BootstrapService {
     private readonly cosObjectUrlScheduleService: CosObjectUrlScheduleService,
     private readonly pathViewCountService: PathViewCountService,
     private readonly bucketService: BucketService,
+    private readonly roleService: RoleService,
   ) {
     this.logger.setContext(BootstrapService.name);
   }
@@ -25,6 +27,7 @@ export class BootstrapService {
       this.refreshObjectUrl();
       this.cachePathViewCount();
       this.initBucket();
+      this.initRoles();
     }, 1000 * 10);
   }
 
@@ -61,6 +64,15 @@ export class BootstrapService {
     if (bool) {
       this.bucketService.initBucket().then(() => {
         this.logger.info('init buckets complete!');
+      });
+    }
+  }
+
+  async initRoles() {
+    const bool = await this.coreService.isCommonNode();
+    if (bool) {
+      this.roleService.initIntendedRoles().then(() => {
+        this.logger.info('init roles complete!');
       });
     }
   }

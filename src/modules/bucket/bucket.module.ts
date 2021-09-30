@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TencentCloudCosModule } from 'api/tencent-cloud-cos';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
+import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { BucketService } from './bucket.service';
 import { BucketController } from './bucket.controller';
+import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
 
 @Module({
-  imports: [TencentCloudCosModule, TypeOrmModule.forFeature([Bucket])],
+  imports: [TencentCloudAccountModule, TypeOrmModule.forFeature([CosBucket])],
   providers: [BucketService],
   controllers: [BucketController],
   exports: [BucketService],

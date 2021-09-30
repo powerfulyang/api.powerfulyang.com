@@ -28,10 +28,6 @@ export class FeedService {
     });
   }
 
-  findAll() {
-    return this.feedDao.findAndCount();
-  }
-
   relationQuery(where?: FindManyOptions<Feed>['where']) {
     return this.feedDao.find({
       where,

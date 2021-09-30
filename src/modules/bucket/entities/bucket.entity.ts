@@ -2,43 +2,50 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import type { GetBucketCorsData, GetBucketRefererData } from 'cos-nodejs-sdk-v5';
-import { BucketRegion } from 'api/tencent-cloud-cos/cos-nodejs-sdk-v5';
+import type { CORSRule } from '@powerfulyang/cos-nodejs-sdk-v5';
+import { BucketACL, BucketRegion, RefererConfiguration } from '@powerfulyang/cos-nodejs-sdk-v5';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import { AssetBucket } from '@/enum/AssetBucket';
+import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
 
-@Entity('bucket')
-@Index(['bucketName', 'bucketRegion'], { unique: true })
-export class Bucket {
+@Entity()
+export class CosBucket {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Asset, (asset) => asset.bucket)
-  assets: Asset[];
+  @Column({ unique: true })
+  name: string;
 
   @Column({ unique: true })
-  bucketName: AssetBucket;
+  Bucket: string;
 
   @Column()
-  bucketRegion: BucketRegion;
+  Region: BucketRegion;
 
-  @Column({ default: true })
-  public: boolean;
+  @Column()
+  ACL: BucketACL;
 
-  acl: string;
+  @Column({ type: 'json' })
+  CORSRules: CORSRule[];
 
-  cors: Pick<GetBucketCorsData, 'CORSRules'>;
-
-  referer: Pick<GetBucketRefererData, 'RefererConfiguration'>;
+  @Column({ type: 'json' })
+  RefererConfiguration: RefererConfiguration;
 
   @CreateDateColumn()
   createAt: Date;
 
   @UpdateDateColumn()
   updateAt: Date;
+
+  @JoinColumn()
+  @ManyToOne(() => TencentCloudAccount, { eager: true, nullable: false })
+  tencentCloudAccount: TencentCloudAccount;
+
+  @OneToMany(() => Asset, (asset) => asset.bucket)
+  assets: Asset[];
 }

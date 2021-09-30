@@ -6,15 +6,19 @@ import { SocksProxyAgent } from 'socks-proxy-agent';
 
 @Injectable()
 export class ProxyFetchService {
-  readonly agent;
+  private readonly agent;
 
   constructor() {
-    if (process.env.BOT_SOCKS5_PROXY_HOST || process.env.BOT_SOCKS5_PROXY_PORT) {
+    if (process.env.BOT_SOCKS5_PROXY_HOST && process.env.BOT_SOCKS5_PROXY_PORT) {
       this.agent = new SocksProxyAgent({
         host: process.env.BOT_SOCKS5_PROXY_HOST,
         port: process.env.BOT_SOCKS5_PROXY_PORT,
       });
     }
+  }
+
+  getAgent() {
+    return this.agent;
   }
 
   proxyFetch(url: string, draft: RequestInit = {}) {

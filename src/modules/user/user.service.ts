@@ -14,8 +14,9 @@ import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { Family } from '@/modules/user/entities/family.entity';
-import { OauthApplication, OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
+import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
+import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
 
 @Injectable()
 export class UserService {
@@ -29,6 +30,7 @@ export class UserService {
     private readonly roleService: RoleService,
     private readonly cacheService: CacheService,
     private readonly oauthOpenidService: OauthOpenidService,
+    private readonly oauthApplicationService: OauthApplicationService,
   ) {
     this.logger.setContext(UserService.name);
   }
@@ -80,7 +82,7 @@ export class UserService {
       user.avatar = getStringVal(profile.photos?.pop()?.value);
       user.nickname = getStringVal(profile.displayName);
       const oauthOpenid = new OauthOpenid();
-      oauthOpenid.application = OauthApplication.google;
+      oauthOpenid.application = await this.oauthApplicationService.getGoogle();
       oauthOpenid.openid = openid;
       user.oauthOpenidArr = [oauthOpenid];
       user = await this.initUserDefaultProperty(user);
@@ -154,10 +156,13 @@ export class UserService {
     await this.cacheService.del(REDIS_KEYS.USERS);
     const users = await this.getUsersCascadeFamilyInfo();
     const usersMap = groupBy<User>((user) => String(user.id), users);
-    return this.cacheService.hMSet(
-      REDIS_KEYS.USERS,
-      map((user) => JSON.stringify(user.pop()), usersMap),
-    );
+    if (users.length) {
+      return this.cacheService.hMSet(
+        REDIS_KEYS.USERS,
+        map((user) => JSON.stringify(user.pop()), usersMap),
+      );
+    }
+    return 'OK';
   }
 
   getCachedUser(id: User['id']) {

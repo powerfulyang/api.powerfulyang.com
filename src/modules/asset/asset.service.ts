@@ -7,7 +7,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
-import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { pluck } from 'ramda';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
@@ -18,27 +17,26 @@ import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestRssService } from 'api/pinterest-rss';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
-import { AssetBucket } from '@/enum/AssetBucket';
-import { Region, SUCCESS } from '@/constants/constants';
+import { SUCCESS } from '@/constants/constants';
 import { CoreService } from '@/core/core.service';
-import type { UploadFile } from '@/type/UploadFile';
+import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { BucketService } from '@/modules/bucket/bucket.service';
 import { User } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
+import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
-import { AssetBotUserId } from '@/constants/asset';
+import { ScheduleType } from '@/enum/ScheduleType';
+import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 
 @Injectable()
 export class AssetService {
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
-    @InjectRepository(Bucket) private readonly bucketDao: Repository<Bucket>,
+    @InjectRepository(CosBucket) private readonly bucketDao: Repository<CosBucket>,
     private readonly coreService: CoreService,
-    private readonly tencentCloudCosService: TencentCloudCosService,
     private readonly bucketService: BucketService,
     private readonly pixivBotService: PixivBotService,
     private readonly instagramBotService: InstagramBotService,
@@ -46,6 +44,7 @@ export class AssetService {
     private readonly logger: AppLogger,
     private readonly proxyFetchService: ProxyFetchService,
     private readonly uploadStaticService: UploadAssetService,
+    private readonly tencentCloudAccountService: TencentCloudAccountService,
   ) {
     this.logger.setContext(AssetService.name);
   }
@@ -66,7 +65,7 @@ export class AssetService {
       ...pagination,
       order: { id: 'DESC' },
       where: {
-        uploadBy: In(pluck('id', users).concat(AssetBotUserId)),
+        uploadBy: In(pluck('id', users)),
       },
     });
   }
@@ -116,11 +115,11 @@ export class AssetService {
     return obj;
   }
 
-  async saveAssetToBucket(files: UploadFile[], bucketName: AssetBucket, uploadBy: User) {
+  async saveAssetToBucket(files: UploadFile[], bucketName: CosBucket['name'], uploadBy: User) {
     const assets: Asset[] = [];
     for (const file of files) {
-      const asset = await this.manualUpload(file.buffer, false, bucketName);
-      await this.update(asset.id, {
+      const asset = await this.manualUpload(file.buffer, bucketName);
+      await this.assetDao.update(asset.id, {
         uploadBy,
       });
       assets.push(asset);
@@ -139,13 +138,14 @@ export class AssetService {
     @TransactionRepository(Asset) assetRepository?: Repository<Asset>,
   ) {
     for (const id of ids) {
-      const asset = await assetRepository!.findOneOrFail(id, {
-        relations: ['bucket'],
-      });
-      const res = await this.tencentCloudCosService.deleteObject({
+      const asset = await assetRepository!.findOneOrFail(id);
+      const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+        asset.bucket.tencentCloudAccount.id,
+      );
+      const res = await util.deleteObject({
         Key: `${asset.sha1}${asset.fileSuffix}`,
-        Bucket: asset.bucket.bucketName,
-        Region: asset.bucket.bucketRegion,
+        Bucket: asset.bucket.Bucket,
+        Region: asset.bucket.Region,
       });
       await assetRepository!.delete(id);
       if (res.statusCode !== HttpStatus.NO_CONTENT) {
@@ -157,10 +157,6 @@ export class AssetService {
 
   async randomAsset() {
     return this.assetDao.createQueryBuilder().orderBy('RAND()').limit(1).getOneOrFail();
-  }
-
-  update(id: Asset['id'], asset: Partial<Asset>) {
-    return this.assetDao.update(id, asset);
   }
 
   findById(id: Asset['id']) {
@@ -222,47 +218,36 @@ export class AssetService {
   /**
    * 手动上传图片
    * @param buffer
-   * @param async
    * @param bucketName
    */
-  async manualUpload(
-    buffer: Buffer,
-    async: boolean = true,
-    bucketName: AssetBucket = AssetBucket.upload,
-  ) {
+  async manualUpload(buffer: Buffer, bucketName: CosBucket['name']) {
     let asset = this.assetDao.create();
-    asset.bucket = await this.coreService.getBotBucket(bucketName);
+    asset.bucket = await this.bucketDao.findOneOrFail({
+      name: bucketName,
+    });
     asset.sha1 = sha1(buffer);
     const s = sharp(buffer);
     const metadata = await s.metadata();
     if (!metadata.format) {
       throw new UnsupportedMediaTypeException();
     }
-
     asset.fileSuffix = metadata.format;
     asset.pHash = await pHash(buffer);
-
     try {
       const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
       asset.exif = getEXIF(path);
       asset.metadata = metadata;
       asset = await this.assetDao.save(asset);
       writeFileSync(path, buffer);
-      const data = {
+      const data: UploadFileMsg = {
         sha1: asset.sha1,
         suffix: asset.fileSuffix,
-        bucketName: asset.bucket.bucketName,
+        name: asset.bucket.name,
       };
-      if (async) {
-        this.coreService.notifyCos(data);
-      } else {
-        await this.uploadStaticService.persistent(data);
-      }
+      await this.uploadStaticService.persistent(data);
     } catch (e) {
-      // duplicate entry
       this.logger.error(e);
     }
-
     return asset;
   }
 
@@ -270,12 +255,11 @@ export class AssetService {
    * bot 定时 下载图片
    * @param bucketName
    */
-  async assetBotSchedule(bucketName: AssetBucket) {
-    const bucket = await this.bucketDao.findOne({
-      bucketName,
-      bucketRegion: Region,
+  async assetBotSchedule(bucketName: CosBucket['name']) {
+    const bucket = await this.bucketDao.findOneOrFail({
+      name: bucketName,
     });
-    const max = await this.assetDao.findOne({
+    const max = await this.assetDao.findOneOrFail({
       order: { id: 'DESC' },
       where: {
         bucket,
@@ -284,14 +268,14 @@ export class AssetService {
     let undoes: PinterestInterface[] = [];
     const headers = { refer: '' };
     switch (bucketName) {
-      case AssetBucket.instagram:
+      case ScheduleType.instagram:
         undoes = await this.instagramBotService.fetchUndo(max?.sn);
         break;
-      case AssetBucket.pinterest:
+      case ScheduleType.pinterest:
         undoes = await this.pinterestRssService.fetchUndo(max?.sn);
         headers.refer = 'https://www.pinterest.com/';
         break;
-      case AssetBucket.pixiv:
+      case ScheduleType.pixiv:
         undoes = await this.pixivBotService.fetchUndo(max?.sn);
         break;
       default:
@@ -304,9 +288,7 @@ export class AssetService {
         asset.sn = undo.id;
         asset.originUrl = undo.originUrl;
         asset.tags = undo.tags;
-        const user = new User();
-        user.id = AssetBotUserId; // asset bot
-        asset.uploadBy = user;
+        asset.uploadBy = new User();
         try {
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();
@@ -318,22 +300,24 @@ export class AssetService {
             const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
             asset.exif = getEXIF(path);
             asset.metadata = metadata;
-            asset.bucket = await this.coreService.getBotBucket(bucketName);
+            asset.bucket = bucket;
             this.logger.info(`bucket => ${JSON.stringify(asset.bucket)}`);
             asset = await this.assetDao.save(asset);
             writeFileSync(path, buffer);
             this.coreService.notifyCos({
               sha1: asset.sha1,
               suffix: asset.fileSuffix,
-              bucketName,
+              name: bucket.name,
             });
-          } else {
-            this.logger.error(UnsupportedMediaTypeException.name);
           }
         } catch (e) {
           this.logger.error('fetchImgBuffer error', e);
         }
       }
     }
+  }
+
+  updateAssetObjectUrl(id: number, objectUrl: string) {
+    return this.assetDao.update(id, { objectUrl });
   }
 }

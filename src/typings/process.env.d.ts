@@ -25,12 +25,18 @@ type IProcessEnv = {
   ELASTICSEARCH_PASS: string;
 
   SERVER_HOST_DOMAIN: string;
+
+  PG_HOST: string;
+  PG_PORT: string;
+  PG_USER: string;
+  PG_PASSWORD: string;
+  PG_DATABASE: string;
+
+  HOSTNAME: string;
 };
 
 export declare global {
   namespace NodeJS {
-    interface ProcessEnv extends IProcessEnv {
-      a: 1;
-    }
+    interface ProcessEnv extends IProcessEnv {}
   }
 }

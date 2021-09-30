@@ -1,4 +1,4 @@
-import { Exif } from './types/Exif';
+import type { Exif } from './types/Exif';
 
 const api = require('bindings')('api');
 

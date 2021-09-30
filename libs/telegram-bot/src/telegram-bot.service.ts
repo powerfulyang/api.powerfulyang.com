@@ -22,7 +22,7 @@ export class TelegramBotService {
     if (!this.bot) {
       this.bot = new TelegramBot(this.token, {
         request: <any>{
-          agent: this.proxyFetchService.agent,
+          agent: this.proxyFetchService.getAgent(),
         },
       });
     }

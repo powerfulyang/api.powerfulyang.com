@@ -27,6 +27,8 @@ import { PostModule } from './modules/post/post.module';
 import { PublicModule } from './public/public.module';
 import { FeedModule } from './modules/feed/feed.module';
 import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
+import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';
+import { OauthApplicationModule } from './modules/oauth-application/oauth-application.module';
 
 @Module({
   imports: [
@@ -53,6 +55,8 @@ import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
     FeedModule,
     BootstrapModule,
     OauthOpenidModule,
+    TencentCloudAccountModule,
+    OauthApplicationModule,
   ],
   providers: [
     {

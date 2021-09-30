@@ -11,6 +11,11 @@ import { Menu } from '@/modules/user/entities/menu.entity';
 
 @Entity('role')
 export class Role {
+  static IntendedRoles = {
+    default: 'Default Role',
+    admin: 'Admin Role',
+  };
+
   @PrimaryGeneratedColumn()
   id: number;
 

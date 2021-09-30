@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Interval } from '@nestjs/schedule';
 import { AssetService } from '@/modules/asset/asset.service';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
+import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 
 @Injectable()
 export class CosObjectUrlScheduleService {
   constructor(
-    private assetService: AssetService,
-    private tencentCloudCosService: TencentCloudCosService,
+    private readonly assetService: AssetService,
     private readonly logger: AppLogger,
     private readonly coreService: CoreService,
+    private readonly tencentCloudAccountService: TencentCloudAccountService,
   ) {
     this.logger.setContext(CosObjectUrlScheduleService.name);
   }
@@ -25,17 +25,18 @@ export class CosObjectUrlScheduleService {
     this.logger.info('this is common node!!!');
     const assets = await this.assetService.all();
     for (const asset of assets) {
-      const { Url } = await this.tencentCloudCosService.getObjectUrl({
-        Bucket: asset.bucket.bucketName,
-        Region: asset.bucket.bucketRegion,
+      const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+        asset.bucket.tencentCloudAccount.id,
+      );
+      const { Url } = await util.getObjectUrl({
+        Bucket: asset.bucket.Bucket,
+        Region: asset.bucket.Region,
         Key: `${asset.sha1}.${asset.fileSuffix}`,
         Expires: 60 * 60 * 24, // 1day
       });
       const objectUrl = Url;
       this.logger.debug(`update ${asset.id} objectUrl ==> ${JSON.stringify(objectUrl)}`);
-      await this.assetService.update(asset.id, {
-        objectUrl,
-      });
+      await this.assetService.updateAssetObjectUrl(asset.id, objectUrl);
     }
   }
 }

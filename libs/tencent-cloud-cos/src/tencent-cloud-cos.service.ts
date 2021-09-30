@@ -1,134 +1,153 @@
 import { Injectable } from '@nestjs/common';
 import type {
-  BucketACLOptions,
-  BucketContentsOptions,
-  BucketListResult,
-  BucketOptions,
-  DeleteMultipleObjectOptions,
-  DeleteObjectOptions,
-  GetBucketCorsOptions,
-  GetBucketRefererOptions,
-  GetObjectUrlOptions,
-  PutBucketCorsOptions,
-  PutBucketRefererOptions,
-  UploadBucketObjectOptions,
-} from 'cos-nodejs-sdk-v5';
-import COS from 'cos-nodejs-sdk-v5';
+  DeleteBucketParams,
+  DeleteBucketResult,
+  DeleteMultipleObjectParams,
+  DeleteMultipleObjectResult,
+  DeleteObjectParams,
+  DeleteObjectResult,
+  GetBucketAclParams,
+  GetBucketAclResult,
+  GetBucketCorsParams,
+  GetBucketCorsResult,
+  GetBucketParams,
+  GetBucketRefererParams,
+  GetBucketRefererResult,
+  GetBucketResult,
+  GetObjectUrlParams,
+  GetObjectUrlResult,
+  GetServiceParams,
+  GetServiceResult,
+  HeadBucketParams,
+  HeadBucketResult,
+  PutBucketAclParams,
+  PutBucketAclResult,
+  PutBucketCorsParams,
+  PutBucketCorsResult,
+  PutBucketParams,
+  PutBucketRefererParams,
+  PutBucketRefererResult,
+  PutBucketResult,
+  PutObjectParams,
+  PutObjectResult,
+} from '@powerfulyang/cos-nodejs-sdk-v5';
+import COS from '@powerfulyang/cos-nodejs-sdk-v5';
 import { promisify } from 'util';
-import type { BucketRegion } from 'api/tencent-cloud-cos/cos-nodejs-sdk-v5';
+import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
+
+export type CloudSecretOptions = {
+  SecretId: string;
+  SecretKey: string;
+  AppId: string;
+};
 
 @Injectable()
 export class TencentCloudCosService {
-  private readonly cosUtil = new COS({
-    SecretId: process.env.TENCENT_CLOUD_SECRET_ID,
-    SecretKey: process.env.TENCENT_CLOUD_SECRET_KEY,
-  });
+  private readonly cosUtil: COS;
 
-  private sn = process.env.TENCENT_CLOUD_COS_SN;
-
-  setSn(sn: string) {
-    this.sn = sn;
+  constructor(options: CloudSecretOptions) {
+    this.cosUtil = new COS(options);
   }
 
-  listBuckets() {
-    return promisify<BucketListResult>(this.cosUtil.getService).call(this.cosUtil);
+  deleteObject(options: DeleteObjectParams) {
+    return promisify<DeleteObjectParams, DeleteObjectResult>(this.cosUtil.deleteObject).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  headBucket(options: BucketOptions) {
-    return promisify(this.cosUtil.headBucket).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  headBucket(options: Pick<CosBucket, 'Region' | 'Bucket'>) {
+    return promisify<HeadBucketParams, HeadBucketResult>(this.cosUtil.headBucket).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  putBucket(options: BucketOptions) {
-    return promisify(this.cosUtil.putBucket).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  putBucket(options: PutBucketParams) {
+    return promisify<PutBucketParams, PutBucketResult>(this.cosUtil.putBucket).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  deleteBucket(Bucket: string, Region: BucketRegion) {
-    return promisify(this.cosUtil.deleteBucket).call(this.cosUtil, {
-      Bucket: `${Bucket}${this.sn}`,
-      Region,
-    });
+  deleteBucket(options: DeleteBucketParams) {
+    return promisify<DeleteBucketParams, DeleteBucketResult>(this.cosUtil.deleteBucket).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  listObjects(options: BucketContentsOptions) {
-    return promisify(this.cosUtil.getBucket).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  getBucket(options: GetBucketParams) {
+    return promisify<GetBucketParams, GetBucketResult>(this.cosUtil.getBucket).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  putBucketAcl(options: BucketACLOptions) {
-    return promisify(this.cosUtil.putBucketAcl).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  putBucketAcl(options: PutBucketAclParams) {
+    return promisify<PutBucketAclParams, PutBucketAclResult>(this.cosUtil.putBucketAcl).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  putBucketCors(options: PutBucketCorsOptions) {
-    return promisify(this.cosUtil.putBucketCors).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  putBucketCors(options: PutBucketCorsParams) {
+    return promisify<PutBucketCorsParams, PutBucketCorsResult>(this.cosUtil.putBucketCors).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  getBucketAcl(options: BucketOptions) {
-    return promisify(this.cosUtil.getBucketAcl).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  getBucketAcl(options: GetBucketAclParams) {
+    return promisify<GetBucketAclParams, GetBucketAclResult>(this.cosUtil.getBucketAcl).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  putObject(options: UploadBucketObjectOptions) {
-    return promisify(this.cosUtil.putObject).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  putObject(options: PutObjectParams) {
+    return promisify<PutObjectParams, PutObjectResult>(this.cosUtil.putObject).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  deleteObject(options: DeleteObjectOptions) {
-    return promisify(this.cosUtil.deleteObject).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  deleteMultipleObject(options: DeleteMultipleObjectParams) {
+    return promisify<DeleteMultipleObjectParams, DeleteMultipleObjectResult>(
+      this.cosUtil.deleteMultipleObject,
+    ).call(this.cosUtil, options);
   }
 
-  deleteMultipleObject(options: DeleteMultipleObjectOptions) {
-    return promisify(this.cosUtil.deleteMultipleObject).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  getObjectUrl(options: GetObjectUrlParams) {
+    return promisify<GetObjectUrlParams, GetObjectUrlResult>(this.cosUtil.getObjectUrl).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  getObjectUrl(options: GetObjectUrlOptions) {
-    return promisify(this.cosUtil.getObjectUrl).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  putBucketReferer(options: PutBucketRefererParams) {
+    return promisify<PutBucketRefererParams, PutBucketRefererResult>(
+      this.cosUtil.putBucketReferer,
+    ).call(this.cosUtil, options);
   }
 
-  putBucketReferer(options: PutBucketRefererOptions) {
-    return promisify(this.cosUtil.putBucketReferer).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  getBucketCors(options: GetBucketCorsParams) {
+    return promisify<GetBucketCorsParams, GetBucketCorsResult>(this.cosUtil.getBucketCors).call(
+      this.cosUtil,
+      options,
+    );
   }
 
-  getBucketCors(options: GetBucketCorsOptions) {
-    return promisify(this.cosUtil.getBucketCors).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  getBucketReferer(options: GetBucketRefererParams) {
+    return promisify<GetBucketRefererParams, GetBucketRefererResult>(
+      this.cosUtil.getBucketReferer,
+    ).call(this.cosUtil, options);
   }
 
-  getBucketReferer(options: GetBucketRefererOptions) {
-    return promisify(this.cosUtil.getBucketReferer).call(this.cosUtil, {
-      ...options,
-      Bucket: `${options.Bucket}${this.sn}`,
-    });
+  getService(args: GetServiceParams = {}) {
+    return promisify<GetServiceParams, GetServiceResult>(this.cosUtil.getService).call(
+      this.cosUtil,
+      args,
+    );
   }
 }

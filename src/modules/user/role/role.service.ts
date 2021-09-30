@@ -10,11 +10,18 @@ export class RoleService {
     readonly roleDao: Repository<Role>,
   ) {}
 
-  setRoleMenu(role: Role) {
-    return this.roleDao.save(role);
+  getDefaultRole() {
+    return this.roleDao.findOneOrFail({ roleName: Role.IntendedRoles.default });
   }
 
-  getDefaultRole() {
-    return this.roleDao.findOneOrFail({ roleName: 'Default Role' });
+  async initIntendedRoles() {
+    const existedRoles = await this.roleDao.find();
+    if (existedRoles.length) {
+      return 'OK';
+    }
+    const roles: Partial<Role>[] = Object.values(Role.IntendedRoles).map((v) => ({
+      roleName: v,
+    }));
+    return this.roleDao.insert(roles);
   }
 }

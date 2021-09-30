@@ -4,9 +4,9 @@ import { Pagination } from '@/common/decorator/pagination.decorator';
 import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 import type { UploadFile } from '@/type/UploadFile';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { AssetBucket } from '@/enum/AssetBucket';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
+import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 
 @Controller('asset')
 @JwtAuthGuard()
@@ -41,17 +41,11 @@ export class AssetController {
     return this.assetService.pHashMap();
   }
 
-  @Post()
-  @ImagesInterceptor()
-  saveAsset(@UploadedFiles() files: UploadFile[], @UserFromAuth() user: User) {
-    return this.assetService.saveAssetToBucket(files, AssetBucket.upload, user);
-  }
-
   @Post(':bucketName')
   @ImagesInterceptor()
   saveAssetToBucket(
     @UploadedFiles() files: UploadFile[],
-    @Param('bucketName') bucketName: AssetBucket,
+    @Param('bucketName') bucketName: CosBucket['name'],
     @UserFromAuth() user: User,
   ) {
     return this.assetService.saveAssetToBucket(files, bucketName, user);
