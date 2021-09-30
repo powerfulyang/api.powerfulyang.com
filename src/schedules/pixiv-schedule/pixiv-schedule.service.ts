@@ -3,8 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import { SUCCESS } from '@/constants/constants';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
-import { AssetBucket } from '@/enum/AssetBucket';
 import { AssetService } from '@/modules/asset/asset.service';
+import { ScheduleType } from '@/enum/ScheduleType';
 
 @Injectable()
 export class PixivScheduleService {
@@ -23,7 +23,7 @@ export class PixivScheduleService {
       return SUCCESS;
     }
     try {
-      await this.assetService.assetBotSchedule(AssetBucket.pixiv);
+      await this.assetService.assetBotSchedule(ScheduleType.pixiv);
     } catch (e) {
       this.logger.error(e);
     }

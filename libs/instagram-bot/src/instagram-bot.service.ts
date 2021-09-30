@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import type { SavedFeedResponseMedia } from 'instagram-private-api';
 import { IgApiClient } from 'instagram-private-api';
-import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
+import { instagramCookieFilePath } from '@/constants/cookie-path';
 
 @Injectable()
 export class InstagramBotService {
   private readonly bot = new IgApiClient();
 
-  private readonly cookiePath = join(process.cwd(), '.cookies', 'instagram');
+  private readonly cookiePath = instagramCookieFilePath;
 
   constructor(private proxyFetchService: ProxyFetchService) {
-    this.bot.state.generateDevice(process.env.IG_USERNAME!);
-    this.bot.request.defaults.agent = this.proxyFetchService.agent;
+    this.bot.state.generateDevice(process.env.IG_USERNAME);
+    this.bot.request.defaults.agent = this.proxyFetchService.getAgent();
     this.bot.request.end$.subscribe(async () => {
       const serialized = await this.bot.state.serialize();
       delete serialized.constants;
@@ -35,7 +35,7 @@ export class InstagramBotService {
       }
     }
     if (shouldLogin) {
-      await this.bot.account.login(process.env.IG_USERNAME!, process.env.IG_PASSWORD!);
+      await this.bot.account.login(process.env.IG_USERNAME, process.env.IG_PASSWORD);
     }
   }
 

@@ -1,11 +1,10 @@
 import { CacheModule, Global, Module } from '@nestjs/common';
 import { ClientsModule } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TencentCloudCosModule } from 'api/tencent-cloud-cos';
 import redisStore from 'cache-manager-redis-store';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import { Bucket } from '@/modules/bucket/entities/bucket.entity';
+import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { redisConfig } from '@/configuration/redis.config';
 import { SearchService } from '@/core/search/search.service';
 import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
@@ -26,8 +25,7 @@ import { CacheService } from './cache/cache.service';
         },
       },
     ]),
-    TypeOrmModule.forFeature([Asset, Bucket, Feed]),
-    TencentCloudCosModule,
+    TypeOrmModule.forFeature([Asset, CosBucket, Feed]),
     CacheModule.registerAsync({
       useFactory: () => {
         return { store: redisStore, ...redisConfig(), ttl: Infinity };

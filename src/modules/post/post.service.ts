@@ -36,10 +36,6 @@ export class PostService {
     return this.postDao.delete(draft);
   }
 
-  updatePost(post: Post) {
-    return this.postDao.update(post.id, post);
-  }
-
   getAllPostByUserIds(ids: User['id'][], post: Post) {
     return this.postDao.find({
       select: ['id', 'title', 'createAt', 'poster'],

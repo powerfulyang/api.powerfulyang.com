@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
+    "moduleResolution": "Node",
     "declaration": true,
     "rootDirs": ["src", "libs"],
     "removeComments": true,
@@ -15,7 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
     "strict": true,
@@ -48,7 +49,4 @@
     "test",
     "addon.api/**/*.ts"
   ],
-  "ts-node": {
-    "files": true
-  }
 }

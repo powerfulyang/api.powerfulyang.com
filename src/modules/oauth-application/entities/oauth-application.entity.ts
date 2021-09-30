@@ -1,0 +1,35 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+export enum SupportOauthApplication {
+  google = 'google',
+}
+
+@Entity()
+export class OauthApplication {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  platformName: SupportOauthApplication;
+
+  @Column({ select: false })
+  clientId: string;
+
+  @Column({ select: false })
+  clientSecret: string;
+
+  @Column({ select: false })
+  callbackUrl: string;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+}

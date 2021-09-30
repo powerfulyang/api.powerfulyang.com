@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { mysqlConfig } from '@/configuration/mysql.config';
+import { pgConfig } from '@/configuration/pg.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(mysqlConfig())],
+  imports: [TypeOrmModule.forRoot(pgConfig())],
 })
 export class OrmModule {}

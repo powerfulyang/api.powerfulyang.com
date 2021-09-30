@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CoreService } from '@/core/core.service';
-import { AssetBucket } from '@/enum/AssetBucket';
 import { SUCCESS } from '@/constants/constants';
 import { AssetService } from '@/modules/asset/asset.service';
+import { ScheduleType } from '@/enum/ScheduleType';
 
 @Injectable()
 export class InstagramScheduleService {
@@ -23,7 +23,7 @@ export class InstagramScheduleService {
       return SUCCESS;
     }
     try {
-      await this.assetService.assetBotSchedule(AssetBucket.instagram);
+      await this.assetService.assetBotSchedule(ScheduleType.instagram);
     } catch (e) {
       this.logger.error(e);
     }

@@ -14,7 +14,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       callbackURL: process.env.GOOGLE_OAUTH_CALLBACK_URL,
       scope: ['email', 'profile'],
     });
-    this._oauth2.setAgent(this.proxyFetchService.agent);
+    this._oauth2.setAgent(this.proxyFetchService.getAgent()!);
     this.logger.setContext(GoogleStrategy.name);
   }
 

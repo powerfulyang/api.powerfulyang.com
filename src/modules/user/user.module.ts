@@ -13,6 +13,7 @@ import { MenuService } from './menu/menu.service';
 import { MenuController } from './menu/menu.controller';
 import { RoleService } from './role/role.service';
 import { RoleController } from './role/role.controller';
+import { OauthApplicationModule } from '@/modules/oauth-application/oauth-application.module';
 
 @Module({
   imports: [
@@ -28,9 +29,10 @@ import { RoleController } from './role/role.controller';
       },
     }),
     OauthOpenidModule,
+    OauthApplicationModule,
   ],
   controllers: [UserController, MenuController, RoleController],
   providers: [UserService, MenuService, RoleService],
-  exports: [UserService],
+  exports: [UserService, RoleService],
 })
 export class UserModule {}
