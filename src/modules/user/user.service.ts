@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Not, Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import type { Profile } from 'passport-google-oauth20';
 import { getRandomString, sha1 } from '@powerfulyang/node-utils';
@@ -17,6 +17,7 @@ import { Family } from '@/modules/user/entities/family.entity';
 import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
 import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
+import { SUCCESS } from '@/constants/constants';
 
 @Injectable()
 export class UserService {
@@ -119,7 +120,7 @@ export class UserService {
     const { email, password } = user;
     const userInfo = await this.userDao.findOneOrFail({
       select: ['id', 'salt', 'saltedPassword'],
-      where: { email, saltedPassword: Not(IsNull()) },
+      where: { email, saltedPassword: Not('') },
     });
     const bool = this.verifyPassword(password, userInfo.salt, userInfo.saltedPassword);
     if (!bool) {
@@ -162,7 +163,7 @@ export class UserService {
         map((user) => JSON.stringify(user.pop()), usersMap),
       );
     }
-    return 'OK';
+    return SUCCESS;
   }
 
   getCachedUser(id: User['id']) {
@@ -207,5 +208,21 @@ export class UserService {
 
   update(id: number, user: Partial<User>) {
     return this.userDao.update(id, user);
+  }
+
+  getUserByEmail(email: string) {
+    return this.userDao.findOneOrFail({ email });
+  }
+
+  async initIntendedUsers() {
+    const existedUsers = await this.userDao.find();
+    if (existedUsers.length) {
+      return SUCCESS;
+    }
+    const users: Partial<User>[] = Object.values(User.IntendedUsers).map((v) => ({
+      nickname: v,
+      email: v,
+    }));
+    return this.userDao.insert(users);
   }
 }

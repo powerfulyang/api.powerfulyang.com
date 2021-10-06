@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { AppModule } from '@/app.module';
 import { User } from '@/modules/user/entities/user.entity';
-import { Family } from '@/modules/user/entities/family.entity';
 import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
 import { getUserFamiliesMembers } from '@/utils/user.util';
+import { SUCCESS } from '@/constants/constants';
 
 describe('UserService', () => {
   let service: UserService;
@@ -29,18 +29,11 @@ describe('UserService', () => {
 
   it('cacheUsers', async function () {
     const result = await service.cacheUsers();
-    expect(result).toBe('OK');
+    expect(result).toBe(SUCCESS);
     const cachedUser = await service.getCachedUser(1);
     const users = getUserFamiliesMembers(cachedUser);
     expect(users).toBeDefined();
     expect(cachedUser).toHaveProperty('id', 1);
-  });
-
-  it('create a family', async () => {
-    const family = new Family();
-    family.name = 'Public Home';
-    const created = await service.saveFamily(family);
-    expect(created).toBeDefined();
   });
 
   it('to set user family', async () => {

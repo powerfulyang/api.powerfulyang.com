@@ -10,6 +10,7 @@ import { AssetController } from './asset.controller';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { UploadAssetModule } from '@/microservice/handleAsset/upload-asset.module';
 import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
+import { UserModule } from '@/modules/user/user.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tence
     PinterestRssModule,
     UploadAssetModule,
     TencentCloudAccountModule,
+    UserModule,
   ],
   providers: [AssetService],
   controllers: [AssetController],
