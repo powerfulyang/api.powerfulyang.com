@@ -30,6 +30,7 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
 import { ScheduleType } from '@/enum/ScheduleType';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
+import { UserService } from '@/modules/user/user.service';
 
 @Injectable()
 export class AssetService {
@@ -45,6 +46,7 @@ export class AssetService {
     private readonly proxyFetchService: ProxyFetchService,
     private readonly uploadStaticService: UploadAssetService,
     private readonly tencentCloudAccountService: TencentCloudAccountService,
+    private readonly userService: UserService,
   ) {
     this.logger.setContext(AssetService.name);
   }
@@ -288,7 +290,8 @@ export class AssetService {
         asset.sn = undo.id;
         asset.originUrl = undo.originUrl;
         asset.tags = undo.tags;
-        asset.uploadBy = new User();
+        // ε=(´ο｀*))) 专属的脚本机器人
+        asset.uploadBy = await this.userService.getUserByEmail(User.IntendedUsers.BotUser);
         try {
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();

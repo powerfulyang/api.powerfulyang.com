@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CacheService } from './cache.service';
 import { AppModule } from '@/app.module';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { SUCCESS } from '@/constants/constants';
 
 describe('CacheService', () => {
   let service: CacheService;
@@ -26,7 +27,7 @@ describe('CacheService', () => {
       '/post/1': 10000,
       '/post/2': 10000,
     });
-    expect(commandResult).toBe('OK');
+    expect(commandResult).toBe(SUCCESS);
   });
 
   it('set add test', async () => {

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from '@/modules/user/entities/role.entity';
+import { SUCCESS } from '@/constants/constants';
 
 @Injectable()
 export class RoleService {
@@ -17,7 +18,7 @@ export class RoleService {
   async initIntendedRoles() {
     const existedRoles = await this.roleDao.find();
     if (existedRoles.length) {
-      return 'OK';
+      return SUCCESS;
     }
     const roles: Partial<Role>[] = Object.values(Role.IntendedRoles).map((v) => ({
       roleName: v,

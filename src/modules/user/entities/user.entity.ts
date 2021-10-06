@@ -23,11 +23,11 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true, select: false })
-  // 密码为 null, 则代表禁止密码登录
+  @Column({ default: '', select: false })
+  // 密码为 空字符, 则代表禁止密码登录
   saltedPassword: string;
 
-  @Column({ nullable: true, select: false })
+  @Column({ default: '', select: false })
   salt: string;
 
   @Column()
@@ -36,7 +36,7 @@ export class User {
   @Column({ default: '' })
   bio: string;
 
-  @Column()
+  @Column({ default: '' })
   avatar: string;
 
   @Column({ default: '' })
@@ -66,4 +66,9 @@ export class User {
   // 大部分时间应该不需要 { eager: true }
   @OneToMany(() => OauthOpenid, (o) => o.user)
   oauthOpenidArr: OauthOpenid[];
+
+  static IntendedUsers = {
+    AdminUser: 'powerfulyang',
+    BotUser: 'asset bot',
+  };
 }

@@ -5,7 +5,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 import type { Request, Response } from 'express';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization, CookieOptions } from '@/constants/constants';
+import { Authorization, CookieOptions, SUCCESS } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import type { ReqExtend } from '@/type/ReqExtend';
 
@@ -48,7 +48,7 @@ export class ResponseInterceptor implements NestInterceptor {
         const count = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
         if (data) {
           return {
-            status: 'ok',
+            status: SUCCESS,
             data,
             timestamp: new Date().toISOString(),
             path: request.url,

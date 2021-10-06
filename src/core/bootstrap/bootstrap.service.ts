@@ -27,7 +27,7 @@ export class BootstrapService {
       this.refreshObjectUrl();
       this.cachePathViewCount();
       this.initBucket();
-      this.initRoles();
+      this.initIntendedData();
     }, 1000 * 10);
   }
 
@@ -68,11 +68,14 @@ export class BootstrapService {
     }
   }
 
-  async initRoles() {
+  async initIntendedData() {
     const bool = await this.coreService.isCommonNode();
     if (bool) {
       this.roleService.initIntendedRoles().then(() => {
         this.logger.info('init roles complete!');
+      });
+      this.userService.initIntendedUsers().then(() => {
+        this.logger.info('init users complete!');
       });
     }
   }

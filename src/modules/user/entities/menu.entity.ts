@@ -32,7 +32,7 @@ export class Menu {
   @TreeParent()
   parent: Menu;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   readonly parentId: number;
 
   @CreateDateColumn()

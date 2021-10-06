@@ -24,7 +24,7 @@ export class Post {
   @Column({ type: 'text' })
   content: string;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'json' })
   tags: string[];
 
   @Column({ default: true })
