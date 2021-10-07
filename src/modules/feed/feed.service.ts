@@ -39,9 +39,12 @@ export class FeedService {
 
   relationQueryByUserIds(ids: User['id'][]) {
     return this.feedDao.find({
-      where: {
-        createBy: In(ids),
-      },
+      where: [
+        { public: true },
+        {
+          createBy: In(ids),
+        },
+      ],
       order: {
         id: 'DESC',
       },

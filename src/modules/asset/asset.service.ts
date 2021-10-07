@@ -63,12 +63,19 @@ export class AssetService {
   }
 
   async listUsersAsset(pagination: Pagination, users: User[]) {
+    const BotUser = await this.userService.getUserByEmail(User.IntendedUsers.BotUser);
+    const publicBuckets = await this.bucketService.getPublicBuckets();
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
-      where: {
-        uploadBy: In(pluck('id', users)),
-      },
+      where: [
+        {
+          uploadBy: In(pluck('id', users).concat(BotUser.id)),
+        },
+        {
+          bucket: In(pluck('id', publicBuckets)),
+        },
+      ],
     });
   }
 
@@ -201,18 +208,16 @@ export class AssetService {
   }
 
   async fetchImgBuffer(imgUrl: string, headers: any) {
-    let count = 0;
     let res = await this.proxyFetchService.proxyFetch(imgUrl, {
       headers,
     });
     this.logger.info(`fetch img status code -> ${res.status}`);
     if (res.status !== HttpStatus.OK) {
-      count++;
-      if (count >= 2) {
+      const newUrl = imgUrl.replace(/(jpg)$/, 'png');
+      res = await this.proxyFetchService.proxyFetch(newUrl, { headers });
+      if (res.status !== HttpStatus.OK) {
         throw new Error('get img deny!');
       }
-      const newUrl = imgUrl.replace(/(jpg)$/, 'png');
-      res = await this.fetchImgBuffer(newUrl, headers);
     }
     return res;
   }
@@ -261,7 +266,7 @@ export class AssetService {
     const bucket = await this.bucketDao.findOneOrFail({
       name: bucketName,
     });
-    const max = await this.assetDao.findOneOrFail({
+    const max = await this.assetDao.findOne({
       order: { id: 'DESC' },
       where: {
         bucket,

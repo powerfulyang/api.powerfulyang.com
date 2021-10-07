@@ -41,7 +41,10 @@ export class PostService {
       select: ['id', 'title', 'createAt', 'poster'],
       relations: ['poster'],
       order: { id: 'DESC' },
-      where: { ...post, createBy: In(ids) },
+      where: [
+        { ...post, createBy: In(ids) },
+        { ...post, public: true },
+      ],
     });
   }
 

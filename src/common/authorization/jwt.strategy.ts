@@ -1,24 +1,28 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { Request } from 'express';
 import type { User } from '@/modules/user/entities/user.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { Authorization } from '@/constants/constants';
-import { jwtSecretConfig } from '@/configuration/jwt.config';
 import { UserService } from '@/modules/user/user.service';
 import type { ReqExtend } from '@/type/ReqExtend';
+import { JWT_SECRET } from '@/constants/PROVIDER_TOKEN';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private logger: AppLogger, private userService: UserService) {
+  constructor(
+    private readonly logger: AppLogger,
+    private readonly userService: UserService,
+    @Inject(JWT_SECRET) readonly secret: string,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
           return request?.cookies?.[Authorization] || request?.header(Authorization);
         },
       ]),
-      secretOrKey: jwtSecretConfig(),
+      secretOrKey: secret,
       passReqToCallback: true,
     });
     this.logger.setContext(JwtStrategy.name);

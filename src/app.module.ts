@@ -16,7 +16,6 @@ import { CoreModule } from '@/core/core.module';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
 import { PathViewCountModule } from '@/modules/path-ip-view-count/path-view-count.module';
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
-import { OrmModule } from '@/core/orm.module';
 import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
 import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
@@ -33,7 +32,6 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
 @Module({
   imports: [
     LoggerModule,
-    OrmModule,
     ProxyFetchModule.forRoot(),
     StrategyModule,
     CoreModule,

@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { User } from '@/modules/user/entities/user.entity';
 import { UserService } from '@/modules/user/user.service';
-import { jwtSecretConfig } from '@/configuration/jwt.config';
+import { jwtSecret } from '@/configuration/jwt.config';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { Role } from '@/modules/user/entities/role.entity';
 import { Family } from '@/modules/user/entities/family.entity';
@@ -21,7 +21,7 @@ import { OauthApplicationModule } from '@/modules/oauth-application/oauth-applic
     JwtModule.registerAsync({
       useFactory: () => {
         return {
-          secret: jwtSecretConfig(),
+          secret: jwtSecret(),
           signOptions: {
             expiresIn: '1d',
           },
