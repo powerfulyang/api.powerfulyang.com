@@ -15,7 +15,7 @@ export class OauthApplication {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   platformName: SupportOauthApplication;
 
   @Column({ select: false })

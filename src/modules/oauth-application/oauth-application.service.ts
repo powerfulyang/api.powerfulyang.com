@@ -14,7 +14,8 @@ export class OauthApplicationService {
 
   getGoogle() {
     return this.appDao.findOneOrFail({
-      platformName: SupportOauthApplication.google,
+      select: ['clientId', 'clientSecret', 'callbackUrl', 'id'],
+      where: { platformName: SupportOauthApplication.google },
     });
   }
 }
