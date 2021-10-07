@@ -18,7 +18,7 @@ export class ProxyFetchService {
   }
 
   getAgent() {
-    return this.agent;
+    return this.agent!;
   }
 
   proxyFetch(url: string, draft: RequestInit = {}) {

@@ -1,3 +1,4 @@
+import type { Provider } from '@nestjs/common';
 import { CacheModule, Global, Module } from '@nestjs/common';
 import { ClientsModule } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +14,21 @@ import { MICROSERVICE_NAME } from '@/constants/constants';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 import { CoreService } from './core.service';
 import { CacheService } from './cache/cache.service';
+import { OauthApplicationModule } from '@/modules/oauth-application/oauth-application.module';
+import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
+import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
+
+const OauthApplicationConfigProvider: Provider = {
+  provide: OAUTH_APPLICATION_STRATEGY_CONFIG,
+  inject: [OauthApplicationService],
+  useFactory: async (oauthApplicationService: OauthApplicationService) => {
+    const googleConfig = await oauthApplicationService.getGoogle();
+    return {
+      [SupportOauthApplication.google]: googleConfig,
+    };
+  },
+};
 
 @Global()
 @Module({
@@ -36,8 +52,9 @@ import { CacheService } from './cache/cache.service';
         return elasticsearchConfig();
       },
     }),
+    OauthApplicationModule,
   ],
-  providers: [CoreService, CacheService, SearchService],
-  exports: [CoreService, CacheService, SearchService],
+  providers: [CoreService, CacheService, SearchService, OauthApplicationConfigProvider],
+  exports: [CoreService, CacheService, SearchService, OauthApplicationConfigProvider],
 })
 export class CoreModule {}
