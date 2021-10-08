@@ -178,9 +178,6 @@ export class UserService {
     const { salt, saltedPassword } = this.generateDefaultPassword();
     draft.saltedPassword = saltedPassword;
     draft.salt = salt;
-    // 默认家庭
-    const family = await this.familyDao.findOneOrFail({ name: 'Public Home' });
-    draft.families = [family];
     return draft;
   }
 
@@ -212,6 +209,10 @@ export class UserService {
 
   getUserByEmail(email: string) {
     return this.userDao.findOneOrFail({ email });
+  }
+
+  getAssetBotUser() {
+    return this.getUserByEmail(User.IntendedUsers.BotUser);
   }
 
   async initIntendedUsers() {

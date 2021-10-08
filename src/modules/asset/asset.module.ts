@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PixivBotModule } from 'api/pixiv-bot';
 import { InstagramBotModule } from 'api/instagram-bot';
-import { PinterestRssModule } from 'api/pinterest-rss';
+import { PinterestBotModule } from 'api/pinterest-bot';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { BucketModule } from '@/modules/bucket/bucket.module';
 import { AssetService } from './asset.service';
@@ -18,7 +18,7 @@ import { UserModule } from '@/modules/user/user.module';
     BucketModule,
     PixivBotModule,
     InstagramBotModule,
-    PinterestRssModule,
+    PinterestBotModule,
     UploadAssetModule,
     TencentCloudAccountModule,
     UserModule,

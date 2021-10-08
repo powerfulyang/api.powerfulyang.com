@@ -3,20 +3,19 @@ import { PixivBotService } from './pixiv-bot.service';
 import { PixivBotModule } from 'api/pixiv-bot/pixiv-bot.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
 
-describe('PixivRssService', () => {
+describe('PixivBotService', () => {
   let service: PixivBotService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ProxyFetchModule, PixivBotModule],
+      imports: [ProxyFetchModule.forRoot(), PixivBotModule],
     }).compile();
 
     service = module.get<PixivBotService>(PixivBotService);
   });
 
   it('should be defined', async () => {
-    await expect(service.fetchUndo('73500666').then((res) => res.pop()!.id)).resolves.toBe(
-      '39715681',
-    );
+    const res = await service.fetchUndo();
+    expect(res).toBeDefined();
   });
 });
