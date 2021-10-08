@@ -2,28 +2,29 @@ import {
   HttpStatus,
   Injectable,
   ServiceUnavailableException,
+  UnprocessableEntityException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository, Transaction, TransactionRepository } from 'typeorm';
+import { In, Not, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
 import { pluck } from 'ramda';
-import { existsSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { basename, extname, join } from 'path';
 import fetch from 'node-fetch';
 import sharp from 'sharp';
 import { PixivBotService } from 'api/pixiv-bot';
 import { InstagramBotService } from 'api/instagram-bot';
-import { PinterestRssService } from 'api/pinterest-rss';
+import { PinterestBotService } from 'api/pinterest-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
-import type { PinterestInterface } from 'api/pinterest-rss/pinterest.interface';
+import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
 import { SUCCESS } from '@/constants/constants';
 import { CoreService } from '@/core/core.service';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { BucketService } from '@/modules/bucket/bucket.service';
-import { User } from '@/modules/user/entities/user.entity';
+import type { User } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { AppLogger } from '@/common/logger/app.logger';
@@ -41,7 +42,7 @@ export class AssetService {
     private readonly bucketService: BucketService,
     private readonly pixivBotService: PixivBotService,
     private readonly instagramBotService: InstagramBotService,
-    private readonly pinterestRssService: PinterestRssService,
+    private readonly pinterestBotService: PinterestBotService,
     private readonly logger: AppLogger,
     private readonly proxyFetchService: ProxyFetchService,
     private readonly uploadStaticService: UploadAssetService,
@@ -52,18 +53,11 @@ export class AssetService {
   }
 
   async publicList(pagination: Pagination) {
-    const buckets = await this.bucketService.getPublicBuckets();
-    return this.assetDao.findAndCount({
-      ...pagination,
-      order: { id: 'DESC' },
-      where: {
-        bucket: In(pluck('id', buckets)),
-      },
-    });
+    return this.listUsersAsset(pagination);
   }
 
-  async listUsersAsset(pagination: Pagination, users: User[]) {
-    const BotUser = await this.userService.getUserByEmail(User.IntendedUsers.BotUser);
+  async listUsersAsset(pagination: Pagination, users: User[] = []) {
+    const BotUser = await this.userService.getAssetBotUser();
     const publicBuckets = await this.bucketService.getPublicBuckets();
     return this.assetDao.findAndCount({
       ...pagination,
@@ -80,9 +74,7 @@ export class AssetService {
   }
 
   all() {
-    return this.assetDao.find({
-      relations: ['bucket'],
-    });
+    return this.assetDao.find();
   }
 
   async pHashMap() {
@@ -165,32 +157,84 @@ export class AssetService {
   }
 
   async randomAsset() {
-    return this.assetDao.createQueryBuilder().orderBy('RAND()').limit(1).getOneOrFail();
+    return this.assetDao.createQueryBuilder().orderBy('random()').limit(1).getOneOrFail();
   }
 
   findById(id: Asset['id']) {
     return this.assetDao.findOneOrFail(id, {
-      relations: ['bucket', 'uploadBy'],
+      relations: ['uploadBy'],
     });
   }
 
+  async getCosUrl(Key: string, bucket: CosBucket) {
+    const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+      bucket.tencentCloudAccount.id,
+    );
+    const { Bucket, Region } = bucket;
+    const { Url: cosUrl } = await util.getObjectUrl({
+      Sign: false,
+      Key,
+      Bucket,
+      Region,
+    });
+    return cosUrl;
+  }
+
+  async getObjectUrl(Key: string, bucket: CosBucket) {
+    const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+      bucket.tencentCloudAccount.id,
+    );
+    const { Bucket, Region } = bucket;
+    const { Url: objectUrl } = await util.getObjectUrl({
+      Key,
+      Bucket,
+      Region,
+      Expires: 60 * 60 * 24, // 1day
+    });
+    return objectUrl;
+  }
+
   async syncFromCos() {
-    const all = await this.assetDao.find();
-    for (const asset of all) {
-      const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
-      const exist = existsSync(path);
-      if (!exist) {
-        // 需要下载下来
-        const res = await fetch(asset.objectUrl);
-        const buffer = await res.buffer();
-        writeFileSync(path, buffer);
-      } else {
-        // 读取元信息
-        const exif = getEXIF(path);
-        const metadata = await sharp(path).metadata();
-        asset.exif = exif;
-        asset.metadata = metadata;
-        await this.assetDao.save(asset);
+    const buckets = await this.bucketDao.find();
+    for (const bucket of buckets) {
+      const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+        bucket.tencentCloudAccount.id,
+      );
+      const objects = await util.getBucket(bucket);
+      for (const object of objects.Contents) {
+        const fileSuffix = extname(object.Key);
+        const hash = basename(object.Key, fileSuffix);
+        const asset = await this.assetDao.findOne({ sha1: hash });
+        // asset 不存在
+        if (!asset) {
+          const cosUrl = await this.getCosUrl(object.Key, bucket);
+          const objectUrl = await this.getObjectUrl(object.Key, bucket);
+          const path = join(process.cwd(), 'assets', `${sha1}.${fileSuffix}`);
+          const exist = existsSync(path);
+          if (!exist) {
+            // 需要下载下来
+            const res = await fetch(objectUrl);
+            const buffer = await res.buffer();
+            writeFileSync(path, buffer);
+          }
+          const buffer = readFileSync(path);
+          // 读取元信息
+          const exif = getEXIF(path);
+          const metadata = await sharp(path).metadata();
+          const phash = await pHash(buffer);
+          const newAsset = this.assetDao.create({
+            cosUrl,
+            sha1: hash,
+            objectUrl,
+            fileSuffix,
+            pHash: phash,
+            exif,
+            metadata,
+            bucket,
+            uploadBy: await this.userService.getAssetBotUser(),
+          });
+          await this.assetDao.save(newAsset);
+        }
       }
     }
     return SUCCESS;
@@ -203,7 +247,7 @@ export class AssetService {
         id,
         bucket: In(pluck('id')(buckets)),
       },
-      relations: ['bucket', 'uploadBy'],
+      relations: ['uploadBy'],
     });
   }
 
@@ -215,6 +259,7 @@ export class AssetService {
     if (res.status !== HttpStatus.OK) {
       const newUrl = imgUrl.replace(/(jpg)$/, 'png');
       res = await this.proxyFetchService.proxyFetch(newUrl, { headers });
+      this.logger.info(`fetch img status code -> ${res.status}`);
       if (res.status !== HttpStatus.OK) {
         throw new Error('get img deny!');
       }
@@ -270,6 +315,7 @@ export class AssetService {
       order: { id: 'DESC' },
       where: {
         bucket,
+        sn: Not(''),
       },
     });
     let undoes: PinterestInterface[] = [];
@@ -279,13 +325,14 @@ export class AssetService {
         undoes = await this.instagramBotService.fetchUndo(max?.sn);
         break;
       case ScheduleType.pinterest:
-        undoes = await this.pinterestRssService.fetchUndo(max?.sn);
+        undoes = await this.pinterestBotService.fetchUndo(max?.sn);
         headers.refer = 'https://www.pinterest.com/';
         break;
       case ScheduleType.pixiv:
         undoes = await this.pixivBotService.fetchUndo(max?.sn);
         break;
       default:
+        throw new UnprocessableEntityException();
     }
     this.logger.info(`undoes count -> ${undoes.length}`);
     for (const undo of undoes.reverse()) {
@@ -296,7 +343,7 @@ export class AssetService {
         asset.originUrl = undo.originUrl;
         asset.tags = undo.tags;
         // ε=(´ο｀*))) 专属的脚本机器人
-        asset.uploadBy = await this.userService.getUserByEmail(User.IntendedUsers.BotUser);
+        asset.uploadBy = await this.userService.getAssetBotUser();
         try {
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();

@@ -77,6 +77,10 @@ export class TencentCloudCosService {
     );
   }
 
+  /**
+   * 获取 Bucket 下的 Object 列表
+   * @param options
+   */
   getBucket(options: GetBucketParams) {
     return promisify<GetBucketParams, GetBucketResult>(this.cosUtil.getBucket).call(
       this.cosUtil,

@@ -58,7 +58,7 @@ export class PixivBotService {
         }
         undoes.push(PixivBotService.transform(works[i]));
       }
-      offset++;
+      offset += this.defaultLimit;
     } while (signal);
 
     return undoes;

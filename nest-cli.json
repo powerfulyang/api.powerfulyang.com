@@ -20,22 +20,22 @@
                 "tsConfigPath": "libs/instagram-bot/tsconfig.lib.json"
             }
         },
-        "pinterest-rss": {
+        "pinterest-bot": {
             "type": "library",
-            "root": "libs/pinterest-rss",
+            "root": "libs/pinterest-bot",
             "entryFile": "index",
-            "sourceRoot": "libs/pinterest-rss/src",
+            "sourceRoot": "libs/pinterest-bot/src",
             "compilerOptions": {
-                "tsConfigPath": "libs/pinterest-rss/tsconfig.lib.json"
+                "tsConfigPath": "libs/pinterest-bot/tsconfig.lib.json"
             }
         },
-        "pixiv-rss": {
+        "pixiv-bot": {
             "type": "library",
-            "root": "libs/pixiv-rss",
+            "root": "libs/pixiv-bot",
             "entryFile": "index",
-            "sourceRoot": "libs/pixiv-rss/src",
+            "sourceRoot": "libs/pixiv-bot/src",
             "compilerOptions": {
-                "tsConfigPath": "libs/pixiv-rss/tsconfig.lib.json"
+                "tsConfigPath": "libs/pixiv-bot/tsconfig.lib.json"
             }
         },
         "github-webhook": {

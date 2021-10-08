@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
 import { AppModule } from '@/app.module';
+import { SUCCESS } from '@/constants/constants';
 
 describe('AssetService', () => {
   let service: AssetService;
@@ -21,5 +22,15 @@ describe('AssetService', () => {
   it('pHashMap', async function () {
     const maps = await service.pHashMap();
     expect(maps).toBeDefined();
+  });
+
+  it('find by id', async () => {
+    const res = await service.findById(140);
+    expect(res).toBeDefined();
+  });
+
+  it('sync form cos', async function () {
+    const res = await service.syncFromCos();
+    expect(res).toBe(SUCCESS);
   });
 });
