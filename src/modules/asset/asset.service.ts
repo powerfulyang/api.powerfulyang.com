@@ -202,14 +202,15 @@ export class AssetService {
       );
       const objects = await util.getBucket(bucket);
       for (const object of objects.Contents) {
-        const fileSuffix = extname(object.Key);
-        const hash = basename(object.Key, fileSuffix);
+        const fileExtname = extname(object.Key);
+        const hash = basename(object.Key, fileExtname);
+        const fileSuffix = fileExtname.substr(1);
         const asset = await this.assetDao.findOne({ sha1: hash });
         // asset 不存在
         if (!asset) {
           const cosUrl = await this.getCosUrl(object.Key, bucket);
           const objectUrl = await this.getObjectUrl(object.Key, bucket);
-          const path = join(process.cwd(), 'assets', `${sha1}.${fileSuffix}`);
+          const path = join(process.cwd(), 'assets', `${hash}.${fileSuffix}`);
           const exist = existsSync(path);
           if (!exist) {
             // 需要下载下来
