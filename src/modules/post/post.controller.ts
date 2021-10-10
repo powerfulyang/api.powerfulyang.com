@@ -20,7 +20,7 @@ export class PostController {
 
   @Get()
   getAll(@FamilyMembersFromAuth() users: User[], @Query() post: Post) {
-    return this.postService.getAllPostByUserIds(pluck('id', users), post);
+    return this.postService.getPosts(post, pluck('id', users));
   }
 
   @Get('years')
@@ -35,9 +35,8 @@ export class PostController {
 
   @Get()
   @Get(':id')
-  get(@Param() draft: Post, @UserFromAuth(['id']) user: User) {
-    draft.createBy = user;
-    return this.postService.get(draft);
+  get(@Param() post: Post, @UserFromAuth(['id']) user: User) {
+    return this.postService.readPost(post, user);
   }
 
   @Delete(':id')

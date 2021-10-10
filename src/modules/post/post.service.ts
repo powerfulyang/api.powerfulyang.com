@@ -32,11 +32,23 @@ export class PostService {
     return this.postDao.save(toSave);
   }
 
-  deletePost(draft: Post) {
-    return this.postDao.delete(draft);
+  deletePost(post: Post) {
+    return this.postDao.delete(post);
   }
 
-  getAllPostByUserIds(ids: User['id'][], post: Post) {
+  readPost(post: Omit<Post, 'createBy'>, user?: User) {
+    return this.postDao.findOneOrFail({
+      where: [
+        { id: post.id, public: true },
+        {
+          id: post.id,
+          createBy: user,
+        },
+      ],
+    });
+  }
+
+  getPosts(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
     return this.postDao.find({
       select: ['id', 'title', 'createAt', 'poster'],
       relations: ['poster'],
@@ -48,54 +60,25 @@ export class PostService {
     });
   }
 
-  get(draft: Post) {
-    return this.postDao.findOneOrFail(draft);
-  }
-
-  publicRead(post: Post) {
-    return this.postDao.findOneOrFail({
-      where: { id: post.id, public: true },
+  async getPublishedTags(ids: User['id'][] = []) {
+    const tagsArr = await this.postDao.find({
+      select: ['tags'],
+      where: [{ createBy: In(ids) }, { public: true }],
     });
-  }
-
-  publicList(query: Post) {
-    return this.postDao.find({
-      select: ['id', 'title', 'createAt', 'poster'],
-      relations: ['poster'],
-      order: { id: 'DESC' },
-      where: {
-        ...query,
-        public: true,
-      },
-    });
-  }
-
-  tagsArray(justPublic: boolean = true) {
-    return this.postDao.find({ select: ['tags'], where: { public: justPublic } });
-  }
-
-  async getPublishedTags(ids: User['id'][]) {
-    const tagsArr = await this.postDao.find({ select: ['tags'], where: { createBy: In(ids) } });
     const allTags = flatten(map(prop('tags'))(tagsArr));
     return countBy(trim)(allTags);
   }
 
-  async getPublishedYears(ids: User['id'][]) {
+  async getPublishedYears(ids: User['id'][] = []) {
     const res: Array<Pick<Post, 'publishYear'>> = await this.postDao
       .createQueryBuilder()
-      .select(['publishYear'])
-      .where('createById in (:...ids)', {
-        ids,
-      })
-      .distinct(true)
-      .getRawMany();
-    return pluck('publishYear')(res);
-  }
-
-  async publicPublishedYears() {
-    const res: Array<Pick<Post, 'publishYear'>> = await this.postDao
-      .createQueryBuilder()
-      .select(['publishYear'])
+      .select(['"publishYear"'])
+      .where([
+        {
+          createBy: In(ids),
+        },
+        { public: true },
+      ])
       .distinct(true)
       .getRawMany();
     return pluck('publishYear')(res);

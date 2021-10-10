@@ -52,11 +52,7 @@ export class AssetService {
     this.logger.setContext(AssetService.name);
   }
 
-  async publicList(pagination: Pagination) {
-    return this.listUsersAsset(pagination);
-  }
-
-  async listUsersAsset(pagination: Pagination, users: User[] = []) {
+  async getAssets(pagination: Pagination, users: User[] = []) {
     const BotUser = await this.userService.getAssetBotUser();
     const publicBuckets = await this.bucketService.getPublicBuckets();
     return this.assetDao.findAndCount({
@@ -160,12 +156,6 @@ export class AssetService {
     return this.assetDao.createQueryBuilder().orderBy('random()').limit(1).getOneOrFail();
   }
 
-  findById(id: Asset['id']) {
-    return this.assetDao.findOneOrFail(id, {
-      relations: ['uploadBy'],
-    });
-  }
-
   async getCosUrl(Key: string, bucket: CosBucket) {
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
       bucket.tencentCloudAccount.id,
@@ -241,13 +231,19 @@ export class AssetService {
     return SUCCESS;
   }
 
-  async getPublicAssetById(id: Asset['id']) {
+  async getAssetById(id: Asset['id'], user?: User) {
     const buckets = await this.bucketService.getPublicBuckets();
     return this.assetDao.findOneOrFail({
-      where: {
-        id,
-        bucket: In(pluck('id')(buckets)),
-      },
+      where: [
+        {
+          id,
+          bucket: In(pluck('id')(buckets)),
+        },
+        {
+          id,
+          uploadBy: user,
+        },
+      ],
       relations: ['uploadBy'],
     });
   }

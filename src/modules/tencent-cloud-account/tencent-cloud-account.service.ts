@@ -30,7 +30,6 @@ export class TencentCloudAccountService {
       util = new TencentCloudCosService({
         SecretId: account.SecretId,
         SecretKey: account.SecretKey,
-        AppId: account.AppId,
       });
       // TODO 测试一下 key 是否正确
       this.cosUtilMap.set(account.id, util);

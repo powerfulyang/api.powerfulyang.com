@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { pluck } from 'ramda';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
@@ -19,23 +19,12 @@ export class FeedController {
 
   @Get()
   findAll(@FamilyMembersFromAuth() users: User[]) {
-    return this.feedService.relationQueryByUserIds(pluck('id', users));
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.feedService.findOne(+id);
+    return this.feedService.feeds(pluck('id', users));
   }
 
   @Patch(':id')
   @AdminAuthGuard()
   update(@Param('id') id: string, @Body() updateFeedDto: UpdateFeedDto) {
     return this.feedService.update(+id, updateFeedDto);
-  }
-
-  @Delete(':id')
-  @AdminAuthGuard()
-  remove(@Param('id') id: string) {
-    return this.feedService.batchRemove([+id]);
   }
 }
