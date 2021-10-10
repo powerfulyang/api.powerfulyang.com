@@ -38,7 +38,6 @@ import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 export type CloudSecretOptions = {
   SecretId: string;
   SecretKey: string;
-  AppId: string;
 };
 
 @Injectable()

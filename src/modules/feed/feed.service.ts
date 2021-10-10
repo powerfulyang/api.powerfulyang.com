@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import type { FindManyOptions } from 'typeorm';
-import { In, Repository, Transaction, TransactionRepository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import type { User } from '@/modules/user/entities/user.entity';
@@ -17,10 +16,6 @@ export class FeedService {
     this.logger.setContext(FeedService.name);
   }
 
-  create(createFeedDto: CreateFeedDto) {
-    return this.feedDao.save(createFeedDto);
-  }
-
   postNewFeed(createFeedDto: CreateFeedDto, user: User) {
     return this.feedDao.save({
       ...createFeedDto,
@@ -28,16 +23,7 @@ export class FeedService {
     });
   }
 
-  relationQuery(where?: FindManyOptions<Feed>['where']) {
-    return this.feedDao.find({
-      where,
-      order: {
-        id: 'DESC',
-      },
-    });
-  }
-
-  relationQueryByUserIds(ids: User['id'][]) {
+  feeds(ids: User['id'][] = []) {
     return this.feedDao.find({
       where: [
         { public: true },
@@ -51,25 +37,7 @@ export class FeedService {
     });
   }
 
-  findOne(id: number) {
-    return this.feedDao.findOne(id);
-  }
-
   update(id: number, updateFeedDto: UpdateFeedDto) {
     return this.feedDao.update(id, updateFeedDto);
-  }
-
-  @Transaction()
-  batchRemove(ids: number[], @TransactionRepository(Feed) feedRepository?: Repository<Feed>) {
-    return feedRepository!.delete(ids);
-  }
-
-  publicList() {
-    return this.feedDao.find({
-      where: { public: true },
-      order: {
-        id: 'DESC',
-      },
-    });
   }
 }

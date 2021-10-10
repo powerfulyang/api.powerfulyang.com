@@ -15,7 +15,7 @@ export class AssetController {
 
   @Get()
   list(@Pagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
-    return this.assetService.listUsersAsset(pagination, users);
+    return this.assetService.getAssets(pagination, users);
   }
 
   @Get('all')
@@ -32,7 +32,7 @@ export class AssetController {
 
   @Get(':id')
   getAssetById(@Param('id') id: string) {
-    return this.assetService.findById(+id);
+    return this.assetService.getAssetById(+id);
   }
 
   @Get('pHash/distance')

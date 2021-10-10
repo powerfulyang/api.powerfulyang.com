@@ -4,13 +4,17 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { PublicService } from '@/public/public.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { AssetService } from '@/modules/asset/asset.service';
+import { PostService } from '@/modules/post/post.service';
+import { FeedService } from '@/modules/feed/feed.service';
 
 @Controller('public')
 export class PublicController {
   constructor(
-    private publicService: PublicService,
-    private logger: AppLogger,
-    private assetService: AssetService,
+    private readonly publicService: PublicService,
+    private readonly logger: AppLogger,
+    private readonly assetService: AssetService,
+    private readonly postService: PostService,
+    private readonly feedService: FeedService,
   ) {
     this.logger.setContext(PublicController.name);
   }
@@ -22,37 +26,37 @@ export class PublicController {
 
   @Get('post')
   AllPublicPost(@Query() query: Post) {
-    return this.publicService.getAllPublicPost(query);
+    return this.postService.getPosts(query);
   }
 
   @Get('post/years')
   getPostPublishedYears() {
-    return this.publicService.getPublishedYears();
+    return this.postService.getPublishedYears();
   }
 
   @Get('post/tags')
   tags() {
-    return this.publicService.getPublicPostTags();
+    return this.postService.getPublishedTags();
   }
 
   @Get('post/:id')
   post(@Param() post: Post) {
-    return this.publicService.getPublicPostById(post);
+    return this.postService.readPost(post);
   }
 
   @Get('feed')
   AllPublicFeed() {
-    return this.publicService.getAllPublicFeed();
+    return this.feedService.feeds();
   }
 
   @Get('asset')
   gallery(@Pagination() pagination: Pagination) {
-    return this.assetService.publicList(pagination);
+    return this.assetService.getAssets(pagination);
   }
 
   @Get('asset/:id')
   getAssetById(@Param('id') id: string) {
-    return this.assetService.getPublicAssetById(+id);
+    return this.assetService.getAssetById(+id);
   }
 
   @Get('common-node')

@@ -22,7 +22,7 @@ describe('PostService', () => {
   });
 
   it('getPublishedYears', async () => {
-    const res = await service.publicPublishedYears();
+    const res = await service.getPublishedYears();
     expect(res).toBeDefined();
   });
 });
