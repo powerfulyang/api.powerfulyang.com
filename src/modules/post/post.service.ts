@@ -36,13 +36,13 @@ export class PostService {
     return this.postDao.delete(post);
   }
 
-  readPost(post: Omit<Post, 'createBy'>, user?: User) {
+  readPost(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
     return this.postDao.findOneOrFail({
       where: [
         { id: post.id, public: true },
         {
           id: post.id,
-          createBy: user,
+          createBy: In(ids),
         },
       ],
     });

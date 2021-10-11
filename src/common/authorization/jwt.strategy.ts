@@ -4,10 +4,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { Request } from 'express';
 import type { User } from '@/modules/user/entities/user.entity';
 import { AppLogger } from '@/common/logger/app.logger';
-import { Authorization } from '@/constants/constants';
 import { UserService } from '@/modules/user/user.service';
 import type { ReqExtend } from '@/type/ReqExtend';
 import { JWT_SECRET } from '@/constants/PROVIDER_TOKEN';
+import { getTokenFromRequest } from '@/common/authorization/util';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.[Authorization] || request?.header(Authorization);
+          return getTokenFromRequest(request);
         },
       ]),
       secretOrKey: secret,

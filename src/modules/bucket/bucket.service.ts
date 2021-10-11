@@ -94,12 +94,6 @@ export class BucketService {
     }
   }
 
-  getPublicBuckets() {
-    return this.bucketDao.find({
-      ACL: 'public-read',
-    });
-  }
-
   /**
    *
    * 初始化逻辑修改
