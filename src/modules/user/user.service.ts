@@ -106,6 +106,10 @@ export class UserService {
     return this.jwtService.sign(this.pickUserInfo(user));
   }
 
+  verifyAuthorization(token: string) {
+    return this.jwtService.verify(token);
+  }
+
   verifyPassword(password: string, salt: string, saltedPassword: string) {
     const tmp = sha1(password, salt);
     return tmp === saltedPassword;

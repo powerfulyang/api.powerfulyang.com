@@ -8,7 +8,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Not, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
-import { pluck } from 'ramda';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, extname, join } from 'path';
 import fetch from 'node-fetch';
@@ -23,7 +22,6 @@ import { CoreService } from '@/core/core.service';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import { BucketService } from '@/modules/bucket/bucket.service';
 import type { User } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
@@ -39,7 +37,6 @@ export class AssetService {
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
     @InjectRepository(CosBucket) private readonly bucketDao: Repository<CosBucket>,
     private readonly coreService: CoreService,
-    private readonly bucketService: BucketService,
     private readonly pixivBotService: PixivBotService,
     private readonly instagramBotService: InstagramBotService,
     private readonly pinterestBotService: PinterestBotService,
@@ -52,18 +49,14 @@ export class AssetService {
     this.logger.setContext(AssetService.name);
   }
 
-  async getAssets(pagination: Pagination, users: User[] = []) {
+  async getAssets(pagination: Pagination, ids: User['id'][] = []) {
     const BotUser = await this.userService.getAssetBotUser();
-    const publicBuckets = await this.bucketService.getPublicBuckets();
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
       where: [
         {
-          uploadBy: In(pluck('id', users).concat(BotUser.id)),
-        },
-        {
-          bucket: In(pluck('id', publicBuckets)),
+          uploadBy: In(ids.concat(BotUser.id)),
         },
       ],
     });
@@ -231,17 +224,13 @@ export class AssetService {
     return SUCCESS;
   }
 
-  async getAssetById(id: Asset['id'], user?: User) {
-    const buckets = await this.bucketService.getPublicBuckets();
+  async getAssetById(id: Asset['id'], ids: User['id'][] = []) {
+    const BotUser = await this.userService.getAssetBotUser();
     return this.assetDao.findOneOrFail({
       where: [
         {
           id,
-          bucket: In(pluck('id')(buckets)),
-        },
-        {
-          id,
-          uploadBy: user,
+          uploadBy: In(ids.concat(BotUser.id)),
         },
       ],
       relations: ['uploadBy'],
