@@ -10,6 +10,7 @@ import { FeedService } from '@/modules/feed/feed.service';
 import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import type { User } from '@/modules/user/entities/user.entity';
+import type { Asset } from '@/modules/asset/entities/asset.entity';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -57,6 +58,15 @@ export class PublicController {
   @Get('asset')
   assets(@Pagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
     return this.assetService.getAssets(pagination, pluck('id', users));
+  }
+
+  @Get('asset/infiniteQuery')
+  infiniteQuery(
+    @Query('id') id: Asset['id'],
+    @Query('size') size: string = '20',
+    @FamilyMembersFromAuth() users: User[],
+  ) {
+    return this.assetService.infiniteQuery(id, size, pluck('id', users));
   }
 
   @Get('asset/:id')
