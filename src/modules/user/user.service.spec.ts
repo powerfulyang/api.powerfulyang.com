@@ -5,9 +5,11 @@ import { User } from '@/modules/user/entities/user.entity';
 import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
 import { getUserFamiliesMembers } from '@/utils/user.util';
 import { SUCCESS } from '@/constants/constants';
+import { AssetService } from '@/modules/asset/asset.service';
 
 describe('UserService', () => {
   let service: UserService;
+  let assetService: AssetService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,6 +17,7 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
+    assetService = module.get<AssetService>(AssetService);
   });
 
   it(`get user's menus`, async function () {
@@ -66,5 +69,12 @@ describe('UserService', () => {
     await service.updateUserAndCached(user);
     const reloadCache = await service.getCachedUser(1);
     expect(reloadCache.families).toBeDefined();
+  });
+
+  it('set user random background', async () => {
+    let user = await service.getCachedUser(1);
+    user.timelineBackground = await assetService.randomAsset();
+    user = await service.updateUserAndCached(user);
+    expect(user).toBeDefined();
   });
 });

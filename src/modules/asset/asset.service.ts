@@ -6,7 +6,7 @@ import {
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Not, Repository, Transaction, TransactionRepository } from 'typeorm';
+import { In, LessThan, Not, Repository, Transaction, TransactionRepository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -17,6 +17,7 @@ import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestBotService } from 'api/pinterest-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
+import { last } from 'ramda';
 import { SUCCESS } from '@/constants/constants';
 import { CoreService } from '@/core/core.service';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
@@ -30,6 +31,7 @@ import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.serv
 import { ScheduleType } from '@/enum/ScheduleType';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import { UserService } from '@/modules/user/user.service';
+import type { InfiniteQueryResponse } from '@/type/InfiniteQuery';
 
 @Injectable()
 export class AssetService {
@@ -360,5 +362,28 @@ export class AssetService {
 
   updateAssetObjectUrl(id: number, objectUrl: string) {
     return this.assetDao.update(id, { objectUrl });
+  }
+
+  async infiniteQuery(
+    id: Asset['id'],
+    size: string,
+    ids: User['id'][],
+  ): Promise<InfiniteQueryResponse<Asset>> {
+    const take = Number(size);
+    const BotUser = await this.userService.getAssetBotUser();
+    const res = await this.assetDao.find({
+      where: {
+        id: LessThan(id || 2 ** 31 - 1),
+        uploadBy: In(ids.concat(BotUser.id)),
+      },
+      order: {
+        id: 'DESC',
+      },
+      take,
+    });
+    return {
+      resources: res,
+      nextCursor: res.length === take ? last(res)?.id : undefined,
+    };
   }
 }
