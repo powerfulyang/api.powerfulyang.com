@@ -20,7 +20,9 @@ export class UserController {
 
   @Get('google/auth')
   @GoogleAuthGuard()
-  googleAuth() {}
+  googleAuth() {
+    this.logger.info('Google Auth try!');
+  }
 
   @Get('google/auth/callback')
   @GoogleAuthGuard()
@@ -52,12 +54,15 @@ export class UserController {
   @Get('current')
   @JwtAuthGuard()
   async current(@UserFromAuth() user: User) {
+    this.logger.info(`${user.email} try to get current user info!!!`);
     return user;
   }
 
   @Post('logout')
+  @JwtAuthGuard()
   @UseInterceptors(CookieClearInterceptor)
-  logout() {
+  logout(@UserFromAuth() user: User) {
+    this.logger.info(`${user.email} try to logout!!!`);
     return { cookie: Authorization };
   }
 }

@@ -13,22 +13,28 @@ export class ConfigService {
   }
 
   getRabbitmqClientConfig() {
-    return rabbitmqClientConfig();
+    const config = rabbitmqClientConfig();
+    this.logger.info('getRabbitmqClientConfig');
+    return config;
   }
 
   getRedisConfig() {
+    this.logger.info('getRedisConfig');
     return redisConfig();
   }
 
   getElasticsearchConfig() {
+    this.logger.info('getElasticsearchConfig');
     return elasticsearchConfig();
   }
 
   getPostgreConfig() {
+    this.logger.info('getPostgreConfig');
     return pgConfig();
   }
 
   getJwtSecret() {
+    this.logger.info('getJwtSecret');
     return jwtSecret();
   }
 }

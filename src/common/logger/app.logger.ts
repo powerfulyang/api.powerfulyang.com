@@ -1,7 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
 import type { Logger } from 'winston';
 import winston, { format } from 'winston';
-import { __prod__ } from '@powerfulyang/utils';
+import { isProdProcess } from '@powerfulyang/utils';
 import { getStringVal } from '@/utils/getStringVal';
 
 const { combine, timestamp, label, printf, colorize } = format;
@@ -23,7 +23,7 @@ export class AppLogger {
       debug: 'green',
     });
     this.logger = winston.createLogger({
-      level: (__prod__ && 'info') || 'debug',
+      level: (isProdProcess && 'info') || 'debug',
       format: combine(
         label({ label: context }),
         timestamp({

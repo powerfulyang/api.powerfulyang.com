@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import type { Profile } from 'passport-google-oauth20';
-import { getRandomString, sha1 } from '@powerfulyang/node-utils';
+import { generateRandomString, sha1 } from '@powerfulyang/node-utils';
 import { flatten, groupBy, map, pick } from 'ramda';
 import { getStringVal } from '@/utils/getStringVal';
 import type { UserDto } from '@/modules/user/dto/UserDto';
@@ -59,11 +59,12 @@ export class UserService {
   }
 
   generateSaltedPassword(salt: string, password: string) {
+    this.logger.debug(`generateSaltedPassword`);
     return sha1(password, salt);
   }
 
   generateDefaultPassword() {
-    const defaultPassword = getRandomString();
+    const defaultPassword = generateRandomString();
     // default password is salt
     const salt = defaultPassword;
     const saltedPassword = this.generateSaltedPassword(defaultPassword, defaultPassword);
@@ -99,6 +100,7 @@ export class UserService {
   }
 
   pickUserInfo(user: Partial<User>) {
+    this.logger.info(`pickUserInfo`);
     return pick(['id'], user);
   }
 
@@ -111,6 +113,7 @@ export class UserService {
   }
 
   verifyPassword(password: string, salt: string, saltedPassword: string) {
+    this.logger.info(`verifyPassword`);
     const tmp = sha1(password, salt);
     return tmp === saltedPassword;
   }
@@ -140,7 +143,7 @@ export class UserService {
   }
 
   updatePassword(id: number, password?: string) {
-    const salt = getRandomString();
+    const salt = generateRandomString();
     const saltedPassword = this.generateSaltedPassword(salt, password || salt);
     return this.userDao.update(id, { salt, saltedPassword });
   }

@@ -31,9 +31,7 @@ const OauthApplicationConfigProvider: Provider = {
 const JwtConfigProvider: Provider = {
   provide: JWT_SECRET,
   inject: [ConfigService],
-  useFactory: (configService: ConfigService) => {
-    return configService.getJwtSecret();
-  },
+  useFactory: (configService: ConfigService) => configService.getJwtSecret(),
 };
 
 @Global()
@@ -60,16 +58,12 @@ const JwtConfigProvider: Provider = {
     CacheModule.registerAsync({
       inject: [ConfigService],
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        return configService.getRedisConfig();
-      },
+      useFactory: (configService: ConfigService) => configService.getRedisConfig(),
     }),
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return configService.getElasticsearchConfig();
-      },
+      useFactory: (configService: ConfigService) => configService.getElasticsearchConfig(),
     }),
     OauthApplicationModule,
     ConfigModule,

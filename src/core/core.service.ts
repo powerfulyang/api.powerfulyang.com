@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { __prod__ } from '@powerfulyang/utils';
+import { isProdProcess } from '@powerfulyang/utils';
 import { CacheService } from '@/core/cache/cache.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
@@ -38,7 +38,7 @@ export class CoreService {
 
   async isProdCommonNode() {
     const bool = await this.isCommonNode();
-    return bool && __prod__;
+    return bool && isProdProcess;
   }
 
   notifyCos(notification: UploadFileMsg) {

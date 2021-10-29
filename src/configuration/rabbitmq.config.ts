@@ -9,8 +9,7 @@ const getRmqHost = (): RmqUrl => {
   return { hostname, port };
 };
 
-export const rabbitmqClientConfig = (): RmqOptions => {
-  return {
+export const rabbitmqClientConfig = (): RmqOptions => ({
     transport: Transport.RMQ,
     options: {
       urls: [getRmqHost()],
@@ -19,11 +18,9 @@ export const rabbitmqClientConfig = (): RmqOptions => {
         durable: false,
       },
     },
-  };
-};
+  });
 
-export const rabbitmqServerConfig = () => {
-  return {
+export const rabbitmqServerConfig = () => ({
     transport: Transport.RMQ,
     options: {
       urls: [getRmqHost()],
@@ -34,5 +31,4 @@ export const rabbitmqServerConfig = () => {
       noAck: false,
       prefetchCount: 1,
     },
-  };
-};
+  });

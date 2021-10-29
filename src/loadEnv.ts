@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-import { __prod__ } from '@powerfulyang/utils';
+import { isProdProcess } from '@powerfulyang/utils';
 
-if (!__prod__) {
+if (!isProdProcess) {
   // must load highest priority
   dotenv.config();
 }

@@ -72,6 +72,7 @@ export class AppModule implements NestModule {
   }
 
   configure(consumer: MiddlewareConsumer) {
+    this.logger.info('register request middleware for path *');
     consumer.apply(RequestMiddleware).forRoutes('*');
   }
 }

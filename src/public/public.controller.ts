@@ -27,6 +27,7 @@ export class PublicController {
 
   @Get('hello')
   hello() {
+    this.logger.info('Hello world');
     return 'Hello World!!!';
   }
 
