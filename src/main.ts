@@ -1,6 +1,6 @@
 import './loadEnv';
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
@@ -32,7 +32,6 @@ async function bootstrap(): Promise<void> {
 
   app.setGlobalPrefix('api');
 
-  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new CatchFilter(new AppLogger())); // 2nd
   app.useGlobalFilters(new HttpExceptionFilter(new AppLogger())); // 1st
 
