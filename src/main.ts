@@ -2,9 +2,9 @@ import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
-import { __dev__ } from '@powerfulyang/utils';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import { isDevProcess } from '@powerfulyang/utils';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { AppLogger } from '@/common/logger/app.logger';
 import { CatchFilter } from '@/common/filter/catch.filter';
@@ -17,7 +17,7 @@ require('source-map-support').install();
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
-    logger: __dev__ && new Logger(),
+    logger: isDevProcess && new Logger(),
   });
   app.connectMicroservice(rabbitmqServerConfig());
   await app.startAllMicroservices();

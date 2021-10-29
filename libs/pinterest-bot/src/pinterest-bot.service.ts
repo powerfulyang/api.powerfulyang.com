@@ -10,7 +10,7 @@ export class PinterestBotService {
   constructor(private proxyFetchService: ProxyFetchService) {}
 
   async processRequestNext(lastId?: string, bookmark?: string) {
-    const source_url = '/powerfulyang/bot/';
+    const sourceUrl = '/powerfulyang/bot/';
     const requestUrl = 'https://www.pinterest.com/resource/BoardFeedResource/get/';
     const data = {
       options: {
@@ -32,7 +32,7 @@ export class PinterestBotService {
       data.options.bookmarks = [bookmark];
     }
     const params = new URLSearchParams({
-      source_url,
+      source_url: sourceUrl,
       data: JSON.stringify(data),
       _: String(Date.now()),
     });

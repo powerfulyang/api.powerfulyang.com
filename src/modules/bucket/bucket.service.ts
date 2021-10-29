@@ -130,26 +130,20 @@ export class BucketService {
       }));
     }
 
-    const listBucketAclPromises = list.map((bucket) => {
-      return util.getBucketAcl({
+    const listBucketAclPromises = list.map((bucket) => util.getBucketAcl({
         Bucket: bucket.Bucket,
         Region: bucket.Region,
-      });
-    });
+      }));
     const listBucketAcl = await Promise.all(listBucketAclPromises);
-    const listBucketCorsPromises = list.map((bucket) => {
-      return util.getBucketCors({
+    const listBucketCorsPromises = list.map((bucket) => util.getBucketCors({
         Bucket: bucket.Bucket,
         Region: bucket.Region,
-      });
-    });
+      }));
     const listBucketCors = await Promise.all(listBucketCorsPromises);
-    const listBucketRefererPromises = list.map((bucket) => {
-      return util.getBucketReferer({
+    const listBucketRefererPromises = list.map((bucket) => util.getBucketReferer({
         Bucket: bucket.Bucket,
         Region: bucket.Region,
-      });
-    });
+      }));
     const listBucketReferer = await Promise.all(listBucketRefererPromises);
     const arr = list.map((bucket, index) => ({
       ...bucket,

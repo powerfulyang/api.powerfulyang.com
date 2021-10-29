@@ -90,6 +90,7 @@ export interface ZoneConfig {
   logo: The500_X500;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface The500_X500 {
   url: string;
 }

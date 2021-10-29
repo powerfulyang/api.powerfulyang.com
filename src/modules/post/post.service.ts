@@ -21,11 +21,11 @@ export class PostService {
     }
     if (post.id) {
       const findPost = await this.postDao.findOneOrFail(post.id);
-      findPost.content = post.content;
+      findPost.content = post.content!;
       if (post.tags) {
         findPost.tags = post.tags;
       }
-      findPost.title = post.title;
+      findPost.title = post.title!;
       return this.postDao.save(findPost);
     }
     const toSave = this.postDao.create(post);
