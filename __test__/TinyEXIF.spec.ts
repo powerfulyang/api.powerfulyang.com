@@ -1,4 +1,4 @@
-import { getEXIF } from '../addon.api';
+import { getEXIF } from '../addon.api/index.mjs';
 import { join } from 'path';
 import sharp from 'sharp';
 

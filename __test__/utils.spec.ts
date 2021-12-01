@@ -1,5 +1,5 @@
 import { sha1 } from '@powerfulyang/node-utils';
-import { findIpInfo } from '@/utils/ipdb';
+import { findIpInfo } from '@/utils/ipdb.mjs';
 import { createSocket } from 'dgram';
 
 describe('utils test', function () {
