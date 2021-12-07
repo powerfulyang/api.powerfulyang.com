@@ -6,9 +6,9 @@ import type { Request } from '@/type/express';
 import { getUserFamiliesMembers } from '@/utils/user.util';
 
 export const UserFromAuth = createParamDecorator(
-  (keys: Array<keyof User> = [], ctx: ExecutionContext) => {
+  (keys: Array<keyof User>, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    if (keys.length > 0) {
+    if (keys?.length > 0) {
       return pick(keys)(request.user);
     }
     return request.user;

@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-export const MultiMediaUpload = () => UseInterceptors(
+export const MultiMediaUpload = () =>
+  UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (_req, file, cb) => {
         if (!/^(image|video|audio)\//.test(file.mimetype)) {

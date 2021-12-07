@@ -20,11 +20,11 @@ import { OauthApplicationModule } from '@/modules/oauth-application/oauth-applic
     TypeOrmModule.forFeature([User, Menu, Role, Family]),
     JwtModule.registerAsync({
       useFactory: () => ({
-          secret: jwtSecret(),
-          signOptions: {
-            expiresIn: '1d',
-          },
-        }),
+        secret: jwtSecret(),
+        signOptions: {
+          expiresIn: '1d',
+        },
+      }),
     }),
     OauthOpenidModule,
     OauthApplicationModule,

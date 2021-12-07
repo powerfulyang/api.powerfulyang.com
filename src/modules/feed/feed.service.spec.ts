@@ -19,33 +19,9 @@ describe('FeedService', () => {
     assetService = module.get<AssetService>(AssetService);
   });
 
-  it('post a new story', async () => {
-    const user = await userService.getCachedUser(1);
-    const res = await service.create({
-      createBy: user,
-      content: '我的第一条说说! #第一条说说',
-    });
-    expect(res).toBeDefined();
-  });
-
-  it('post a story with assets', async () => {
-    const user = await userService.getCachedUser(1);
-    const asset = await assetService.randomAsset();
-    const res = await service.create({
-      createBy: user,
-      content: '我的第二条说说! #带图的',
-      assets: [asset],
-    });
-    expect(res).toBeDefined();
-  });
-
-  it('relation query', async () => {
-    const res = await service.relationQuery();
-    expect(res).toBeDefined();
-  });
-
-  it('cascade delete posts', async function () {
-    const res = await service.batchRemove([16, 20, 21]);
-    expect(res).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+    expect(userService).toBeDefined();
+    expect(assetService).toBeDefined();
   });
 });
