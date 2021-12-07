@@ -24,11 +24,6 @@ describe('AssetService', () => {
     expect(maps).toBeDefined();
   });
 
-  it('find by id', async () => {
-    const res = await service.findById(140);
-    expect(res).toBeDefined();
-  });
-
   it('sync form cos', async function () {
     const res = await service.syncFromCos();
     expect(res).toBe(SUCCESS);
