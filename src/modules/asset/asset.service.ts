@@ -110,10 +110,7 @@ export class AssetService {
   async saveAssetToBucket(files: UploadFile[], bucketName: CosBucket['name'], uploadBy: User) {
     const assets: Asset[] = [];
     for (const file of files) {
-      const asset = await this.manualUpload(file.buffer, bucketName);
-      await this.assetDao.update(asset.id, {
-        uploadBy,
-      });
+      const asset = await this.manualUpload(file.buffer, bucketName, uploadBy);
       assets.push(asset);
     }
     return assets;
@@ -189,7 +186,7 @@ export class AssetService {
       for (const object of objects.Contents) {
         const fileExtname = extname(object.Key);
         const hash = basename(object.Key, fileExtname);
-        const fileSuffix = fileExtname.substr(1);
+        const fileSuffix = fileExtname.substring(1);
         const asset = await this.assetDao.findOne({ sha1: hash });
         // asset 不存在
         if (!asset) {
@@ -259,13 +256,20 @@ export class AssetService {
    * 手动上传图片
    * @param buffer
    * @param bucketName
+   * @param uploadBy
    */
-  async manualUpload(buffer: Buffer, bucketName: CosBucket['name']) {
+  async manualUpload(buffer: Buffer, bucketName: CosBucket['name'], uploadBy: User) {
     let asset = this.assetDao.create();
+    asset.sha1 = sha1(buffer);
+    const isExist = await this.assetDao.findOne({ sha1: asset.sha1 });
+    if (isExist) {
+      return isExist;
+    }
+    // 库里面木有
     asset.bucket = await this.bucketDao.findOneOrFail({
       name: bucketName,
     });
-    asset.sha1 = sha1(buffer);
+    asset.uploadBy = uploadBy;
     const s = sharp(buffer);
     const metadata = await s.metadata();
     if (!metadata.format) {

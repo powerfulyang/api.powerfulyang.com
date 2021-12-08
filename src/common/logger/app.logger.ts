@@ -41,6 +41,9 @@ export class AppLogger {
     });
   }
 
+  error(trace: Error | unknown): void;
+  error(message: string, trace: Error | unknown): void;
+
   error(message: any, trace?: any) {
     if (typeof message === 'string') {
       this.logger.error(message, trace);
