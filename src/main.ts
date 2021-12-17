@@ -1,4 +1,3 @@
-import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import cookieParser from 'cookie-parser';

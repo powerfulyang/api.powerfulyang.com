@@ -1,55 +1,105 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
-import type { RedisClient } from 'redis';
-import { promisify } from 'util';
+import { Injectable } from '@nestjs/common';
+import type { RedisClientType } from 'redis';
+import type { Dict } from '@powerfulyang/utils';
+import { isDefined, isString } from '@powerfulyang/utils';
+import { createClient } from 'redis';
 import { AppLogger } from '@/common/logger/app.logger';
-import type { RedisValue } from '@/type/RedisValue';
+import { ConfigService } from '@/core/config/config.service';
 
 @Injectable()
 export class CacheService {
-  private readonly redisClient: RedisClient;
+  private readonly redisClient: RedisClientType<any, any>;
 
-  constructor(
-    @Inject(CACHE_MANAGER)
-    private redisStore: {
-      store: { getClient: () => RedisClient };
-    },
-    private readonly logger: AppLogger,
-  ) {
+  constructor(private readonly logger: AppLogger, private readonly configService: ConfigService) {
     this.logger.setContext(CacheService.name);
-    this.redisClient = this.redisStore.store.getClient();
+    this.redisClient = createClient(this.configService.getRedisConfig());
+    this.redisClient.connect();
   }
 
+  /**
+   * Set a key value pair in redis
+   * @param key
+   * @param value
+   */
   set(key: string, value: string) {
-    return promisify(this.redisClient.set).call(this.redisClient, key, value);
+    return this.redisClient.set(key, value);
   }
 
+  /**
+   * Get a value from redis
+   * @param key
+   */
   get(key: string) {
-    return promisify(this.redisClient.get).call(this.redisClient, key);
+    return this.redisClient.get(key);
   }
 
-  hSet<T = any>(hash: string, hKey: string | number, val: T) {
-    const value = JSON.stringify(val);
-    return promisify(<any>this.redisClient.hset).call(this.redisClient, hash, hKey, value);
+  hSet(key: string, value: Dict): Promise<number>;
+  hSet(key: string, field: string, value: Dict): Promise<number>;
+
+  /**
+   * Hash set a key value pair in redis
+   * @param hash
+   * @param field
+   * @param value
+   */
+  hSet(hash: string, field: string | Dict, value?: Dict) {
+    if (isString(field)) {
+      return this.redisClient.hSet(hash, field, JSON.stringify(value));
+    }
+    const newField = Object.create({});
+    Object.keys(field).forEach((key) => {
+      const v = JSON.stringify(Reflect.get(field, key));
+      Reflect.set(newField, key, v);
+    });
+    return this.redisClient.hSet(hash, newField);
   }
 
-  async hGet<T = any>(hash: string, hKey: string | number): Promise<T> {
-    const val = await promisify(this.redisClient.hget).call(this.redisClient, hash, <any>hKey);
-    return JSON.parse(val);
+  /**
+   * Hash get a value from redis
+   * @param hash
+   * @param field
+   */
+  async hGet<T = any>(hash: string, field: string): Promise<T> {
+    const val = await this.redisClient.hGet(hash, field);
+    return isDefined(val) ? JSON.parse(val) : val;
   }
 
-  hMSet(hash: string, map: Record<string, RedisValue>) {
-    return promisify(<any>this.redisClient.hmset).call(this.redisClient, hash, map);
+  /**
+   * sAdd a value to a set in redis
+   * @param sKey
+   * @param arr
+   */
+  sAdd(sKey: string, arr: string | string[]) {
+    return this.redisClient.sAdd(sKey, arr);
   }
 
-  sAdd(sKey: string, arr: RedisValue[] | RedisValue) {
-    return promisify(<any>this.redisClient.sadd).call(this.redisClient, sKey, arr);
-  }
-
+  /**
+   * sCard get the cardinality of a set in redis
+   * @param sKey
+   */
   sCard(sKey: string) {
-    return promisify(this.redisClient.scard).call(this.redisClient, sKey);
+    return this.redisClient.sCard(sKey);
   }
 
+  /**
+   * sIsMember check if a value is a member of a set in redis
+   */
+  sIsMember(sKey: string, value: string) {
+    return this.redisClient.sIsMember(sKey, value);
+  }
+
+  /**
+   * sMembers get all the members of a set in redis
+   */
+  sMembers(sKey: string) {
+    return this.redisClient.sMembers(sKey);
+  }
+
+  /**
+   * del a key from redis
+   * @param key
+   */
   del(key: string) {
-    return promisify(<any>this.redisClient.del).call(this.redisClient, key);
+    return this.redisClient.del(key);
   }
 }

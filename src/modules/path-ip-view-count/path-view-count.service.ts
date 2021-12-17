@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { groupBy } from 'ramda';
-import { ip2long } from '@powerfulyang/utils';
+import { ip2long } from '@powerfulyang/node-utils';
 import { PathViewCount } from '@/modules/path-ip-view-count/entities/path-view-count.entity';
 import { CacheService } from '@/core/cache/cache.service';
 import { AppLogger } from '@/common/logger/app.logger';
@@ -29,7 +29,7 @@ export class PathViewCountService {
       await this.cacheService.del(handleKey);
       await this.cacheService.sAdd(
         handleKey,
-        set.map((x) => x.ip),
+        set.map((x) => x.ip.toString()),
       );
     }
     return mapSet;
@@ -38,7 +38,7 @@ export class PathViewCountService {
   async handlePathViewCount(path: string, ip: string) {
     const ipLong = ip2long(ip);
     const redisKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);
-    const result = await this.cacheService.sAdd(redisKey, ipLong);
+    const result = await this.cacheService.sAdd(redisKey, ipLong.toString());
     const viewCount = await this.cacheService.sCard(redisKey);
     if (result > 0) {
       this.pathViewCountDao.insert({ ip: ipLong, path }).catch(() => {

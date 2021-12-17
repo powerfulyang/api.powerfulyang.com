@@ -1,9 +1,8 @@
-import redisStore from 'cache-manager-redis-store';
+import type { RedisClientOptions } from 'redis';
 
-export const redisConfig = () => ({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-  auth_pass: process.env.REDIS_PASS,
-  store: redisStore,
-  ttl: Infinity,
+export const redisConfig = (): RedisClientOptions<any, any> => ({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASS,
+  database: 0,
+  name: 'cache',
 });

@@ -1,5 +1,5 @@
 import { sha1 } from '@powerfulyang/node-utils';
-import { findIpInfo } from '@/utils/ipdb';
+import { inspectIp } from '@/utils/ipdb';
 import { createSocket } from 'dgram';
 
 describe('utils test', function () {
@@ -14,7 +14,7 @@ describe('utils test', function () {
   });
 
   it('findIpInfo', function () {
-    expect(findIpInfo('1.1.1.1')).toStrictEqual({
+    expect(inspectIp('1.1.1.1')).toStrictEqual({
       code: 0,
       data: {
         bitmask: 24,
