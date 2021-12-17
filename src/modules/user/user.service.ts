@@ -165,7 +165,7 @@ export class UserService {
     const users = await this.getUsersCascadeFamilyInfo();
     const usersMap = groupBy<User>((user) => String(user.id), users);
     if (users.length) {
-      return this.cacheService.hMSet(
+      return this.cacheService.hSet(
         REDIS_KEYS.USERS,
         map((user) => JSON.stringify(user.pop()), usersMap),
       );
@@ -174,7 +174,7 @@ export class UserService {
   }
 
   getCachedUser(id: User['id']) {
-    return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
+    return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id.toString());
   }
 
   async initUserDefaultProperty(draft: User) {
@@ -191,14 +191,14 @@ export class UserService {
   async createUserAndCached(user: User) {
     const newUser = await this.userDao.save(user);
     // add to cache
-    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, newUser);
+    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id.toString(), newUser);
     return newUser;
   }
 
   async updateUserAndCached(user: User) {
     const updatedUser = await this.userDao.save(user);
     // update to cache
-    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
+    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id.toString(), updatedUser);
     return updatedUser;
   }
 

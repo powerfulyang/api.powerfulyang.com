@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { TelegramBotService } from 'api/telegram-bot';
 import { AppLogger } from '@/common/logger/app.logger';
-import { findIpInfo } from '@/utils/ipdb';
+import { inspectIp } from '@/utils/ipdb';
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
@@ -15,7 +15,7 @@ export class RequestMiddleware implements NestMiddleware {
     // 此时还没有进路由
     const { headers } = req;
     const xRealIp = headers?.['x-real-ip'];
-    const ipInfo = findIpInfo(xRealIp);
+    const ipInfo = inspectIp(xRealIp);
     let address = '';
     if (ipInfo.code === 0) {
       const { city_name, country_name, isp_domain, owner_domain, region_name } = ipInfo.data;

@@ -1,5 +1,5 @@
 import type { Provider } from '@nestjs/common';
-import { CacheModule, Global, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ClientsModule } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
@@ -16,6 +16,7 @@ import { SupportOauthApplication } from '@/modules/oauth-application/entities/oa
 import { JWT_SECRET, OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from '@/core/config/config.service';
+import { CacheModule } from '@/core/cache/cache.module';
 
 const OauthApplicationConfigProvider: Provider = {
   provide: OAUTH_APPLICATION_STRATEGY_CONFIG,
@@ -55,11 +56,6 @@ const JwtConfigProvider: Provider = {
       },
     ]),
     TypeOrmModule.forFeature([Asset, CosBucket, Feed]),
-    CacheModule.registerAsync({
-      inject: [ConfigService],
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => configService.getRedisConfig(),
-    }),
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -67,6 +63,7 @@ const JwtConfigProvider: Provider = {
     }),
     OauthApplicationModule,
     ConfigModule,
+    CacheModule,
   ],
   providers: [
     CoreService,

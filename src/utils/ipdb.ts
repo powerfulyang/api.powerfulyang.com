@@ -3,4 +3,4 @@ import Ipdb from 'qqwry.ipdb';
 
 const ipdb = new IPDB(Ipdb);
 
-export const findIpInfo = ipdb.find.bind(ipdb);
+export const inspectIp = ipdb.find.bind(ipdb);
