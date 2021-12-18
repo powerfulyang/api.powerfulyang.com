@@ -4,7 +4,7 @@ import { Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import type { Profile } from 'passport-google-oauth20';
 import { generateRandomString, sha1 } from '@powerfulyang/node-utils';
-import { flatten, groupBy, map, pick } from 'ramda';
+import { flatten, pick } from 'ramda';
 import { getStringVal } from '@/utils/getStringVal';
 import type { UserDto } from '@/modules/user/dto/UserDto';
 import { User } from '@/modules/user/entities/user.entity';
@@ -163,12 +163,12 @@ export class UserService {
   async cacheUsers() {
     await this.cacheService.del(REDIS_KEYS.USERS);
     const users = await this.getUsersCascadeFamilyInfo();
-    const usersMap = groupBy<User>((user) => String(user.id), users);
+    const userMap = users.reduce((acc, user) => {
+      Reflect.set(acc, user.id, user);
+      return acc;
+    }, {} as Record<string, User>);
     if (users.length) {
-      return this.cacheService.hSet(
-        REDIS_KEYS.USERS,
-        map((user) => JSON.stringify(user.pop()), usersMap),
-      );
+      return this.cacheService.hSet(REDIS_KEYS.USERS, userMap);
     }
     return SUCCESS;
   }
