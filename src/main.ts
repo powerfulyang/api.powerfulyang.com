@@ -25,6 +25,7 @@ async function bootstrap(): Promise<void> {
       'https://admin.powerfulyang.com',
       'https://powerfulyang.com',
       'https://dev.powerfulyang.com',
+      'https://local.powerfulyang.com',
     ],
     credentials: true,
   });
