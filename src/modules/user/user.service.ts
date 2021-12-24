@@ -2,9 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import type { Profile } from 'passport-google-oauth20';
 import { generateRandomString, sha1 } from '@powerfulyang/node-utils';
 import { flatten, pick } from 'ramda';
+import type { Profile } from 'passport';
+import { firstItem, isDefined, isUndefined } from '@powerfulyang/utils';
 import { getStringVal } from '@/utils/getStringVal';
 import type { UserDto } from '@/modules/user/dto/UserDto';
 import { User } from '@/modules/user/entities/user.entity';
@@ -14,10 +15,10 @@ import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/core/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { Family } from '@/modules/user/entities/family.entity';
-import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
-import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
 import { SUCCESS } from '@/constants/constants';
+import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { MailService } from '@/core/mail/mail.service';
 
 @Injectable()
 export class UserService {
@@ -31,7 +32,7 @@ export class UserService {
     private readonly roleService: RoleService,
     private readonly cacheService: CacheService,
     private readonly oauthOpenidService: OauthOpenidService,
-    private readonly oauthApplicationService: OauthApplicationService,
+    private readonly mailService: MailService,
   ) {
     this.logger.setContext(UserService.name);
   }
@@ -74,26 +75,44 @@ export class UserService {
     };
   }
 
-  async googleUserRelation(profile: Profile) {
+  sendDefaultPassword(email: string, defaultPassword: string) {
+    return this.mailService.sendMail(email, '欢迎加入', `初始密码是：${defaultPassword}`);
+  }
+
+  async dealLoginRequestFromOauthApplication<T extends Profile>(
+    profile: T,
+    platform: SupportOauthApplication,
+  ) {
     const openid = profile.id;
-    const o = await this.oauthOpenidService.findUserByGoogleOpenid(openid);
+    const o = await this.oauthOpenidService.findUserByOpenid(openid, platform);
     let user = o?.user;
-    if (!user) {
+    const email = profile.emails && firstItem(profile.emails)?.value;
+    const avatar = profile.photos && firstItem(profile.photos)?.value;
+    if (isUndefined(user)) {
+      if (!email) {
+        throw new UnauthorizedException('email is required');
+      }
+      user = await this.userDao.findOne({ email });
+      if (isDefined(user)) {
+        // 关联新的 openid
+        await this.oauthOpenidService.associateOpenid(user, openid, platform);
+      }
+    }
+    if (isUndefined(user)) {
       user = this.userDao.create();
-      user.email = getStringVal(profile.emails?.find((email: any) => email.verified)?.value);
-      user.avatar = getStringVal(profile.photos?.pop()?.value);
+      user.email = email!;
+      user.avatar = avatar;
       user.nickname = getStringVal(profile.displayName);
-      const oauthOpenid = new OauthOpenid();
-      oauthOpenid.application = await this.oauthApplicationService.getGoogle();
-      oauthOpenid.openid = openid;
-      user.oauthOpenidArr = [oauthOpenid];
       user = await this.initUserDefaultProperty(user);
       user = await this.createUserAndCached(user);
-      // todo 总要发一封邮件 告诉别人默认密码吧
+      // 关联新的 openid
+      await this.oauthOpenidService.associateOpenid(user, openid, platform);
+      // salt 是默认密码
+      await this.sendDefaultPassword(user.email, user.salt);
     } else {
       // 更新头像
       const u = await this.getUserCascadeFamilyInfo(user.id);
-      u.avatar = getStringVal(profile.photos?.pop()?.value);
+      u.avatar = avatar;
       user = await this.updateUserAndCached(u);
     }
     return this.generateAuthorization(user);

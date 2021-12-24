@@ -37,7 +37,7 @@ export class User {
   bio: string;
 
   @Column({ default: '' })
-  avatar: string;
+  avatar?: string;
 
   @Column({ default: '' })
   lastIp: string;

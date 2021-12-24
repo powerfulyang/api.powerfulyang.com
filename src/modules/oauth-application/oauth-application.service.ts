@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  OauthApplication,
-  SupportOauthApplication,
-} from '@/modules/oauth-application/entities/oauth-application.entity';
+import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { OauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 
 @Injectable()
 export class OauthApplicationService {
@@ -12,10 +10,10 @@ export class OauthApplicationService {
     @InjectRepository(OauthApplication) private readonly appDao: Repository<OauthApplication>,
   ) {}
 
-  getGoogle() {
+  getApplicationByPlatformName(platformName: SupportOauthApplication) {
     return this.appDao.findOneOrFail({
       select: ['clientId', 'clientSecret', 'callbackUrl', 'id'],
-      where: { platformName: SupportOauthApplication.google },
+      where: { platformName },
     });
   }
 }
