@@ -15,11 +15,12 @@ export class PublicAuthStrategy extends PassportStrategy(Strategy, 'public') {
 
   async authenticate(req: Request) {
     try {
+      // 解析 token 成功 获取到用户信息
       const user = this.userService.verifyAuthorization(getTokenFromRequest(req));
       const res = await this.userService.getCachedUser(user.id);
       this.success(res);
     } catch (e) {
-      // 解析 token 失败
+      // 解析 token 失败 无法获取用户信息
       this.success({});
     }
   }

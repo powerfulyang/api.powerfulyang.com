@@ -17,14 +17,22 @@ import { JWT_SECRET, OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVI
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from '@/core/config/config.service';
 import { CacheModule } from '@/core/cache/cache.module';
+import { MailModule } from '@/core/mail/mail.module';
+import { MailService } from '@/core/mail/mail.service';
 
 const OauthApplicationConfigProvider: Provider = {
   provide: OAUTH_APPLICATION_STRATEGY_CONFIG,
   inject: [OauthApplicationService],
   useFactory: async (oauthApplicationService: OauthApplicationService) => {
-    const googleConfig = await oauthApplicationService.getGoogle();
+    const googleConfig = await oauthApplicationService.getApplicationByPlatformName(
+      SupportOauthApplication.google,
+    );
+    const githubConfig = await oauthApplicationService.getApplicationByPlatformName(
+      SupportOauthApplication.github,
+    );
     return {
       [SupportOauthApplication.google]: googleConfig,
+      [SupportOauthApplication.github]: githubConfig,
     };
   },
 };
@@ -64,6 +72,7 @@ const JwtConfigProvider: Provider = {
     OauthApplicationModule,
     ConfigModule,
     CacheModule,
+    MailModule,
   ],
   providers: [
     CoreService,
@@ -71,6 +80,7 @@ const JwtConfigProvider: Provider = {
     SearchService,
     OauthApplicationConfigProvider,
     JwtConfigProvider,
+    MailService,
   ],
   exports: [
     CoreService,
@@ -78,6 +88,7 @@ const JwtConfigProvider: Provider = {
     SearchService,
     OauthApplicationConfigProvider,
     JwtConfigProvider,
+    MailService,
   ],
 })
 export class CoreModule {}

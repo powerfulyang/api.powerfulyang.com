@@ -1,8 +1,13 @@
 import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
-import type { Profile } from 'passport-google-oauth20';
+import type { Profile as GoogleProfile } from 'passport-google-oauth20';
+import type { Profile as GithubProfile } from 'passport-github';
 import type { Request } from 'express';
 import { User } from '@/modules/user/entities/user.entity';
-import { GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import {
+  GithubAuthGuard,
+  GoogleAuthGuard,
+  JwtAuthGuard,
+} from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserDto } from '@/modules/user/dto/UserDto';
 import { AppLogger } from '@/common/logger/app.logger';
@@ -11,6 +16,7 @@ import { Authorization } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
+import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 
 @Controller('user')
 export class UserController {
@@ -24,15 +30,46 @@ export class UserController {
     this.logger.info('Google Auth try!');
   }
 
+  @Get('github/auth')
+  @GithubAuthGuard()
+  githubAuth() {
+    this.logger.info('Github Auth try!');
+  }
+
   @Get('google/auth/callback')
   @GoogleAuthGuard()
   @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
-  async googleAuthCallback(@Req() req: Request & { user: Profile; query: { state: string } }) {
+  async googleAuthCallback(
+    @Req() req: Request & { user: GoogleProfile; query: { state: string } },
+  ) {
     const profile = req.user;
     // if not register to add user!
     const { state } = req.query;
     const redirect = Buffer.from(state, 'base64').toString();
-    const token = await this.userService.googleUserRelation(profile);
+    const token = await this.userService.dealLoginRequestFromOauthApplication(
+      profile,
+      SupportOauthApplication.google,
+    );
+    return {
+      cookie: [Authorization, token],
+      redirect,
+    };
+  }
+
+  @Get('github/auth/callback')
+  @GithubAuthGuard()
+  @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
+  async githubAuthCallback(
+    @Req() req: Request & { user: GithubProfile; query: { state: string } },
+  ) {
+    const profile = req.user;
+    // if not register to add user!
+    const { state } = req.query;
+    const redirect = Buffer.from(state, 'base64').toString();
+    const token = await this.userService.dealLoginRequestFromOauthApplication(
+      profile,
+      SupportOauthApplication.github,
+    );
     return {
       cookie: [Authorization, token],
       redirect,

@@ -7,6 +7,7 @@ import type {
   SupportOauthApplication,
 } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { PublicAuthStrategy } from '@/common/authorization/public.auth.strategy';
+import { GithubStrategy } from '@/common/authorization/github.strategy';
 
 export declare type OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE = {
   [key in SupportOauthApplication]: OauthApplication;
@@ -14,6 +15,6 @@ export declare type OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE = {
 
 @Module({
   imports: [UserModule],
-  providers: [JwtStrategy, GoogleStrategy, PublicAuthStrategy],
+  providers: [JwtStrategy, GoogleStrategy, PublicAuthStrategy, GithubStrategy],
 })
 export class StrategyModule {}

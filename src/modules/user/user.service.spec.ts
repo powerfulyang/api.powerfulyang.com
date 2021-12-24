@@ -77,4 +77,9 @@ describe('UserService', () => {
     user = await service.updateUserAndCached(user);
     expect(user).toBeDefined();
   });
+
+  it('send default password', async function () {
+    const result = await service.sendDefaultPassword('i@powerfulyang.com', '123456');
+    expect(result).toBeDefined();
+  });
 });
