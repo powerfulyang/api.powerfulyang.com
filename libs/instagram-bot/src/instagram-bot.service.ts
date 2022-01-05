@@ -13,13 +13,20 @@ export class InstagramBotService {
   private readonly cookiePath = instagramCookieFilePath;
 
   constructor(private proxyFetchService: ProxyFetchService) {
-    this.bot.state.generateDevice(process.env.IG_USERNAME);
-    this.bot.request.defaults.agent = this.proxyFetchService.getAgent();
-    this.bot.request.end$.subscribe(async () => {
-      const serialized = await this.bot.state.serialize();
-      delete serialized.constants;
-      writeFileSync(this.cookiePath, JSON.stringify(serialized));
-    });
+    const username = process.env.IG_USERNAME;
+    if (username) {
+      this.bot.state.generateDevice(username);
+      const agent = this.proxyFetchService.getAgent();
+      if (agent) {
+        this.bot.request.defaults.agent = agent;
+      }
+
+      this.bot.request.end$.subscribe(async () => {
+        const serialized = await this.bot.state.serialize();
+        delete serialized.constants;
+        writeFileSync(this.cookiePath, JSON.stringify(serialized));
+      });
+    }
   }
 
   private async checkLogin() {

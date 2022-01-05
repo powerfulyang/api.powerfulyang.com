@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import TelegramBot from 'node-telegram-bot-api';
 import { ProxyFetchService } from 'api/proxy-fetch';
-import { interval, tap } from 'rxjs';
+import { interval, map } from 'rxjs';
 
 @Injectable()
 export class TelegramBotService {
@@ -19,7 +19,10 @@ export class TelegramBotService {
   private messages: [number, string][] = [];
 
   initBot() {
-    if (!this.bot) {
+    /**
+     * 写了 token 的时候才会自动初始化 bot
+     */
+    if (!this.bot && this.token) {
       this.bot = new TelegramBot(this.token, {
         request: <any>{
           agent: this.proxyFetchService.getAgent(),
@@ -39,15 +42,15 @@ export class TelegramBotService {
   loop() {
     interval(1000)
       .pipe(
-        tap(() => {
-          const item = this.messages.pop();
-          if (item) {
-            const [chatId, msg] = item;
-            return this.bot!.sendMessage(chatId, msg);
-          }
-          return 0;
+        map(() => {
+          return this.messages.pop();
         }),
       )
-      .subscribe();
+      .subscribe(async (item) => {
+        if (item) {
+          const [chatId, msg] = item;
+          await this.bot!.sendMessage(chatId, msg);
+        }
+      });
   }
 }

@@ -25,8 +25,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, SupportOauthAppli
       callbackURL: config.google.callbackUrl,
       scope: ['email', 'profile'],
     });
-    this._oauth2.setAgent(this.proxyFetchService.getAgent());
+
     this.logger.setContext(GoogleStrategy.name);
+    const agent = this.proxyFetchService.getAgent();
+    if (agent) {
+      this._oauth2.setAgent(agent);
+    }
   }
 
   authenticate(req: Request<ParamsDictionary, any, any, { redirect?: string }>) {

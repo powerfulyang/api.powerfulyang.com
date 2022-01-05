@@ -26,7 +26,10 @@ export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthAppli
       scope: ['user:email'],
     });
     this.logger.setContext(GithubStrategy.name);
-    this._oauth2.setAgent(this.proxyFetchService.getAgent());
+    const agent = this.proxyFetchService.getAgent();
+    if (agent) {
+      this._oauth2.setAgent(agent);
+    }
   }
 
   authenticate(req: Request<ParamsDictionary, any, any, { redirect?: string }>) {
