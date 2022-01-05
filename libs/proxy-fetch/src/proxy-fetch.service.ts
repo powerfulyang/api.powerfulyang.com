@@ -9,6 +9,9 @@ export class ProxyFetchService {
   private readonly agent;
 
   constructor() {
+    /**
+     * 如果没有代理设置 则不使用代理
+     */
     if (process.env.BOT_SOCKS5_PROXY_HOST && process.env.BOT_SOCKS5_PROXY_PORT) {
       this.agent = new SocksProxyAgent({
         host: process.env.BOT_SOCKS5_PROXY_HOST,
@@ -18,7 +21,7 @@ export class ProxyFetchService {
   }
 
   getAgent() {
-    return this.agent!;
+    return this.agent;
   }
 
   proxyFetch(url: string, draft: RequestInit = {}) {

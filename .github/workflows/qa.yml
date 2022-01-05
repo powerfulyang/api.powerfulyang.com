@@ -1,0 +1,44 @@
+name: qa
+
+on:
+  push:
+    branches:
+      - qa
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['lts/*']
+        docker-repository: [powerfulyang/qa.api.powerfulyang.com]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: build
+        run: |
+          npm ci
+          npm run build
+      - name: Dockerize
+        id: dockerize
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ matrix.docker-repository }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tags: 'latest'
+      - name: deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script_stop: false
+          script: |
+            docker pull ${{ matrix.docker-repository }}
+            cd ~/applications
+            docker-compose up -d --force-recreate qa.api.powerfulyang.com
+            docker image prune -a -f
