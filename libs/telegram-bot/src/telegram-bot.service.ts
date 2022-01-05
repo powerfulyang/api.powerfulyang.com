@@ -49,7 +49,7 @@ export class TelegramBotService {
       .subscribe(async (item) => {
         if (item) {
           const [chatId, msg] = item;
-          await this.bot!.sendMessage(chatId, msg);
+          await this.bot?.sendMessage(chatId, msg);
         }
       });
   }
