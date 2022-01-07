@@ -1,4 +1,4 @@
-name: app
+name: prod
 
 on:
   push:
@@ -40,5 +40,5 @@ jobs:
           script: |
             docker pull ${{ matrix.docker-repository }}
             cd ~/applications
-            docker-compose up -d --force-recreate api.powerfulyang.com
+            docker-compose up -d
             docker image prune -a -f
