@@ -50,7 +50,7 @@ export class PostService {
 
   getPosts(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
     return this.postDao.find({
-      select: ['id', 'title', 'createAt', 'poster'],
+      select: ['id', 'title', 'content', 'createAt', 'poster'],
       relations: ['poster'],
       order: { id: 'DESC' },
       where: [
