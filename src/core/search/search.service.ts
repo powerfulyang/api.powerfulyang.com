@@ -36,71 +36,18 @@ export class SearchService {
   }
 
   async createFeedIndex() {
-    const checkIndex = await this.elasticsearchService.indices.exists({ index: 'feed' });
-    if (checkIndex.statusCode === 404) {
-      this.elasticsearchService.indices.create(
-        {
-          index: 'feed',
-          body: {
-            settings: {
-              analysis: {
-                analyzer: {
-                  autocomplete_analyzer: {
-                    tokenizer: 'autocomplete',
-                    filter: ['lowercase'],
-                  },
-                  autocomplete_search_analyzer: {
-                    tokenizer: 'keyword',
-                    filter: ['lowercase'],
-                  },
-                },
-                tokenizer: {
-                  autocomplete: {
-                    type: 'edge_ngram',
-                    min_gram: 1,
-                    max_gram: 30,
-                    token_chars: ['letter', 'digit', 'whitespace'],
-                  },
-                },
-              },
-            },
-            mappings: {
-              properties: {
-                id: { type: 'integer' },
-                content: {
-                  type: 'text',
-                  fields: {
-                    complete: {
-                      type: 'text',
-                      analyzer: 'autocomplete_analyzer',
-                      search_analyzer: 'autocomplete_search_analyzer',
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        (err) => {
-          if (err) {
-            this.logger.error('error', err);
-          }
-        },
-      );
+    const exist = await this.elasticsearchService.indices.exists({ index: 'feed' });
+    if (!exist) {
+      await this.elasticsearchService.indices.create({
+        index: 'feed',
+      });
       const body = await this.parseAndPrepareData();
-      this.elasticsearchService.bulk(
-        {
-          index: 'feed',
-          body,
-        },
-        (err) => {
-          if (err) {
-            this.logger.error('error', err);
-          }
-        },
-      );
+      await this.elasticsearchService.bulk({
+        index: 'feed',
+        body,
+      });
     }
-    return checkIndex.statusCode;
+    return exist;
   }
 
   deleteFeedIndex() {
@@ -111,7 +58,7 @@ export class SearchService {
 
   async searchFeedByContent(content: string) {
     const results: any[] = [];
-    const { body } = await this.elasticsearchService.search({
+    const { hits } = await this.elasticsearchService.search({
       index: 'feed',
       body: {
         query: {
@@ -123,11 +70,10 @@ export class SearchService {
         },
       },
     });
-    const { hits } = body.hits;
-    hits.forEach((item: { _source: any }) => {
+    hits.hits.forEach((item) => {
       results.push(item._source);
     });
 
-    return { results, total: body.hits.total.value };
+    return { results, total: hits.hits.length };
   }
 }

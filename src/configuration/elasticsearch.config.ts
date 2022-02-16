@@ -1,4 +1,3 @@
-import type { BasicAuth } from '@elastic/elasticsearch/lib/pool';
 import type { ClientOptions } from '@elastic/elasticsearch';
 
 export const elasticsearchConfig = (): ClientOptions => {
@@ -6,7 +5,7 @@ export const elasticsearchConfig = (): ClientOptions => {
   const port = process.env.ELASTICSEARCH_PORT;
   const username = process.env.ELASTICSEARCH_USER as string;
   const password = process.env.ELASTICSEARCH_PASS as string;
-  let auth: BasicAuth | undefined;
+  let auth: any;
   if (username && password) {
     auth = { username, password };
   }
