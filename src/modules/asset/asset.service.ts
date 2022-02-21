@@ -289,6 +289,8 @@ export class AssetService {
         name: asset.bucket.name,
       };
       await this.uploadStaticService.persistent(data);
+      // 再查一遍 返回 objectUrl
+      asset = await this.assetDao.findOneOrFail({ id: asset.id });
     } catch (e) {
       this.logger.error(e);
     }
