@@ -32,6 +32,7 @@ import { ScheduleType } from '@/enum/ScheduleType';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import { UserService } from '@/modules/user/user.service';
 import type { InfiniteQueryResponse } from '@/type/InfiniteQuery';
+import { BucketService } from '@/modules/bucket/bucket.service';
 
 @Injectable()
 export class AssetService {
@@ -47,18 +48,32 @@ export class AssetService {
     private readonly uploadStaticService: UploadAssetService,
     private readonly tencentCloudAccountService: TencentCloudAccountService,
     private readonly userService: UserService,
+    private readonly bucketService: BucketService,
   ) {
     this.logger.setContext(AssetService.name);
   }
 
+  async publicAssetSource() {
+    const publicBuckets = await this.bucketService.listPublicBucket();
+    const publicUsers = await this.userService.listAssetPublicUser();
+    return {
+      publicBucketIds: publicBuckets.map((bucket) => bucket.id),
+      publicUserIds: publicUsers.map((user) => user.id),
+    };
+  }
+
+  // 获取有权限的资源
   async getAssets(pagination: Pagination, ids: User['id'][] = []) {
-    const BotUser = await this.userService.getAssetBotUser();
+    const publicAssetSource = await this.publicAssetSource();
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
       where: [
         {
-          uploadBy: In(ids.concat(BotUser.id)),
+          uploadBy: In([...ids, ...publicAssetSource.publicUserIds]),
+        },
+        {
+          bucket: In(publicAssetSource.publicBucketIds),
         },
       ],
     });
@@ -224,12 +239,16 @@ export class AssetService {
   }
 
   async getAssetById(id: Asset['id'], ids: User['id'][] = []) {
-    const BotUser = await this.userService.getAssetBotUser();
+    const publicAssetSource = await this.publicAssetSource();
     return this.assetDao.findOneOrFail({
       where: [
         {
           id,
-          uploadBy: In(ids.concat(BotUser.id)),
+          uploadBy: In([...ids, ...publicAssetSource.publicUserIds]),
+        },
+        {
+          id,
+          bucket: In(publicAssetSource.publicBucketIds),
         },
       ],
       relations: ['uploadBy'],

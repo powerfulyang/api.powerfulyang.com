@@ -48,4 +48,7 @@ export class CosBucket {
 
   @OneToMany(() => Asset, (asset) => asset.bucket)
   assets: Asset[];
+
+  @Column({ default: false })
+  public: boolean;
 }

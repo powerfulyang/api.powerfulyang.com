@@ -79,6 +79,7 @@ export class PostService {
         },
         { public: true },
       ])
+      .orderBy('"publishYear"', 'DESC')
       .distinct(true)
       .getRawMany();
     return pluck('publishYear')(res);

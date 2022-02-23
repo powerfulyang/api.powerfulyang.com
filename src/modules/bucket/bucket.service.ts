@@ -177,4 +177,12 @@ export class BucketService {
       }
     }
   }
+
+  listPublicBucket() {
+    return this.bucketDao.find({
+      where: {
+        public: true,
+      },
+    });
+  }
 }
