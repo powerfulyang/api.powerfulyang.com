@@ -241,6 +241,10 @@ export class UserService {
     return this.getUserByEmail(User.IntendedUsers.BotUser);
   }
 
+  async listAssetPublicUser() {
+    return [await this.getAssetBotUser()];
+  }
+
   async initIntendedUsers() {
     const existedUsers = await this.userDao.find();
     if (existedUsers.length) {
