@@ -16,8 +16,8 @@ export class PostService {
 
   async publishPost(post: PublishPostDto) {
     if (!post.poster) {
-      const randomAsset = await this.assetService.randomAsset();
-      Reflect.set(post, 'poster', randomAsset);
+      const poster = await this.assetService.randomPostPoster();
+      Reflect.set(post, 'poster', poster);
     }
     if (post.id) {
       const findPost = await this.postDao.findOneOrFail(post.id);

@@ -178,11 +178,22 @@ export class BucketService {
     }
   }
 
-  listPublicBucket() {
-    return this.bucketDao.find({
+  async listPublicBucket(): Promise<CosBucket[]>;
+  async listPublicBucket(returnPrimaryKeyArray: true): Promise<CosBucket['id'][]>;
+
+  /**
+   * 列出所有的公开 bucket
+   * @param returnPrimaryKeyArray
+   */
+  async listPublicBucket(returnPrimaryKeyArray?: boolean) {
+    const buckets = await this.bucketDao.find({
       where: {
         public: true,
       },
     });
+    if (returnPrimaryKeyArray) {
+      return buckets.map((b) => b.id);
+    }
+    return buckets;
   }
 }

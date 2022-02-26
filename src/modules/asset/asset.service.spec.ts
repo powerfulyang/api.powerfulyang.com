@@ -28,4 +28,14 @@ describe('AssetService', () => {
     const res = await service.syncFromCos();
     expect(res).toBe(SUCCESS);
   });
+
+  it('random asset', async () => {
+    const res = await service.randomAsset();
+    expect(res).toBeDefined();
+  });
+
+  it('random post poster', async () => {
+    const res = await service.randomPostPoster();
+    expect(res).toBeDefined();
+  });
 });
