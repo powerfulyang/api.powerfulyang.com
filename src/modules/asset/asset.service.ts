@@ -159,10 +159,6 @@ export class AssetService {
     return SUCCESS;
   }
 
-  async randomAsset() {
-    return this.assetDao.createQueryBuilder().orderBy('random()').limit(1).getOneOrFail();
-  }
-
   async getCosUrl(Key: string, bucket: CosBucket) {
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
       bucket.tencentCloudAccount.id,
@@ -410,5 +406,32 @@ export class AssetService {
       resources: res,
       nextCursor: res.length === take ? last(res)?.id : undefined,
     };
+  }
+
+  async randomAsset() {
+    const publicBucketIds = await this.bucketService.listPublicBucket(true);
+    return this.assetDao
+      .createQueryBuilder()
+      .where({
+        bucket: In(publicBucketIds),
+      })
+      .orderBy('random()')
+      .limit(1)
+      .getOneOrFail();
+  }
+
+  async randomPostPoster() {
+    const publicBucketIds = await this.bucketService.listPublicBucket(true);
+    return this.assetDao
+      .createQueryBuilder()
+      .where(
+        `cast(size->>'width' as int) between 700 and 1000
+                  and cast(size->>'height' as int) between 420 and 600
+                  and "bucketId" = ANY(:publicBucketIds)`,
+        { publicBucketIds },
+      )
+      .orderBy('random()')
+      .limit(1)
+      .getOneOrFail();
   }
 }
