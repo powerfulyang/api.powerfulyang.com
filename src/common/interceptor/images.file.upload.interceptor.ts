@@ -1,8 +1,8 @@
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ForbiddenException, UseInterceptors } from '@nestjs/common';
 
-export const ImagesFileUploadInterceptor = () =>
-  FilesInterceptor('files', undefined, {
+export const ImagesFileUploadInterceptor = (filedName: string) =>
+  FilesInterceptor(filedName, undefined, {
     fileFilter(
       _req: any,
       file: {
@@ -27,4 +27,5 @@ export const ImagesFileUploadInterceptor = () =>
     },
   });
 
-export const ImagesInterceptor = () => UseInterceptors(ImagesFileUploadInterceptor());
+export const ImagesInterceptor = (filedName: string = 'files') =>
+  UseInterceptors(ImagesFileUploadInterceptor(filedName));

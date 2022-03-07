@@ -13,6 +13,10 @@ import { BucketACL, BucketRegion, RefererConfiguration } from '@powerfulyang/cos
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
 
+export enum BuiltinBucket {
+  timeline = 'timeline',
+}
+
 @Entity()
 export class CosBucket {
   @PrimaryGeneratedColumn()
