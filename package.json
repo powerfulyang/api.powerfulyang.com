@@ -25,7 +25,7 @@
     "precommit": "lint-staged && npm run tsc"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^8.0.0",
+    "@elastic/elasticsearch": "^8.1.0",
     "@nestjs/common": "^8.4.0",
     "@nestjs/core": "^8.4.0",
     "@nestjs/elasticsearch": "^8.1.0",
@@ -69,7 +69,7 @@
     "ramda": "^0.28.0",
     "redis": "^4.0.4",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.4",
+    "rxjs": "^7.5.5",
     "sharp": "^0.30.2",
     "socks-proxy-agent": "^6.1.1",
     "source-map-support": "^0.5.21",
@@ -79,7 +79,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.2",
-    "@nestjs/schematics": "^8.0.7",
+    "@nestjs/schematics": "^8.0.8",
     "@nestjs/testing": "^8.4.0",
     "@powerfulyang/lint": "^0.7.13",
     "@types/cookie-parser": "^1.4.2",
@@ -92,7 +92,7 @@
     "@types/nodemailer": "^6.4.4",
     "@types/passport-jwt": "^3.0.6",
     "@types/ramda": "^0.28.1",
-    "@types/sharp": "^0.29.5",
+    "@types/sharp": "^0.30.0",
     "@types/supertest": "^2.0.11",
     "@types/xml2js": "^0.4.9",
     "cross-env": "^7.0.3",

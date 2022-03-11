@@ -16,6 +16,7 @@ export class ProxyFetchService {
       this.agent = new SocksProxyAgent({
         host: process.env.BOT_SOCKS5_PROXY_HOST,
         port: process.env.BOT_SOCKS5_PROXY_PORT,
+        timeout: 5000,
       });
     }
   }
