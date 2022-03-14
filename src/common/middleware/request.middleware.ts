@@ -1,13 +1,12 @@
 import type { NestMiddleware } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { TelegramBotService } from 'api/telegram-bot';
 import { AppLogger } from '@/common/logger/app.logger';
 import { inspectIp } from '@/utils/ipdb';
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
-  constructor(private logger: AppLogger, private telegramBotService: TelegramBotService) {
+  constructor(private readonly logger: AppLogger) {
     this.logger.setContext(RequestMiddleware.name);
   }
 
@@ -26,8 +25,5 @@ export class RequestMiddleware implements NestMiddleware {
     const { url } = req;
     const log = `request url => [${url}]; xRealIp => [${xRealIp}] ; request address => [${address}]`;
     this.logger.info(log);
-    this.telegramBotService.sendToMe(log).catch((e) => {
-      this.logger.error('telegram send error', e);
-    });
   }
 }

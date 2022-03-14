@@ -6,7 +6,6 @@ import { GithubModule } from 'app/github-webhook';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UdpServerModule } from 'api/udp-server';
-import { TelegramBotModule } from 'api/telegram-bot';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';
 import { AppLogger } from '@/common/logger/app.logger';
@@ -45,7 +44,6 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
       rootPath: join(process.cwd(), 'assets'),
     }),
     UdpServerModule,
-    TelegramBotModule,
     PostModule,
     PublicModule,
     PathViewCountModule,
