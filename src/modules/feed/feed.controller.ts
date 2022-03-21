@@ -18,12 +18,15 @@ export class FeedController {
   create(
     @Body() createFeedDto: CreateFeedDto,
     @UserFromAuth(['id']) user: User,
-    @UploadedFiles() assets: UploadFile[],
+    @UploadedFiles() assets: UploadFile[] = [],
   ) {
+    // 因为是 FormData 格式, 只能传 string
+    const isPublic = Object.is(createFeedDto.public, 'true');
     return this.feedService.postNewFeed(
       {
         ...createFeedDto,
         createBy: user,
+        public: isPublic,
       },
       assets,
     );
