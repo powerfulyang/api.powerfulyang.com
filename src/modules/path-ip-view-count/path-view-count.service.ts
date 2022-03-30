@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { groupBy } from 'ramda';
 import { ip2long } from '@powerfulyang/node-utils';
 import { PathViewCount } from '@/modules/path-ip-view-count/entities/path-view-count.entity';
-import { CacheService } from '@/core/cache/cache.service';
+import { CacheService } from '@/common/cache/cache.service';
 import { AppLogger } from '@/common/logger/app.logger';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 

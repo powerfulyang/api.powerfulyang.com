@@ -24,6 +24,6 @@ export class MenuController {
 
   @Get('current')
   currentMenus(@UserFromAuth() user: User) {
-    return this.userService.getUserMenus(user.id);
+    return this.userService.queryMenusByUserId(user.id);
   }
 }

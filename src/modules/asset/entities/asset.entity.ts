@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { Metadata } from 'sharp';
 import { pick } from 'ramda';
-import { User } from '@/modules/user/entities/user.entity';
+import { User, UserOmitRelations } from '@/modules/user/entities/user.entity';
 import { CosBucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon.api/types/Exif';
 
@@ -21,7 +21,7 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => CosBucket, { nullable: false, eager: true })
+  @ManyToOne(() => CosBucket, { nullable: false })
   bucket: CosBucket;
 
   @Column({ default: '' })
@@ -62,7 +62,7 @@ export class Asset {
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
-  uploadBy: User;
+  uploadBy: UserOmitRelations;
 
   @CreateDateColumn()
   createAt: Date;

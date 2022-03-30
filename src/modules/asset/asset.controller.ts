@@ -12,12 +12,6 @@ import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 export class AssetController {
   constructor(private assetService: AssetService) {}
 
-  @Get('all')
-  @AdminAuthGuard()
-  all() {
-    return this.assetService.all();
-  }
-
   @Get('sync')
   @AdminAuthGuard()
   syncAllFromCos() {

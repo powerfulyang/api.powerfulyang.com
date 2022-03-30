@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { isProdProcess } from '@powerfulyang/utils';
-import { CacheService } from '@/core/cache/cache.service';
+import { CacheService } from '@/common/cache/cache.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { AppLogger } from '@/common/logger/app.logger';

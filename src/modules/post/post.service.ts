@@ -6,6 +6,7 @@ import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
+import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 
 @Injectable()
 export class PostService {
@@ -20,7 +21,7 @@ export class PostService {
       Reflect.set(post, 'poster', poster);
     }
     if (post.id) {
-      const findPost = await this.postDao.findOneOrFail(post.id);
+      const findPost = await this.postDao.findOneByOrFail({ id: post.id });
       findPost.content = post.content!;
       if (post.tags) {
         findPost.tags = post.tags;
@@ -33,7 +34,7 @@ export class PostService {
   }
 
   deletePost(post: Post) {
-    return this.postDao.delete(post);
+    return this.postDao.delete(post.id);
   }
 
   readPost(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
@@ -48,7 +49,7 @@ export class PostService {
     });
   }
 
-  getPosts(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
+  getPosts(post: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
       select: ['id', 'title', 'content', 'createAt', 'poster'],
       relations: ['poster'],

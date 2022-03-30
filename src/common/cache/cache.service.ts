@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import type { RedisClientType } from 'redis';
 import type { Dict } from '@powerfulyang/utils';
-import { isDefined, isString } from '@powerfulyang/utils';
+import { isDefined, isNumber, isString } from '@powerfulyang/utils';
 import { createClient } from 'redis';
 import { AppLogger } from '@/common/logger/app.logger';
-import { ConfigService } from '@/core/config/config.service';
+import { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class CacheService {
@@ -13,7 +13,9 @@ export class CacheService {
   constructor(private readonly logger: AppLogger, private readonly configService: ConfigService) {
     this.logger.setContext(CacheService.name);
     this.redisClient = createClient(this.configService.getRedisConfig());
-    this.redisClient.connect();
+    this.redisClient.connect().catch((err) => {
+      this.logger.error(err, `Redis connection error.`);
+    });
   }
 
   /**
@@ -34,22 +36,25 @@ export class CacheService {
   }
 
   hSet(key: string, value: Dict): Promise<number>;
-  hSet(key: string, field: string, value: Dict): Promise<number>;
+  hSet(key: string, field: string | number, value: Dict): Promise<number>;
 
   /**
    * Hash set a key value pair in redis
+   * return the number of fields that were added
    * @param hash
    * @param field
    * @param value
    */
-  hSet(hash: string, field: string | Dict, value?: Dict) {
+  hSet(hash: string, field: string | number | Dict, value?: Dict) {
     if (isString(field)) {
       return this.redisClient.hSet(hash, field, JSON.stringify(value));
     }
-    const newField = Object.create({});
-    Object.keys(field).forEach((key) => {
-      const v = JSON.stringify(Reflect.get(field, key));
-      Reflect.set(newField, key, v);
+    if (isNumber(field)) {
+      return this.redisClient.hSet(hash, field.toString(), JSON.stringify(value));
+    }
+    const newField = {} as Dict;
+    Object.entries(field).forEach(([k, v]) => {
+      Reflect.set(newField, k, JSON.stringify(v));
     });
     return this.redisClient.hSet(hash, newField);
   }
@@ -59,8 +64,8 @@ export class CacheService {
    * @param hash
    * @param field
    */
-  async hGet<T = any>(hash: string, field: string): Promise<T> {
-    const val = await this.redisClient.hGet(hash, field);
+  async hGet<T = any>(hash: string, field: string | number): Promise<T> {
+    const val = await this.redisClient.hGet(hash, String(field));
     return isDefined(val) ? JSON.parse(val) : val;
   }
 
@@ -97,6 +102,7 @@ export class CacheService {
 
   /**
    * del a key from redis
+   * return the number of keys deleted
    * @param key
    */
   del(key: string) {

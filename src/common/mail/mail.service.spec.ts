@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailService } from '@/core/mail/mail.service';
-import { MailModule } from '@/core/mail/mail.module';
-import '@/loadEnv';
+import { MailService } from '@/common/mail/mail.service';
+import { MailModule } from '@/common/mail/mail.module';
+import { SUCCESS } from '@/constants/constants';
 
 describe('test mail module', () => {
   let service: MailService;
@@ -15,7 +15,7 @@ describe('test mail module', () => {
   });
 
   it('test send mail', async () => {
-    const result = await service.sendMail('i@powerfulyang.com', 'test', 'test');
-    expect(result).toBeDefined();
+    const result = await service.sendMail('i@powerfulyang.com', '这是一封测试邮件', '测试一下!');
+    expect(result).toBe(SUCCESS);
   });
 });
