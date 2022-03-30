@@ -8,11 +8,11 @@ import { SUCCESS } from '@/constants/constants';
 export class RoleService {
   constructor(
     @InjectRepository(Role)
-    readonly roleDao: Repository<Role>,
+    private readonly roleDao: Repository<Role>,
   ) {}
 
   getDefaultRole() {
-    return this.roleDao.findOneOrFail({ roleName: Role.IntendedRoles.default });
+    return this.roleDao.findOneByOrFail({ roleName: Role.IntendedRoles.default });
   }
 
   async initIntendedRoles() {

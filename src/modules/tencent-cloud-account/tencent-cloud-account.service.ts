@@ -18,8 +18,9 @@ export class TencentCloudAccountService {
   }
 
   async getCosUtilByAccountId(id: TencentCloudAccount['id']) {
-    const account = await this.accountDao.findOneOrFail(id, {
+    const account = await this.accountDao.findOneOrFail({
       select: ['id', 'SecretId', 'SecretKey', 'AppId'],
+      where: { id },
     });
     return this.getCosUtilByAccount(account);
   }

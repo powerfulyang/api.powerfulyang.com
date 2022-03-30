@@ -18,7 +18,7 @@ import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Column({ unique: true })
   email: string;
@@ -72,3 +72,7 @@ export class User {
     BotUser: 'asset bot',
   };
 }
+
+export type UserForeignKey = Pick<User, 'id'>;
+export type UserOmitRelations = Omit<User, 'families' | 'oauthOpenidArr'>;
+export type UserOmitOauthOpenidArr = Omit<User, 'oauthOpenidArr'>;

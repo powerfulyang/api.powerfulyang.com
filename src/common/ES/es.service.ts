@@ -6,13 +6,13 @@ import { AppLogger } from '@/common/logger/app.logger';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 
 @Injectable()
-export class SearchService {
+export class EsService {
   constructor(
     private readonly logger: AppLogger,
     private readonly elasticsearchService: ElasticsearchService,
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
   ) {
-    this.logger.setContext(SearchService.name);
+    this.logger.setContext(EsService.name);
     // TODO 初始化 index
   }
 

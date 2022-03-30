@@ -6,7 +6,7 @@ import type { User } from '@/modules/user/entities/user.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
 import type { ReqExtend } from '@/type/ReqExtend';
-import { JWT_SECRET } from '@/constants/PROVIDER_TOKEN';
+import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { getTokenFromRequest } from '@/common/authorization/util';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly logger: AppLogger,
     private readonly userService: UserService,
-    @Inject(JWT_SECRET) readonly secret: string,
+    @Inject(JWT_SECRET_CONFIG) readonly secret: string,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -31,7 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.debug(`user query [ id: ${user.id} ] !`);
     const cachedUser = await this.userService.getCachedUser(user.id);
     process.nextTick(() => {
-      this.userService.update(user.id, {
+      this.userService.updateUserWithoutCache(user.id, {
         lastIp: extend.xRealIp,
         lastAddress: extend.address,
       });

@@ -67,7 +67,7 @@ export class PublicController {
     @FamilyMembersFromAuth() users: User[],
     @Query('size') size: string = '20',
   ) {
-    return this.assetService.infiniteQuery(id, size, pluck('id', users));
+    return this.assetService.infiniteQuery(id, pluck('id', users), Number(size));
   }
 
   @Get('asset/:id')

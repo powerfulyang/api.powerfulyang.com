@@ -1,21 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
-import { AppModule } from '@/app.module';
-import { SUCCESS } from '@/constants/constants';
+import { AssetModule } from '@/modules/asset/asset.module';
+import { OrmModule } from '@/common/ORM/orm.module';
 
 describe('AssetService', () => {
   let service: AssetService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [OrmModule, AssetModule],
     }).compile();
 
     service = module.get<AssetService>(AssetService);
   });
 
-  it('deleteAsset', async () => {
-    const res = await service.deleteAsset([]);
+  it('publicAssetSource', async () => {
+    const res = await service.publicAssetSource();
+    expect(res).toBeDefined();
+  });
+
+  it('getAssets', async () => {
+    const res = await service.getAssets();
+    expect(res).toBeDefined();
+  });
+
+  it('all', async () => {
+    const res = await service.all();
     expect(res).toBeDefined();
   });
 
@@ -24,17 +34,17 @@ describe('AssetService', () => {
     expect(maps).toBeDefined();
   });
 
-  it('sync form cos', async function () {
-    const res = await service.syncFromCos();
-    expect(res).toBe(SUCCESS);
+  it('infiniteQuery', async function () {
+    const res = await service.infiniteQuery();
+    expect(res).toBeDefined();
   });
 
-  it('random asset', async () => {
+  it('randomAsset', async () => {
     const res = await service.randomAsset();
     expect(res).toBeDefined();
   });
 
-  it('random post poster', async () => {
+  it('randomPostPoster', async () => {
     const res = await service.randomPostPoster();
     expect(res).toBeDefined();
   });

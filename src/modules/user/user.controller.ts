@@ -9,7 +9,7 @@ import {
   JwtAuthGuard,
 } from '@/common/decorator/auth-guard.decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
-import { UserDto } from '@/modules/user/dto/UserDto';
+import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization } from '@/constants/constants';
@@ -78,12 +78,10 @@ export class UserController {
 
   @Post('login')
   @UseInterceptors(CookieInterceptor)
-  async login(@Body() user: UserDto) {
+  async login(@Body() user: UserLoginDto) {
     this.logger.info(`${user.email} try to login in!!!`);
-    const userInfo = await this.userService.login(user);
-    const token = this.userService.generateAuthorization(userInfo);
+    const token = await this.userService.login(user);
     return {
-      ...userInfo,
       cookie: [Authorization, token],
     };
   }

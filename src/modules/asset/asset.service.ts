@@ -5,8 +5,8 @@ import {
   UnprocessableEntityException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, LessThan, Not, Repository, Transaction, TransactionRepository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, In, LessThan, Not, Repository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -17,7 +17,7 @@ import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestBotService } from 'api/pinterest-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
-import { last } from 'ramda';
+import { isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { SUCCESS } from '@/constants/constants';
 import { CoreService } from '@/core/core.service';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
@@ -25,7 +25,7 @@ import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
-import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
+import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { AppLogger } from '@/common/logger/app.logger';
 import { UploadAssetService } from '@/microservice/handleAsset/upload-asset.service';
 import { ScheduleType } from '@/enum/ScheduleType';
@@ -38,7 +38,7 @@ import { BucketService } from '@/modules/bucket/bucket.service';
 export class AssetService {
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
-    @InjectRepository(CosBucket) private readonly bucketDao: Repository<CosBucket>,
+    @InjectEntityManager() private readonly entityManager: EntityManager,
     private readonly coreService: CoreService,
     private readonly pixivBotService: PixivBotService,
     private readonly instagramBotService: InstagramBotService,
@@ -63,17 +63,19 @@ export class AssetService {
   }
 
   // 获取有权限的资源
-  async getAssets(pagination: Pagination, ids: User['id'][] = []) {
+  async getAssets(pagination: Partial<Pagination> = {}, ids: User['id'][] = []) {
     const publicAssetSource = await this.publicAssetSource();
     return this.assetDao.findAndCount({
       ...pagination,
       order: { id: 'DESC' },
       where: [
         {
-          uploadBy: In([...ids, ...publicAssetSource.publicUserIds]),
-        },
-        {
-          bucket: In(publicAssetSource.publicBucketIds),
+          uploadBy: {
+            id: In([...ids, ...publicAssetSource.publicUserIds]),
+          },
+          bucket: {
+            id: In(publicAssetSource.publicBucketIds),
+          },
         },
       ],
     });
@@ -134,28 +136,27 @@ export class AssetService {
   /**
    * 批量删除 asset
    * @param ids
-   * @param assetRepository
    */
-  @Transaction()
-  async deleteAsset(
-    ids: number[],
-    @TransactionRepository(Asset) assetRepository?: Repository<Asset>,
-  ) {
-    for (const id of ids) {
-      const asset = await assetRepository!.findOneOrFail(id);
-      const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
-        asset.bucket.tencentCloudAccount.id,
-      );
-      const res = await util.deleteObject({
-        Key: `${asset.sha1}${asset.fileSuffix}`,
-        Bucket: asset.bucket.Bucket,
-        Region: asset.bucket.Region,
-      });
-      await assetRepository!.delete(id);
-      if (res.statusCode !== HttpStatus.NO_CONTENT) {
-        throw new ServiceUnavailableException(`删除cos源文件失败, 数据库回滚`);
+  async deleteAsset(ids: number[]) {
+    await this.entityManager.transaction(async (transactionalEntityManager) => {
+      for (const id of ids) {
+        const asset = await transactionalEntityManager.findOneByOrFail(Asset, {
+          id,
+        });
+        const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+          asset.bucket.tencentCloudAccount.id,
+        );
+        const res = await util.deleteObject({
+          Key: `${asset.sha1}${asset.fileSuffix}`,
+          Bucket: asset.bucket.Bucket,
+          Region: asset.bucket.Region,
+        });
+        if (res.statusCode !== HttpStatus.NO_CONTENT) {
+          throw new ServiceUnavailableException(`删除cos源文件失败, 数据库回滚`);
+        }
+        await transactionalEntityManager.remove(asset);
       }
-    }
+    });
     return SUCCESS;
   }
 
@@ -188,7 +189,7 @@ export class AssetService {
   }
 
   async syncFromCos() {
-    const buckets = await this.bucketDao.find();
+    const buckets = await this.bucketService.all();
     for (const bucket of buckets) {
       const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
         bucket.tencentCloudAccount.id,
@@ -198,9 +199,9 @@ export class AssetService {
         const fileExtname = extname(object.Key);
         const hash = basename(object.Key, fileExtname);
         const fileSuffix = fileExtname.substring(1);
-        const asset = await this.assetDao.findOne({ sha1: hash });
+        const asset = await this.assetDao.findOneBy({ sha1: hash });
         // asset 不存在
-        if (!asset) {
+        if (isNull(asset)) {
           const cosUrl = await this.getCosUrl(object.Key, bucket);
           const objectUrl = await this.getObjectUrl(object.Key, bucket);
           const path = join(process.cwd(), 'assets', `${hash}.${fileSuffix}`);
@@ -276,14 +277,13 @@ export class AssetService {
   async manualUpload(buffer: Buffer, bucketName: CosBucket['name'], uploadBy: User) {
     let asset = this.assetDao.create();
     asset.sha1 = sha1(buffer);
-    const isExist = await this.assetDao.findOne({ sha1: asset.sha1 });
-    if (isExist) {
-      return isExist;
+    // 已经上传过的
+    const result = await this.assetDao.findOneBy({ sha1: asset.sha1 });
+    if (isNotNull(result)) {
+      return result;
     }
     // 库里面木有
-    asset.bucket = await this.bucketDao.findOneOrFail({
-      name: bucketName,
-    });
+    asset.bucket = await this.bucketService.getBucketByBucketName(bucketName);
     asset.uploadBy = uploadBy;
     const s = sharp(buffer);
     const metadata = await s.metadata();
@@ -305,7 +305,7 @@ export class AssetService {
       };
       await this.uploadStaticService.persistent(data);
       // 再查一遍 返回 objectUrl
-      asset = await this.assetDao.findOneOrFail({ id: asset.id });
+      asset = await this.assetDao.findOneByOrFail({ id: asset.id });
     } catch (e) {
       this.logger.error(e);
     }
@@ -317,13 +317,11 @@ export class AssetService {
    * @param bucketName
    */
   async assetBotSchedule(bucketName: CosBucket['name']) {
-    const bucket = await this.bucketDao.findOneOrFail({
-      name: bucketName,
-    });
+    const bucket = await this.bucketService.getBucketByBucketName(bucketName);
     const max = await this.assetDao.findOne({
       order: { id: 'DESC' },
       where: {
-        bucket,
+        bucket: { name: bucketName },
         sn: Not(''),
       },
     });
@@ -386,16 +384,17 @@ export class AssetService {
   }
 
   async infiniteQuery(
-    id: Asset['id'],
-    size: string,
-    ids: User['id'][],
+    cursor?: Asset['id'],
+    ids: User['id'][] = [],
+    take: number = 20,
   ): Promise<InfiniteQueryResponse<Asset>> {
-    const take = Number(size);
     const BotUser = await this.userService.getAssetBotUser();
     const res = await this.assetDao.find({
       where: {
-        id: LessThan(id || 2 ** 31 - 1),
-        uploadBy: In(ids.concat(BotUser.id)),
+        id: LessThan(cursor || 2 ** 31 - 1),
+        uploadBy: {
+          id: In(ids.concat(BotUser.id)),
+        },
       },
       order: {
         id: 'DESC',
@@ -404,7 +403,7 @@ export class AssetService {
     });
     return {
       resources: res,
-      nextCursor: res.length === take ? last(res)?.id : undefined,
+      nextCursor: res.length === take ? lastItem(res)?.id : undefined,
     };
   }
 
@@ -413,11 +412,11 @@ export class AssetService {
     return this.assetDao
       .createQueryBuilder()
       .where({
-        bucket: In(publicBucketIds),
+        bucket: { id: In(publicBucketIds) },
       })
       .orderBy('random()')
       .limit(1)
-      .getOneOrFail();
+      .getOne();
   }
 
   async randomPostPoster() {
@@ -432,6 +431,6 @@ export class AssetService {
       )
       .orderBy('random()')
       .limit(1)
-      .getOneOrFail();
+      .getOne();
   }
 }

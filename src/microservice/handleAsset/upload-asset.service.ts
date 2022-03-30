@@ -25,7 +25,7 @@ export class UploadAssetService {
     const Key = `${data.sha1}.${data.suffix}`;
 
     const { name } = data;
-    const bucket = await this.bucketService.getBucketByName(name);
+    const bucket = await this.bucketService.getBucketByBucketName(name);
     const { Bucket, Region } = bucket;
     const { tencentCloudAccount } = bucket;
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(

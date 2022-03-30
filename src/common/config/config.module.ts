@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from './config.service';
-import '@/loadEnv';
+import { LoggerModule } from '@/common/logger/logger.module';
 
 @Module({
+  imports: [LoggerModule],
   providers: [ConfigService],
   exports: [ConfigService],
 })

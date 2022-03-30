@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CacheService } from './cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { CacheModule } from '@/core/cache/cache.module';
+import { CacheModule } from '@/common/cache/cache.module';
 import { LoggerModule } from '@/common/logger/logger.module';
 
 describe('CacheService', () => {
