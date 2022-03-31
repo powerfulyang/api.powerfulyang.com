@@ -3,6 +3,7 @@ import { ClientsModule } from '@nestjs/microservices';
 import { MICROSERVICE_NAME } from '@/constants/constants';
 import { ConfigModule } from '@/common/config/config.module';
 import { ConfigService } from '@/common/config/config.service';
+import { MqService } from '@/common/MQ/mq.service';
 
 @Module({
   imports: [
@@ -17,5 +18,7 @@ import { ConfigService } from '@/common/config/config.service';
       },
     ]),
   ],
+  exports: [MqService],
+  providers: [MqService],
 })
 export class MqModule {}

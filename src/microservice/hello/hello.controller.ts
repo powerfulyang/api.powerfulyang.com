@@ -13,7 +13,7 @@ export class HelloController {
   hello(@Ctx() context: RmqContext) {
     const message = context.getMessage();
     const channel = context.getChannelRef();
-    this.logger.debug('hello');
+    this.logger.debug('hello world!!!');
     return channel.ack(message);
   }
 }

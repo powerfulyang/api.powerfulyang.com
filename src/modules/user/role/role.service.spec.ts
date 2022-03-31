@@ -1,20 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoleService } from './role.service';
-import { AppModule } from '@/app.module';
+import { UserModule } from '../user.module';
 
 describe('RoleService', () => {
   let service: RoleService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [UserModule],
     }).compile();
 
     service = module.get<RoleService>(RoleService);
   });
 
   it('init intended roles', async function () {
-    const affected = service.initIntendedRoles();
-    expect(affected).toBeDefined();
+    const roles = await service.initIntendedRoles();
+    expect(roles).toBeDefined();
+    const result = await service.getDefaultRole();
+    expect(result).toBeDefined();
   });
 });

@@ -8,19 +8,20 @@ import { UserService } from '@/modules/user/user.service';
 import type { ReqExtend } from '@/type/ReqExtend';
 import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { getTokenFromRequest } from '@/common/authorization/util';
+import type { jwtSecretConfig } from '@/configuration/jwt.config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly logger: AppLogger,
     private readonly userService: UserService,
-    @Inject(JWT_SECRET_CONFIG) readonly secret: string,
+    @Inject(JWT_SECRET_CONFIG) readonly config: ReturnType<typeof jwtSecretConfig>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => getTokenFromRequest(request),
       ]),
-      secretOrKey: secret,
+      secretOrKey: config.secret,
       passReqToCallback: true,
     });
     this.logger.setContext(JwtStrategy.name);

@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '@/modules/user/entities/user.entity';
+import { User, UserForeignKey } from '@/modules/user/entities/user.entity';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 
 @Entity('post')
@@ -31,11 +31,11 @@ export class Post {
   public: boolean;
 
   @Column()
-  publishYear: string;
+  publishYear: number;
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false, eager: true })
-  createBy: User;
+  createBy: UserForeignKey;
 
   @JoinColumn()
   @ManyToOne(() => Asset, { eager: true })
@@ -50,7 +50,7 @@ export class Post {
   @BeforeInsert()
   beforeInsert() {
     if (!this.publishYear) {
-      this.publishYear = String(new Date().getFullYear());
+      this.publishYear = new Date().getFullYear();
     }
     if (!this.tags?.length) {
       this.tags = ['这个人居然不写标签'];

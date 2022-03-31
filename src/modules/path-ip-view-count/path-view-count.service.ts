@@ -18,27 +18,27 @@ export class PathViewCountService {
     this.logger.setContext(PathViewCountService.name);
   }
 
-  async cache() {
+  async initPathViewCountCache() {
     const results = await this.pathViewCountDao.find({
       select: ['path', 'ip'],
     });
     const mapSet = groupBy<PathViewCount>((a) => a.path)(results);
-    for (const [path, set] of Object.entries(mapSet)) {
+    Object.entries(mapSet).forEach(([path, set]) => {
       // 先清理再缓存
       const handleKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);
-      await this.cacheService.del(handleKey);
-      await this.cacheService.sAdd(
+      this.cacheService.sAdd(
         handleKey,
         set.map((x) => x.ip.toString()),
       );
-    }
+    });
+
     return mapSet;
   }
 
   async handlePathViewCount(path: string, ip: string) {
     const ipLong = ip2long(ip);
     const redisKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);
-    const result = await this.cacheService.sAdd(redisKey, ipLong.toString());
+    const result = await this.cacheService.sAdd(redisKey, ipLong);
     const viewCount = await this.cacheService.sCard(redisKey);
     if (result > 0) {
       this.pathViewCountDao.insert({ ip: ipLong, path }).catch(() => {

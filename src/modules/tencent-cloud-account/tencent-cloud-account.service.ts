@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
+import type { CreateTencentCloudAccountDto } from '@/modules/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
 
 @Injectable()
 export class TencentCloudAccountService {
@@ -25,6 +26,14 @@ export class TencentCloudAccountService {
     return this.getCosUtilByAccount(account);
   }
 
+  async getAppIdByAccountId(id: TencentCloudAccount['id']) {
+    const account = await this.accountDao.findOneOrFail({
+      select: ['id', 'AppId'],
+      where: { id },
+    });
+    return account.AppId;
+  }
+
   private getCosUtilByAccount(account: TencentCloudAccount) {
     let util = this.cosUtilMap.get(account.id);
     if (!util) {
@@ -32,13 +41,13 @@ export class TencentCloudAccountService {
         SecretId: account.SecretId,
         SecretKey: account.SecretKey,
       });
-      // TODO 测试一下 key 是否正确
+      // TODO 测试一下 SecretKey&SecretId  是否正确
       this.cosUtilMap.set(account.id, util);
     }
     return util;
   }
 
-  async create(account: TencentCloudAccount) {
-    return this.accountDao.save(account);
+  async create(account: CreateTencentCloudAccountDto) {
+    return this.accountDao.insert(account);
   }
 }

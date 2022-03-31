@@ -5,9 +5,15 @@ import { OauthOpenidService } from './oauth-openid.service';
 import { OauthOpenidController } from './oauth-openid.controller';
 import { OauthApplicationModule } from '@/modules/oauth-application/oauth-application.module';
 import { LoggerModule } from '@/common/logger/logger.module';
+import { OrmModule } from '@/common/ORM/orm.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([OauthOpenid]), OauthApplicationModule, LoggerModule],
+  imports: [
+    OrmModule,
+    TypeOrmModule.forFeature([OauthOpenid]),
+    OauthApplicationModule,
+    LoggerModule,
+  ],
   controllers: [OauthOpenidController],
   providers: [OauthOpenidService],
   exports: [OauthOpenidService],

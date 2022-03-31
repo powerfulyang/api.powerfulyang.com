@@ -14,12 +14,13 @@ export class CacheService {
     this.logger.setContext(CacheService.name);
     this.redisClient = createClient(this.configService.getRedisConfig());
     this.redisClient.connect().catch((err) => {
-      this.logger.error(err, `Redis connection error.`);
+      this.logger.error(`Redis connection error.`, err);
     });
   }
 
   /**
    * Set a key value pair in redis
+   * returns 'OK' if the key is set successfully
    * @param key
    * @param value
    */
@@ -74,7 +75,11 @@ export class CacheService {
    * @param sKey
    * @param arr
    */
-  sAdd(sKey: string, arr: string | string[]) {
+  sAdd(sKey: string, arr: string | string[] | number) {
+    if (isNumber(arr)) {
+      const v = arr.toString();
+      return this.redisClient.sAdd(sKey, v);
+    }
     return this.redisClient.sAdd(sKey, arr);
   }
 

@@ -21,18 +21,24 @@ export class BootstrapService {
     this.logger.setContext(BootstrapService.name);
   }
 
-  async bootstrap() {
-    setTimeout(() => {
-      this.cacheUsers();
-      this.refreshObjectUrl();
-      this.cachePathViewCount();
-      this.initBucket();
-      this.initIntendedData();
-    }, 1000 * 10);
+  bootstrap() {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        Promise.all([
+          this.cacheUsers(),
+          this.refreshObjectUrl(),
+          this.cachePathViewCount(),
+          this.initBucket(),
+          this.initIntendedData(),
+        ]).then(() => {
+          resolve();
+        });
+      }, 1000 * 10);
+    });
   }
 
   async refreshObjectUrl() {
-    const bool = await this.coreService.isProdCommonNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
       this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
         this.logger.info('每次重启的时候需要刷新一下 object url!');
@@ -41,7 +47,7 @@ export class BootstrapService {
   }
 
   async cacheUsers() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
       // cache users
       this.userService.cacheUsers().then(() => {
@@ -51,16 +57,16 @@ export class BootstrapService {
   }
 
   async cachePathViewCount() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      this.pathViewCountService.cache().then(() => {
+      this.pathViewCountService.initPathViewCountCache().then(() => {
         this.logger.info('path view count map cached success!');
       });
     }
   }
 
   async initBucket() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
       this.bucketService.initBucket().then(() => {
         this.logger.info('init buckets complete!');
@@ -69,7 +75,7 @@ export class BootstrapService {
   }
 
   async initIntendedData() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
       this.roleService.initIntendedRoles().then(() => {
         this.logger.info('init roles complete!');

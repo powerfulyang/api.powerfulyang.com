@@ -10,30 +10,30 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import { User } from '@/modules/user/entities/user.entity';
+import { User, UserForeignKey } from '@/modules/user/entities/user.entity';
 
 @Entity()
 export class Feed {
   @PrimaryGeneratedColumn()
-  id?: number;
+  id: number;
 
   @Column()
   content: string;
 
   @ManyToMany(() => Asset, { onDelete: 'CASCADE', eager: true })
   @JoinTable()
-  assets?: Asset[];
+  assets: Asset[];
 
   @Column({ default: true })
   public: boolean;
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false, eager: true })
-  createBy: User;
+  createBy: UserForeignKey;
 
   @CreateDateColumn()
-  createAt?: Date;
+  createAt: Date;
 
   @UpdateDateColumn()
-  updateAt?: Date;
+  updateAt: Date;
 }

@@ -18,7 +18,7 @@ export class PinterestScheduleService {
 
   @Cron('0 45 * * * *')
   async bot() {
-    const bool = await this.coreService.isProdCommonNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (!bool) {
       return SUCCESS;
     }

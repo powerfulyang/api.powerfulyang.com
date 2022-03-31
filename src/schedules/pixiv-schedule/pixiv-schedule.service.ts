@@ -18,7 +18,7 @@ export class PixivScheduleService {
 
   @Cron('0 30 * * * *')
   async bot() {
-    const bool = await this.coreService.isProdCommonNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (!bool) {
       return SUCCESS;
     }

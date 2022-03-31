@@ -3,21 +3,7 @@ import { ForbiddenException, UseInterceptors } from '@nestjs/common';
 
 export const ImagesFileUploadInterceptor = (filedName: string) =>
   FilesInterceptor(filedName, undefined, {
-    fileFilter(
-      _req: any,
-      file: {
-        fieldname: string;
-        originalname: string;
-        encoding: string;
-        mimetype: string;
-        size: number;
-        destination: string;
-        filename: string;
-        path: string;
-        buffer: Buffer;
-      },
-      callback: (error: Error | null, acceptFile: boolean) => void,
-    ) {
+    fileFilter(_req, file, callback) {
       // file size limit by nginx
       if (/^(image|video|audio)\//.test(file.mimetype)) {
         callback(null, true);

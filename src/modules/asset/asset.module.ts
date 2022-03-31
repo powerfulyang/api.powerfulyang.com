@@ -3,24 +3,32 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PixivBotModule } from 'api/pixiv-bot';
 import { InstagramBotModule } from 'api/instagram-bot';
 import { PinterestBotModule } from 'api/pinterest-bot';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { BucketModule } from '@/modules/bucket/bucket.module';
 import { AssetService } from './asset.service';
 import { AssetController } from './asset.controller';
-import { UploadAssetModule } from '@/microservice/handleAsset/upload-asset.module';
 import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
 import { UserModule } from '@/modules/user/user.module';
+import { OrmModule } from '@/common/ORM/orm.module';
+import { LoggerModule } from '@/common/logger/logger.module';
+import { CoreModule } from '@/core/core.module';
+import { MqModule } from '@/common/MQ/mq.module';
 
 @Module({
   imports: [
+    OrmModule,
+    LoggerModule,
     TypeOrmModule.forFeature([Asset]),
-    BucketModule,
+    CoreModule,
     PixivBotModule,
     InstagramBotModule,
     PinterestBotModule,
-    UploadAssetModule,
     TencentCloudAccountModule,
     UserModule,
+    BucketModule,
+    MqModule,
+    ProxyFetchModule.forRoot(),
   ],
   providers: [AssetService],
   controllers: [AssetController],

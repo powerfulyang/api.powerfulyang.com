@@ -5,10 +5,10 @@ import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 
 export class CreateBucketDto extends PartialType(CosBucket) {
   @IsNotEmpty()
-  declare Region: BucketRegion;
+  declare name: string;
 
   @IsNotEmpty()
-  declare Bucket: string;
+  declare Region: BucketRegion;
 
   @IsNotEmpty()
   declare tencentCloudAccount: CosBucket['tencentCloudAccount'];
