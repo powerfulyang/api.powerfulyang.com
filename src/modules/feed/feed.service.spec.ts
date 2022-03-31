@@ -1,27 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FeedService } from './feed.service';
-import { AppModule } from '@/app.module';
-import { UserService } from '@/modules/user/user.service';
-import { AssetService } from '@/modules/asset/asset.service';
+import { FeedModule } from '@/modules/feed/feed.module';
 
 describe('FeedService', () => {
   let service: FeedService;
-  let userService: UserService;
-  let assetService: AssetService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [FeedModule],
     }).compile();
 
     service = module.get<FeedService>(FeedService);
-    userService = module.get<UserService>(UserService);
-    assetService = module.get<AssetService>(AssetService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-    expect(userService).toBeDefined();
-    expect(assetService).toBeDefined();
+  it('postNewFeed', async () => {
+    const result = await service.postNewFeed({ content: 'test', createBy: { id: 1 } });
+    expect(result.content).toBe('test');
+    const res = await service.updateFeed(result.id, { content: 'test2' });
+    expect(res).toBeDefined();
+  });
+
+  it('infiniteQuery', async function () {
+    let result = await service.infiniteQuery();
+    while (result.nextCursor) {
+      result = await service.infiniteQuery(result.nextCursor);
+      expect(result.resources).toBeDefined();
+    }
   });
 });

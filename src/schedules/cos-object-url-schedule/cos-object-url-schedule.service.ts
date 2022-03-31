@@ -16,7 +16,7 @@ export class CosObjectUrlScheduleService {
 
   @Interval(60 * 60 * 24 * 999)
   async refreshObjectUrl() {
-    const bool = await this.coreService.isProdCommonNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (!bool) {
       return;
     }

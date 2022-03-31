@@ -26,6 +26,7 @@ export class AssetController {
 
   @Post(':bucketName')
   @ImagesInterceptor()
+  @AdminAuthGuard()
   saveAssetToBucket(
     @UploadedFiles() files: UploadFile[],
     @Param('bucketName') bucketName: CosBucket['name'],

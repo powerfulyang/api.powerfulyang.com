@@ -28,7 +28,7 @@ import { CacheService } from '@/common/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { Family } from '@/modules/user/entities/family.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
-import { checkRedisResult, SUCCESS } from '@/constants/constants';
+import { SUCCESS } from '@/constants/constants';
 import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { MailService } from '@/common/mail/mail.service';
 
@@ -262,8 +262,7 @@ export class UserService {
   private async saveUserAndCached<T extends UserOmitRelations>(user: T) {
     const updatedUser = await this.userDao.save(user);
     // update to cache
-    const res = await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
-    checkRedisResult(res, '缓存用户失败!');
+    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
     return updatedUser;
   }
 

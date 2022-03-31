@@ -2,7 +2,6 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { pluck } from 'ramda';
 import { Post } from '@/modules/post/entities/post.entity';
 import { AppLogger } from '@/common/logger/app.logger';
-import { PublicService } from '@/public/public.service';
 import { Pagination } from '@/common/decorator/pagination.decorator';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
@@ -16,7 +15,6 @@ import type { Asset } from '@/modules/asset/entities/asset.entity';
 @PublicAuthGuard()
 export class PublicController {
   constructor(
-    private readonly publicService: PublicService,
     private readonly logger: AppLogger,
     private readonly assetService: AssetService,
     private readonly postService: PostService,
@@ -33,7 +31,7 @@ export class PublicController {
 
   @Get('post')
   getPosts(@FamilyMembersFromAuth() users: User[], @Query() post: Post) {
-    return this.postService.getPosts(post, pluck('id', users));
+    return this.postService.queryPosts(post, pluck('id', users));
   }
 
   @Get('post/years')
@@ -47,13 +45,17 @@ export class PublicController {
   }
 
   @Get('post/:id')
-  readPost(@Param() post: Post, @FamilyMembersFromAuth() users: User[]) {
-    return this.postService.readPost(post, pluck('id', users));
+  readPost(@Param('id') id: string, @FamilyMembersFromAuth() users: User[]) {
+    return this.postService.readPost(+id, pluck('id', users));
   }
 
   @Get('feed')
-  feeds(@FamilyMembersFromAuth() users: User[]) {
-    return this.feedService.feeds(pluck('id', users));
+  feeds(
+    @Query('id') id: string,
+    @FamilyMembersFromAuth() users: User[],
+    @Query('size') size: string = '20',
+  ) {
+    return this.feedService.infiniteQuery(+id, Number(size), pluck('id', users));
   }
 
   @Get('asset')
@@ -67,16 +69,11 @@ export class PublicController {
     @FamilyMembersFromAuth() users: User[],
     @Query('size') size: string = '20',
   ) {
-    return this.assetService.infiniteQuery(id, pluck('id', users), Number(size));
+    return this.assetService.infiniteQuery(id, Number(size), pluck('id', users));
   }
 
   @Get('asset/:id')
   getAssetById(@Param('id') id: string, @FamilyMembersFromAuth() users: User[]) {
-    return this.assetService.getAssetById(+id, pluck('id', users));
-  }
-
-  @Get('common-node')
-  isCommonNode() {
-    return this.publicService.isCommonNode();
+    return this.assetService.getAccessAssetById(+id, pluck('id', users));
   }
 }

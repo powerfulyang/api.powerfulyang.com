@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BucketService } from './bucket.service';
-import { AppModule } from '@/app.module';
+import { BucketModule } from '@/modules/bucket/bucket.module';
 
 describe('BucketService', () => {
   let service: BucketService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [BucketModule],
     }).compile();
 
     service = module.get<BucketService>(BucketService);
@@ -20,7 +20,7 @@ describe('BucketService', () => {
 
   it('createNewBucket', async () => {
     const res = await service.createNewBucket({
-      Bucket: 'test',
+      name: 'test',
       Region: 'ap-shanghai',
       tencentCloudAccount: {
         id: 1,
@@ -31,22 +31,6 @@ describe('BucketService', () => {
 
   it('getBucketByBucketName', async () => {
     const res = await service.getBucketByBucketName('test');
-    expect(res).toBeDefined();
-  });
-
-  it('initBucket', async () => {
-    const res = await service.initBucket();
-    expect(res).toBeDefined();
-  });
-
-  it('syncFromCloud', async () => {
-    const res = await service.syncFromCloud(
-      { id: 1 },
-      {
-        Bucket: 'test',
-        Region: 'ap-shanghai',
-      },
-    );
     expect(res).toBeDefined();
   });
 

@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
 import { AssetModule } from '@/modules/asset/asset.module';
 import { OrmModule } from '@/common/ORM/orm.module';
+import { readFileSync } from 'fs';
+import { SUCCESS } from '@/constants/constants';
 
 describe('AssetService', () => {
   let service: AssetService;
@@ -15,7 +17,7 @@ describe('AssetService', () => {
   });
 
   it('publicAssetSource', async () => {
-    const res = await service.publicAssetSource();
+    const res = await service.listPublicAssetSource();
     expect(res).toBeDefined();
   });
 
@@ -34,9 +36,35 @@ describe('AssetService', () => {
     expect(maps).toBeDefined();
   });
 
-  it('infiniteQuery', async function () {
-    const res = await service.infiniteQuery();
+  it('saveAssetToBucket and delete', async function () {
+    const file = readFileSync(process.cwd() + '/assets/test.jpg');
+    const res = await service.saveAssetToBucket(
+      [
+        {
+          buffer: file,
+        },
+      ],
+      'test',
+      {
+        id: 1,
+      },
+    );
     expect(res).toBeDefined();
+    const result = await service.deleteAsset(res.map((asset) => asset.id));
+    expect(result).toBe(SUCCESS);
+  });
+
+  it('syncFromCos', async () => {
+    const res = await service.syncFromCos();
+    expect(res).toBeDefined();
+  });
+
+  it('infiniteQuery', async function () {
+    let result = await service.infiniteQuery();
+    while (result.nextCursor) {
+      result = await service.infiniteQuery(result.nextCursor);
+      expect(result.resources).toBeDefined();
+    }
   });
 
   it('randomAsset', async () => {
@@ -44,8 +72,12 @@ describe('AssetService', () => {
     expect(res).toBeDefined();
   });
 
-  it('randomPostPoster', async () => {
-    const res = await service.randomPostPoster();
+  it('persistentToCos', async () => {
+    const res = await service.persistentToCos({
+      name: 'test',
+      sha1: 'ce023b330af210666072c097f33666e5bbf2b2df',
+      suffix: 'jpeg',
+    });
     expect(res).toBeDefined();
   });
 });

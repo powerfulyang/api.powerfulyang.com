@@ -18,7 +18,7 @@ export class InstagramScheduleService {
 
   @Cron('0 15 * * * *')
   async bot() {
-    const bool = await this.coreService.isProdCommonNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (!bool) {
       return SUCCESS;
     }

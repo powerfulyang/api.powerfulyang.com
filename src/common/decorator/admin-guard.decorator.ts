@@ -1,7 +1,9 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { AppLogger } from '@/common/logger/app.logger';
+import type { ReqExtend } from '@/type/ReqExtend';
+import { Role } from '@/modules/user/entities/role.entity';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -10,12 +12,9 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const req = context.switchToHttp().getRequest();
+    const req = context.switchToHttp().getRequest() as ReqExtend;
     const { user } = req;
     this.logger.info(`User ${user?.id} is trying to access admin area`);
-    if (user.id !== 1) {
-      throw new UnauthorizedException();
-    }
-    return true;
+    return user.roles.some((role) => role.roleName === Role.IntendedRoles.admin);
   }
 }

@@ -1,11 +1,11 @@
 import { InternalServerErrorException } from '@nestjs/common';
+import type { Nullable } from '@powerfulyang/utils';
 
-export const MICROSERVICE_NAME = 'RABBIT_MQ_MICROSERVICE';
+export const MICROSERVICE_NAME = Symbol('RABBIT_MQ_MICROSERVICE');
 export const RMQ_QUEUE = 'COS_UPLOAD';
-export const COS_UPLOAD_MSG_PATTERN = 'COS_UPLOAD_MSG_PATTERN';
 export const SUCCESS = 'SUCCESS';
-export const REDIS_OK = 0;
-export const checkRedisResult = (result: number, message?: string) => {
+export const REDIS_OK = 'OK';
+export const checkRedisResult = (result: Nullable<string>, message?: string) => {
   if (result !== REDIS_OK) {
     throw new InternalServerErrorException(message);
   }

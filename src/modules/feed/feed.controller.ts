@@ -15,10 +15,11 @@ export class FeedController {
 
   @Post()
   @ImagesInterceptor('assets')
+  @AdminAuthGuard()
   create(
     @Body() createFeedDto: CreateFeedDto,
     @UserFromAuth(['id']) user: User,
-    @UploadedFiles() assets: UploadFile[] = [],
+    @UploadedFiles() assets: UploadFile[],
   ) {
     // 因为是 FormData 格式, 只能传 string
     const isPublic = Object.is(createFeedDto.public, 'true');
@@ -35,6 +36,6 @@ export class FeedController {
   @Patch(':id')
   @AdminAuthGuard()
   update(@Param('id') id: string, @Body() updateFeedDto: UpdateFeedDto) {
-    return this.feedService.update(+id, updateFeedDto);
+    return this.feedService.updateFeed(+id, updateFeedDto);
   }
 }
