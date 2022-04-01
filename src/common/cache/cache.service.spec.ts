@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { CacheService } from './cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { CacheModule } from '@/common/cache/cache.module';
@@ -51,7 +52,7 @@ describe('CacheService', () => {
     expect(result).toStrictEqual(toAdd);
   });
 
-  it('del key', async function () {
+  it('del key', async () => {
     const result = await service.del(REDIS_KEYS.USERS);
     expect(result).toBeGreaterThanOrEqual(0);
   });

@@ -1,7 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 import { PinterestBotService } from './pinterest-bot.service';
 import { PinterestBotModule } from './pinterest-bot.module';
-import { ProxyFetchModule } from 'api/proxy-fetch';
 
 describe('PinterestRssService', () => {
   let service: PinterestBotService;

@@ -3,12 +3,12 @@ import { isProdProcess } from '@powerfulyang/utils';
 import { CacheService } from '@/common/cache/cache.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { checkRedisResult } from '@/constants/constants';
 
 @Injectable()
 export class CoreService {
-  constructor(private readonly logger: AppLogger, private readonly cacheService: CacheService) {
+  constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
     this.logger.setContext(CoreService.name);
     this.initScheduleNode().then((node) => {
       this.logger.info(`当前环境 ====> ${process.env.NODE_ENV}`);

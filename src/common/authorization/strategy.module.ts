@@ -1,17 +1,19 @@
 import type { Provider } from '@nestjs/common';
 import { Module } from '@nestjs/common';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 import { JwtStrategy } from '@/common/authorization/jwt.strategy';
 import { GoogleStrategy } from '@/common/authorization/google.strategy';
 import { UserModule } from '@/modules/user/user.module';
-import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import type { OauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { PublicAuthStrategy } from '@/common/authorization/public.auth.strategy';
+import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { PublicStrategy } from '@/common/authorization/public.strategy';
 import { GithubStrategy } from '@/common/authorization/github.strategy';
 import { JWT_SECRET_CONFIG, OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { ConfigService } from '@/common/config/config.service';
 import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
 import { OauthApplicationModule } from '@/modules/oauth-application/oauth-application.module';
 import { ConfigModule } from '@/common/config/config.module';
+import { LoggerModule } from '@/common/logger/logger.module';
 
 export declare type OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE = {
   [key in SupportOauthApplication]: OauthApplication;
@@ -41,11 +43,17 @@ const OauthApplicationConfigProvider: Provider = {
 };
 
 @Module({
-  imports: [UserModule, OauthApplicationModule, ConfigModule],
+  imports: [
+    UserModule,
+    OauthApplicationModule,
+    ConfigModule,
+    LoggerModule,
+    ProxyFetchModule.forRoot(),
+  ],
   providers: [
     JwtStrategy,
     GoogleStrategy,
-    PublicAuthStrategy,
+    PublicStrategy,
     GithubStrategy,
     JwtConfigProvider,
     OauthApplicationConfigProvider,

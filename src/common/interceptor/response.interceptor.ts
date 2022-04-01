@@ -2,17 +2,17 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/com
 import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import type { Request, Response } from 'express';
-import { AppLogger } from '@/common/logger/app.logger';
+import type { Response } from 'express';
+import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, CookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
-import type { ReqExtend } from '@/type/ReqExtend';
+import type { RequestExtend } from '@/type/RequestExtend';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   constructor(
-    private logger: AppLogger,
+    private logger: LoggerService,
     private userService: UserService,
     private pathViewCountService: PathViewCountService,
   ) {
@@ -21,16 +21,12 @@ export class ResponseInterceptor implements NestInterceptor {
 
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = _context.switchToHttp();
-    this.logger.debug(`handle in ${ResponseInterceptor.name}`);
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request & ReqExtend>();
+    const request = ctx.getRequest<RequestExtend>();
     const path = request.url;
     const { xRealIp } = request.extend;
 
     return next.handle().pipe(
-      tap(() => {
-        this.logger.debug(`tap in ${ResponseInterceptor.name}`);
-      }),
       tap(() => {
         // check token expire time;
         if (request.user) {
@@ -45,13 +41,16 @@ export class ResponseInterceptor implements NestInterceptor {
         }
       }),
       mergeMap(async (data) => {
-        const count = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
+        let pathViewCount = 0;
+        if (xRealIp) {
+          pathViewCount = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
+        }
         if (data) {
           return {
             data,
             timestamp: new Date().toISOString(),
             path: request.url,
-            pathViewCount: count,
+            pathViewCount,
           };
         }
         return data;

@@ -1,13 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { EsService } from './es.service';
-import { AppModule } from '@/app.module';
+import { EsModule } from '@/common/ES/es.module';
 
 describe('SearchService', () => {
   let service: EsService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [EsModule],
     }).compile();
 
     service = module.get<EsService>(EsService);
@@ -18,17 +19,17 @@ describe('SearchService', () => {
     expect(result).toBeDefined();
   });
 
-  it('index feed', async function () {
+  it('index feed', async () => {
     const result = await service.createFeedIndex();
     expect(result).toBeDefined();
   });
 
-  it('delete feed index', async function () {
+  it('delete feed index', async () => {
     const result = await service.deleteFeedIndex();
     expect(result).toBeDefined();
   });
 
-  it('ES feed', async function () {
+  it('ES feed', async () => {
     const result = await service.searchFeedByContent('我的第一条说说! #第一条说说');
     expect(result).toBeDefined();
   });

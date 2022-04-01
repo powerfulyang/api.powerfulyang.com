@@ -1,6 +1,6 @@
 import { AuthGuard } from '@nestjs/passport';
 import { UseGuards } from '@nestjs/common';
-import { AdminGuard } from '@/common/decorator/admin-guard.decorator';
+import { AdminGuard } from '@/common/authorization/admin-guard';
 
 export const JwtAuthGuard = () => UseGuards(AuthGuard('jwt'));
 export const GoogleAuthGuard = () => UseGuards(AuthGuard('google'));

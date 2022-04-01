@@ -1,21 +1,21 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { pluck } from 'ramda';
-import { Post } from '@/modules/post/entities/post.entity';
-import { AppLogger } from '@/common/logger/app.logger';
-import { Pagination } from '@/common/decorator/pagination.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import { Pagination, QueryPagination } from '@/common/decorator/pagination.decorator';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
 import { FeedService } from '@/modules/feed/feed.service';
-import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { PublicAuthGuard } from '@/common/decorator';
 import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { Asset } from '@/modules/asset/entities/asset.entity';
+import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 
 @Controller('public')
 @PublicAuthGuard()
 export class PublicController {
   constructor(
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly assetService: AssetService,
     private readonly postService: PostService,
     private readonly feedService: FeedService,
@@ -25,12 +25,11 @@ export class PublicController {
 
   @Get('hello')
   hello() {
-    this.logger.info('Hello world');
     return 'Hello World!!!';
   }
 
   @Get('post')
-  getPosts(@FamilyMembersFromAuth() users: User[], @Query() post: Post) {
+  getPosts(@FamilyMembersFromAuth() users: User[], @Query() post: SearchPostDto) {
     return this.postService.queryPosts(post, pluck('id', users));
   }
 
@@ -59,7 +58,7 @@ export class PublicController {
   }
 
   @Get('asset')
-  assets(@Pagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
+  assets(@QueryPagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
     return this.assetService.getAssets(pagination, pluck('id', users));
   }
 

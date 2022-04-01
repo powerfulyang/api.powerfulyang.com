@@ -12,8 +12,8 @@
 # IDEs and editors
 /.idea
 
-
 .env
+.env.*
 
 
 .cookies/*

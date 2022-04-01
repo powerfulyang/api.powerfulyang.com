@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { RoleService } from './role.service';
 import { UserModule } from '../user.module';
 
@@ -13,7 +14,7 @@ describe('RoleService', () => {
     service = module.get<RoleService>(RoleService);
   });
 
-  it('init intended roles', async function () {
+  it('init intended roles', async () => {
     const roles = await service.initIntendedRoles();
     expect(roles).toBeDefined();
     const result = await service.getDefaultRole();

@@ -1,7 +1,7 @@
 import { AES } from '@/utils/aes';
 
 describe('aes', () => {
-  it('aes test', function () {
+  it('aes test', () => {
     const key = '1234123412341234';
     const iv = '1234567812341234';
     const data = '(๑′ᴗ‵๑)Ｉ Lᵒᵛᵉᵧₒᵤ❤';

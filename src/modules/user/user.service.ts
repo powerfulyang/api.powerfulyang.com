@@ -14,14 +14,13 @@ import {
   isNull,
   isUndefined,
 } from '@powerfulyang/utils';
-import { getStringVal } from '@/utils/getStringVal';
 import type { UserLoginDto } from '@/modules/user/dto/user-login.dto';
 import type {
   UserOmitOauthOpenidArr,
   UserOmitRelations,
 } from '@/modules/user/entities/user.entity';
 import { User } from '@/modules/user/entities/user.entity';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import type { Menu } from '@/modules/user/entities/menu.entity';
 import { RoleService } from '@/modules/user/role/role.service';
 import { CacheService } from '@/common/cache/cache.service';
@@ -40,7 +39,7 @@ export class UserService {
     @InjectRepository(Family)
     private readonly familyDao: Repository<Family>,
     private readonly jwtService: JwtService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly roleService: RoleService,
     private readonly cacheService: CacheService,
     private readonly oauthOpenidService: OauthOpenidService,
@@ -66,7 +65,7 @@ export class UserService {
   async cacheUsers() {
     // 初始化用户缓存
     const keyCount = await this.cacheService.del(REDIS_KEYS.USERS);
-    this.logger.debug(`删除 ${keyCount} 个 Redis Key`);
+    this.logger.debug(`初始化用户缓存，删除 ${keyCount} 个缓存`);
     const users = await this.queryUserCascadeFamilyInfo();
     const userMap = users.reduce((acc, user) => {
       Reflect.set(acc, user.id, user);
@@ -145,9 +144,9 @@ export class UserService {
       } else {
         // 创建新用户
         user = this.userDao.create();
-        user.email = email!;
+        user.email = email;
         user.avatar = avatar;
-        user.nickname = getStringVal(profile.displayName);
+        user.nickname = profile.displayName;
         user = await this.initUserDefaultProperty(user);
         user = await this.saveUserAndCached(user);
         // 关联新的 openid

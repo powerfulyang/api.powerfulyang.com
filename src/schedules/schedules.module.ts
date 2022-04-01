@@ -8,9 +8,18 @@ import { PinterestScheduleService } from './pinterest-schedule/pinterest-schedul
 import { UdpScheduleService } from './udp-schedule/udp-schedule.service';
 import { CosObjectUrlScheduleService } from './cos-object-url-schedule/cos-object-url-schedule.service';
 import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
+import { LoggerModule } from '@/common/logger/logger.module';
+import { CoreModule } from '@/core/core.module';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), UdpServerModule, AssetModule, TencentCloudAccountModule],
+  imports: [
+    ScheduleModule.forRoot(),
+    UdpServerModule,
+    AssetModule,
+    TencentCloudAccountModule,
+    LoggerModule,
+    CoreModule,
+  ],
   providers: [
     PixivScheduleService,
     InstagramScheduleService,

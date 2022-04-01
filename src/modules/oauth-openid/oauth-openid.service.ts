@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import type { UserForeignKey, UserOmitRelations } from '@/modules/user/entities/user.entity';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class OauthOpenidService {
   constructor(
     @InjectRepository(OauthOpenid) private readonly oauthOpenidDao: Repository<OauthOpenid>,
     private readonly oauthApplicationService: OauthApplicationService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
   ) {
     this.logger.setContext(OauthOpenidService.name);
   }

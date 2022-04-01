@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { UdpServerService } from 'api/udp-server';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class UdpScheduleService {
-  constructor(private udpServerService: UdpServerService, private readonly logger: AppLogger) {
+  constructor(private udpServerService: UdpServerService, private readonly logger: LoggerService) {
     this.logger.setContext(UdpScheduleService.name);
   }
 
+  /**
+   * 每12小时执行一次
+   */
   @Interval(12 * 60 * 60 * 1000)
   healthCheck() {
     this.udpServerService.send('health check!');

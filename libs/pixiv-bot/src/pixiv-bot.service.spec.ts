@@ -1,7 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PixivBotService } from './pixiv-bot.service';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { PixivBotModule } from 'api/pixiv-bot/pixiv-bot.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
+import { PixivBotService } from './pixiv-bot.service';
 
 describe('PixivBotService', () => {
   let service: PixivBotService;

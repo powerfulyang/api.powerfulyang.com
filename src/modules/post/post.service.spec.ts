@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { PostService } from './post.service';
 import { PostModule } from '@/modules/post/post.module';
 import { SUCCESS } from '@/constants/constants';
@@ -6,7 +7,7 @@ import { SUCCESS } from '@/constants/constants';
 describe('PostService', () => {
   let service: PostService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PostModule],
     }).compile();

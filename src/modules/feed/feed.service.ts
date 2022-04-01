@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, LessThan, Repository } from 'typeorm';
 import { lastItem } from '@powerfulyang/utils';
 import { Feed } from '@/modules/feed/entities/feed.entity';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { UpdateFeedDto } from './dto/update-feed.dto';
 import type { CreateFeedDto } from './dto/create-feed.dto';
@@ -15,7 +15,7 @@ import { BuiltinBucket } from '@/modules/bucket/entities/bucket.entity';
 export class FeedService {
   constructor(
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly assetService: AssetService,
   ) {
     this.logger.setContext(FeedService.name);
