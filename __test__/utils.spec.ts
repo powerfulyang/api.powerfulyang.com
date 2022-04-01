@@ -1,19 +1,14 @@
 import { sha1 } from '@powerfulyang/node-utils';
-import { inspectIp } from '@/utils/ipdb';
 import { createSocket } from 'dgram';
+import { basename, extname } from 'path';
+import { inspectIp } from '@/utils/ipdb';
 
-describe('utils test', function () {
-  it('sha1', function () {
+describe('utils test', () => {
+  it('sha1', () => {
     expect(sha1('我是机器人')).toBe('425a666053295fecbdd5815872ccb9a6196b5df2');
   });
 
-  it('str replace', function () {
-    const imgUrl = 'https://i.pinimg.com/236x/79/93/6a/79936a4f9dd7217e85bd3ea6948561b8.jpg';
-    const newUrl = imgUrl.replace(/(jpg)$/, 'png');
-    expect(newUrl).toBe('https://i.pinimg.com/236x/79/93/6a/79936a4f9dd7217e85bd3ea6948561b8.png');
-  });
-
-  it('findIpInfo', function () {
+  it('inspectIp', () => {
     expect(inspectIp('1.1.1.1')).toStrictEqual({
       code: 0,
       data: {
@@ -28,7 +23,15 @@ describe('utils test', function () {
     });
   });
 
-  it('udp request', function () {
+  it('udp request', () => {
     createSocket('udp4').send('你好', 30000, 'localhost');
+  });
+
+  it('extname', () => {
+    const filename = '/a/b/c/d.test.jpg';
+    const ext = extname(filename);
+    const base = basename(filename, ext);
+    expect(ext).toBe('.jpg');
+    expect(base).toBe('d.test');
   });
 });

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { createSocket } from 'dgram';
 import type { VoidFunction } from '@powerfulyang/utils';
 import { Subject } from 'rxjs';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class UdpServerService {
@@ -12,7 +12,7 @@ export class UdpServerService {
 
   private udpSocket;
 
-  constructor(private logger: AppLogger) {
+  constructor(private logger: LoggerService) {
     this.logger.setContext(UdpServerService.name);
     this.udpServer = createSocket({ type: 'udp4' });
     this.udpServer.bind({

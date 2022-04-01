@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '@/modules/user/user.service';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
@@ -11,7 +11,7 @@ import { RoleService } from '@/modules/user/role/role.service';
 export class BootstrapService {
   constructor(
     private readonly userService: UserService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly coreService: CoreService,
     private readonly cosObjectUrlScheduleService: CosObjectUrlScheduleService,
     private readonly pathViewCountService: PathViewCountService,
@@ -21,62 +21,70 @@ export class BootstrapService {
     this.logger.setContext(BootstrapService.name);
   }
 
-  async bootstrap() {
-    setTimeout(() => {
-      this.cacheUsers();
-      this.refreshObjectUrl();
-      this.cachePathViewCount();
-      this.initBucket();
-      this.initIntendedData();
-    }, 1000 * 10);
+  bootstrap() {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        Promise.all([
+          this.cacheUsers(),
+          this.refreshObjectUrl(),
+          this.cachePathViewCount(),
+          this.initBucket(),
+          this.initIntendedData(),
+        ]).then(() => {
+          resolve();
+        });
+      }, 1000 * 10);
+    });
   }
 
   async refreshObjectUrl() {
-    const bool = await this.coreService.isProdCommonNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
       this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
-        this.logger.info('每次重启的时候需要刷新一下 object url!');
+        this.logger.info('refreshObjectUrl success!');
       });
     }
   }
 
   async cacheUsers() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      // cache users
-      this.userService.cacheUsers().then(() => {
-        this.logger.info('cache users in redis success!');
+      return this.userService.cacheUsers().then(() => {
+        this.logger.info('cacheUsers success!');
       });
     }
+    return Promise.resolve();
   }
 
   async cachePathViewCount() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      this.pathViewCountService.cache().then(() => {
-        this.logger.info('path view count map cached success!');
+      return this.pathViewCountService.initPathViewCountCache().then(() => {
+        this.logger.info('cachePathViewCount success!');
       });
     }
+    return Promise.resolve();
   }
 
   async initBucket() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      this.bucketService.initBucket().then(() => {
-        this.logger.info('init buckets complete!');
+      return this.bucketService.initBucket().then(() => {
+        this.logger.info('initBucket success!');
       });
     }
+    return Promise.resolve();
   }
 
   async initIntendedData() {
-    const bool = await this.coreService.isCommonNode();
+    const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      this.roleService.initIntendedRoles().then(() => {
-        this.logger.info('init roles complete!');
-      });
-      this.userService.initIntendedUsers().then(() => {
-        this.logger.info('init users complete!');
+      const p1 = this.roleService.initIntendedRoles();
+      const p2 = this.userService.initIntendedUsers();
+      return Promise.all([p1, p2]).then(() => {
+        this.logger.info('initIntendedData success!');
       });
     }
+    return Promise.resolve();
   }
 }

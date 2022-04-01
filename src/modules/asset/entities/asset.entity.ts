@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { Metadata } from 'sharp';
 import { pick } from 'ramda';
-import { User } from '@/modules/user/entities/user.entity';
+import { User, UserForeignKey } from '@/modules/user/entities/user.entity';
 import { CosBucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon.api/types/Exif';
 
@@ -21,7 +21,7 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => CosBucket, { nullable: false, eager: true })
+  @ManyToOne(() => CosBucket, { nullable: false })
   bucket: CosBucket;
 
   @Column({ default: '' })
@@ -42,6 +42,9 @@ export class Asset {
   @Column({ default: '' })
   comment: string;
 
+  /**
+   * 需要注意，这里的值是不带 `.` 的
+   */
   @Column()
   fileSuffix: string;
 
@@ -62,7 +65,7 @@ export class Asset {
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
-  uploadBy: User;
+  uploadBy: UserForeignKey;
 
   @CreateDateColumn()
   createAt: Date;

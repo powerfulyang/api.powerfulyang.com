@@ -2,8 +2,8 @@ import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';
 import { pick } from 'ramda';
 import type { User } from '@/modules/user/entities/user.entity';
-import type { Request } from '@/type/express';
 import { getUserFamiliesMembers } from '@/utils/user.util';
+import type { RequestExtend } from '@/type/RequestExtend';
 
 export const UserFromAuth = createParamDecorator(
   (keys: Array<keyof User>, ctx: ExecutionContext) => {
@@ -16,6 +16,6 @@ export const UserFromAuth = createParamDecorator(
 );
 
 export const FamilyMembersFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {
-  const { user } = ctx.switchToHttp().getRequest<Request>();
+  const { user } = ctx.switchToHttp().getRequest<RequestExtend>();
   return getUserFamiliesMembers(user);
 });

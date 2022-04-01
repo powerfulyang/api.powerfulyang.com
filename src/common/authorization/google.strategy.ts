@@ -5,7 +5,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { Request } from 'express';
 import type { ParamsDictionary } from 'express-serve-static-core';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
@@ -15,7 +15,7 @@ import { PRIMARY_ORIGIN } from '@/constants/constants';
 export class GoogleStrategy extends PassportStrategy(Strategy, SupportOauthApplication.google) {
   constructor(
     private readonly proxyFetchService: ProxyFetchService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     @Inject(OAUTH_APPLICATION_STRATEGY_CONFIG)
     readonly config: OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE,
   ) {

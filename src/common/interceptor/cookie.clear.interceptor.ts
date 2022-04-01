@@ -4,25 +4,28 @@ import type { Observable } from 'rxjs';
 import type { Response } from 'express';
 import { map, tap } from 'rxjs/operators';
 import { omit } from 'ramda';
-import { AppLogger } from '@/common/logger/app.logger';
+import { isArray } from '@powerfulyang/utils';
+import { LoggerService } from '@/common/logger/logger.service';
 import { CookieOptions } from '@/constants/constants';
 
 @Injectable()
 export class CookieClearInterceptor implements NestInterceptor {
-  constructor(private readonly logger: AppLogger) {
+  constructor(private readonly logger: LoggerService) {
     this.logger.setContext(CookieClearInterceptor.name);
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      tap(() => {
-        this.logger.debug(`in ${CookieClearInterceptor.name}`);
-      }),
       tap((data) => {
-        if (data.cookie) {
+        const cookieNames = data?.cookies as string[];
+        if (isArray(cookieNames)) {
           const ctx = context.switchToHttp();
           const response = ctx.getResponse<Response>();
-          response.cookie(data.cookie, '', { ...CookieOptions, maxAge: 0 });
+          cookieNames.forEach((cookieName) => {
+            response.cookie(cookieName, '', { ...CookieOptions, maxAge: 0 });
+          });
+        } else {
+          this.logger.warn('CookieClearInterceptor: No cookie to clear');
         }
       }),
       map((data) => omit(['cookie'])(data)),

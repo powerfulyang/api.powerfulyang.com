@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { ProxyFetchService } from './proxy-fetch.service';
 
 describe('ProxyFetchService', () => {
@@ -16,7 +17,7 @@ describe('ProxyFetchService', () => {
     expect(service).toBeDefined();
   });
 
-  it('test proxy fetch', async function () {
+  it('test proxy fetch', async () => {
     const res = await service.proxyFetch('https://twitter.com');
     const resText = await res.text();
     expect(resText).toBeDefined();

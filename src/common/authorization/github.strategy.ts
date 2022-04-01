@@ -6,7 +6,7 @@ import type { Request } from 'express';
 import type { ParamsDictionary } from 'express-serve-static-core';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { PRIMARY_ORIGIN } from '@/constants/constants';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
@@ -15,7 +15,7 @@ import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/s
 export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthApplication.github) {
   constructor(
     private readonly proxyFetchService: ProxyFetchService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     @Inject(OAUTH_APPLICATION_STRATEGY_CONFIG)
     readonly config: OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE,
   ) {

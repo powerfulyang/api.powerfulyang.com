@@ -3,14 +3,10 @@ import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import type { Profile as GithubProfile } from 'passport-github';
 import type { Request } from 'express';
 import { User } from '@/modules/user/entities/user.entity';
-import {
-  GithubAuthGuard,
-  GoogleAuthGuard,
-  JwtAuthGuard,
-} from '@/common/decorator/auth-guard.decorator';
+import { GithubAuthGuard, GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
-import { UserDto } from '@/modules/user/dto/UserDto';
-import { AppLogger } from '@/common/logger/app.logger';
+import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
+import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization } from '@/constants/constants';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
@@ -20,7 +16,7 @@ import { SupportOauthApplication } from '@/modules/oauth-application/entities/oa
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService, private logger: AppLogger) {
+  constructor(private userService: UserService, private logger: LoggerService) {
     this.logger.setContext(UserController.name);
   }
 
@@ -51,7 +47,12 @@ export class UserController {
       SupportOauthApplication.google,
     );
     return {
-      cookie: [Authorization, token],
+      cookie: [
+        {
+          name: Authorization,
+          value: token,
+        },
+      ],
       redirect,
     };
   }
@@ -71,20 +72,28 @@ export class UserController {
       SupportOauthApplication.github,
     );
     return {
-      cookie: [Authorization, token],
+      cookie: [
+        {
+          name: Authorization,
+          value: token,
+        },
+      ],
       redirect,
     };
   }
 
   @Post('login')
   @UseInterceptors(CookieInterceptor)
-  async login(@Body() user: UserDto) {
+  async login(@Body() user: UserLoginDto) {
     this.logger.info(`${user.email} try to login in!!!`);
-    const userInfo = await this.userService.login(user);
-    const token = this.userService.generateAuthorization(userInfo);
+    const token = await this.userService.login(user);
     return {
-      ...userInfo,
-      cookie: [Authorization, token],
+      cookie: [
+        {
+          name: Authorization,
+          value: token,
+        },
+      ],
     };
   }
 
@@ -100,6 +109,6 @@ export class UserController {
   @UseInterceptors(CookieClearInterceptor)
   logout(@UserFromAuth() user: User) {
     this.logger.info(`${user.email} try to logout!!!`);
-    return { cookie: Authorization };
+    return { cookies: [Authorization] };
   }
 }

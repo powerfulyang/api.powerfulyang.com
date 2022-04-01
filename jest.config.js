@@ -1,5 +1,7 @@
+const tsconfigPathJest = require('tsconfig-paths-jest');
 const tsconfig = require('./tsconfig.json');
-const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig);
+
+const moduleNameMapper = tsconfigPathJest(tsconfig);
 
 module.exports = {
   verbose: true,
@@ -10,8 +12,8 @@ module.exports = {
   moduleNameMapper,
   maxConcurrency: 5,
   moduleFileExtensions: ['js', 'json', 'ts', 'node'],
-  setupFiles: ['./.jest/setEnvVars.ts'],
-  setupFilesAfterEnv: ['./jest.setup.js'],
+  setupFiles: ['./.jest/loadTestEnv.ts'],
+  setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
   rootDir: '.',
   testRegex: '.spec.ts$',
   transform: {

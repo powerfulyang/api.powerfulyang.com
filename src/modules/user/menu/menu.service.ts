@@ -8,7 +8,7 @@ import { Menu } from '@/modules/user/entities/menu.entity';
 export class MenuService {
   constructor(
     @InjectRepository(Menu)
-    readonly menuDao: TreeRepository<Menu>,
+    private readonly menuDao: TreeRepository<Menu>,
   ) {}
 
   @Memoize()

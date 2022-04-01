@@ -1,47 +1,38 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Injectable } from '@nestjs/common';
 import { isProdProcess } from '@powerfulyang/utils';
-import { CacheService } from '@/core/cache/cache.service';
+import { CacheService } from '@/common/cache/cache.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { AppLogger } from '@/common/logger/app.logger';
-import { COS_UPLOAD_MSG_PATTERN, MICROSERVICE_NAME } from '@/constants/constants';
-import type { UploadFileMsg } from '@/type/UploadFile';
+import { LoggerService } from '@/common/logger/logger.service';
+import { checkRedisResult } from '@/constants/constants';
 
 @Injectable()
 export class CoreService {
-  constructor(
-    @Inject(MICROSERVICE_NAME) readonly microserviceClient: ClientProxy,
-    private readonly logger: AppLogger,
-    private readonly cacheService: CacheService,
-  ) {
+  constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
     this.logger.setContext(CoreService.name);
-    this.setCommonNodeUuid().then((uuid) => {
-      this.logger.info(`node uuid => ${uuid}`);
+    this.initScheduleNode().then((node) => {
+      this.logger.info(`当前环境 ====> ${process.env.NODE_ENV}`);
+      this.logger.info(`node ====> ${node}`);
     });
   }
 
-  async setCommonNodeUuid() {
-    this.logger.info(`当前环境====>${process.env.NODE_ENV}`);
-    await this.cacheService.set(REDIS_KEYS.COMMON_NODE, HOSTNAME);
+  async initScheduleNode() {
+    const result = await this.cacheService.set(REDIS_KEYS.SCHEDULE_NODE, HOSTNAME);
+    checkRedisResult(result);
     return HOSTNAME;
   }
 
-  getCommonNodeUuid() {
-    return this.cacheService.get(REDIS_KEYS.COMMON_NODE);
+  private getScheduleNode() {
+    return this.cacheService.get(REDIS_KEYS.SCHEDULE_NODE);
   }
 
-  async isCommonNode() {
-    const uuid = await this.getCommonNodeUuid();
-    return uuid === HOSTNAME;
+  async isScheduleNode() {
+    const node = await this.getScheduleNode();
+    return node === HOSTNAME;
   }
 
-  async isProdCommonNode() {
-    const bool = await this.isCommonNode();
+  async isProdScheduleNode() {
+    const bool = await this.isScheduleNode();
     return bool && isProdProcess;
-  }
-
-  notifyCos(notification: UploadFileMsg) {
-    return this.microserviceClient.emit(COS_UPLOAD_MSG_PATTERN, notification);
   }
 }

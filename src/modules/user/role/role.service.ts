@@ -2,27 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from '@/modules/user/entities/role.entity';
-import { SUCCESS } from '@/constants/constants';
 
 @Injectable()
 export class RoleService {
   constructor(
     @InjectRepository(Role)
-    readonly roleDao: Repository<Role>,
+    private readonly roleDao: Repository<Role>,
   ) {}
 
   getDefaultRole() {
-    return this.roleDao.findOneOrFail({ roleName: Role.IntendedRoles.default });
+    return this.roleDao.findOneByOrFail({ roleName: Role.IntendedRoles.default });
   }
 
   async initIntendedRoles() {
     const existedRoles = await this.roleDao.find();
-    if (existedRoles.length) {
-      return SUCCESS;
-    }
-    const roles: Partial<Role>[] = Object.values(Role.IntendedRoles).map((v) => ({
-      roleName: v,
-    }));
-    return this.roleDao.insert(roles);
+    const roles: Partial<Role>[] = Object.values(Role.IntendedRoles)
+      .filter((roleName) => !existedRoles.find((existedRole) => existedRole.roleName === roleName))
+      .map((v) => ({
+        roleName: v,
+      }));
+    await this.roleDao.insert(roles);
+    return roles;
   }
 }

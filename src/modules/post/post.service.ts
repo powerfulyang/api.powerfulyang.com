@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
@@ -6,6 +6,8 @@ import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
+import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
+import { SUCCESS } from '@/constants/constants';
 
 @Injectable()
 export class PostService {
@@ -16,45 +18,60 @@ export class PostService {
 
   async publishPost(post: PublishPostDto) {
     if (!post.poster) {
-      const poster = await this.assetService.randomPostPoster();
+      const poster = await this.assetService.randomAsset();
       Reflect.set(post, 'poster', poster);
     }
     if (post.id) {
-      const findPost = await this.postDao.findOneOrFail(post.id);
-      findPost.content = post.content!;
+      // update
+      const findPost = await this.postDao.findOneByOrFail({ id: post.id });
+      findPost.content = post.content;
       if (post.tags) {
         findPost.tags = post.tags;
       }
-      findPost.title = post.title!;
+      findPost.title = post.title;
       return this.postDao.save(findPost);
     }
     const toSave = this.postDao.create(post);
     return this.postDao.save(toSave);
   }
 
-  deletePost(post: Post) {
-    return this.postDao.delete(post);
+  async deletePost(post: Pick<Post, 'id' | 'createBy'>) {
+    const result = await this.postDao.delete({
+      id: post.id,
+      createBy: {
+        id: post.createBy.id,
+      },
+    });
+    if (result.affected === 1) {
+      return SUCCESS;
+    }
+    throw new ForbiddenException('You can only delete your own post!');
   }
 
-  readPost(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
+  readPost(id: Post['id'], ids: User['id'][] = []) {
     return this.postDao.findOneOrFail({
       where: [
-        { id: post.id, public: true },
+        { id, public: true },
         {
-          id: post.id,
-          createBy: In(ids),
+          id,
+          createBy: {
+            id: In(ids),
+          },
         },
       ],
     });
   }
 
-  getPosts(post: Omit<Post, 'createBy'>, ids: User['id'][] = []) {
+  queryPosts(post: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
-      select: ['id', 'title', 'content', 'createAt', 'poster'],
-      relations: ['poster'],
       order: { id: 'DESC' },
       where: [
-        { ...post, createBy: In(ids) },
+        {
+          ...post,
+          createBy: {
+            id: In(ids),
+          },
+        },
         { ...post, public: true },
       ],
     });
@@ -63,7 +80,14 @@ export class PostService {
   async getPublishedTags(ids: User['id'][] = []) {
     const tagsArr = await this.postDao.find({
       select: ['tags'],
-      where: [{ createBy: In(ids) }, { public: true }],
+      where: [
+        {
+          createBy: {
+            id: In(ids),
+          },
+        },
+        { public: true },
+      ],
     });
     const allTags = flatten(map(prop('tags'))(tagsArr));
     return countBy(trim)(allTags);
@@ -75,7 +99,9 @@ export class PostService {
       .select(['"publishYear"'])
       .where([
         {
-          createBy: In(ids),
+          createBy: {
+            id: In(ids),
+          },
         },
         { public: true },
       ])

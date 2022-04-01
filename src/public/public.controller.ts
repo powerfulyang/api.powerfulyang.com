@@ -1,23 +1,21 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { pluck } from 'ramda';
-import { Post } from '@/modules/post/entities/post.entity';
-import { AppLogger } from '@/common/logger/app.logger';
-import { PublicService } from '@/public/public.service';
-import { Pagination } from '@/common/decorator/pagination.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import { Pagination, QueryPagination } from '@/common/decorator/pagination.decorator';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
 import { FeedService } from '@/modules/feed/feed.service';
-import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { PublicAuthGuard } from '@/common/decorator';
 import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { Asset } from '@/modules/asset/entities/asset.entity';
+import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 
 @Controller('public')
 @PublicAuthGuard()
 export class PublicController {
   constructor(
-    private readonly publicService: PublicService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly assetService: AssetService,
     private readonly postService: PostService,
     private readonly feedService: FeedService,
@@ -27,13 +25,12 @@ export class PublicController {
 
   @Get('hello')
   hello() {
-    this.logger.info('Hello world');
     return 'Hello World!!!';
   }
 
   @Get('post')
-  getPosts(@FamilyMembersFromAuth() users: User[], @Query() post: Post) {
-    return this.postService.getPosts(post, pluck('id', users));
+  getPosts(@FamilyMembersFromAuth() users: User[], @Query() post: SearchPostDto) {
+    return this.postService.queryPosts(post, pluck('id', users));
   }
 
   @Get('post/years')
@@ -47,17 +44,21 @@ export class PublicController {
   }
 
   @Get('post/:id')
-  readPost(@Param() post: Post, @FamilyMembersFromAuth() users: User[]) {
-    return this.postService.readPost(post, pluck('id', users));
+  readPost(@Param('id') id: string, @FamilyMembersFromAuth() users: User[]) {
+    return this.postService.readPost(+id, pluck('id', users));
   }
 
   @Get('feed')
-  feeds(@FamilyMembersFromAuth() users: User[]) {
-    return this.feedService.feeds(pluck('id', users));
+  feeds(
+    @Query('id') id: string,
+    @FamilyMembersFromAuth() users: User[],
+    @Query('size') size: string = '20',
+  ) {
+    return this.feedService.infiniteQuery(+id, Number(size), pluck('id', users));
   }
 
   @Get('asset')
-  assets(@Pagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
+  assets(@QueryPagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
     return this.assetService.getAssets(pagination, pluck('id', users));
   }
 
@@ -67,16 +68,11 @@ export class PublicController {
     @FamilyMembersFromAuth() users: User[],
     @Query('size') size: string = '20',
   ) {
-    return this.assetService.infiniteQuery(id, size, pluck('id', users));
+    return this.assetService.infiniteQuery(id, Number(size), pluck('id', users));
   }
 
   @Get('asset/:id')
   getAssetById(@Param('id') id: string, @FamilyMembersFromAuth() users: User[]) {
-    return this.assetService.getAssetById(+id, pluck('id', users));
-  }
-
-  @Get('common-node')
-  isCommonNode() {
-    return this.publicService.isCommonNode();
+    return this.assetService.getAccessAssetById(+id, pluck('id', users));
   }
 }

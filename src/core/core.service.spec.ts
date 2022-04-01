@@ -1,21 +1,21 @@
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { CoreService } from '@/core/core.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '@/app.module';
-import { MessagePatterns } from '@/constants/MessagePatterns';
+import { CoreModule } from '@/core/core.module';
 
-describe('core service test', function () {
+describe('core service test', () => {
   let service: CoreService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [CoreModule],
     }).compile();
 
     service = module.get<CoreService>(CoreService);
   });
 
-  it('emit hello', async function () {
-    const res = await service.microserviceClient.emit(MessagePatterns.test, '');
-    expect(res).toBeDefined();
+  it('setCommonNodeUuid', async () => {
+    const bool = await service.isProdScheduleNode();
+    expect(bool).toBeFalsy();
   });
 });

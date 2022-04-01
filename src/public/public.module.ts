@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PostModule } from '@/modules/post/post.module';
-import { PublicService } from '@/public/public.service';
 import { PublicController } from '@/public/public.controller';
 import { AssetModule } from '@/modules/asset/asset.module';
 import { FeedModule } from '@/modules/feed/feed.module';
+import { LoggerModule } from '@/common/logger/logger.module';
 
 @Module({
-  imports: [PostModule, AssetModule, FeedModule],
-  providers: [PublicService],
+  imports: [PostModule, AssetModule, FeedModule, LoggerModule],
   controllers: [PublicController],
 })
 export class PublicModule {}

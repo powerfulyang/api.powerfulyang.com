@@ -1,18 +1,27 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { TencentCloudAccountService } from './tencent-cloud-account.service';
+import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
 
 describe('TencentCloudAccountService', () => {
   let service: TencentCloudAccountService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TencentCloudAccountService],
+      imports: [TencentCloudAccountModule],
     }).compile();
 
     service = module.get<TencentCloudAccountService>(TencentCloudAccountService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('findAll', async () => {
+    const result = await service.findAll();
+    expect(result).toBeDefined();
+  });
+
+  it('cos test', async () => {
+    const cosUtil = await service.getCosUtilByAccountId(1);
+    const result = await cosUtil.getService();
+    expect(result).toBeDefined();
   });
 });

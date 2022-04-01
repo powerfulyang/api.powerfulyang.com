@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { MenuService } from '@/modules/user/menu/menu.service';
-import { JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { UserService } from '@/modules/user/user.service';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 
@@ -12,18 +12,19 @@ export class MenuController {
   constructor(
     private readonly menuService: MenuService,
     private readonly userService: UserService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
   ) {
     this.logger.setContext(MenuController.name);
   }
 
   @Get()
+  @AdminAuthGuard()
   menus() {
     return this.menuService.menus();
   }
 
   @Get('current')
   currentMenus(@UserFromAuth() user: User) {
-    return this.userService.getUserMenus(user.id);
+    return this.userService.queryMenusByUserId(user.id);
   }
 }

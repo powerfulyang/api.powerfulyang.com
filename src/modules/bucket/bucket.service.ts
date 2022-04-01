@@ -1,42 +1,36 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppLogger } from '@/common/logger/app.logger';
+import { isNull, isProdProcess } from '@powerfulyang/utils';
+import { LoggerService } from '@/common/logger/logger.service';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
-import {
-  PRIMARY_ORIGIN,
-  SERVER_HOST_DOMAIN,
-  WILDCARD_HOST_DOMAIN,
-  WILDCARD_ORIGIN,
-} from '@/constants/constants';
+import { PRIMARY_ORIGIN, SERVER_HOST_DOMAIN } from '@/constants/constants';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
+import type { CreateBucketDto } from '@/modules/bucket/entities/create-bucket.dto';
 
 @Injectable()
 export class BucketService {
   constructor(
     @InjectRepository(CosBucket)
     private readonly bucketDao: Repository<CosBucket>,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly tencentCloudAccountService: TencentCloudAccountService,
   ) {
     this.logger.setContext(BucketService.name);
   }
 
-  list() {
+  all() {
     return this.bucketDao.find();
   }
 
-  getBucketByName(name: string) {
-    return this.bucketDao.findOneOrFail({ name });
-  }
+  async createNewBucket(bucket: CreateBucketDto) {
+    const { Region, name } = bucket;
 
-  async createBucket(bucket: CosBucket) {
-    const { Bucket, Region } = bucket;
     const {
       ACL = 'public-read',
       CORSRules = [
         {
-          AllowedOrigin: [PRIMARY_ORIGIN, WILDCARD_ORIGIN],
+          AllowedOrigin: [PRIMARY_ORIGIN],
           AllowedMethod: ['GET'],
           MaxAgeSeconds: 3650000,
         },
@@ -45,19 +39,29 @@ export class BucketService {
         Status: 'Enabled',
         RefererType: 'White-List',
         DomainList: {
-          Domains: [SERVER_HOST_DOMAIN, WILDCARD_HOST_DOMAIN],
+          Domains: [SERVER_HOST_DOMAIN],
         },
       },
     } = bucket;
     const { tencentCloudAccount } = bucket;
+    const AppId = await this.tencentCloudAccountService.getAppIdByAccountId(tencentCloudAccount.id);
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
       tencentCloudAccount.id,
     );
+    const Bucket = `${name}-${AppId}`;
     let res = await util.headBucket({
       Region,
       Bucket,
     });
-    // 不存在则创建哦 存在就不管了
+    // 存在就查数据库
+    if (res.statusCode === HttpStatus.OK) {
+      // 同步 bucket
+      return this.syncFromCloud(tencentCloudAccount, {
+        Bucket,
+        Region,
+      });
+    }
+    // 不存在则创建哦
     if (res.statusCode !== HttpStatus.OK) {
       res = await util.putBucket({
         Region,
@@ -92,6 +96,11 @@ export class BucketService {
         throw new ServiceUnavailableException('创建bucket失败');
       }
     }
+    return res;
+  }
+
+  getBucketByBucketName(name: string) {
+    return this.bucketDao.findOneByOrFail({ name });
   }
 
   /**
@@ -104,31 +113,37 @@ export class BucketService {
    *
    */
   async initBucket() {
-    const accounts = await this.tencentCloudAccountService.findAll();
-    for (const account of accounts) {
-      await this.syncFromCloud(account);
+    if (isProdProcess) {
+      const accounts = await this.tencentCloudAccountService.findAll();
+      return Promise.all(
+        accounts.map((account) => {
+          return this.syncFromCloud(account);
+        }),
+      );
     }
+    const testBucket = await this.getBucketByBucketName('test');
+    return this.syncFromCloud(testBucket.tencentCloudAccount, testBucket);
   }
 
-  async syncFromCloud(
+  private syncFromCloud(account: CosBucket['tencentCloudAccount']): Promise<CosBucket[]>;
+  private syncFromCloud(
+    account: CosBucket['tencentCloudAccount'],
+    param: Pick<CosBucket, 'Bucket' | 'Region'>,
+  ): Promise<CosBucket>;
+
+  private async syncFromCloud(
     account: CosBucket['tencentCloudAccount'],
     param?: Pick<CosBucket, 'Bucket' | 'Region'>,
   ) {
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(account.id);
-    let list: Pick<CosBucket, 'Bucket' | 'Region'>[] = [];
-    if (param?.Bucket) {
-      const res = await util.headBucket(param);
-      if (res.statusCode === HttpStatus.OK) {
-        list = [{ Bucket: param.Bucket, Region: param.Region }];
-      }
-    } else {
-      const buckets = await util.getService(param);
-      list = buckets.Buckets.map((bucket) => ({
-        Bucket: bucket.Name,
-        Region: bucket.Location,
-        createAt: new Date(bucket.CreationDate),
-      }));
-    }
+    const buckets = await util.getService(param);
+    const list: Pick<CosBucket, 'Bucket' | 'Region'>[] = buckets.Buckets.filter((x) => {
+      return param ? x.Name === param?.Bucket && x.Location === param?.Region : true;
+    }).map((bucket) => ({
+      Bucket: bucket.Name,
+      Region: bucket.Location,
+      createAt: new Date(bucket.CreationDate),
+    }));
 
     const listBucketAclPromises = list.map((bucket) =>
       util.getBucketAcl({
@@ -159,39 +174,37 @@ export class BucketService {
     }));
     for (const b of arr) {
       const { Bucket, Region } = b;
-      const bucket = await this.bucketDao.findOne({
+      const bucket = await this.bucketDao.findOneBy({
         Bucket,
         Region,
       });
-      if (!bucket) {
+      if (isNull(bucket)) {
         const name = b.Bucket.replace(/-\d+/, '');
         await this.bucketDao.insert({ ...b, name, tencentCloudAccount: account });
       } else {
-        await this.bucketDao.update(
-          {
-            Bucket,
-            Region,
-          },
-          b,
-        );
+        await this.bucketDao.update(bucket.id, b);
       }
     }
+    if (param) {
+      return arr[0];
+    }
+    return arr;
   }
 
   async listPublicBucket(): Promise<CosBucket[]>;
-  async listPublicBucket(returnPrimaryKeyArray: true): Promise<CosBucket['id'][]>;
+  async listPublicBucket(onlyPrimaryKeyArray: true): Promise<CosBucket['id'][]>;
 
   /**
    * 列出所有的公开 bucket
-   * @param returnPrimaryKeyArray
+   * @param onlyPrimaryKeyArray
    */
-  async listPublicBucket(returnPrimaryKeyArray?: boolean) {
+  async listPublicBucket(onlyPrimaryKeyArray?: boolean) {
     const buckets = await this.bucketDao.find({
       where: {
         public: true,
       },
     });
-    if (returnPrimaryKeyArray) {
+    if (onlyPrimaryKeyArray) {
       return buckets.map((b) => b.id);
     }
     return buckets;
