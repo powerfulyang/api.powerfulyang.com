@@ -1,28 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Feed } from '@/modules/feed/entities/feed.entity';
+import { FeedService } from '@/modules/feed/feed.service';
 
 @Injectable()
 export class EsService {
   constructor(
     private readonly logger: LoggerService,
     private readonly elasticsearchService: ElasticsearchService,
-    @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
+    private readonly feedService: FeedService,
   ) {
     this.logger.setContext(EsService.name);
     // TODO 初始化 index
   }
 
-  query() {
-    return this.elasticsearchService.search();
-  }
-
-  async parseAndPrepareData() {
+  private async parseAndPrepareData() {
     const body = [] as any[];
-    const feeds = await this.feedDao.find();
+    const feeds = await this.feedService.all();
     feeds.forEach((item) => {
       body.push(
         { index: { _index: 'feed', _id: item.id } },
@@ -37,17 +31,17 @@ export class EsService {
 
   async createFeedIndex() {
     const exist = await this.elasticsearchService.indices.exists({ index: 'feed' });
-    if (!exist) {
-      await this.elasticsearchService.indices.create({
-        index: 'feed',
-      });
-      const body = await this.parseAndPrepareData();
-      await this.elasticsearchService.bulk({
-        index: 'feed',
-        body,
-      });
+    if (exist) {
+      await this.deleteFeedIndex();
     }
-    return exist;
+    await this.elasticsearchService.indices.create({
+      index: 'feed',
+    });
+    const body = await this.parseAndPrepareData();
+    const res = await this.elasticsearchService.bulk({
+      body,
+    });
+    return res.items;
   }
 
   deleteFeedIndex() {

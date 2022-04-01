@@ -14,23 +14,12 @@ describe('SearchService', () => {
     service = module.get<EsService>(EsService);
   });
 
-  it('query test', async () => {
-    const result = await service.query();
-    expect(result).toBeDefined();
-  });
-
-  it('index feed', async () => {
-    const result = await service.createFeedIndex();
-    expect(result).toBeDefined();
-  });
-
-  it('delete feed index', async () => {
-    const result = await service.deleteFeedIndex();
-    expect(result).toBeDefined();
-  });
-
   it('ES feed', async () => {
-    const result = await service.searchFeedByContent('我的第一条说说! #第一条说说');
+    const items = await service.createFeedIndex();
+    expect(items).toBeDefined();
+    const result = await service.searchFeedByContent('test');
     expect(result).toBeDefined();
+    const res = await service.deleteFeedIndex();
+    expect(res.acknowledged).toBe(true);
   });
 });

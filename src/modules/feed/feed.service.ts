@@ -21,6 +21,10 @@ export class FeedService {
     this.logger.setContext(FeedService.name);
   }
 
+  all() {
+    return this.feedDao.find();
+  }
+
   async postNewFeed(
     createFeedDto: CreateFeedDto & Pick<Feed, 'createBy'>,
     files: UploadFile[] = [],
