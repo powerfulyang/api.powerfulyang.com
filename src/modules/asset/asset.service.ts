@@ -143,7 +143,6 @@ export class AssetService {
       for (const id of ids) {
         const asset = await transactionalEntityManager.findOneOrFail(Asset, {
           where: { id },
-          relations: ['bucket'],
         });
         const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
           asset.bucket.tencentCloudAccount.id,
@@ -259,12 +258,10 @@ export class AssetService {
     if (isArray(id)) {
       return this.assetDao.find({
         where: { id: In(id) },
-        relations: ['bucket'],
       });
     }
     return this.assetDao.findOneOrFail({
       where: { id },
-      relations: ['bucket'],
     });
   }
 
