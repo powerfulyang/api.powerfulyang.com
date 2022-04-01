@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
 import { redisConfig } from '@/configuration/redis.config';
 import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
@@ -9,7 +9,7 @@ import { mailConfig } from '@/configuration/mail.config';
 
 @Injectable()
 export class ConfigService {
-  constructor(private readonly logger: AppLogger) {
+  constructor(private readonly logger: LoggerService) {
     this.logger.setContext(ConfigService.name);
   }
 

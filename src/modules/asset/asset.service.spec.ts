@@ -1,8 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+import { readFileSync } from 'fs';
 import { AssetService } from './asset.service';
 import { AssetModule } from '@/modules/asset/asset.module';
 import { OrmModule } from '@/common/ORM/orm.module';
-import { readFileSync } from 'fs';
 import { SUCCESS } from '@/constants/constants';
 
 describe('AssetService', () => {
@@ -31,13 +32,13 @@ describe('AssetService', () => {
     expect(res).toBeDefined();
   });
 
-  it('pHashMap', async function () {
+  it('pHashMap', async () => {
     const maps = await service.pHashMap();
     expect(maps).toBeDefined();
   });
 
-  it('saveAssetToBucket and delete', async function () {
-    const file = readFileSync(process.cwd() + '/assets/test.jpg');
+  it('saveAssetToBucket and delete', async () => {
+    const file = readFileSync(`${process.cwd()}/assets/test.jpg`);
     const res = await service.saveAssetToBucket(
       [
         {
@@ -59,7 +60,7 @@ describe('AssetService', () => {
     expect(res).toBeDefined();
   });
 
-  it('infiniteQuery', async function () {
+  it('infiniteQuery', async () => {
     let result = await service.infiniteQuery();
     while (result.nextCursor) {
       result = await service.infiniteQuery(result.nextCursor);

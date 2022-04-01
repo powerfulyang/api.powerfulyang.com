@@ -3,18 +3,21 @@ import type { RedisClientType } from 'redis';
 import type { Dict } from '@powerfulyang/utils';
 import { isDefined, isNumber, isString } from '@powerfulyang/utils';
 import { createClient } from 'redis';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class CacheService {
   private readonly redisClient: RedisClientType<any, any>;
 
-  constructor(private readonly logger: AppLogger, private readonly configService: ConfigService) {
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly configService: ConfigService,
+  ) {
     this.logger.setContext(CacheService.name);
     this.redisClient = createClient(this.configService.getRedisConfig());
     this.redisClient.connect().catch((err) => {
-      this.logger.error(`Redis connection error.`, err);
+      this.logger.error(err);
     });
   }
 

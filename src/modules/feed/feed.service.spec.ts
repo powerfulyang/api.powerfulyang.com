@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { FeedService } from './feed.service';
 import { FeedModule } from '@/modules/feed/feed.module';
 
@@ -20,7 +21,7 @@ describe('FeedService', () => {
     expect(res).toBeDefined();
   });
 
-  it('infiniteQuery', async function () {
+  it('infiniteQuery', async () => {
     let result = await service.infiniteQuery();
     while (result.nextCursor) {
       result = await service.infiniteQuery(result.nextCursor);

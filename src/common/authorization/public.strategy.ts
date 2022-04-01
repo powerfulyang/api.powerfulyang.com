@@ -4,13 +4,13 @@ import { Strategy } from 'passport';
 import type { Request } from 'express';
 import { UserService } from '@/modules/user/user.service';
 import { getTokenFromRequest } from '@/common/authorization/util';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
-export class PublicAuthStrategy extends PassportStrategy(Strategy, 'public') {
-  constructor(private readonly userService: UserService, private readonly logger: AppLogger) {
+export class PublicStrategy extends PassportStrategy(Strategy, 'public') {
+  constructor(private readonly userService: UserService, private readonly logger: LoggerService) {
     super();
-    this.logger.setContext(PublicAuthStrategy.name);
+    this.logger.setContext(PublicStrategy.name);
   }
 
   async authenticate(req: Request) {
@@ -21,7 +21,7 @@ export class PublicAuthStrategy extends PassportStrategy(Strategy, 'public') {
       this.success(res);
     } catch (e) {
       // 解析 token 失败 无法获取用户信息
-      this.success({});
+      this.pass();
     }
   }
 }

@@ -1,15 +1,10 @@
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { isNull } from '@powerfulyang/utils';
-import { AppLogger } from '@/common/logger/app.logger';
+import { isNull, isProdProcess } from '@powerfulyang/utils';
+import { LoggerService } from '@/common/logger/logger.service';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
-import {
-  PRIMARY_ORIGIN,
-  SERVER_HOST_DOMAIN,
-  WILDCARD_HOST_DOMAIN,
-  WILDCARD_ORIGIN,
-} from '@/constants/constants';
+import { PRIMARY_ORIGIN, SERVER_HOST_DOMAIN } from '@/constants/constants';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import type { CreateBucketDto } from '@/modules/bucket/entities/create-bucket.dto';
 
@@ -18,7 +13,7 @@ export class BucketService {
   constructor(
     @InjectRepository(CosBucket)
     private readonly bucketDao: Repository<CosBucket>,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly tencentCloudAccountService: TencentCloudAccountService,
   ) {
     this.logger.setContext(BucketService.name);
@@ -35,7 +30,7 @@ export class BucketService {
       ACL = 'public-read',
       CORSRules = [
         {
-          AllowedOrigin: [PRIMARY_ORIGIN, WILDCARD_ORIGIN],
+          AllowedOrigin: [PRIMARY_ORIGIN],
           AllowedMethod: ['GET'],
           MaxAgeSeconds: 3650000,
         },
@@ -44,7 +39,7 @@ export class BucketService {
         Status: 'Enabled',
         RefererType: 'White-List',
         DomainList: {
-          Domains: [SERVER_HOST_DOMAIN, WILDCARD_HOST_DOMAIN],
+          Domains: [SERVER_HOST_DOMAIN],
         },
       },
     } = bucket;
@@ -118,13 +113,16 @@ export class BucketService {
    *
    */
   async initBucket() {
-    const accounts = await this.tencentCloudAccountService.findAll();
-    const result = [];
-    for (const account of accounts) {
-      const res = await this.syncFromCloud(account);
-      result.push(...res);
+    if (isProdProcess) {
+      const accounts = await this.tencentCloudAccountService.findAll();
+      return Promise.all(
+        accounts.map((account) => {
+          return this.syncFromCloud(account);
+        }),
+      );
     }
-    return result;
+    const testBucket = await this.getBucketByBucketName('test');
+    return this.syncFromCloud(testBucket.tencentCloudAccount, testBucket);
   }
 
   private syncFromCloud(account: CosBucket['tencentCloudAccount']): Promise<CosBucket[]>;

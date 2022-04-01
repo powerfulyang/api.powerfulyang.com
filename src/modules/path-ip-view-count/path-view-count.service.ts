@@ -5,7 +5,7 @@ import { groupBy } from 'ramda';
 import { ip2long } from '@powerfulyang/node-utils';
 import { PathViewCount } from '@/modules/path-ip-view-count/entities/path-view-count.entity';
 import { CacheService } from '@/common/cache/cache.service';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class PathViewCountService {
   constructor(
     @InjectRepository(PathViewCount) private readonly pathViewCountDao: Repository<PathViewCount>,
     private readonly cacheService: CacheService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
   ) {
     this.logger.setContext(PathViewCountService.name);
   }
@@ -41,8 +41,8 @@ export class PathViewCountService {
     const result = await this.cacheService.sAdd(redisKey, ipLong);
     const viewCount = await this.cacheService.sCard(redisKey);
     if (result > 0) {
-      this.pathViewCountDao.insert({ ip: ipLong, path }).catch(() => {
-        this.logger.error(`error insert: ip=>${ipLong}, path=>${path}`);
+      this.pathViewCountDao.insert({ ip: ipLong, path }).catch((e) => {
+        this.logger.error(e);
       });
     }
     return viewCount;

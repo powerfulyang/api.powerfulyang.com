@@ -25,11 +25,10 @@ import { Asset } from '@/modules/asset/entities/asset.entity';
 import type { User, UserForeignKey } from '@/modules/user/entities/user.entity';
 import { getEXIF } from '../../../addon.api';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { ScheduleType } from '@/enum/ScheduleType';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import { UserService } from '@/modules/user/user.service';
-import type { InfiniteQueryResponse } from '@/type/InfiniteQuery';
 import { BucketService } from '@/modules/bucket/bucket.service';
 import { MqService } from '@/common/MQ/mq.service';
 
@@ -42,7 +41,7 @@ export class AssetService {
     private readonly pixivBotService: PixivBotService,
     private readonly instagramBotService: InstagramBotService,
     private readonly pinterestBotService: PinterestBotService,
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly proxyFetchService: ProxyFetchService,
     private readonly tencentCloudAccountService: TencentCloudAccountService,
     private readonly userService: UserService,
@@ -223,9 +222,9 @@ export class AssetService {
             const tmp = sha1(buffer);
             writeFileSync(path, buffer);
             if (tmp !== hash) {
-              this.logger.error(`文件 ${object.Key} hash校验失败`);
+              this.logger.error(new Error(`文件 ${object.Key} hash校验失败`));
               // eslint-disable-next-line no-continue
-              continue; // 跳过文件
+              continue;
             }
           }
           const buffer = readFileSync(path);
@@ -405,10 +404,10 @@ export class AssetService {
               name: bucket.name,
             });
           } else {
-            this.logger.error(`bot => unsupported media type!`);
+            this.logger.error(new Error('bot => unsupported media type!'));
           }
         } catch (e) {
-          this.logger.error('fetchImgBuffer error', e);
+          this.logger.error(e);
         }
       }
     }
@@ -427,11 +426,7 @@ export class AssetService {
     );
   }
 
-  async infiniteQuery(
-    cursor?: Asset['id'],
-    take: number = 20,
-    ids: User['id'][] = [],
-  ): Promise<InfiniteQueryResponse<Asset>> {
+  async infiniteQuery(cursor?: Asset['id'], take: number = 20, ids: User['id'][] = []) {
     const BotUser = await this.userService.getAssetBotUser();
     const res = await this.assetDao.find({
       where: {

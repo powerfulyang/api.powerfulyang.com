@@ -1,7 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { InstagramBotService } from './instagram-bot.service';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { InstagramBotModule } from 'api/instagram-bot/instagram-bot.module';
 import { ProxyFetchModule } from 'api/proxy-fetch';
+import { InstagramBotService } from './instagram-bot.service';
 
 describe('InstagramBotService', () => {
   let service: InstagramBotService;

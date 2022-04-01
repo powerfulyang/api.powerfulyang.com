@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { TencentCloudAccountService } from './tencent-cloud-account.service';
 import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
 

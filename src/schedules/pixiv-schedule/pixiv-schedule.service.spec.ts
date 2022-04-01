@@ -1,20 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { PixivScheduleService } from './pixiv-schedule.service';
-import { AppModule } from '@/app.module';
-import { SUCCESS } from '@/constants/constants';
+import { SchedulesModule } from '@/schedules/schedules.module';
 
 describe('PixivScheduleService', () => {
   let service: PixivScheduleService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [SchedulesModule],
     }).compile();
 
     service = module.get<PixivScheduleService>(PixivScheduleService);
   });
 
   it('should be defined', async () => {
-    await expect(service.bot()).resolves.toBe(SUCCESS);
+    await expect(service).toBeDefined();
   });
 });

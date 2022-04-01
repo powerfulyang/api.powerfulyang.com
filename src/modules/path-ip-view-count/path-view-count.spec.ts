@@ -1,4 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import { PathViewCountModule } from '@/modules/path-ip-view-count/path-view-count.module';
 
@@ -18,7 +19,7 @@ describe('BucketService', () => {
     expect(results).toBeDefined();
   });
 
-  it('handle page view count', async function () {
+  it('handle page view count', async () => {
     const count = await service.handlePathViewCount('/public/post', '127.0.0.1');
     expect(count).toBeGreaterThanOrEqual(0);
   });

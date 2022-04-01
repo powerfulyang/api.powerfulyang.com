@@ -3,9 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable } from '@nestjs/common';
 import type { Request } from 'express';
 import type { User } from '@/modules/user/entities/user.entity';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
-import type { ReqExtend } from '@/type/ReqExtend';
+import type { RequestExtend } from '@/type/RequestExtend';
 import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import type { jwtSecretConfig } from '@/configuration/jwt.config';
@@ -13,7 +13,7 @@ import type { jwtSecretConfig } from '@/configuration/jwt.config';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly userService: UserService,
     @Inject(JWT_SECRET_CONFIG) readonly config: ReturnType<typeof jwtSecretConfig>,
   ) {
@@ -27,9 +27,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate({ extend }: ReqExtend, user: User & { iat: number; exp: number }) {
+  async validate({ extend }: RequestExtend, user: User & { iat: number; exp: number }) {
     // to check user status;
-    this.logger.debug(`user query [ id: ${user.id} ] !`);
     const cachedUser = await this.userService.getCachedUser(user.id);
     process.nextTick(() => {
       this.userService.updateUserWithoutCache(user.id, {

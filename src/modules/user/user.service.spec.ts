@@ -1,4 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+import { isNull } from '@powerfulyang/utils';
 import { UserService } from './user.service';
 import { User } from '@/modules/user/entities/user.entity';
 import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
@@ -6,7 +8,6 @@ import { getUserFamiliesMembers } from '@/utils/user.util';
 import { SUCCESS } from '@/constants/constants';
 import { UserModule } from '@/modules/user/user.module';
 import { Family } from '@/modules/user/entities/family.entity';
-import { isNull } from '@powerfulyang/utils';
 
 describe('UserService', () => {
   let service: UserService;
@@ -24,7 +25,7 @@ describe('UserService', () => {
     expect(users).toBeDefined();
   });
 
-  it('cacheUsers', async function () {
+  it('cacheUsers', async () => {
     const result = await service.cacheUsers();
     expect(result).toBe(SUCCESS);
     const adminUser = await service.getUserByEmail(User.IntendedUsers.AdminUser);
@@ -39,12 +40,12 @@ describe('UserService', () => {
     expect(res).toBe(SUCCESS);
   });
 
-  it(`get user's menus`, async function () {
+  it(`get user's menus`, async () => {
     const menus = await service.queryMenusByUserId(1);
     expect(menus).toBeDefined();
   });
 
-  it(`generateAuthorization and verifyAuthorization`, async function () {
+  it(`generateAuthorization and verifyAuthorization`, async () => {
     const user = new User();
     user.id = 1;
     const authorization = await service.generateAuthorization(user);
@@ -54,7 +55,7 @@ describe('UserService', () => {
     expect(verify).toHaveProperty('exp', expect.any(Number));
   });
 
-  it('update password & login & verifyAuthorization', async function () {
+  it('update password & login & verifyAuthorization', async () => {
     const user = await service.getUserByEmail(User.IntendedUsers.AdminUser);
     const result = await service.updatePassword(user.id);
     const token = await service.login({
@@ -65,7 +66,7 @@ describe('UserService', () => {
     expect(verify).toHaveProperty('id', result.id);
   });
 
-  it('getUserCascadeFamilyInfo', async function () {
+  it('getUserCascadeFamilyInfo', async () => {
     const user = await service.getUserByEmail(User.IntendedUsers.AdminUser);
     const result = await service.queryUserCascadeFamilyInfo(user.id);
     const result2 = await service.queryUserCascadeFamilyInfo([user.id]);

@@ -21,6 +21,7 @@
     "strictPropertyInitialization": false,
     "strict": true,
     "skipLibCheck": true,
+    "useUnknownInCatchVariables": false,
     "paths": {
       "api/telegram-bot": ["libs/telegram-bot/src"],
       "api/telegram-bot/*": ["libs/telegram-bot/src/*"],
@@ -39,8 +40,17 @@
       "api/proxy-fetch/*": ["libs/proxy-fetch/src/*"],
       "api/udp-server": ["libs/udp-server/src"],
       "api/udp-server/*": ["libs/udp-server/src/*"]
-    }
+    },
+    "allowJs": false
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*.ts", "__test__", "libs/**/*.ts", "test", "addon.api/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "__test__",
+    "libs/**/*.ts",
+    "test",
+    "addon.api/**/*.ts",
+    ".eslintrc.js",
+    "jest.config.js"
+  ]
 }

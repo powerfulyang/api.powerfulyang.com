@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 
 @Injectable()
 export class EsService {
   constructor(
-    private readonly logger: AppLogger,
+    private readonly logger: LoggerService,
     private readonly elasticsearchService: ElasticsearchService,
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
   ) {

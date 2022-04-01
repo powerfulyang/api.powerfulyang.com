@@ -2,13 +2,14 @@ import { Controller, ForbiddenException, Get, Param } from '@nestjs/common';
 import { PixivScheduleService } from '@/schedules/pixiv-schedule/pixiv-schedule.service';
 import { InstagramScheduleService } from '@/schedules/instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from '@/schedules/pinterest-schedule/pinterest-schedule.service';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { SUCCESS } from '@/constants/constants';
 import { UdpScheduleService } from '@/schedules/udp-schedule/udp-schedule.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { ScheduleType } from '@/enum/ScheduleType';
 
 @Controller('schedule')
+@AdminAuthGuard()
 @JwtAuthGuard()
 export class ScheduleController {
   constructor(
@@ -20,7 +21,6 @@ export class ScheduleController {
   ) {}
 
   @Get(':scheduleType')
-  @AdminAuthGuard()
   async RunScheduleByRequest(
     @Param('scheduleType')
     scheduleType: ScheduleType,

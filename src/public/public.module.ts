@@ -3,9 +3,10 @@ import { PostModule } from '@/modules/post/post.module';
 import { PublicController } from '@/public/public.controller';
 import { AssetModule } from '@/modules/asset/asset.module';
 import { FeedModule } from '@/modules/feed/feed.module';
+import { LoggerModule } from '@/common/logger/logger.module';
 
 @Module({
-  imports: [PostModule, AssetModule, FeedModule],
+  imports: [PostModule, AssetModule, FeedModule, LoggerModule],
   controllers: [PublicController],
 })
 export class PublicModule {}

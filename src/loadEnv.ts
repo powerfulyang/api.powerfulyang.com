@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-import { isProdProcess } from '@powerfulyang/utils';
+import { isDevProcess } from '@powerfulyang/utils';
 
-if (!isProdProcess) {
+if (isDevProcess) {
   // must load the highest priority
-  dotenv.config();
+  dotenv.config({ path: '.env.local' });
 }

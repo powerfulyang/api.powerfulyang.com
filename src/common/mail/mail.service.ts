@@ -4,13 +4,16 @@ import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { ConfigService } from '@/common/config/config.service';
 import { SUCCESS } from '@/constants/constants';
-import { AppLogger } from '@/common/logger/app.logger';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class MailService {
   private transporter: Transporter<SMTPTransport.SentMessageInfo>;
 
-  constructor(private readonly configService: ConfigService, private readonly logger: AppLogger) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(MailService.name);
     const { transport, defaults } = this.configService.getMailConfig();
     this.transporter = createTransport(transport, defaults);
