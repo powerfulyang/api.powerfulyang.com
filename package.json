@@ -91,7 +91,7 @@
     "@types/node-telegram-bot-api": "^0.56.0",
     "@types/nodemailer": "^6.4.4",
     "@types/passport-jwt": "^3.0.6",
-    "@types/ramda": "^0.28.1",
+    "@types/ramda": "0.28.7",
     "@types/sharp": "^0.30.0",
     "@types/supertest": "^2.0.11",
     "@types/xml2js": "^0.4.9",
