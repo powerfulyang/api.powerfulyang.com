@@ -1,14 +1,12 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { pluck } from 'ramda';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Pagination, QueryPagination } from '@/common/decorator/pagination.decorator';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
 import { FeedService } from '@/modules/feed/feed.service';
 import { PublicAuthGuard } from '@/common/decorator';
 import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import type { User } from '@/modules/user/entities/user.entity';
-import type { Asset } from '@/modules/asset/entities/asset.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 
 @Controller('public')
@@ -50,25 +48,20 @@ export class PublicController {
 
   @Get('feed')
   feeds(
-    @Query('id') id: string,
+    @Query('cursor') cursor: string,
     @FamilyMembersFromAuth() users: User[],
     @Query('size') size: string = '20',
   ) {
-    return this.feedService.infiniteQuery(+id, Number(size), pluck('id', users));
+    return this.feedService.infiniteQuery(cursor, Number(size), pluck('id', users));
   }
 
   @Get('asset')
-  assets(@QueryPagination() pagination: Pagination, @FamilyMembersFromAuth() users: User[]) {
-    return this.assetService.getAssets(pagination, pluck('id', users));
-  }
-
-  @Get('asset/infiniteQuery')
   infiniteQuery(
-    @Query('id') id: Asset['id'],
+    @Query('cursor') cursor: string,
     @FamilyMembersFromAuth() users: User[],
     @Query('size') size: string = '20',
   ) {
-    return this.assetService.infiniteQuery(id, Number(size), pluck('id', users));
+    return this.assetService.infiniteQuery(cursor, Number(size), pluck('id', users));
   }
 
   @Get('asset/:id')

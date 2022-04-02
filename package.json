@@ -14,9 +14,9 @@
   "scripts": {
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint:js": "eslint src --ext .ts libs --ext .ts --fix",
-    "start:dev": "cross-env PORT=3000 nest start --watch",
+    "start:dev": "nest start --watch",
     "start:prod": "node dist/src/main.js",
-    "build": "rimraf dist && nest build -p tsconfig.build.json",
+    "build": "nest build -p tsconfig.build.json",
     "test": "jest --detectOpenHandles",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config test/jest-e2e.json",
@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "8.2.4",
-    "@nestjs/schematics": "8.0.8",
+    "@nestjs/schematics": "8.0.9",
     "@nestjs/testing": "8.4.3",
     "@powerfulyang/lint": "0.7.13",
     "@types/cookie-parser": "1.4.2",

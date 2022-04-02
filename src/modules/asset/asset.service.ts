@@ -423,11 +423,11 @@ export class AssetService {
     );
   }
 
-  async infiniteQuery(cursor?: Asset['id'], take: number = 20, ids: User['id'][] = []) {
+  async infiniteQuery(cursor?: string | number, take: number = 20, ids: User['id'][] = []) {
     const BotUser = await this.userService.getAssetBotUser();
     const res = await this.assetDao.find({
       where: {
-        id: LessThan(cursor || 2 ** 31 - 1),
+        id: LessThan(Number(cursor) || 2 ** 31 - 1),
         uploadBy: {
           id: In(ids.concat(BotUser.id)),
         },

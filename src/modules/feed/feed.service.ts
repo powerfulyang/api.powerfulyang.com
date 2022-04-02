@@ -37,13 +37,13 @@ export class FeedService {
     return this.feedDao.save({ ...createFeedDto, assets });
   }
 
-  async infiniteQuery(cursor?: Feed['id'], take: number = 20, ids: User['id'][] = []) {
+  async infiniteQuery(cursor?: string | number, take: number = 20, ids: User['id'][] = []) {
     const res = await this.feedDao.find({
       where: [
-        { public: true, id: LessThan(cursor || 2 ** 31 - 1) },
+        { public: true, id: LessThan(Number(cursor) || 2 ** 31 - 1) },
         {
           createBy: In(ids),
-          id: LessThan(cursor || 2 ** 31 - 1),
+          id: LessThan(Number(cursor) || 2 ** 31 - 1),
         },
       ],
       order: {
