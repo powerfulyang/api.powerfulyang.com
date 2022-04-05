@@ -321,4 +321,18 @@ export class UserService {
     const botUser = await this.getAssetBotUser();
     return [botUser];
   }
+
+  getSaltByEmail(email: User['email']) {
+    return this.userDao.findOneOrFail({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+        email: true,
+        salt: true,
+      },
+      loadEagerRelations: false,
+    });
+  }
 }

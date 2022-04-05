@@ -47,7 +47,7 @@ export class UserController {
       SupportOauthApplication.google,
     );
     return {
-      cookie: [
+      cookies: [
         {
           name: Authorization,
           value: token,
@@ -72,7 +72,7 @@ export class UserController {
       SupportOauthApplication.github,
     );
     return {
-      cookie: [
+      cookies: [
         {
           name: Authorization,
           value: token,
@@ -88,7 +88,7 @@ export class UserController {
     this.logger.info(`${user.email} try to login in!!!`);
     const token = await this.userService.login(user);
     return {
-      cookie: [
+      cookies: [
         {
           name: Authorization,
           value: token,

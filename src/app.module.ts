@@ -1,4 +1,3 @@
-import './loadEnv';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
