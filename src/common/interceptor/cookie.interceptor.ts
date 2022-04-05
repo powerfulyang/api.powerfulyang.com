@@ -26,10 +26,10 @@ export class CookieInterceptor implements NestInterceptor {
             response.cookie(cookie.name, cookie.value, CookieOptions);
           });
         } else {
-          this.logger.warn('No cookie found');
+          this.logger.warn('CookieInterceptor: No cookies to set');
         }
       }),
-      map((data) => omit(['cookie'])(data)),
+      map((data) => omit(['cookies'])(data)),
     );
   }
 }
