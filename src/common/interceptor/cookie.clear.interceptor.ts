@@ -28,7 +28,7 @@ export class CookieClearInterceptor implements NestInterceptor {
           this.logger.warn('CookieClearInterceptor: No cookie to clear');
         }
       }),
-      map((data) => omit(['cookie'])(data)),
+      map((data) => omit(['cookies'])(data)),
     );
   }
 }
