@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "8.2.4",
-    "@nestjs/schematics": "8.0.9",
+    "@nestjs/schematics": "8.0.10",
     "@nestjs/testing": "8.4.3",
     "@powerfulyang/lint": "0.7.14",
     "@types/cookie": "0.4.1",
