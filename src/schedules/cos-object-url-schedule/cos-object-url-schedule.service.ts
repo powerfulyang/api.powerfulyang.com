@@ -16,19 +16,23 @@ export class CosObjectUrlScheduleService {
 
   @Interval(60 * 60 * 24 * 999)
   async refreshObjectUrl() {
-    const bool = await this.coreService.isProdScheduleNode();
-    if (bool) {
-      this.logger.info('===========每24小时刷新资源的COS对象链接===========');
-      const assets = await this.assetService.all();
-      for (const asset of assets) {
-        const objectUrl = await this.assetService.getObjectUrl(
-          `${asset.sha1}.${asset.fileSuffix}`,
-          asset.bucket,
-        );
-        process.nextTick(() => {
-          this.assetService.updateAssetObjectUrl(asset.id, objectUrl);
-        });
+    try {
+      const bool = await this.coreService.isProdScheduleNode();
+      if (bool) {
+        this.logger.info('===========每24小时刷新资源的COS对象链接===========');
+        const assets = await this.assetService.all();
+        for (const asset of assets) {
+          const objectUrl = await this.assetService.getObjectUrl(
+            `${asset.sha1}.${asset.fileSuffix}`,
+            asset.bucket,
+          );
+          process.nextTick(() => {
+            this.assetService.updateAssetObjectUrl(asset.id, objectUrl);
+          });
+        }
       }
+    } catch (e) {
+      this.logger.error(e);
     }
   }
 }

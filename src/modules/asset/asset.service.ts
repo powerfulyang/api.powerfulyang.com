@@ -5,8 +5,8 @@ import {
   UnprocessableEntityException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, In, LessThan, Not, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, In, LessThan, MoreThan, Not, Repository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -17,7 +17,7 @@ import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestBotService } from 'api/pinterest-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
-import { isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
+import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { SUCCESS } from '@/constants/constants';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { Pagination } from '@/common/decorator/pagination.decorator';
@@ -31,12 +31,14 @@ import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tenc
 import { UserService } from '@/modules/user/user.service';
 import { BucketService } from '@/modules/bucket/bucket.service';
 import { MqService } from '@/common/MQ/mq.service';
+import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
+import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
 
 @Injectable()
 export class AssetService {
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
-    @InjectEntityManager() private readonly entityManager: EntityManager,
+    @InjectDataSource() private readonly dataSource: DataSource,
     private readonly mqService: MqService,
     private readonly pixivBotService: PixivBotService,
     private readonly instagramBotService: InstagramBotService,
@@ -139,7 +141,7 @@ export class AssetService {
    * @param ids
    */
   async deleteAsset(ids: number[]) {
-    await this.entityManager.transaction(async (transactionalEntityManager) => {
+    await this.dataSource.transaction(async (transactionalEntityManager) => {
       for (const id of ids) {
         const asset = await transactionalEntityManager.findOneOrFail(Asset, {
           where: { id },
@@ -423,23 +425,28 @@ export class AssetService {
     );
   }
 
-  async infiniteQuery(cursor?: string | number, take: number = 20, ids: User['id'][] = []) {
+  async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
+    const { userIds = [], prevCursor, nextCursor } = params;
     const BotUser = await this.userService.getAssetBotUser();
+    const cursor = nextCursor
+      ? MoreThan(Number(nextCursor))
+      : LessThan(Number(prevCursor || DefaultCursor));
     const res = await this.assetDao.find({
       where: {
-        id: LessThan(Number(cursor) || 2 ** 31 - 1),
         uploadBy: {
-          id: In(ids.concat(BotUser.id)),
+          id: In(userIds.concat(BotUser.id)),
         },
+        id: cursor,
       },
       order: {
         id: 'DESC',
       },
-      take,
+      take: DefaultTake,
     });
     return {
       resources: res,
-      nextCursor: res.length === take ? lastItem(res)?.id : undefined,
+      prevCursor: (res.length === DefaultTake && lastItem(res)?.id) || null,
+      nextCursor: firstItem(res)?.id || null,
     };
   }
 

@@ -23,8 +23,9 @@ describe('utils test', () => {
     });
   });
 
-  it('udp request', () => {
-    createSocket('udp4').send('你好', 30000, 'localhost');
+  it('UDP test', () => {
+    const socket = createSocket('udp4');
+    socket.send('你好', 30000, 'localhost');
   });
 
   it('extname', () => {

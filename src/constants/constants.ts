@@ -1,9 +1,11 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import type { Nullable } from '@powerfulyang/utils';
+import type { CookieOptions } from 'express';
 
 export const MICROSERVICE_NAME = Symbol('RABBIT_MQ_MICROSERVICE');
-export const RMQ_QUEUE = 'COS_UPLOAD';
+export const RMQ_COS_UPLOAD_QUEUE = 'RABBIT_MQ_COS_UPLOAD_QUEUE';
 export const SUCCESS = 'SUCCESS';
+
 export const REDIS_OK = 'OK';
 export const checkRedisResult = (result: Nullable<string>, message?: string) => {
   if (result !== REDIS_OK) {
@@ -13,12 +15,12 @@ export const checkRedisResult = (result: Nullable<string>, message?: string) => 
 
 export const Authorization = 'authorization';
 
-export const { SERVER_HOST_DOMAIN } = process.env;
-export const CookieOptions = {
+export const { COOKIE_DOMAIN, SERVER_ORIGIN } = process.env;
+
+export const DefaultCookieOptions: CookieOptions = {
   httpOnly: true,
-  sameSite: true,
+  sameSite: 'lax',
   secure: true,
-  domain: SERVER_HOST_DOMAIN,
+  domain: COOKIE_DOMAIN,
   maxAge: 24 * 60 * 60 * 1000,
 };
-export const PRIMARY_ORIGIN = `https://${SERVER_HOST_DOMAIN}`;

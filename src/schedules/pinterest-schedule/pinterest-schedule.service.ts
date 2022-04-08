@@ -20,11 +20,15 @@ export class PinterestScheduleService {
    */
   @Cron('0 45 * * * *')
   async bot() {
-    const bool = await this.coreService.isProdScheduleNode();
-    if (bool) {
-      this.assetService.assetBotSchedule(ScheduleType.pinterest).catch((e) => {
-        this.logger.error(e);
-      });
+    try {
+      const bool = await this.coreService.isProdScheduleNode();
+      if (bool) {
+        this.assetService.assetBotSchedule(ScheduleType.pinterest).catch((e) => {
+          this.logger.error(e);
+        });
+      }
+    } catch (e) {
+      this.logger.error(e);
     }
   }
 }

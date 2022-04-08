@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { isNull, isProdProcess } from '@powerfulyang/utils';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
-import { PRIMARY_ORIGIN, SERVER_HOST_DOMAIN } from '@/constants/constants';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import type { CreateBucketDto } from '@/modules/bucket/entities/create-bucket.dto';
 
@@ -30,7 +29,7 @@ export class BucketService {
       ACL = 'public-read',
       CORSRules = [
         {
-          AllowedOrigin: [PRIMARY_ORIGIN],
+          AllowedOrigin: ['https://powerfulyang.com', 'https://*.powerfulyang.com'],
           AllowedMethod: ['GET'],
           MaxAgeSeconds: 3650000,
         },
@@ -39,7 +38,7 @@ export class BucketService {
         Status: 'Enabled',
         RefererType: 'White-List',
         DomainList: {
-          Domains: [SERVER_HOST_DOMAIN],
+          Domains: ['powerfulyang.com', '*.powerfulyang.com'],
         },
       },
     } = bucket;

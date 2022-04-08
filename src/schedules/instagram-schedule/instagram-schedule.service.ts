@@ -20,11 +20,15 @@ export class InstagramScheduleService {
    */
   @Cron('0 15 * * * *')
   async bot() {
-    const bool = await this.coreService.isProdScheduleNode();
-    if (bool) {
-      this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
-        this.logger.error(e);
-      });
+    try {
+      const bool = await this.coreService.isProdScheduleNode();
+      if (bool) {
+        this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
+          this.logger.error(e);
+        });
+      }
+    } catch (e) {
+      this.logger.error(e);
     }
   }
 }

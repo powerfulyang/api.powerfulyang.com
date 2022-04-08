@@ -4,7 +4,8 @@ import { ProxyFetchService } from 'api/proxy-fetch';
 import { interval, map } from 'rxjs';
 
 /**
- * @deprecated 不再经常用
+ * @deprecated
+ * 不再经常用
  */
 @Injectable()
 export class TelegramBotService {
@@ -15,7 +16,7 @@ export class TelegramBotService {
   private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 
   constructor(private proxyFetchService: ProxyFetchService) {
-    // this.initBot();
+    this.initBot();
     // this.loop();
   }
 

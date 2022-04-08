@@ -5,7 +5,7 @@ export const elasticsearchConfig = (): ClientOptions => {
   const port = process.env.ELASTICSEARCH_PORT;
   const username = process.env.ELASTICSEARCH_USER as string;
   const password = process.env.ELASTICSEARCH_PASS as string;
-  let auth: any;
+  let auth;
   if (username && password) {
     auth = { username, password };
   }

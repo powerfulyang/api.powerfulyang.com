@@ -42,4 +42,16 @@ export class OauthOpenidService {
     oauthOpenid.user = user as UserOmitRelations;
     return this.oauthOpenidDao.save(oauthOpenid);
   }
+
+  /**
+   * 解绑 openid
+   */
+  async unbindOpenid(user: UserForeignKey, openid: string, platform: SupportOauthApplication) {
+    const application = await this.oauthApplicationService.getApplicationByPlatformName(platform);
+    return this.oauthOpenidDao.delete({
+      user,
+      openid,
+      application,
+    });
+  }
 }

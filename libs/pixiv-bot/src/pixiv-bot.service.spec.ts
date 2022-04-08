@@ -15,8 +15,7 @@ describe('PixivBotService', () => {
     service = module.get<PixivBotService>(PixivBotService);
   });
 
-  it('should be defined', async () => {
-    const res = await service.fetchUndo();
-    expect(res).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

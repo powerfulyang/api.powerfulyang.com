@@ -14,12 +14,7 @@ describe('LoggerService', () => {
     service = await module.resolve<LoggerService>(LoggerService);
   });
 
-  it('init', () => {
-    const error = new Error('error message!');
-    service.error(error);
-    service.warn('test');
-    service.info('test');
-    service.debug('test');
-    service.verbose('test');
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

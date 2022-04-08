@@ -32,6 +32,12 @@ export class UdpServerService {
     this.observable.subscribe(callback);
   }
 
+  close() {
+    this.udpSocket.close();
+    this.udpServer.close();
+    this.observable.unsubscribe();
+  }
+
   send(val: any, port = 30000, server = 'localhost') {
     this.udpSocket.send(val, port, server);
   }

@@ -1,13 +1,13 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { isNull } from '@powerfulyang/utils';
+import { generateRandomString } from '@powerfulyang/node-utils';
 import { UserService } from './user.service';
 import { User } from '@/modules/user/entities/user.entity';
-import { getClassStaticProperties } from '@/utils/getClassStaticProperties';
-import { getUserFamiliesMembers } from '@/utils/user.util';
 import { SUCCESS } from '@/constants/constants';
 import { UserModule } from '@/modules/user/user.module';
 import { Family } from '@/modules/user/entities/family.entity';
+import { getUserFamiliesMembers } from '@/common/decorator/user-from-auth.decorator';
 
 describe('UserService', () => {
   let service: UserService;
@@ -36,7 +36,7 @@ describe('UserService', () => {
   });
 
   it('sendDefaultPassword', async () => {
-    const res = await service.sendDefaultPassword('i@Powerfulyang.com', 'defaultPassword');
+    const res = await service.sendDefaultPassword('i@Powerfulyang.com', generateRandomString());
     expect(res).toBe(SUCCESS);
   });
 
@@ -93,10 +93,5 @@ describe('UserService', () => {
     // remove adminUser test family
     const res2 = await service.setUserFamily(adminUserSimple.id, family.id, 'remove');
     expect(res2.families).not.toContainEqual(family);
-  });
-
-  it('class User static property', () => {
-    const staticProperties = getClassStaticProperties(User);
-    expect(staticProperties).toBeDefined();
   });
 });

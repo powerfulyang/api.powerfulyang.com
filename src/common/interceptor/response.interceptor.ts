@@ -5,7 +5,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 import type { Response } from 'express';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization, CookieOptions } from '@/constants/constants';
+import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
 import type { RequestExtend } from '@/type/RequestExtend';
 
@@ -27,16 +27,17 @@ export class ResponseInterceptor implements NestInterceptor {
     const { xRealIp } = request.extend;
 
     return next.handle().pipe(
-      tap(() => {
+      tap(async () => {
         // check token expire time;
         if (request.user) {
           const { user } = request;
           const ValidPeriod = user.exp - Date.now() / 1000;
-          this.logger.debug(`token 剩余有效期 ${ValidPeriod}`);
           if (ValidPeriod < 6 * 60 * 60) {
             // 小于6小时 refresh token
-            const authorization = this.userService.generateAuthorization(user);
-            response.cookie(Authorization, authorization, CookieOptions);
+            const authorization = await this.userService.generateAuthorization(user);
+            response.cookie(Authorization, authorization, DefaultCookieOptions);
+          } else {
+            this.logger.debug(`token 剩余有效期 ${ValidPeriod / 60 / 60} 小时`);
           }
         }
       }),

@@ -7,7 +7,7 @@ import type { ParamsDictionary } from 'express-serve-static-core';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { LoggerService } from '@/common/logger/logger.service';
-import { PRIMARY_ORIGIN } from '@/constants/constants';
+import { SERVER_ORIGIN } from '@/constants/constants';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
 
@@ -33,7 +33,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthAppli
   }
 
   authenticate(req: Request<ParamsDictionary, any, any, { redirect?: string }>) {
-    const { redirect = PRIMARY_ORIGIN } = req.query;
+    const { redirect = SERVER_ORIGIN } = req.query;
     super.authenticate(req, {
       state: Buffer.from(redirect).toString('base64'),
     });
