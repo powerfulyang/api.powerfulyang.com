@@ -5,7 +5,10 @@ import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
 import { FeedService } from '@/modules/feed/feed.service';
 import { PublicAuthGuard } from '@/common/decorator';
-import { FamilyMembersFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import {
+  FamilyMembersFromAuth,
+  FamilyMembersIdFromAuth,
+} from '@/common/decorator/user-from-auth.decorator';
 import type { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 
@@ -48,20 +51,28 @@ export class PublicController {
 
   @Get('feed')
   feeds(
-    @Query('cursor') cursor: string,
-    @FamilyMembersFromAuth() users: User[],
-    @Query('size') size: string = '20',
+    @Query('prevCursor') prevCursor: string,
+    @Query('nextCursor') nextCursor: string,
+    @FamilyMembersIdFromAuth() userIds: User['id'][],
   ) {
-    return this.feedService.infiniteQuery(cursor, Number(size), pluck('id', users));
+    return this.feedService.infiniteQuery({
+      prevCursor,
+      nextCursor,
+      userIds,
+    });
   }
 
   @Get('asset')
   infiniteQuery(
-    @Query('cursor') cursor: string,
-    @FamilyMembersFromAuth() users: User[],
-    @Query('size') size: string = '20',
+    @Query('prevCursor') prevCursor: string,
+    @Query('nextCursor') nextCursor: string,
+    @FamilyMembersIdFromAuth() userIds: User['id'][],
   ) {
-    return this.assetService.infiniteQuery(cursor, Number(size), pluck('id', users));
+    return this.assetService.infiniteQuery({
+      prevCursor,
+      nextCursor,
+      userIds,
+    });
   }
 
   @Get('asset/:id')

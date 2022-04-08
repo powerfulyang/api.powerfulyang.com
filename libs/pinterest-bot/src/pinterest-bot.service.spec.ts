@@ -15,8 +15,7 @@ describe('PinterestRssService', () => {
     service = module.get<PinterestBotService>(PinterestBotService);
   });
 
-  it('should get undo posts', async () => {
-    const res = await service.fetchUndo();
-    expect(res).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

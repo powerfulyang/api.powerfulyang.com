@@ -5,7 +5,10 @@ import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class UdpScheduleService {
-  constructor(private udpServerService: UdpServerService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly udpServerService: UdpServerService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(UdpScheduleService.name);
   }
 
@@ -14,6 +17,10 @@ export class UdpScheduleService {
    */
   @Interval(12 * 60 * 60 * 1000)
   healthCheck() {
-    this.udpServerService.send('health check!');
+    try {
+      this.udpServerService.send('health check!');
+    } catch (e) {
+      this.logger.error(e);
+    }
   }
 }

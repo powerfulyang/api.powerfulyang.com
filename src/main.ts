@@ -1,6 +1,5 @@
 import './loadEnv';
 import { NestFactory } from '@nestjs/core';
-import cookieParser from 'cookie-parser';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import { isDevProcess } from '@powerfulyang/utils';
@@ -30,8 +29,6 @@ async function bootstrap(): Promise<void> {
   });
 
   app.setGlobalPrefix('api');
-
-  app.use(cookieParser());
 
   await app.listen(process.env.PORT || 3000);
 }

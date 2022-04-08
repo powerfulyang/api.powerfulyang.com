@@ -6,7 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { omit } from 'ramda';
 import { isArray } from '@powerfulyang/utils';
 import { LoggerService } from '@/common/logger/logger.service';
-import { CookieOptions } from '@/constants/constants';
+import { DefaultCookieOptions } from '@/constants/constants';
 
 @Injectable()
 export class CookieClearInterceptor implements NestInterceptor {
@@ -22,7 +22,7 @@ export class CookieClearInterceptor implements NestInterceptor {
           const ctx = context.switchToHttp();
           const response = ctx.getResponse<Response>();
           cookieNames.forEach((cookieName) => {
-            response.cookie(cookieName, '', { ...CookieOptions, maxAge: 0 });
+            response.cookie(cookieName, '', { ...DefaultCookieOptions, maxAge: 0 });
           });
         } else {
           this.logger.warn('CookieClearInterceptor: No cookie to clear');

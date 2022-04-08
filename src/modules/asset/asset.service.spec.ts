@@ -63,7 +63,9 @@ describe('AssetService', () => {
   it('infiniteQuery', async () => {
     let result = await service.infiniteQuery();
     while (result.nextCursor) {
-      result = await service.infiniteQuery(result.nextCursor);
+      result = await service.infiniteQuery({
+        nextCursor: result.nextCursor,
+      });
       expect(result.resources).toBeDefined();
     }
   });

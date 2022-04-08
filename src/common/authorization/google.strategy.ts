@@ -9,7 +9,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import { PRIMARY_ORIGIN } from '@/constants/constants';
+import { SERVER_ORIGIN } from '@/constants/constants';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, SupportOauthApplication.google) {
@@ -34,7 +34,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, SupportOauthAppli
   }
 
   authenticate(req: Request<ParamsDictionary, any, any, { redirect?: string }>) {
-    const { redirect = PRIMARY_ORIGIN } = req.query;
+    const { redirect = SERVER_ORIGIN } = req.query;
     super.authenticate(req, {
       state: Buffer.from(redirect).toString('base64'),
     });

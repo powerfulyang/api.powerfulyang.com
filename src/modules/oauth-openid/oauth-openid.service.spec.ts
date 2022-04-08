@@ -15,7 +15,9 @@ describe('OauthOpenidService', () => {
     service = module.get<OauthOpenidService>(OauthOpenidService);
   });
 
-  it('test', async () => {
+  it('unbind and bind', async () => {
+    const unbindRes = service.unbindOpenid({ id: 1 }, 'test', SupportOauthApplication.test);
+    expect(unbindRes).toBeDefined();
     const result = await service.associateOpenid(
       {
         id: 1,

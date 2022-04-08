@@ -7,7 +7,7 @@ import { omit } from 'ramda';
 import { isArray } from '@powerfulyang/utils';
 import type { Cookie } from 'nodemailer/lib/fetch/cookies';
 import { LoggerService } from '@/common/logger/logger.service';
-import { CookieOptions } from '@/constants/constants';
+import { DefaultCookieOptions } from '@/constants/constants';
 
 @Injectable()
 export class CookieInterceptor implements NestInterceptor {
@@ -23,7 +23,7 @@ export class CookieInterceptor implements NestInterceptor {
           const ctx = context.switchToHttp();
           const response = ctx.getResponse<Response>();
           cookies.forEach((cookie) => {
-            response.cookie(cookie.name, cookie.value, CookieOptions);
+            response.cookie(cookie.name, cookie.value, DefaultCookieOptions);
           });
         } else {
           this.logger.warn('CookieInterceptor: No cookies to set');

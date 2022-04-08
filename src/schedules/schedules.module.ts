@@ -13,7 +13,7 @@ import { CoreModule } from '@/core/core.module';
 
 @Module({
   imports: [
-    ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(), // 其实可以选择禁用。
     UdpServerModule,
     AssetModule,
     TencentCloudAccountModule,

@@ -15,12 +15,7 @@ describe('InstagramBotService', () => {
     service = module.get<InstagramBotService>(InstagramBotService);
   });
 
-  it('should fetch all saved be defined', async () => {
-    await expect(service.fetchUndo().then((res) => res.pop()!.id)).resolves.toBe('B6sOwipIji0');
-  });
-
-  it('should fetch undo saved be defined', async () => {
-    const res = await service.fetchUndo();
-    expect(res).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });
