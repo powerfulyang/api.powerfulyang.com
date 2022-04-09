@@ -8,8 +8,9 @@ import { PublicAuthGuard } from '@/common/decorator';
 import {
   FamilyMembersFromAuth,
   FamilyMembersIdFromAuth,
+  UserFromAuth,
 } from '@/common/decorator/user-from-auth.decorator';
-import type { User } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 
 @Controller('public')
@@ -25,8 +26,8 @@ export class PublicController {
   }
 
   @Get('hello')
-  hello() {
-    return 'Hello World!!!';
+  hello(@UserFromAuth() user: User): string {
+    return `Hello, ${user.nickname || 'unauthorized visitor'}!`;
   }
 
   @Get('post')

@@ -8,19 +8,23 @@ export const UserFromAuth = createParamDecorator(
   (keys: Array<keyof User>, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     if (keys?.length > 0) {
-      return pick(keys)(request.user);
+      return pick(keys)(request.user || {});
     }
-    return request.user;
+    return request.user || {};
   },
 );
 
 export const UserIdFromAuth = createParamDecorator((_, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<RequestExtend>();
-  return request.user.id;
+  return request.user?.id;
 });
 
-export const getUserFamiliesMembers = (user: User) => {
-  return flatten(user?.families?.map((family) => family.members) || [user]);
+export const getUserFamiliesMembers = (user?: User) => {
+  const familiesMembers = flatten(user?.families.map((family) => family.members) || []);
+  if (familiesMembers.length > 0) {
+    return familiesMembers;
+  }
+  return (user && [user]) || [];
 };
 
 export const FamilyMembersFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {

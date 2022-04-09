@@ -20,7 +20,6 @@ type IProcessEnv = {
   PG_PASSWORD: string;
   PG_DATABASE: string;
 
-  COOKIE_DOMAIN: string;
   SERVER_ORIGIN: string;
 };
 
