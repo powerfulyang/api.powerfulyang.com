@@ -14,7 +14,8 @@
   "scripts": {
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint:js": "eslint src --ext .ts libs --ext .ts --fix",
-    "start:dev": "cross-env PORT=3001 nest start --watch",
+    "qa:dev": "cross-env PORT=3001 APP_ENV=qa nest start --watch",
+    "prod:dev": "cross-env PORT=3001 APP_ENV=prod nest start --watch",
     "start:prod": "node dist/src/main.js",
     "build": "nest build -p tsconfig.build.json",
     "test": "jest",

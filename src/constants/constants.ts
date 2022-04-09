@@ -15,12 +15,12 @@ export const checkRedisResult = (result: Nullable<string>, message?: string) => 
 
 export const Authorization = 'authorization';
 
-export const { COOKIE_DOMAIN, SERVER_ORIGIN } = process.env;
+export const { SERVER_ORIGIN } = process.env;
 
 export const DefaultCookieOptions: CookieOptions = {
   httpOnly: true,
   sameSite: 'lax',
   secure: true,
-  domain: COOKIE_DOMAIN,
+  domain: 'powerfulyang.com',
   maxAge: 24 * 60 * 60 * 1000,
 };
