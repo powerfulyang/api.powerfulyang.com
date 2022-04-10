@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { isProdProcess } from '@powerfulyang/utils';
 import { UserService } from '@/modules/user/user.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
@@ -33,7 +34,7 @@ export class BootstrapService {
         ]).then(() => {
           resolve();
         });
-      }, 1000 * 10);
+      }, (isProdProcess && 1000 * 10) || 0);
     });
   }
 

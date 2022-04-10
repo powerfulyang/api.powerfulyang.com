@@ -8,10 +8,10 @@ import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
-import { Authorization } from '@/constants/constants';
+import { Authorization, DefaultCookieOptions } from '@/constants/constants';
+import type { CookieClear } from '@/common/interceptor/cookie.interceptor';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
-import { CookieClearInterceptor } from '@/common/interceptor/cookie.clear.interceptor';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 
 @Controller('user')
@@ -106,9 +106,19 @@ export class UserController {
 
   @Post('logout')
   @JwtAuthGuard()
-  @UseInterceptors(CookieClearInterceptor)
-  logout(@UserFromAuth() user: User) {
+  @UseInterceptors(CookieInterceptor)
+  logout(@UserFromAuth() user: User): { cookies: CookieClear[] } {
     this.logger.info(`${user.email} try to logout!!!`);
-    return { cookies: [Authorization] };
+    return {
+      cookies: [
+        {
+          name: Authorization,
+          options: {
+            ...DefaultCookieOptions,
+            maxAge: 0,
+          },
+        },
+      ],
+    };
   }
 }

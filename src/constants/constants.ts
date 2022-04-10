@@ -19,8 +19,12 @@ export const { SERVER_ORIGIN } = process.env;
 
 export const DefaultCookieOptions: CookieOptions = {
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: 'strict',
   secure: true,
   domain: 'powerfulyang.com',
-  maxAge: 24 * 60 * 60 * 1000,
+  /**
+   * If both Expires and Max-Age are set, Max-Age has precedence.
+   */
+  maxAge: 24 * 60 * 60, // hours * minutes * seconds
+  path: '/',
 };

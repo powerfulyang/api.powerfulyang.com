@@ -23,7 +23,8 @@ export class RequestMiddleware implements NestMiddleware {
     Reflect.set(req, 'extend', { xRealIp, address });
     next();
     const { url } = req;
-    const log = `requestUrl => [${url}]; xRealIp => [${xRealIp}] ; requestFrom => [${address}]`;
-    this.logger.info(log);
+    this.logger.debug(
+      `requestUrl => [${url}]; xRealIp => [${xRealIp}] ; requestFrom => [${address}]`,
+    );
   }
 }
