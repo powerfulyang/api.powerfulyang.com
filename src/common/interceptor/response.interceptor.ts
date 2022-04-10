@@ -53,6 +53,10 @@ export class ResponseInterceptor implements NestInterceptor {
         if (xRealIp) {
           pathViewCount = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
         }
+        const contentType = response.getHeader('Content-Type');
+        if (contentType) {
+          return data;
+        }
         return {
           data,
           timestamp: new Date().toISOString(),

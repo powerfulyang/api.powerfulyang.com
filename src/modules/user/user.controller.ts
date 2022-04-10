@@ -53,7 +53,10 @@ export class UserController {
           value: token,
         },
       ],
-      redirect,
+      redirect: {
+        url: redirect,
+        type: 'JS',
+      },
     };
   }
 
@@ -78,7 +81,10 @@ export class UserController {
           value: token,
         },
       ],
-      redirect,
+      redirect: {
+        url: redirect,
+        type: 'JS',
+      },
     };
   }
 
