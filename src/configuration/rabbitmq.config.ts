@@ -20,7 +20,7 @@ export const rabbitmqClientConfig = (): RmqOptions => ({
   },
 });
 
-export const rabbitmqServerConfig = () => ({
+export const rabbitmqServerConfig = (): RmqOptions => ({
   transport: Transport.RMQ,
   options: {
     urls: [getRmqHost()],

@@ -11,6 +11,15 @@ export class UploadAssetController {
     this.logger.setContext(UploadAssetController.name);
   }
 
+  @MessagePattern(MessagePatterns.HELLO)
+  hello(@Ctx() context: RmqContext) {
+    this.logger.debug('Hello');
+    const message = context.getMessage();
+    const channel = context.getChannelRef();
+    channel.ack(message);
+    return 'hello';
+  }
+
   @MessagePattern(MessagePatterns.COS_UPLOAD_MSG_PATTERN)
   async getNotifications(@Payload() data: UploadFileMsg, @Ctx() context: RmqContext) {
     this.logger.info(`${this.getNotifications.name} ---> to persistent ${JSON.stringify(data)}`);

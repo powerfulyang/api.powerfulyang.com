@@ -375,15 +375,15 @@ export class AssetService {
     }
     this.logger.info(`undoes count -> ${undoes.length}`);
     for (const undo of undoes.reverse()) {
-      this.logger.debug(`[${bucketName}] -> ${undo.id} -> ${undo.imgList.join('\n')}`);
+      this.logger.info(`[${bucketName}] -> ${undo.id} -> ${undo.imgList.join('\n')}`);
       for (const imgUrl of undo.imgList) {
-        let asset = this.assetDao.create();
-        asset.sn = undo.id;
-        asset.originUrl = undo.originUrl;
-        asset.tags = undo.tags;
-        // ε=(´ο｀*))) 专属的脚本机器人
-        asset.uploadBy = await this.userService.getAssetBotUser();
         try {
+          let asset = this.assetDao.create();
+          asset.sn = undo.id;
+          asset.originUrl = undo.originUrl;
+          asset.tags = undo.tags;
+          // ε=(´ο｀*))) 专属的脚本机器人
+          asset.uploadBy = await this.userService.getAssetBotUser();
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();
           const metadata = await sharp(buffer).metadata();

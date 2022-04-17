@@ -17,10 +17,6 @@ export class UdpScheduleService {
    */
   @Interval(12 * 60 * 60 * 1000)
   healthCheck() {
-    try {
-      this.udpServerService.send('health check!');
-    } catch (e) {
-      this.logger.error(e);
-    }
+    this.udpServerService.send('health check!');
   }
 }

@@ -20,15 +20,12 @@ export class PixivScheduleService {
    */
   @Cron('0 30 * * * *')
   async bot() {
-    try {
-      const bool = await this.coreService.isProdScheduleNode();
-      if (bool) {
-        this.assetService.assetBotSchedule(ScheduleType.pixiv).catch((e) => {
-          this.logger.error(e);
-        });
-      }
-    } catch (e) {
-      this.logger.error(e);
+    const bool = await this.coreService.isProdScheduleNode();
+    if (bool) {
+      this.logger.info('===========每个整点30分执行一次 pixiv bot===========');
+      this.assetService.assetBotSchedule(ScheduleType.pixiv).catch((e) => {
+        this.logger.error(e);
+      });
     }
   }
 }

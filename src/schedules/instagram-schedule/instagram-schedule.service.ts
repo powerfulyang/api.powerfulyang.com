@@ -20,15 +20,12 @@ export class InstagramScheduleService {
    */
   @Cron('0 15 * * * *')
   async bot() {
-    try {
-      const bool = await this.coreService.isProdScheduleNode();
-      if (bool) {
-        this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
-          this.logger.error(e);
-        });
-      }
-    } catch (e) {
-      this.logger.error(e);
+    const bool = await this.coreService.isProdScheduleNode();
+    if (bool) {
+      this.logger.info('===========每个整点15分执行一次 instagram bot===========');
+      this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
+        this.logger.error(e);
+      });
     }
   }
 }
