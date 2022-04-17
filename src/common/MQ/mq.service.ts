@@ -11,4 +11,8 @@ export class MqService {
   notifyUploadToCos(notification: UploadFileMsg) {
     return this.microserviceClient.emit(MessagePatterns.COS_UPLOAD_MSG_PATTERN, notification);
   }
+
+  hello() {
+    return this.microserviceClient.send(MessagePatterns.HELLO, 'hello');
+  }
 }

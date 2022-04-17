@@ -1,3 +1,5 @@
 export class MessagePatterns {
-  static COS_UPLOAD_MSG_PATTERN = Symbol('COS_UPLOAD_MSG_PATTERN');
+  static HELLO = 'HELLO';
+
+  static COS_UPLOAD_MSG_PATTERN = 'COS_UPLOAD_MSG_PATTERN';
 }
