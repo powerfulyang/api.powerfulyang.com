@@ -23,9 +23,13 @@ export class InstagramScheduleService {
     const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
       this.logger.info('===========每个整点15分执行一次 instagram bot===========');
-      this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
-        this.logger.error(e);
-      });
+      this.main();
     }
+  }
+
+  main() {
+    this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
+      this.logger.error(e);
+    });
   }
 }

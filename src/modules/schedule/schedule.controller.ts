@@ -27,19 +27,19 @@ export class ScheduleController {
   ) {
     switch (scheduleType) {
       case ScheduleType.instagram:
-        await this.instagramScheduleService.bot();
+        this.instagramScheduleService.main();
         break;
       case ScheduleType.pinterest:
-        await this.pinterestScheduleService.bot();
+        this.pinterestScheduleService.main();
         break;
       case ScheduleType.pixiv:
-        await this.pixivScheduleService.bot();
+        this.pixivScheduleService.main();
         break;
       case ScheduleType.udp:
-        await this.udpScheduleService.healthCheck();
+        this.udpScheduleService.healthCheck();
         break;
       case ScheduleType.cosObjectUrlRefresh:
-        await this.cosObjectUrlScheduleService.refreshObjectUrl();
+        await this.cosObjectUrlScheduleService.main();
         break;
       default:
         throw new ForbiddenException();
