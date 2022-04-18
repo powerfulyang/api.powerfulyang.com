@@ -23,9 +23,13 @@ export class PixivScheduleService {
     const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
       this.logger.info('===========每个整点30分执行一次 pixiv bot===========');
-      this.assetService.assetBotSchedule(ScheduleType.pixiv).catch((e) => {
-        this.logger.error(e);
-      });
+      this.main();
     }
+  }
+
+  main() {
+    this.assetService.assetBotSchedule(ScheduleType.pixiv).catch((e) => {
+      this.logger.error(e);
+    });
   }
 }

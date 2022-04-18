@@ -14,9 +14,9 @@ export class ProxyFetchService {
      */
     if (process.env.BOT_SOCKS5_PROXY_HOST && process.env.BOT_SOCKS5_PROXY_PORT) {
       this.agent = new SocksProxyAgent({
-        host: process.env.BOT_SOCKS5_PROXY_HOST,
+        hostname: process.env.BOT_SOCKS5_PROXY_HOST,
         port: process.env.BOT_SOCKS5_PROXY_PORT,
-        timeout: 5000,
+        type: 5,
       });
     }
   }
@@ -27,6 +27,7 @@ export class ProxyFetchService {
 
   proxyFetch(url: string, draft: RequestInit = {}) {
     draft.agent = this.agent;
+    draft.timeout = 10000;
     return fetch(url, draft);
   }
 
