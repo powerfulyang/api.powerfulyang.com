@@ -5,8 +5,8 @@ import { isProdProcess } from '@powerfulyang/utils';
 import chalk from 'chalk';
 
 const { combine, timestamp, printf } = format;
-
 const transport = new winston.transports.Console();
+const packageName = process.env.npm_package_name;
 
 const logger = winston.createLogger({
   level: (isProdProcess && 'info') || 'debug',
@@ -38,7 +38,7 @@ const logger = winston.createLogger({
       const LEVEL = write(level.toUpperCase());
       const MESSAGE = write(message);
       const CONTEXT = write(`[${context}]`);
-      const APP = write(`[api.powerfulyang.com] ${process.pid}  -`);
+      const APP = write(`[${packageName}] ${process.pid}  -`);
       const STACK = stack ? chalk.magenta(`\n${stack}`) : '';
       const _JSON = Object.keys(others).length
         ? chalk.blueBright(`\n${JSON.stringify(others, undefined, 2)}`)

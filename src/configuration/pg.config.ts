@@ -11,7 +11,7 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
   synchronize: isDevProcess,
-  logging: true,
+  logging: isDevProcess,
   entities: [join(__dirname, '../**/**.entity{.ts,.js}')],
   migrations: [],
   subscribers: [],
