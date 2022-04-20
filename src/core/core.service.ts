@@ -10,9 +10,10 @@ import { checkRedisResult } from '@/constants/constants';
 export class CoreService {
   constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
     this.logger.setContext(CoreService.name);
-    this.initScheduleNode().then((node) => {
-      this.logger.info(`当前环境 ====> ${process.env.NODE_ENV}`);
-      this.logger.info(`node ====> ${node}`);
+    this.initScheduleNode().then((hostname) => {
+      this.logger.info(
+        `NODE_ENV ====> ${process.env.NODE_ENV || 'UNSET'}, HOSTNAME ====> ${hostname}`,
+      );
     });
   }
 

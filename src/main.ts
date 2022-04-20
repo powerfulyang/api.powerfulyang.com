@@ -2,8 +2,8 @@ import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import { isDevProcess } from '@powerfulyang/utils';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
+import { ExpressPeerServer } from 'peer';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { AppModule } from './app.module';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -14,8 +14,9 @@ require('source-map-support').install();
 
 async function bootstrap(): Promise<void> {
   const logger = new LoggerService();
+  logger.setContext('Bootstrap');
   const app = await NestFactory.create(AppModule, {
-    logger: isDevProcess && logger,
+    logger,
   });
   app.connectMicroservice<RmqOptions>(rabbitmqServerConfig());
   app.startAllMicroservices().then(() => {
@@ -23,15 +24,17 @@ async function bootstrap(): Promise<void> {
   });
 
   app.enableCors({
-    origin: [
-      'https://admin.powerfulyang.com',
-      'https://powerfulyang.com',
-      'https://local.powerfulyang.com',
-    ],
+    origin: ['https://admin.powerfulyang.com', 'https://local.powerfulyang.com'],
     credentials: true,
   });
 
   app.setGlobalPrefix('api');
+
+  const peerServer = ExpressPeerServer(app.getHttpServer(), {
+    allow_discovery: true,
+  });
+
+  app.use('/api/peerjs', peerServer);
 
   app.listen(process.env.PORT || 3000).then(() => {
     logger.info(`Server is running on port ${process.env.PORT || 3000}`, 'Bootstrap');

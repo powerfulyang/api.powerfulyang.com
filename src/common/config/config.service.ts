@@ -14,32 +14,32 @@ export class ConfigService {
   }
 
   getRabbitmqClientConfig() {
-    this.logger.info('==================getRabbitmqClientConfig==================');
+    this.logger.verbose('==================getRabbitmqClientConfig==================');
     return rabbitmqClientConfig();
   }
 
   getRedisConfig() {
-    this.logger.info('==================getRedisConfig==================');
+    this.logger.verbose('==================getRedisConfig==================');
     return redisConfig();
   }
 
   getElasticsearchConfig() {
-    this.logger.info('==================getElasticsearchConfig==================');
+    this.logger.verbose('==================getElasticsearchConfig==================');
     return elasticsearchConfig();
   }
 
   getPostgresConfig() {
-    this.logger.info('==================getPostgresConfig==================');
+    this.logger.verbose('==================getPostgresConfig==================');
     return pgConfig();
   }
 
   getJwtConfig() {
-    this.logger.info('==================getJwtSecret==================');
+    this.logger.verbose('==================getJwtSecret==================');
     return jwtSecretConfig();
   }
 
   getMailConfig() {
-    this.logger.info('==================getMailConfig==================');
+    this.logger.verbose('==================getMailConfig==================');
     return mailConfig();
   }
 }
