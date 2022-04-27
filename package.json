@@ -98,7 +98,7 @@
     "cross-env": "7.0.3",
     "node-addon-api": "4.3.0",
     "node-gyp": "9.0.0",
-    "supertest": "6.2.2",
+    "supertest": "6.2.3",
     "tsconfig-paths-jest": "0.0.1"
   },
   "gypfile": true
