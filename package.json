@@ -56,7 +56,7 @@
     "ipdb": "0.3.3",
     "mkdirp": "1.0.4",
     "node-fetch": "2.6.7",
-    "node-telegram-bot-api": "0.56.0",
+    "node-telegram-bot-api": "0.57.0",
     "nodemailer": "6.7.4",
     "passport": "0.5.2",
     "passport-github": "1.1.0",
