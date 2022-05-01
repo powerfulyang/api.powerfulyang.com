@@ -16,6 +16,8 @@ import { PathViewCountModule } from '@/modules/path-ip-view-count/path-view-coun
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
 import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
+import { CatchFilter } from '@/common/filter/catch.filter';
+import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
@@ -26,8 +28,6 @@ import { FeedModule } from './modules/feed/feed.module';
 import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
 import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';
 import { OauthApplicationModule } from './modules/oauth-application/oauth-application.module';
-import { CatchFilter } from '@/common/filter/catch.filter';
-import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 
 @Module({
   imports: [

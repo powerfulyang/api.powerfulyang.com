@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { BucketService } from './bucket.service';
 import { BucketModule } from '@/modules/bucket/bucket.module';
+import { BucketService } from './bucket.service';
 
 describe('BucketService', () => {
   let service: BucketService;

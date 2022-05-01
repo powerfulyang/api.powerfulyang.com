@@ -2,12 +2,12 @@ import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { isNull } from '@powerfulyang/utils';
 import { generateRandomString } from '@powerfulyang/node-utils';
-import { UserService } from './user.service';
 import { User } from '@/modules/user/entities/user.entity';
 import { SUCCESS } from '@/constants/constants';
 import { UserModule } from '@/modules/user/user.module';
 import { Family } from '@/modules/user/entities/family.entity';
 import { getUserFamiliesMembers } from '@/common/decorator/user-from-auth.decorator';
+import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;

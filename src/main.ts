@@ -5,8 +5,8 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
 import { ExpressPeerServer } from 'peer';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
-import { AppModule } from './app.module';
 import { LoggerService } from '@/common/logger/logger.service';
+import { AppModule } from './app.module';
 
 dayjs.extend(quarterOfYear);
 

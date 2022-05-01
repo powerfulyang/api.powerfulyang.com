@@ -41,7 +41,7 @@ export class TencentCloudAccountService {
         SecretId: account.SecretId,
         SecretKey: account.SecretKey,
       });
-      // TODO 测试一下 SecretKey&SecretId  是否正确
+      // TODO 测试一下 SecretKey & SecretId  是否正确
       this.cosUtilMap.set(account.id, util);
     }
     return util;

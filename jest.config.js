@@ -1,14 +1,11 @@
-const tsconfigPathJest = require('tsconfig-paths-jest');
+const { pathsToModuleNameMapper } = require('@powerfulyang/lint');
 const tsconfig = require('./tsconfig.json');
 
-const moduleNameMapper = tsconfigPathJest(tsconfig);
+const moduleNameMapper = pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
+  prefix: '<rootDir>/',
+});
 
 module.exports = {
-  verbose: true,
-  displayName: {
-    name: 'api.powerfulyang.com.test',
-    color: 'green',
-  },
   moduleNameMapper,
   maxConcurrency: 5,
   moduleFileExtensions: ['js', 'json', 'ts', 'node'],

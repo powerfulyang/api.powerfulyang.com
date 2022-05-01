@@ -6,14 +6,25 @@ import chalk from 'chalk';
 
 const { combine, timestamp, printf } = format;
 const transport = new winston.transports.Console();
-const packageName = process.env.npm_package_name;
+const packageName = process.env.npm_package_name || '';
 
 const logger = winston.createLogger({
   level: (isProdProcess && 'info') || 'debug',
   transports: [transport],
   format: combine(
     timestamp({ format: 'MM/DD/YYYY, h:mm:ss A' }),
-    printf(({ level, message, timestamp: t, context, stack, ...others }) => {
+    printf(({ level, message, ...others }) => {
+      const {
+        context,
+        stack,
+        timestamp: t,
+        ...json
+      } = others as {
+        context?: string;
+        stack?: string;
+        timestamp: string;
+        [key: string]: any;
+      };
       let write: chalk.Chalk;
       switch (level) {
         case 'info':
@@ -35,13 +46,13 @@ const logger = winston.createLogger({
           write = chalk.cyan;
           break;
       }
-      const LEVEL = write(level.toUpperCase());
-      const MESSAGE = write(message);
-      const CONTEXT = write(`[${context}]`);
+      const LEVEL: string = write(level.toUpperCase());
+      const MESSAGE: string = write(message);
+      const CONTEXT = write(`[${context || ''}]`);
       const APP = write(`[${packageName}] ${process.pid}  -`);
       const STACK = stack ? chalk.magenta(`\n${stack}`) : '';
-      const _JSON = Object.keys(others).length
-        ? chalk.blueBright(`\n${JSON.stringify(others, undefined, 2)}`)
+      const _JSON = Object.keys(json).length
+        ? chalk.blueBright(`\n${JSON.stringify(json, undefined, 2)}`)
         : '';
       return `${APP} ${t}     ${LEVEL} ${CONTEXT} ${MESSAGE}${STACK}${_JSON}`;
     }),

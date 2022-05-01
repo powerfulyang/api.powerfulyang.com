@@ -16,10 +16,7 @@ export class GithubController {
   @UseGuards(GitHubEventsGuard)
   @GithubWebhookEvents(Object.values(EventType))
   @Post()
-  async getWebhook<T extends WebhookPayload>(
-    @Body() payload: Payload<T>,
-    @Headers() headers: IHeader,
-  ) {
+  getWebhook<T extends WebhookPayload>(@Body() payload: Payload<T>, @Headers() headers: IHeader) {
     const type: EventType = headers['x-github-event'];
     return { payload, type, test: this.test };
   }

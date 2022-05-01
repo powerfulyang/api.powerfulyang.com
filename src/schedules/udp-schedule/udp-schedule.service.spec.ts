@@ -1,8 +1,8 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { UdpServerModule, UdpServerService } from 'api/udp-server';
-import { UdpScheduleService } from './udp-schedule.service';
 import { LoggerModule } from '@/common/logger/logger.module';
+import { UdpScheduleService } from './udp-schedule.service';
 
 describe('UdpScheduleService', () => {
   let service: UdpScheduleService;
@@ -22,7 +22,7 @@ describe('UdpScheduleService', () => {
     expect(service).toBeDefined();
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     udpServerService.close();
   });
 });

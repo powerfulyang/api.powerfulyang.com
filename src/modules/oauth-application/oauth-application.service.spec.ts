@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { OauthApplicationService } from './oauth-application.service';
 import { OauthApplicationModule } from '@/modules/oauth-application/oauth-application.module';
+import { OauthApplicationService } from './oauth-application.service';
 
 describe('OauthApplicationService', () => {
   let service: OauthApplicationService;

@@ -35,11 +35,11 @@ export class TelegramBotService {
     }
   }
 
-  async sendMessage(chatId: number, msg: string) {
+  sendMessage(chatId: number, msg: string) {
     return this.messages.push([chatId, msg]);
   }
 
-  async sendToMe(msg: string) {
+  sendToMe(msg: string) {
     return this.sendMessage(this.MY_CHAT_ID, msg);
   }
 

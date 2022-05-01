@@ -23,7 +23,6 @@ import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import type { User, UserForeignKey } from '@/modules/user/entities/user.entity';
-import { getEXIF } from '../../../addon.api';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { ScheduleType } from '@/enum/ScheduleType';
@@ -33,6 +32,7 @@ import { BucketService } from '@/modules/bucket/bucket.service';
 import { MqService } from '@/common/MQ/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
+import { getEXIF } from '../../../addon.api';
 
 @Injectable()
 export class AssetService {
@@ -168,7 +168,7 @@ export class AssetService {
       bucket.tencentCloudAccount.id,
     );
     const { Bucket, Region } = bucket;
-    const { Url: cosUrl } = await util.getObjectUrl({
+    const { Url: cosUrl } = await util.asyncGetObjectUrl({
       Sign: false,
       Key,
       Bucket,
@@ -182,7 +182,7 @@ export class AssetService {
       bucket.tencentCloudAccount.id,
     );
     const { Bucket, Region } = bucket;
-    const { Url: objectUrl } = await util.getObjectUrl({
+    const { Url: objectUrl } = await util.asyncGetObjectUrl({
       Key,
       Bucket,
       Region,
@@ -478,7 +478,7 @@ export class AssetService {
       Key,
       Body: buffer,
     });
-    const { Url: objectUrl } = await util.getObjectUrl({
+    const { Url: objectUrl } = await util.asyncGetObjectUrl({
       Bucket,
       Region,
       Key,

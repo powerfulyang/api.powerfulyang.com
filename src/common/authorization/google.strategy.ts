@@ -40,7 +40,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, SupportOauthAppli
     });
   }
 
-  async validate(_: any, __: any, profile: Profile) {
+  validate(_: any, __: any, profile: Profile) {
     this.logger.info(`displayName->${profile.displayName}, openid->${profile.id}`);
     return profile;
   }

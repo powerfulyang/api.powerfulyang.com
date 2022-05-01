@@ -1,8 +1,8 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { PostService } from './post.service';
 import { PostModule } from '@/modules/post/post.module';
 import { SUCCESS } from '@/constants/constants';
+import { PostService } from './post.service';
 
 describe('PostService', () => {
   let service: PostService;
