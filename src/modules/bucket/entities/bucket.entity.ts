@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import type { CORSRule } from '@powerfulyang/cos-nodejs-sdk-v5';
-import { BucketACL, BucketRegion, RefererConfiguration } from '@powerfulyang/cos-nodejs-sdk-v5';
+import type { CORSRule } from 'cos-nodejs-sdk-v5';
+import { BucketACL, RefererConfiguration } from 'cos-nodejs-sdk-v5';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
 
@@ -29,7 +29,7 @@ export class CosBucket {
   Bucket: string;
 
   @Column()
-  Region: BucketRegion;
+  Region: string;
 
   @Column()
   ACL: BucketACL;

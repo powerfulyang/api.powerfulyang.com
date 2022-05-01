@@ -17,7 +17,11 @@ export class RedirectInterceptor implements NestInterceptor {
         const ctx = _context.switchToHttp();
         const res = ctx.getResponse<Response>();
         if (data?.redirect?.url) {
-          const { type = 'HTTP', url, status = 302 } = data.redirect;
+          const {
+            type = 'HTTP',
+            url,
+            status = 302,
+          } = data.redirect as { type?: string; url: string; status?: number };
           this.logger.info(`Redirecting to ${url}, type: ${type}, status: ${status}`);
           if (type === 'HTTP') {
             res.header('Location', url);

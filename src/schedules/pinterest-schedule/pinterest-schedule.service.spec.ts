@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { PinterestScheduleService } from './pinterest-schedule.service';
 import { SchedulesModule } from '@/schedules/schedules.module';
+import { PinterestScheduleService } from './pinterest-schedule.service';
 
 describe('PinterestScheduleService', () => {
   let service: PinterestScheduleService;
@@ -14,7 +14,7 @@ describe('PinterestScheduleService', () => {
     service = module.get<PinterestScheduleService>(PinterestScheduleService);
   });
 
-  it('should be defined', async () => {
-    await expect(service).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

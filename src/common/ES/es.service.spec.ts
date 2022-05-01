@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { EsService } from './es.service';
 import { EsModule } from '@/common/ES/es.module';
+import { EsService } from './es.service';
 
 describe('SearchService', () => {
   let service: EsService;

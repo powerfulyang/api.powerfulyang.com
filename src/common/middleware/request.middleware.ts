@@ -13,7 +13,7 @@ export class RequestMiddleware implements NestMiddleware {
   use(req: Request, _res: Response, next: () => void) {
     // 此时还没有进路由
     const { headers } = req;
-    const xRealIp = headers['x-real-ip'];
+    const xRealIp = headers['x-real-ip'] as string;
     const ipInfo = inspectIp(xRealIp);
     let address = '';
     if (ipInfo.code === 0) {

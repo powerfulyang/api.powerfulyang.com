@@ -27,7 +27,7 @@ describe('AppController (e2e)', () => {
       .get('/public/hello')
       .expect(HttpStatus.OK)
       .expect((r) => {
-        expect(r.body.data).toBe('Hello World!!!');
+        expect(r.body.data).toContain('Hello,');
       });
   });
 

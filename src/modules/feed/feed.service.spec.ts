@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { FeedService } from './feed.service';
 import { FeedModule } from '@/modules/feed/feed.module';
+import { FeedService } from './feed.service';
 
 describe('FeedService', () => {
   let service: FeedService;

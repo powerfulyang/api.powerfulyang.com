@@ -2,8 +2,12 @@ const { eslint } = require('@powerfulyang/lint');
 
 module.exports = {
   ...eslint,
-  rules: {
-    ...eslint.rules,
-    'class-methods-use-this': 'off',
-  },
+  overrides: eslint.overrides.map((override) => ({
+    ...override,
+    rules: {
+      ...override.rules,
+      'no-await-in-loop': 'off',
+      'import/no-cycle': 'off',
+    },
+  })),
 };

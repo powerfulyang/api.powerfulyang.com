@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { TencentCloudAccountService } from './tencent-cloud-account.service';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { CreateTencentCloudAccountDto } from '@/modules/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
+import { TencentCloudAccountService } from './tencent-cloud-account.service';
 
 @Controller('tencent-cloud-account')
 @AdminAuthGuard()

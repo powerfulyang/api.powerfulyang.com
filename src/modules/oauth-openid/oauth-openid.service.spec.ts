@@ -1,8 +1,8 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { OauthOpenidService } from './oauth-openid.service';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { OauthOpenidModule } from '@/modules/oauth-openid/oauth-openid.module';
+import { OauthOpenidService } from './oauth-openid.service';
 
 describe('OauthOpenidService', () => {
   let service: OauthOpenidService;

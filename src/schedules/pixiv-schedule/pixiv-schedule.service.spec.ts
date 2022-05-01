@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { PixivScheduleService } from './pixiv-schedule.service';
 import { SchedulesModule } from '@/schedules/schedules.module';
+import { PixivScheduleService } from './pixiv-schedule.service';
 
 describe('PixivScheduleService', () => {
   let service: PixivScheduleService;
@@ -14,7 +14,7 @@ describe('PixivScheduleService', () => {
     service = module.get<PixivScheduleService>(PixivScheduleService);
   });
 
-  it('should be defined', async () => {
-    await expect(service).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

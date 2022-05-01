@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { CosObjectUrlScheduleService } from './cos-object-url-schedule.service';
 import { SchedulesModule } from '@/schedules/schedules.module';
+import { CosObjectUrlScheduleService } from './cos-object-url-schedule.service';
 
 describe('CosObjectUrlScheduleService', () => {
   let service: CosObjectUrlScheduleService;

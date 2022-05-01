@@ -135,7 +135,7 @@ export class BucketService {
     param?: Pick<CosBucket, 'Bucket' | 'Region'>,
   ) {
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(account.id);
-    const buckets = await util.getService(param);
+    const buckets = await util.getService(param || {});
     const list: Pick<CosBucket, 'Bucket' | 'Region'>[] = buckets.Buckets.filter((x) => {
       return param ? x.Name === param?.Bucket && x.Location === param?.Region : true;
     }).map((bucket) => ({
@@ -152,7 +152,7 @@ export class BucketService {
     );
     const listBucketAcl = await Promise.all(listBucketAclPromises);
     const listBucketCorsPromises = list.map((bucket) =>
-      util.getBucketCors({
+      util.asyncGetBucketCors({
         Bucket: bucket.Bucket,
         Region: bucket.Region,
       }),
