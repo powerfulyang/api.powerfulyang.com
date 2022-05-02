@@ -5,17 +5,16 @@ const moduleNameMapper = pathsToModuleNameMapper(tsconfig.compilerOptions.paths,
   prefix: '<rootDir>/',
 });
 
+/**
+ * @type {import('ts-jest').InitialOptionsTsJest}
+ */
 module.exports = {
   moduleNameMapper,
   maxConcurrency: 5,
-  moduleFileExtensions: ['js', 'json', 'ts', 'node'],
+  preset: 'ts-jest',
   setupFiles: ['./.jest/loadTestEnv.ts'],
   setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
-  rootDir: '.',
   testRegex: '.spec.ts$',
-  transform: {
-    '^.+\\.ts$': 'ts-jest',
-  },
   testPathIgnorePatterns: ['node_modules'],
   testEnvironment: 'node',
 };

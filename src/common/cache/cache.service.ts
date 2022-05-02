@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { RedisClientType } from 'redis';
+import type { RedisClientType, RedisScripts } from 'redis';
 import type { Dict } from '@powerfulyang/utils';
 import { isDefined, isNumber, isString } from '@powerfulyang/utils';
 import { createClient } from 'redis';
@@ -8,7 +8,7 @@ import { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class CacheService {
-  private readonly redisClient: RedisClientType<any, any>;
+  private readonly redisClient: RedisClientType<any, any, RedisScripts>;
 
   constructor(
     private readonly logger: LoggerService,
