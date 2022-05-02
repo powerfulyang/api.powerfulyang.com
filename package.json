@@ -65,7 +65,7 @@
     "pg": "8.7.3",
     "qqwry.ipdb": "2022.4.27",
     "ramda": "0.28.0",
-    "redis": "4.0.6",
+    "redis": "4.1.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.5",
     "sharp": "0.30.4",
