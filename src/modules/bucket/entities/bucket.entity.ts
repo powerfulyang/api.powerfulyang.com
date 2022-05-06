@@ -31,7 +31,7 @@ export class CosBucket {
   @Column()
   Region: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   ACL: BucketACL;
 
   @Column({ type: 'json' })

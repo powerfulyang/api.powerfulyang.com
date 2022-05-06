@@ -12,7 +12,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { StrategyModule } from '@/common/authorization/strategy.module';
 import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
-import { PathViewCountModule } from '@/modules/path-ip-view-count/path-view-count.module';
+import { PathViewCountModule } from '@/modules/path-view-count/path-view-count.module';
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
 import { BootstrapService } from '@/core/bootstrap/bootstrap.service';

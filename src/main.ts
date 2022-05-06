@@ -1,3 +1,7 @@
+/*
+ eslint-disable import/no-import-module-exports
+*/
+import 'reflect-metadata';
 import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import dayjs from 'dayjs';
@@ -11,6 +15,8 @@ import { AppModule } from './app.module';
 dayjs.extend(quarterOfYear);
 
 require('source-map-support').install();
+
+declare const module: any;
 
 async function bootstrap(): Promise<void> {
   const logger = new LoggerService();
@@ -39,6 +45,11 @@ async function bootstrap(): Promise<void> {
   app.listen(process.env.PORT || 3000).then(() => {
     logger.info(`Server is running on port ${process.env.PORT || 3000}`, 'Bootstrap');
   });
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 
 (async (): Promise<void> => {

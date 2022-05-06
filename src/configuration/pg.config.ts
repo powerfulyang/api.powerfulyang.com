@@ -1,6 +1,6 @@
-import { join } from 'path';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isDevProcess } from '@powerfulyang/utils';
+import { getMetadataArgsStorage } from 'typeorm';
 
 export const pgConfig = (): TypeOrmModuleOptions => ({
   name: 'default',
@@ -12,7 +12,5 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   database: process.env.PG_DATABASE,
   synchronize: isDevProcess,
   logging: isDevProcess,
-  entities: [join(__dirname, '../**/**.entity{.ts,.js}')],
-  migrations: [],
-  subscribers: [],
+  entities: getMetadataArgsStorage().tables.map((t) => t.target),
 });

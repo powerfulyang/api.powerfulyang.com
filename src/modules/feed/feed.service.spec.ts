@@ -1,6 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { FeedModule } from '@/modules/feed/feed.module';
+import type { User } from '@/modules/user/entities/user.entity';
 import { FeedService } from './feed.service';
 
 describe('FeedService', () => {
@@ -15,7 +16,7 @@ describe('FeedService', () => {
   });
 
   it('postNewFeed', async () => {
-    const result = await service.postNewFeed({ content: 'test', createBy: { id: 1 } });
+    const result = await service.postNewFeed({ content: 'test', createBy: <User>{ id: 1 } });
     expect(result.content).toBe('test');
     const res = await service.updateFeed(result.id, { content: 'test2' });
     expect(res).toBeDefined();
