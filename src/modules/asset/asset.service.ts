@@ -22,7 +22,7 @@ import { SUCCESS } from '@/constants/constants';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import type { User, UserForeignKey } from '@/modules/user/entities/user.entity';
+import type { User } from '@/modules/user/entities/user.entity';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { ScheduleType } from '@/enum/ScheduleType';
@@ -123,11 +123,7 @@ export class AssetService {
     return obj;
   }
 
-  async saveAssetToBucket(
-    files: UploadFile[],
-    bucketName: CosBucket['name'],
-    uploadBy: UserForeignKey,
-  ) {
+  async saveAssetToBucket(files: UploadFile[], bucketName: CosBucket['name'], uploadBy: User) {
     const assets: Asset[] = [];
     for (const file of files) {
       const asset = await this.manualUploadImageToCos(file.buffer, bucketName, uploadBy);
@@ -163,20 +159,6 @@ export class AssetService {
     return SUCCESS;
   }
 
-  private async getCosUrl(Key: string, bucket: CosBucket) {
-    const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
-      bucket.tencentCloudAccount.id,
-    );
-    const { Bucket, Region } = bucket;
-    const { Url: cosUrl } = await util.asyncGetObjectUrl({
-      Sign: false,
-      Key,
-      Bucket,
-      Region,
-    });
-    return cosUrl;
-  }
-
   async getObjectUrl(Key: string, bucket: CosBucket) {
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
       bucket.tencentCloudAccount.id,
@@ -189,12 +171,6 @@ export class AssetService {
       Expires: 60 * 60 * 24, // 1day
     });
     return objectUrl;
-  }
-
-  private getAssetByHash(hash: string) {
-    return this.assetDao.findOne({
-      where: { sha1: hash },
-    });
   }
 
   async syncFromCos() {
@@ -255,7 +231,9 @@ export class AssetService {
   }
 
   getAssetById(id: Asset['id']): Promise<Asset>;
+
   getAssetById(ids: Asset['id'][]): Promise<Asset[]>;
+
   async getAssetById(id: Asset['id'] | Asset['id'][]) {
     if (isArray(id)) {
       return this.assetDao.find({
@@ -282,66 +260,6 @@ export class AssetService {
       ],
       relations: ['uploadBy'],
     });
-  }
-
-  private async fetchImgBuffer(imgUrl: string, headers: any) {
-    const res = await this.proxyFetchService.proxyFetch(imgUrl, {
-      headers,
-    });
-    this.logger.info(`fetch img status code -> ${res.status}`);
-    if (res.status !== HttpStatus.OK) {
-      throw new Error(`fetch img error -> ${res.status}`);
-    }
-    return res;
-  }
-
-  /**
-   * 手动上传图片
-   * @param buffer
-   * @param bucketName
-   * @param uploadBy
-   */
-  private async manualUploadImageToCos(
-    buffer: Buffer,
-    bucketName: CosBucket['name'],
-    uploadBy: UserForeignKey,
-  ) {
-    let asset = this.assetDao.create();
-    asset.sha1 = sha1(buffer);
-    // 已经上传过的
-    const result = await this.assetDao.findOneBy({ sha1: asset.sha1 });
-    if (isNotNull(result)) {
-      return result;
-    }
-    // 库里面木有
-    asset.bucket = await this.bucketService.getBucketByBucketName(bucketName);
-    asset.uploadBy = uploadBy;
-    const s = sharp(buffer);
-    const metadata = await s.metadata();
-    if (!metadata.format) {
-      throw new UnsupportedMediaTypeException();
-    }
-    asset.fileSuffix = metadata.format;
-    asset.pHash = await pHash(buffer);
-    try {
-      const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
-      asset.exif = getEXIF(path);
-      asset.metadata = metadata;
-      asset = await this.assetDao.save(asset);
-      writeFileSync(path, buffer);
-      const data: UploadFileMsg = {
-        sha1: asset.sha1,
-        suffix: asset.fileSuffix,
-        name: asset.bucket.name,
-      };
-      // 异步处理
-      process.nextTick(() => {
-        this.persistentToCos(data);
-      });
-    } catch (e) {
-      this.logger.error(e);
-    }
-    return asset;
   }
 
   /**
@@ -416,15 +334,6 @@ export class AssetService {
     return this.assetDao.update(id, { objectUrl });
   }
 
-  private updateAssetByHash(hash: string, asset: Partial<Asset>) {
-    return this.assetDao.update(
-      {
-        sha1: hash,
-      },
-      asset,
-    );
-  }
-
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
     const { userIds = [], prevCursor, nextCursor } = params;
     const BotUser = await this.userService.getAssetBotUser();
@@ -488,5 +397,94 @@ export class AssetService {
       cosUrl: `https://${res.Location}`,
       objectUrl,
     });
+  }
+
+  private async getCosUrl(Key: string, bucket: CosBucket) {
+    const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
+      bucket.tencentCloudAccount.id,
+    );
+    const { Bucket, Region } = bucket;
+    const { Url: cosUrl } = await util.asyncGetObjectUrl({
+      Sign: false,
+      Key,
+      Bucket,
+      Region,
+    });
+    return cosUrl;
+  }
+
+  private getAssetByHash(hash: string) {
+    return this.assetDao.findOne({
+      where: { sha1: hash },
+    });
+  }
+
+  private async fetchImgBuffer(imgUrl: string, headers: any) {
+    const res = await this.proxyFetchService.proxyFetch(imgUrl, {
+      headers,
+    });
+    this.logger.info(`fetch img status code -> ${res.status}`);
+    if (res.status !== HttpStatus.OK) {
+      throw new Error(`fetch img error -> ${res.status}`);
+    }
+    return res;
+  }
+
+  /**
+   * 手动上传图片
+   * @param buffer
+   * @param bucketName
+   * @param uploadBy
+   */
+  private async manualUploadImageToCos(
+    buffer: Buffer,
+    bucketName: CosBucket['name'],
+    uploadBy: User,
+  ) {
+    let asset = this.assetDao.create();
+    asset.sha1 = sha1(buffer);
+    // 已经上传过的
+    const result = await this.assetDao.findOneBy({ sha1: asset.sha1 });
+    if (isNotNull(result)) {
+      return result;
+    }
+    // 库里面木有
+    asset.bucket = await this.bucketService.getBucketByBucketName(bucketName);
+    asset.uploadBy = uploadBy;
+    const s = sharp(buffer);
+    const metadata = await s.metadata();
+    if (!metadata.format) {
+      throw new UnsupportedMediaTypeException();
+    }
+    asset.fileSuffix = metadata.format;
+    asset.pHash = await pHash(buffer);
+    try {
+      const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
+      asset.exif = getEXIF(path);
+      asset.metadata = metadata;
+      asset = await this.assetDao.save(asset);
+      writeFileSync(path, buffer);
+      const data: UploadFileMsg = {
+        sha1: asset.sha1,
+        suffix: asset.fileSuffix,
+        name: asset.bucket.name,
+      };
+      // 异步处理
+      process.nextTick(() => {
+        this.persistentToCos(data);
+      });
+    } catch (e) {
+      this.logger.error(e);
+    }
+    return asset;
+  }
+
+  private updateAssetByHash(hash: string, asset: Partial<Asset>) {
+    return this.assetDao.update(
+      {
+        sha1: hash,
+      },
+      asset,
+    );
   }
 }

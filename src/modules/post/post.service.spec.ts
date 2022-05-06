@@ -2,6 +2,7 @@ import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { PostModule } from '@/modules/post/post.module';
 import { SUCCESS } from '@/constants/constants';
+import type { User } from '@/modules/user/entities/user.entity';
 import { PostService } from './post.service';
 
 describe('PostService', () => {
@@ -21,7 +22,7 @@ describe('PostService', () => {
       title: 'test title',
       createBy: {
         id: 1,
-      },
+      } as User,
     });
     expect(res).toBeDefined();
     const post = await service.readPost(res.id, [res.createBy.id]);

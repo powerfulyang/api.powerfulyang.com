@@ -41,7 +41,6 @@
       "api/udp-server": ["libs/udp-server/src"],
       "api/udp-server/*": ["libs/udp-server/src/*"]
     },
-    "allowJs": false,
     "resolveJsonModule": true
   },
   "exclude": ["node_modules", "dist"],

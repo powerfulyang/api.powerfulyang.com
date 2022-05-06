@@ -1,4 +1,3 @@
-import { join } from 'path';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isDevProcess } from '@powerfulyang/utils';
 
@@ -12,7 +11,5 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   database: process.env.PG_DATABASE,
   synchronize: isDevProcess,
   logging: isDevProcess,
-  entities: [join(__dirname, '../**/**.entity{.ts,.js}')],
-  migrations: [],
-  subscribers: [],
+  autoLoadEntities: true,
 });

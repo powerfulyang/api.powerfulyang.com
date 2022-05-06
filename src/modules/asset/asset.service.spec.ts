@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { AssetModule } from '@/modules/asset/asset.module';
 import { OrmModule } from '@/common/ORM/orm.module';
 import { SUCCESS } from '@/constants/constants';
+import type { User } from '@/modules/user/entities/user.entity';
 import { AssetService } from './asset.service';
 
 describe('AssetService', () => {
@@ -48,7 +49,7 @@ describe('AssetService', () => {
       'test',
       {
         id: 1,
-      },
+      } as User,
     );
     expect(res).toBeDefined();
     const result = await service.deleteAsset(res.map((asset) => asset.id));

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
 import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { OauthApplicationService } from '@/modules/oauth-application/oauth-application.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import type { UserForeignKey, UserOmitRelations } from '@/modules/user/entities/user.entity';
+import type { User } from '@/modules/user/entities/user.entity';
 
 @Injectable()
 export class OauthOpenidService {
@@ -31,7 +31,7 @@ export class OauthOpenidService {
    * 关联新的 openid 到用户
    */
   async associateOpenid(
-    user: UserForeignKey,
+    userId: User['id'],
     openid: string,
     platform: SupportOauthApplication,
   ): Promise<OauthOpenid> {
@@ -39,17 +39,17 @@ export class OauthOpenidService {
     const oauthOpenid = new OauthOpenid();
     oauthOpenid.openid = openid;
     oauthOpenid.application = application;
-    oauthOpenid.user = user as UserOmitRelations;
+    oauthOpenid.user = { id: userId } as User;
     return this.oauthOpenidDao.save(oauthOpenid);
   }
 
   /**
    * 解绑 openid
    */
-  async unbindOpenid(user: UserForeignKey, openid: string, platform: SupportOauthApplication) {
+  async unbindOpenid(userId: User['id'], openid: string, platform: SupportOauthApplication) {
     const application = await this.oauthApplicationService.getApplicationByPlatformName(platform);
     return this.oauthOpenidDao.delete({
-      user,
+      user: Equal(userId),
       openid,
       application,
     });

@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User, UserOmitRelations } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { OauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 
 @Entity()
@@ -26,7 +26,7 @@ export class OauthOpenid {
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false, eager: true })
-  user: UserOmitRelations;
+  user: User;
 
   @CreateDateColumn()
   createAt: Date;

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Param, Post as PostDecorator } from '@nestjs/
 import { PostService } from '@/modules/post/post.service';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
-import { User, UserForeignKey } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import type { Post } from '@/modules/post/entities/post.entity';
 import { CreatePostDto } from '@/modules/user/dto/create-post.dto';
 
@@ -19,7 +19,7 @@ export class PostController {
   }
 
   @Delete(':id')
-  deletePost(@Param('id') id: Post['id'], @UserFromAuth(['id']) user: UserForeignKey) {
+  deletePost(@Param('id') id: Post['id'], @UserFromAuth(['id']) user: User) {
     return this.postService.deletePost({
       id,
       createBy: user,

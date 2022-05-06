@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import { User, UserForeignKey } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 
 @Entity()
 export class Feed {
@@ -29,7 +29,7 @@ export class Feed {
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false, eager: true })
-  createBy: UserForeignKey;
+  createBy: User;
 
   @CreateDateColumn()
   createAt: Date;
