@@ -6,15 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import type { UserOmitRelations } from '@/modules/user/entities/user.entity';
 import { User } from '@/modules/user/entities/user.entity';
 
 @Entity()
 export class Family {
-  constructor(name: string) {
-    this.name = name;
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -31,5 +26,9 @@ export class Family {
   updateAt: Date;
 
   @ManyToMany(() => User, (user) => user.families)
-  members: UserOmitRelations[];
+  members: User[];
+
+  constructor(name: string) {
+    this.name = name;
+  }
 }

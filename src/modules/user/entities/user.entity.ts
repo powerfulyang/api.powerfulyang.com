@@ -17,6 +17,11 @@ import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity
 
 @Entity('user')
 export class User {
+  static IntendedUsers = {
+    AdminUser: 'powerfulyang',
+    BotUser: 'asset bot',
+  };
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -66,13 +71,4 @@ export class User {
   // 大部分时间应该不需要 { eager: true }
   @OneToMany(() => OauthOpenid, (o) => o.user)
   oauthOpenidArr: OauthOpenid[];
-
-  static IntendedUsers = {
-    AdminUser: 'powerfulyang',
-    BotUser: 'asset bot',
-  };
 }
-
-export type UserForeignKey = Pick<User, 'id'>;
-export type UserOmitRelations = Omit<User, 'families' | 'oauthOpenidArr'>;
-export type UserOmitOauthOpenidArr = Omit<User, 'oauthOpenidArr'>;

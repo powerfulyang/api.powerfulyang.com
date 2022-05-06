@@ -44,6 +44,12 @@ export class FeedService {
       ? MoreThan(Number(nextCursor))
       : LessThan(Number(prevCursor || DefaultCursor));
     const res = await this.feedDao.find({
+      select: {
+        createBy: {
+          id: true,
+          nickname: true,
+        },
+      },
       where: [
         { public: true, id: cursor },
         {

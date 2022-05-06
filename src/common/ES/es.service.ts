@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
 import { FeedService } from '@/modules/feed/feed.service';
+import { pick } from 'ramda';
 
 @Injectable()
 export class EsService {
@@ -14,46 +15,42 @@ export class EsService {
     // TODO 初始化 index
   }
 
-  private async parseAndPrepareData() {
-    const body = [] as any[];
-    const feeds = await this.feedService.all();
-    feeds.forEach((item) => {
-      body.push(
-        { index: { _index: 'feed', _id: item.id } },
-        {
-          content: item.content,
-          id: item.id,
-        },
-      );
-    });
-    return body;
-  }
-
   async createFeedIndex() {
-    const exist = await this.elasticsearchService.indices.exists({ index: 'feed' });
-    if (exist) {
-      await this.deleteFeedIndex();
+    const exist = await this.elasticsearchService.indices.exists({ index: 'feeds' });
+    if (!exist) {
+      await this.elasticsearchService.indices.create(
+        {
+          index: 'feeds',
+          mappings: {
+            properties: {
+              id: { type: 'integer' },
+              content: { type: 'text' },
+            },
+          },
+        },
+        { ignore: [400] },
+      );
     }
-    await this.elasticsearchService.indices.create({
-      index: 'feed',
+    const feeds = await this.feedService.all();
+    const body = feeds.flatMap((feed) => {
+      return [{ index: { _index: 'feeds', _id: feed.id } }, pick(['id', 'content'], feed)];
     });
-    const body = await this.parseAndPrepareData();
-    const res = await this.elasticsearchService.bulk({
+    await this.elasticsearchService.bulk({
       body,
     });
-    return res.items;
+    return this.elasticsearchService.count({ index: 'feeds' });
   }
 
   deleteFeedIndex() {
     return this.elasticsearchService.indices.delete({
-      index: 'feed',
+      index: 'feeds',
     });
   }
 
   async searchFeedByContent(content: string) {
     const results: any[] = [];
     const { hits } = await this.elasticsearchService.search({
-      index: 'feed',
+      index: 'feeds',
       body: {
         query: {
           match: {

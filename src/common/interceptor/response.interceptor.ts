@@ -8,7 +8,7 @@ import { serialize } from 'cookie';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
-import { PathViewCountService } from '@/modules/path-ip-view-count/path-view-count.service';
+import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import type { RequestExtend } from '@/type/RequestExtend';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class ResponseInterceptor implements NestInterceptor {
             );
           } else {
             this.logger.debug(
-              `Token left valid time is ${ValidPeriodHour} hour, no need to refresh token [user=>${user.email}]`,
+              `Token left valid time is ${ValidPeriodHour} hour, it's unnecessary to refresh token [user=>${user.email}]`,
             );
           }
         }

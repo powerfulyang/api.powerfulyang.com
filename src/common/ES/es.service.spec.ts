@@ -17,9 +17,12 @@ describe('SearchService', () => {
   it('ES feed', async () => {
     const items = await service.createFeedIndex();
     expect(items).toBeDefined();
-    const result = await service.searchFeedByContent('test');
-    expect(result).toBeDefined();
     const res = await service.deleteFeedIndex();
     expect(res.acknowledged).toBe(true);
+  });
+
+  it('search', async () => {
+    const result = await service.searchFeedByContent('test');
+    expect(result).toBeDefined();
   });
 });

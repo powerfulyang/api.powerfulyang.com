@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User, UserForeignKey } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 
 @Entity('post')
@@ -35,7 +35,7 @@ export class Post {
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false, eager: true })
-  createBy: UserForeignKey;
+  createBy: User;
 
   @JoinColumn()
   @ManyToOne(() => Asset, { eager: true })

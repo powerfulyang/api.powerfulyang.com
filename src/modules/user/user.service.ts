@@ -15,10 +15,6 @@ import {
   isUndefined,
 } from '@powerfulyang/utils';
 import type { UserLoginDto } from '@/modules/user/dto/user-login.dto';
-import type {
-  UserOmitOauthOpenidArr,
-  UserOmitRelations,
-} from '@/modules/user/entities/user.entity';
 import { User } from '@/modules/user/entities/user.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { Menu } from '@/modules/user/entities/menu.entity';
@@ -46,6 +42,37 @@ export class UserService {
     private readonly mailService: MailService,
   ) {
     this.logger.setContext(UserService.name);
+  }
+
+  private static idMapping(data: any[]) {
+    return data.reduce((draft, el, i) => {
+      draft[el.id] = i;
+      return draft;
+    }, {});
+  }
+
+  private static buildTree(menus: Set<Menu>) {
+    const menusArr = [...menus];
+    const idMapping = UserService.idMapping(menusArr);
+    const root: Menu[] = [];
+    menusArr.forEach((menu) => {
+      if (menu.parentId === 0) {
+        return root.push(menu);
+      }
+      const parentEl = menusArr[idMapping[menu.parentId]];
+      parentEl.children = [...parentEl.children, menu];
+      return parentEl;
+    });
+    return root;
+  }
+
+  private static pickUserId(user: Partial<User>) {
+    return pick(['id'], user);
+  }
+
+  private static verifyPassword(password: string, salt: string, saltedPassword: string) {
+    const tmp = sha1(password, salt);
+    return tmp === saltedPassword;
   }
 
   async initIntendedUsers() {
@@ -78,44 +105,6 @@ export class UserService {
     return SUCCESS;
   }
 
-  private static idMapping(data: any[]) {
-    return data.reduce((draft, el, i) => {
-      draft[el.id] = i;
-      return draft;
-    }, {});
-  }
-
-  private static buildTree(menus: Set<Menu>) {
-    const menusArr = [...menus];
-    const idMapping = UserService.idMapping(menusArr);
-    const root: Menu[] = [];
-    menusArr.forEach((menu) => {
-      if (menu.parentId === 0) {
-        return root.push(menu);
-      }
-      const parentEl = menusArr[idMapping[menu.parentId]];
-      parentEl.children = [...parentEl.children, menu];
-      return parentEl;
-    });
-    return root;
-  }
-
-  private generateSaltedPassword(salt: string, password: string) {
-    this.logger.debug(`generateSaltedPassword => ${salt}, ${password}`);
-    return sha1(password, salt);
-  }
-
-  private generateDefaultPassword() {
-    const defaultPassword = generateRandomString();
-    // default password is salt
-    const salt = defaultPassword;
-    const saltedPassword = this.generateSaltedPassword(defaultPassword, defaultPassword);
-    return {
-      salt,
-      saltedPassword,
-    };
-  }
-
   sendDefaultPassword(email: string, defaultPassword: string) {
     return this.mailService.sendMail(
       email,
@@ -140,7 +129,7 @@ export class UserService {
       user = await this.getUserByEmail(email);
       if (isNotNull(user)) {
         // 关联新的 openid
-        await this.oauthOpenidService.associateOpenid(user, openid, platform);
+        await this.oauthOpenidService.associateOpenid(user.id, openid, platform);
       } else {
         // 创建新用户
         user = this.userDao.create();
@@ -150,7 +139,7 @@ export class UserService {
         user = await this.initUserDefaultProperty(user);
         user = await this.saveUserAndCached(user);
         // 关联新的 openid
-        await this.oauthOpenidService.associateOpenid(user, openid, platform);
+        await this.oauthOpenidService.associateOpenid(user.id, openid, platform);
         // salt 是默认密码
         await this.sendDefaultPassword(user.email, user.salt);
       }
@@ -161,10 +150,6 @@ export class UserService {
       user = await this.saveUserAndCached(u);
     }
     return this.generateAuthorization(user);
-  }
-
-  private static pickUserId(user: Partial<User>) {
-    return pick(['id'], user);
   }
 
   generateAuthorization(user: Partial<User> & Pick<User, 'id'>) {
@@ -179,11 +164,6 @@ export class UserService {
     const user = await this.userDao.findOneByOrFail({ id });
     const menus = new Set(flatten(user.roles.map((role) => role.menus)));
     return UserService.buildTree(menus);
-  }
-
-  private static verifyPassword(password: string, salt: string, saltedPassword: string) {
-    const tmp = sha1(password, salt);
-    return tmp === saltedPassword;
   }
 
   /**
@@ -204,7 +184,7 @@ export class UserService {
     return this.generateAuthorization(userInfo);
   }
 
-  getUserByEmail(email: string): Promise<UserOmitRelations> {
+  getUserByEmail(email: string): Promise<User> {
     return this.userDao.findOneByOrFail({ email });
   }
 
@@ -221,9 +201,11 @@ export class UserService {
     return this.userDao.save(user);
   }
 
-  queryUserCascadeFamilyInfo(): Promise<UserOmitOauthOpenidArr[]>;
-  queryUserCascadeFamilyInfo(id: User['id']): Promise<UserOmitOauthOpenidArr>;
-  queryUserCascadeFamilyInfo(ids: User['id'][]): Promise<UserOmitOauthOpenidArr[]>;
+  queryUserCascadeFamilyInfo(): Promise<User[]>;
+
+  queryUserCascadeFamilyInfo(id: User['id']): Promise<User>;
+
+  queryUserCascadeFamilyInfo(ids: User['id'][]): Promise<User[]>;
 
   queryUserCascadeFamilyInfo(id?: User['id'] | User['id'][]): Promise<any> {
     if (isDefined(id)) {
@@ -245,24 +227,6 @@ export class UserService {
 
   getCachedUser(id: User['id']) {
     return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
-  }
-
-  private async initUserDefaultProperty(draft: UserOmitRelations) {
-    // 默认角色
-    const defaultRole = await this.roleService.getDefaultRole();
-    draft.roles = [defaultRole];
-    // 默认密码
-    const { salt, saltedPassword } = this.generateDefaultPassword();
-    draft.saltedPassword = saltedPassword;
-    draft.salt = salt;
-    return draft;
-  }
-
-  private async saveUserAndCached<T extends UserOmitRelations>(user: T) {
-    const updatedUser = await this.userDao.save(user);
-    // update to cache
-    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
-    return updatedUser;
   }
 
   /**
@@ -334,5 +298,39 @@ export class UserService {
       },
       loadEagerRelations: false,
     });
+  }
+
+  private generateSaltedPassword(salt: string, password: string) {
+    this.logger.debug(`generateSaltedPassword => ${salt}, ${password}`);
+    return sha1(password, salt);
+  }
+
+  private generateDefaultPassword() {
+    const defaultPassword = generateRandomString();
+    // default password is salt
+    const salt = defaultPassword;
+    const saltedPassword = this.generateSaltedPassword(defaultPassword, defaultPassword);
+    return {
+      salt,
+      saltedPassword,
+    };
+  }
+
+  private async initUserDefaultProperty(draft: User) {
+    // 默认角色
+    const defaultRole = await this.roleService.getDefaultRole();
+    draft.roles = [defaultRole];
+    // 默认密码
+    const { salt, saltedPassword } = this.generateDefaultPassword();
+    draft.saltedPassword = saltedPassword;
+    draft.salt = salt;
+    return draft;
+  }
+
+  private async saveUserAndCached<T extends User>(user: T) {
+    const updatedUser = await this.userDao.save(user);
+    // update to cache
+    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
+    return updatedUser;
   }
 }
