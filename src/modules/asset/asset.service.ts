@@ -32,6 +32,7 @@ import { BucketService } from '@/modules/bucket/bucket.service';
 import { MqService } from '@/common/MQ/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
+import { isQA, QA_BUCKET_ONLY } from '@/utils/env';
 import { getEXIF } from '../../../addon.api';
 
 @Injectable()
@@ -448,8 +449,9 @@ export class AssetService {
     if (isNotNull(result)) {
       return result;
     }
+    const realBucketName = isQA ? QA_BUCKET_ONLY : bucketName;
     // 库里面木有
-    asset.bucket = await this.bucketService.getBucketByBucketName(bucketName);
+    asset.bucket = await this.bucketService.getBucketByBucketName(realBucketName);
     asset.uploadBy = uploadBy;
     const s = sharp(buffer);
     const metadata = await s.metadata();
@@ -469,10 +471,7 @@ export class AssetService {
         suffix: asset.fileSuffix,
         name: asset.bucket.name,
       };
-      // 异步处理
-      process.nextTick(() => {
-        this.persistentToCos(data);
-      });
+      await this.persistentToCos(data);
     } catch (e) {
       this.logger.error(e);
     }

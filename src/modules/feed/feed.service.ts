@@ -39,17 +39,33 @@ export class FeedService {
   }
 
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
-    const { userIds = [], prevCursor, nextCursor } = params;
+    const { userIds = [], prevCursor, nextCursor, take = DefaultTake } = params;
     const cursor = nextCursor
       ? MoreThan(Number(nextCursor))
       : LessThan(Number(prevCursor || DefaultCursor));
     const res = await this.feedDao.find({
       select: {
+        id: true,
+        content: true,
+        createAt: true,
         createBy: {
-          id: true,
+          avatar: true,
           nickname: true,
         },
+        assets: {
+          id: true,
+          objectUrl: true,
+          size: {
+            width: true,
+            height: true,
+          },
+        },
       },
+      relations: {
+        createBy: true,
+        assets: true,
+      },
+      loadEagerRelations: false,
       where: [
         { public: true, id: cursor },
         {
@@ -60,7 +76,7 @@ export class FeedService {
       order: {
         id: 'DESC',
       },
-      take: DefaultTake,
+      take: Number(take),
     });
     return {
       resources: res,
