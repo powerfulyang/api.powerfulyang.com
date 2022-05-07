@@ -54,12 +54,14 @@ export class PublicController {
   feeds(
     @Query('prevCursor') prevCursor: string,
     @Query('nextCursor') nextCursor: string,
+    @Query('take') take: string,
     @FamilyMembersIdFromAuth() userIds: User['id'][],
   ) {
     return this.feedService.infiniteQuery({
       prevCursor,
       nextCursor,
       userIds,
+      take,
     });
   }
 
@@ -67,12 +69,14 @@ export class PublicController {
   infiniteQuery(
     @Query('prevCursor') prevCursor: string,
     @Query('nextCursor') nextCursor: string,
+    @Query('take') take: string,
     @FamilyMembersIdFromAuth() userIds: User['id'][],
   ) {
     return this.assetService.infiniteQuery({
       prevCursor,
       nextCursor,
       userIds,
+      take,
     });
   }
 

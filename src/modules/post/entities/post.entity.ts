@@ -34,7 +34,7 @@ export class Post {
   publishYear: number;
 
   @JoinColumn()
-  @ManyToOne(() => User, { nullable: false, eager: true })
+  @ManyToOne(() => User, { nullable: false })
   createBy: User;
 
   @JoinColumn()

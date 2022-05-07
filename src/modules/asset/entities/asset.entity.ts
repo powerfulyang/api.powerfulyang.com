@@ -21,7 +21,7 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => CosBucket, { nullable: false, eager: true })
+  @ManyToOne(() => CosBucket, { nullable: false })
   bucket: CosBucket;
 
   @Column({ default: '' })
@@ -37,7 +37,7 @@ export class Asset {
   sn: string;
 
   @Column({ type: 'json' })
-  tags: string[] = [];
+  tags: string[];
 
   @Column({ default: '' })
   comment: string;
@@ -77,6 +77,9 @@ export class Asset {
   beforeInsert() {
     if (this.metadata) {
       this.size = pick(['width', 'height'])(this.metadata);
+    }
+    if (!this.tags) {
+      this.tags = [];
     }
   }
 

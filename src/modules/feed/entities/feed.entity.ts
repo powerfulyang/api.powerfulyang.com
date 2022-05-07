@@ -20,7 +20,7 @@ export class Feed {
   @Column()
   content: string;
 
-  @ManyToMany(() => Asset, { onDelete: 'CASCADE', eager: true })
+  @ManyToMany(() => Asset, { onDelete: 'CASCADE' })
   @JoinTable()
   assets: Asset[];
 
@@ -28,7 +28,7 @@ export class Feed {
   public: boolean;
 
   @JoinColumn()
-  @ManyToOne(() => User, { nullable: false, eager: true })
+  @ManyToOne(() => User, { nullable: false })
   createBy: User;
 
   @CreateDateColumn()
