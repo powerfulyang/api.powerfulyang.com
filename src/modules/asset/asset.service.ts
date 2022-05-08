@@ -32,7 +32,7 @@ import { BucketService } from '@/modules/bucket/bucket.service';
 import { MqService } from '@/common/MQ/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
-import { isQA, QA_BUCKET_ONLY } from '@/utils/env';
+import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
 import { getEXIF } from '../../../addon.api';
 
 @Injectable()
@@ -165,7 +165,7 @@ export class AssetService {
       bucket.tencentCloudAccount.id,
     );
     const { Bucket, Region } = bucket;
-    const { Url: objectUrl } = await util.asyncGetObjectUrl({
+    const { Url: objectUrl } = await util.getObjectUrl({
       Key,
       Bucket,
       Region,
@@ -388,7 +388,7 @@ export class AssetService {
       Key,
       Body: buffer,
     });
-    const { Url: objectUrl } = await util.asyncGetObjectUrl({
+    const { Url: objectUrl } = await util.getObjectUrl({
       Bucket,
       Region,
       Key,
@@ -405,7 +405,7 @@ export class AssetService {
       bucket.tencentCloudAccount.id,
     );
     const { Bucket, Region } = bucket;
-    const { Url: cosUrl } = await util.asyncGetObjectUrl({
+    const { Url: cosUrl } = await util.getObjectUrl({
       Sign: false,
       Key,
       Bucket,
@@ -449,9 +449,9 @@ export class AssetService {
     if (isNotNull(result)) {
       return result;
     }
-    const realBucketName = isQA ? QA_BUCKET_ONLY : bucketName;
+    const toUploadBucket = is_TEST_BUCKET_ONLY ? TEST_BUCKET_ONLY : bucketName;
     // 库里面木有
-    asset.bucket = await this.bucketService.getBucketByBucketName(realBucketName);
+    asset.bucket = await this.bucketService.getBucketByBucketName(toUploadBucket);
     asset.uploadBy = uploadBy;
     const s = sharp(buffer);
     const metadata = await s.metadata();

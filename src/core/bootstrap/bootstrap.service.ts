@@ -38,13 +38,10 @@ export class BootstrapService {
     });
   }
 
-  async refreshObjectUrl() {
-    const bool = await this.coreService.isProdScheduleNode();
-    if (bool) {
-      this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
-        this.logger.info('refreshObjectUrl success!');
-      });
-    }
+  refreshObjectUrl() {
+    return this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
+      this.logger.info('refreshObjectUrl success!');
+    });
   }
 
   async cacheUsers() {
@@ -68,7 +65,7 @@ export class BootstrapService {
   }
 
   async initBucket() {
-    const bool = await this.coreService.isScheduleNode();
+    const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
       return this.bucketService.initBucket().then(() => {
         this.logger.info('initBucket success!');
