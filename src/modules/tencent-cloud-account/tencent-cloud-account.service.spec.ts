@@ -5,23 +5,22 @@ import { TencentCloudAccountService } from './tencent-cloud-account.service';
 
 describe('TencentCloudAccountService', () => {
   let service: TencentCloudAccountService;
+  let app: TestingModule;
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    app = await Test.createTestingModule({
       imports: [TencentCloudAccountModule],
     }).compile();
 
-    service = module.get<TencentCloudAccountService>(TencentCloudAccountService);
+    service = app.get<TencentCloudAccountService>(TencentCloudAccountService);
+  });
+
+  afterAll(() => {
+    app.close();
   });
 
   it('findAll', async () => {
     const result = await service.findAll();
-    expect(result).toBeDefined();
-  });
-
-  it('cos test', async () => {
-    const cosUtil = await service.getCosUtilByAccountId(1);
-    const result = await cosUtil.getService({});
     expect(result).toBeDefined();
   });
 });
