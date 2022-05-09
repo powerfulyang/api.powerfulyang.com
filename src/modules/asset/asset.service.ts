@@ -337,6 +337,7 @@ export class AssetService {
 
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
     const { userIds = [], prevCursor, nextCursor } = params;
+    const take = Number(params.take || DefaultTake);
     const BotUser = await this.userService.getAssetBotUser();
     const cursor = nextCursor
       ? MoreThan(Number(nextCursor))
@@ -351,11 +352,11 @@ export class AssetService {
       order: {
         id: 'DESC',
       },
-      take: DefaultTake,
+      take,
     });
     return {
       resources: res,
-      prevCursor: (res.length === DefaultTake && lastItem(res)?.id) || null,
+      prevCursor: (res.length === take && lastItem(res)?.id) || null,
       nextCursor: firstItem(res)?.id || null,
     };
   }

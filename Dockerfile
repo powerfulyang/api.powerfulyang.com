@@ -1,11 +1,8 @@
 FROM node:lts-alpine3.14
 
-WORKDIR /usr/app/api.powerfulyang.com
+WORKDIR /usr/app
 
-COPY package.json .
-COPY package-lock.json .
-COPY addon.api/ ./addon.api/
-COPY binding.gyp binding.gyp
+COPY . .
 
 
 RUN apk add --no-cache tzdata \
@@ -22,9 +19,9 @@ RUN apk add --no-cache tzdata \
     && apk add --no-cache --virtual native-deps \
          g++ gcc libgcc libstdc++ linux-headers make python3 \
     && npm ci --quiet \
+    && npm run build \
+    && npm prune --omit=dev \
     && npm cache clean --force \
     && apk del native-deps g++ gcc libgcc libstdc++ linux-headers make python3
-
-COPY dist/ ./dist/
 
 CMD npm run start:prod
