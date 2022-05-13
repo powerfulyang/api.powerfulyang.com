@@ -69,8 +69,10 @@ export class LoggerService {
     this.context = context;
   }
 
-  error(error: Error, stack?: string, context?: string) {
-    if (error.stack) {
+  error(message: string, stack?: Error, context?: string): void;
+  error(error: Error): void;
+  error(error: Error | string, stack?: Error, context?: string) {
+    if (error instanceof Error) {
       this.logger.error({
         ...error,
         context: context || this.context,

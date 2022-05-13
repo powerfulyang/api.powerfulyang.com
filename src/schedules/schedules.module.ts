@@ -5,6 +5,7 @@ import { AssetModule } from '@/modules/asset/asset.module';
 import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { CoreModule } from '@/core/core.module';
+import { UserModule } from '@/modules/user/user.module';
 import { PixivScheduleService } from './pixiv-schedule/pixiv-schedule.service';
 import { InstagramScheduleService } from './instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from './pinterest-schedule/pinterest-schedule.service';
@@ -19,6 +20,7 @@ import { CosObjectUrlScheduleService } from './cos-object-url-schedule/cos-objec
     TencentCloudAccountModule,
     LoggerModule,
     CoreModule,
+    UserModule,
   ],
   providers: [
     PixivScheduleService,

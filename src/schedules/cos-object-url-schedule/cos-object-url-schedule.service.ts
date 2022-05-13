@@ -3,6 +3,7 @@ import { Interval } from '@nestjs/schedule';
 import { AssetService } from '@/modules/asset/asset.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
+import { UserService } from '@/modules/user/user.service';
 
 @Injectable()
 export class CosObjectUrlScheduleService {
@@ -10,6 +11,7 @@ export class CosObjectUrlScheduleService {
     private readonly assetService: AssetService,
     private readonly logger: LoggerService,
     private readonly coreService: CoreService,
+    private readonly userService: UserService,
   ) {
     this.logger.setContext(CosObjectUrlScheduleService.name);
   }
@@ -25,6 +27,9 @@ export class CosObjectUrlScheduleService {
 
   async main() {
     const assets = await this.assetService.all();
+    this.userService.cacheUsers().catch(() => {
+      this.logger.error('刷新用户背景失败啦!!!');
+    });
     await Promise.all(
       assets.map((asset) => {
         return this.assetService
