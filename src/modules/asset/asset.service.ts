@@ -343,6 +343,14 @@ export class AssetService {
       ? MoreThan(Number(nextCursor))
       : LessThan(Number(prevCursor || DefaultCursor));
     const res = await this.assetDao.find({
+      select: {
+        id: true,
+        size: {
+          width: true,
+          height: true,
+        },
+        objectUrl: true,
+      },
       where: {
         uploadBy: {
           id: In(userIds.concat(BotUser.id)),
@@ -353,6 +361,7 @@ export class AssetService {
         id: 'DESC',
       },
       take,
+      loadEagerRelations: false,
     });
     return {
       resources: res,
