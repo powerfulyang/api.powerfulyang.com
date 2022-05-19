@@ -64,7 +64,21 @@ export class PostService {
 
   queryPosts(post: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
+      select: {
+        id: true,
+        title: true,
+        createAt: true,
+        poster: {
+          objectUrl: true,
+          size: {
+            width: true,
+            height: true,
+          },
+        },
+      },
       order: { id: 'DESC' },
+      relations: ['poster'],
+      loadEagerRelations: false,
       where: [
         {
           ...post,
