@@ -27,20 +27,21 @@ export class CosObjectUrlScheduleService {
 
   async main() {
     const assets = await this.assetService.all();
-    this.userService.cacheUsers().catch(() => {
-      this.logger.error('刷新用户背景失败啦!!!');
-    });
-    await Promise.all(
+    Promise.allSettled(
       assets.map((asset) => {
         return this.assetService
           .getObjectUrl(`${asset.sha1}.${asset.fileSuffix}`, asset.bucket)
           .then((objectUrl) => {
-            this.assetService.updateAssetObjectUrl(asset.id, objectUrl);
+            return this.assetService.updateAssetObjectUrl(asset.id, objectUrl);
           })
           .catch((err) => {
             this.logger.error(err);
           });
       }),
-    );
+    ).then(() => {
+      return this.userService.cacheUsers().catch(() => {
+        this.logger.error('刷新用户背景失败啦!!!');
+      });
+    });
   }
 }
