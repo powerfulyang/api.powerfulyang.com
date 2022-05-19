@@ -77,6 +77,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/udp-server/tsconfig.lib.json"
       }
+    },
+    "logs-viewer": {
+      "type": "library",
+      "root": "libs/logs-viewer",
+      "entryFile": "index",
+      "sourceRoot": "libs/logs-viewer/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/logs-viewer/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -45,4 +45,12 @@ describe('PostService', () => {
     const res = await service.getPublishedYears();
     expect(res).toBeDefined();
   });
+
+  it('ES post index and search', async () => {
+    const count = await service.buildPostEsIndex();
+    expect(count).toBeDefined();
+
+    const result = await service.searchPostByContent('test');
+    expect(result).toBeDefined();
+  });
 });

@@ -4,7 +4,6 @@ import { ConfigModule } from '@/common/config/config.module';
 import { ConfigService } from '@/common/config/config.service';
 import { EsService } from '@/common/ES/es.service';
 import { LoggerModule } from '@/common/logger/logger.module';
-import { FeedModule } from '@/modules/feed/feed.module';
 
 @Module({
   imports: [
@@ -14,7 +13,6 @@ import { FeedModule } from '@/modules/feed/feed.module';
       useFactory: (configService: ConfigService) => configService.getElasticsearchConfig(),
     }),
     LoggerModule,
-    FeedModule,
   ],
   exports: [EsService],
   providers: [EsService],

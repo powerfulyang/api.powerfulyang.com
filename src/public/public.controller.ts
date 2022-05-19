@@ -35,6 +35,11 @@ export class PublicController {
     return this.postService.queryPosts(post, pluck('id', users));
   }
 
+  @Get('post/search')
+  searchPosts(@Query('content') content: string) {
+    return this.postService.searchPostByContent(content);
+  }
+
   @Get('post/years')
   getPublishedYears(@FamilyMembersFromAuth() users: User[]) {
     return this.postService.getPublishedYears(pluck('id', users));

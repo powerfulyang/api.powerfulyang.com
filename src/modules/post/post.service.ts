@@ -1,20 +1,36 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { countBy, flatten, map, pluck, prop, trim } from 'ramda';
+import { countBy, flatten, map, pick, pluck, prop, trim } from 'ramda';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { SUCCESS } from '@/constants/constants';
+import { EsService, POST_INDEX } from '@/common/ES/es.service';
+import type { ElasticsearchService } from '@nestjs/elasticsearch';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class PostService {
+  private readonly es: ElasticsearchService;
+
   constructor(
     @InjectRepository(Post) private readonly postDao: Repository<Post>,
     private readonly assetService: AssetService,
-  ) {}
+    private readonly esService: EsService,
+    private readonly logger: LoggerService,
+  ) {
+    this.es = this.esService.getEsClient();
+    this.buildPostEsIndex().then((count) => {
+      this.logger.info(`build post es index success, count: ${count}`);
+    });
+  }
+
+  all() {
+    return this.postDao.find();
+  }
 
   async publishPost(post: PublishPostDto) {
     if (!post.poster) {
@@ -64,7 +80,21 @@ export class PostService {
 
   queryPosts(post: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
+      select: {
+        id: true,
+        title: true,
+        createAt: true,
+        poster: {
+          objectUrl: true,
+          size: {
+            width: true,
+            height: true,
+          },
+        },
+      },
       order: { id: 'DESC' },
+      relations: ['poster'],
+      loadEagerRelations: false,
       where: [
         {
           ...post,
@@ -109,5 +139,56 @@ export class PostService {
       .distinct(true)
       .getRawMany();
     return pluck('publishYear')(res);
+  }
+
+  async buildPostEsIndex() {
+    const exist = await this.es.indices.exists({ index: POST_INDEX });
+    if (!exist) {
+      await this.es.indices.create(
+        {
+          index: POST_INDEX,
+          mappings: {
+            properties: {
+              id: { type: 'integer' },
+              content: { type: 'text' },
+              title: { type: 'text' },
+            },
+          },
+        },
+        { ignore: [400] },
+      );
+    }
+    const posts = await this.all();
+    const body = posts.flatMap((post) => {
+      return [
+        { index: { _index: POST_INDEX, _id: post.id } },
+        pick(['id', 'content', 'title'], post),
+      ];
+    });
+    const result = await this.es.bulk({
+      body,
+    });
+    return result.items.length;
+  }
+
+  async searchPostByContent(content: string) {
+    const results: any[] = [];
+    const result = await this.es.search({
+      index: POST_INDEX,
+      body: {
+        query: {
+          match: {
+            content: {
+              query: content,
+            },
+          },
+        },
+      },
+    });
+    result.hits.hits.forEach((item) => {
+      results.push(item._source);
+    });
+
+    return { results, total: result.hits.hits.length };
   }
 }
