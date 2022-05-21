@@ -79,7 +79,7 @@
     "@nestjs/cli": "8.2.6",
     "@nestjs/schematics": "8.0.11",
     "@nestjs/testing": "8.4.5",
-    "@powerfulyang/lint": "2.0.0",
+    "@powerfulyang/lint": "2.0.1",
     "@types/cookie": "0.5.1",
     "@types/cookie-parser": "1.4.3",
     "@types/express": "4.17.13",
