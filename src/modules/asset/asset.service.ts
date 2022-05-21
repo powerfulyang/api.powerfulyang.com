@@ -372,11 +372,32 @@ export class AssetService {
 
   async randomAsset() {
     const publicBucketIds = await this.bucketService.listPublicBucket(true);
+    const result = await this.assetDao
+      .createQueryBuilder()
+      .where(
+        `
+        round(cast(size ->> 'width' as numeric) / cast(size ->> 'height' as numeric), 2) > 1.5 --- 宽高比大于 1.5
+        and "bucketId" = ANY(:publicBucketIds)  --- 公开的 bucket
+        and cast(metadata->>'size' as int) < 100 * 1000 --- limit 100kb
+               `,
+        { publicBucketIds },
+      )
+      .orderBy('random()')
+      .limit(1)
+      .getOne();
+
+    if (result) {
+      return result;
+    }
     return this.assetDao
       .createQueryBuilder()
-      .where({
-        bucket: { id: In(publicBucketIds) },
-      })
+      .where(
+        `
+        "bucketId" = ANY(:publicBucketIds)
+        and cast(metadata->>'size' as int) < 100 * 1000
+        `,
+        { publicBucketIds },
+      )
       .orderBy('random()')
       .limit(1)
       .getOne();

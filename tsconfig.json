@@ -39,7 +39,9 @@
       "api/proxy-fetch": ["libs/proxy-fetch/src"],
       "api/proxy-fetch/*": ["libs/proxy-fetch/src/*"],
       "api/udp-server": ["libs/udp-server/src"],
-      "api/udp-server/*": ["libs/udp-server/src/*"]
+      "api/udp-server/*": ["libs/udp-server/src/*"],
+      "api/logs-viewer": ["libs/logs-viewer/src"],
+      "api/logs-viewer/*": ["libs/logs-viewer/src/*"]
     },
     "resolveJsonModule": true
   },

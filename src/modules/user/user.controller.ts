@@ -106,7 +106,7 @@ export class UserController {
   @Get('current')
   @JwtAuthGuard()
   current(@UserFromAuth() user: User) {
-    this.logger.info(`${user.email} try to get current user info!!!`);
+    this.logger.debug(`${user.email} try to get current user info!!!`);
     return user;
   }
 
