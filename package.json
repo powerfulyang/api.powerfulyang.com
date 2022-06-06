@@ -69,7 +69,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.5",
     "sharp": "0.30.5",
-    "socks-proxy-agent": "6.2.1",
+    "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
     "typeorm": "0.3.6",
     "winston": "3.7.2",
