@@ -1,56 +1,61 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
-import { FeedService } from '@/modules/feed/feed.service';
 import { pick } from 'ramda';
+import { PostService } from '@/modules/post/post.service';
+
+export const POST_INDEX = 'posts';
 
 @Injectable()
 export class EsService {
   constructor(
     private readonly logger: LoggerService,
     private readonly elasticsearchService: ElasticsearchService,
-    private readonly feedService: FeedService,
+    private readonly postService: PostService,
   ) {
     this.logger.setContext(EsService.name);
-    // TODO 初始化 index
   }
 
-  async createFeedIndex() {
-    const exist = await this.elasticsearchService.indices.exists({ index: 'feeds' });
+  async createPostIndex() {
+    const exist = await this.elasticsearchService.indices.exists({ index: POST_INDEX });
     if (!exist) {
       await this.elasticsearchService.indices.create(
         {
-          index: 'feeds',
+          index: POST_INDEX,
           mappings: {
             properties: {
               id: { type: 'integer' },
               content: { type: 'text' },
+              title: { type: 'text' },
             },
           },
         },
         { ignore: [400] },
       );
     }
-    const feeds = await this.feedService.all();
-    const body = feeds.flatMap((feed) => {
-      return [{ index: { _index: 'feeds', _id: feed.id } }, pick(['id', 'content'], feed)];
+    const posts = await this.postService.all();
+    const body = posts.flatMap((post) => {
+      return [
+        { index: { _index: POST_INDEX, _id: post.id } },
+        pick(['id', 'content', 'title'], post),
+      ];
     });
-    await this.elasticsearchService.bulk({
+    const result = await this.elasticsearchService.bulk({
       body,
     });
-    return this.elasticsearchService.count({ index: 'feeds' });
+    return result.items.length;
   }
 
-  deleteFeedIndex() {
+  deletePostIndex() {
     return this.elasticsearchService.indices.delete({
-      index: 'feeds',
+      index: POST_INDEX,
     });
   }
 
-  async searchFeedByContent(content: string) {
+  async searchPostByContent(content: string) {
     const results: any[] = [];
     const { hits } = await this.elasticsearchService.search({
-      index: 'feeds',
+      index: POST_INDEX,
       body: {
         query: {
           match: {

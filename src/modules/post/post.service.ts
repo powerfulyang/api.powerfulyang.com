@@ -16,6 +16,10 @@ export class PostService {
     private readonly assetService: AssetService,
   ) {}
 
+  all() {
+    return this.postDao.find();
+  }
+
   async publishPost(post: PublishPostDto) {
     if (!post.poster) {
       const poster = await this.assetService.randomAsset();

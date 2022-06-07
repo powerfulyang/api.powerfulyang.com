@@ -14,15 +14,13 @@ describe('SearchService', () => {
     service = module.get<EsService>(EsService);
   });
 
-  it('ES feed', async () => {
-    const items = await service.createFeedIndex();
-    expect(items).toBeDefined();
-    const res = await service.deleteFeedIndex();
-    expect(res.acknowledged).toBe(true);
+  it('ES post index', async () => {
+    const count = await service.createPostIndex();
+    expect(count).toBeDefined();
   });
 
   it('search', async () => {
-    const result = await service.searchFeedByContent('test');
+    const result = await service.searchPostByContent('test');
     expect(result).toBeDefined();
   });
 });
