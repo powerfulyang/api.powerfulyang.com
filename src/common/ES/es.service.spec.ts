@@ -14,13 +14,21 @@ describe('SearchService', () => {
     service = module.get<EsService>(EsService);
   });
 
-  it('ES post index', async () => {
+  it('ES post index and search', async () => {
     const count = await service.createPostIndex();
     expect(count).toBeDefined();
+
+    const result = await service.searchPostByContent('test');
+    expect(result).toBeDefined();
   });
 
-  it('search', async () => {
-    const result = await service.searchPostByContent('test');
+  it('show all index', async () => {
+    const result = await service.showAllIndex();
+    expect(result).toBeDefined();
+  });
+
+  it('inspectLogstashIndex', async () => {
+    const result = await service.inspectLogstash();
     expect(result).toBeDefined();
   });
 });

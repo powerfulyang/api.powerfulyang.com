@@ -16,6 +16,16 @@ export class EsService {
     this.logger.setContext(EsService.name);
   }
 
+  getElasticsearchService() {
+    return this.elasticsearchService;
+  }
+
+  showAllIndex() {
+    return this.elasticsearchService.indices.get({
+      index: '_all',
+    });
+  }
+
   async createPostIndex() {
     const exist = await this.elasticsearchService.indices.exists({ index: POST_INDEX });
     if (!exist) {
@@ -46,15 +56,15 @@ export class EsService {
     return result.items.length;
   }
 
-  deletePostIndex() {
+  deleteIndex(index: string) {
     return this.elasticsearchService.indices.delete({
-      index: POST_INDEX,
+      index,
     });
   }
 
   async searchPostByContent(content: string) {
     const results: any[] = [];
-    const { hits } = await this.elasticsearchService.search({
+    const result = await this.elasticsearchService.search({
       index: POST_INDEX,
       body: {
         query: {
@@ -66,10 +76,17 @@ export class EsService {
         },
       },
     });
-    hits.hits.forEach((item) => {
+    result.hits.hits.forEach((item) => {
       results.push(item._source);
     });
 
-    return { results, total: hits.hits.length };
+    return { results, total: result.hits.hits.length };
+  }
+
+  inspectLogstash() {
+    return this.elasticsearchService.cat.indices({
+      index: 'logstash-*',
+      format: 'json',
+    });
   }
 }
