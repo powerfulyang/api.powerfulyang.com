@@ -63,7 +63,7 @@
     "passport-jwt": "4.0.0",
     "peer": "0.6.1",
     "pg": "8.7.3",
-    "qqwry.ipdb": "2022.4.27",
+    "qqwry.ipdb": "2022.6.15",
     "ramda": "0.28.0",
     "redis": "4.1.0",
     "reflect-metadata": "0.1.13",
