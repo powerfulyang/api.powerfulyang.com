@@ -76,7 +76,7 @@
     "xml2js": "0.4.23"
   },
   "devDependencies": {
-    "@nestjs/cli": "8.2.6",
+    "@nestjs/cli": "8.2.7",
     "@nestjs/schematics": "8.0.11",
     "@nestjs/testing": "8.4.7",
     "@powerfulyang/lint": "2.0.2",
