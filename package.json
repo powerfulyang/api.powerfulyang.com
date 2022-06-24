@@ -72,7 +72,7 @@
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
     "typeorm": "0.3.6",
-    "winston": "3.7.2",
+    "winston": "3.8.0",
     "xml2js": "0.4.23"
   },
   "devDependencies": {
