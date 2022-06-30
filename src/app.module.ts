@@ -24,7 +24,7 @@ import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
 import { AssetModule } from './modules/asset/asset.module';
 import { PostModule } from './modules/post/post.module';
-import { PublicModule } from './public/public.module';
+import { PublicModule } from './modules/public/public.module';
 import { FeedModule } from './modules/feed/feed.module';
 import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
 import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';

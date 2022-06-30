@@ -1,21 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import type { RedisClientType, RedisScripts } from 'redis';
+import type { RedisClientType, RedisDefaultModules, RedisScripts } from 'redis';
+import { createClient } from 'redis';
 import type { Dict } from '@powerfulyang/utils';
 import { isDefined, isNumber, isString } from '@powerfulyang/utils';
-import { createClient } from 'redis';
 import { LoggerService } from '@/common/logger/logger.service';
 import { ConfigService } from '@/common/config/config.service';
+import type { RedisFunctions } from '@redis/client';
 
 @Injectable()
 export class CacheService {
-  private readonly redisClient: RedisClientType<any, any, RedisScripts>;
+  private readonly redisClient: RedisClientType<RedisDefaultModules, RedisFunctions, RedisScripts>;
 
   constructor(
     private readonly logger: LoggerService,
     private readonly configService: ConfigService,
   ) {
     this.logger.setContext(CacheService.name);
-    this.redisClient = createClient(this.configService.getRedisConfig());
+    this.redisClient = createClient<RedisDefaultModules, RedisFunctions, RedisScripts>(
+      this.configService.getRedisConfig(),
+    );
     this.redisClient.connect().catch((err) => {
       this.logger.error(err);
     });
