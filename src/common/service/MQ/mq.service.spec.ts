@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { MqService } from '@/common/MQ/mq.service';
-import { MqModule } from '@/common/MQ/mq.module';
+import { MqService } from '@/common/service/MQ/mq.service';
+import { MqModule } from '@/common/service/MQ/mq.module';
 
 describe('AssetService', () => {
   let service: MqService;

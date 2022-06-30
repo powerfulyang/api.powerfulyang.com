@@ -29,7 +29,7 @@ import { ScheduleType } from '@/enum/ScheduleType';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import { UserService } from '@/modules/user/user.service';
 import { BucketService } from '@/modules/bucket/bucket.service';
-import { MqService } from '@/common/MQ/mq.service';
+import { MqService } from '@/common/service/MQ/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
