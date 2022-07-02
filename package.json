@@ -95,7 +95,7 @@
     "@types/xml2js": "0.4.11",
     "node-addon-api": "5.0.0",
     "node-gyp": "9.0.0",
-    "supertest": "6.2.3"
+    "supertest": "6.2.4"
   },
   "gypfile": true
 }
