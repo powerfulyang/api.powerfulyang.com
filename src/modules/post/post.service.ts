@@ -23,9 +23,13 @@ export class PostService {
     private readonly logger: LoggerService,
   ) {
     this.es = this.esService.getEsClient();
-    this.buildPostEsIndex().then((count) => {
-      this.logger.info(`build post es index success, count: ${count}`);
-    });
+    this.buildPostEsIndex()
+      .then((count) => {
+        this.logger.info(`build post es index success, count: ${count}`);
+      })
+      .catch((err) => {
+        this.logger.error(`build post es index failed`, err);
+      });
   }
 
   all() {

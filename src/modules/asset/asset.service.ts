@@ -124,7 +124,11 @@ export class AssetService {
     return obj;
   }
 
-  async saveAssetToBucket(files: UploadFile[], bucketName: CosBucket['name'], uploadBy: User) {
+  async saveAssetToBucket(
+    files: Pick<UploadFile, 'buffer'>[],
+    bucketName: CosBucket['name'],
+    uploadBy: User,
+  ) {
     const assets: Asset[] = [];
     for (const file of files) {
       const asset = await this.manualUploadImageToCos(file.buffer, bucketName, uploadBy);

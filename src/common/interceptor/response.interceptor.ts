@@ -8,7 +8,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
-import type { RequestExtend } from '@/type/RequestExtend';
+import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { FastifyReply } from 'fastify';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class ResponseInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = _context.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
-    const request = ctx.getRequest<RequestExtend>();
+    const request = ctx.getRequest<ExtendRequest>();
     const path = request.url;
     const { xRealIp } = request.raw.extend;
 

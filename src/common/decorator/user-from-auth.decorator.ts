@@ -2,11 +2,11 @@ import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';
 import { flatten, pick } from 'ramda';
 import type { User } from '@/modules/user/entities/user.entity';
-import type { RequestExtend } from '@/type/RequestExtend';
+import type { ExtendRequest } from '@/type/ExtendRequest';
 
 export const UserFromAuth = createParamDecorator(
   (keys: Array<keyof User>, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<RequestExtend>();
+    const request = ctx.switchToHttp().getRequest<ExtendRequest>();
     if (keys?.length > 0) {
       return pick(keys)(request.user || {});
     }
@@ -15,7 +15,7 @@ export const UserFromAuth = createParamDecorator(
 );
 
 export const UserIdFromAuth = createParamDecorator((_, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest<RequestExtend>();
+  const request = ctx.switchToHttp().getRequest<ExtendRequest>();
   return request.user?.id;
 });
 
@@ -28,11 +28,11 @@ export const getUserFamiliesMembers = (user?: User) => {
 };
 
 export const FamilyMembersFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {
-  const { user } = ctx.switchToHttp().getRequest<RequestExtend>();
+  const { user } = ctx.switchToHttp().getRequest<ExtendRequest>();
   return getUserFamiliesMembers(user);
 });
 
 export const FamilyMembersIdFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {
-  const { user } = ctx.switchToHttp().getRequest<RequestExtend>();
+  const { user } = ctx.switchToHttp().getRequest<ExtendRequest>();
   return getUserFamiliesMembers(user).map(({ id }) => id);
 });

@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { User } from '@/modules/user/entities/user.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
-import type { RequestExtend } from '@/type/RequestExtend';
+import type { ExtendRequest } from '@/type/ExtendRequest';
 import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import type { jwtSecretConfig } from '@/configuration/jwt.config';
@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate({ raw: { extend } }: RequestExtend, user: User & { iat: number; exp: number }) {
+  async validate({ raw: { extend } }: ExtendRequest, user: User & { iat: number; exp: number }) {
     // to check user status;
     const cachedUser = await this.userService.getCachedUser(user.id);
     process.nextTick(() => {

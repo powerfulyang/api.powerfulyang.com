@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, UploadedFiles } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
-import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 import type { UploadFile } from '@/type/UploadFile';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
+import { Images, ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 
 @Controller('asset')
 @AdminAuthGuard() // 2nd
@@ -24,9 +24,9 @@ export class AssetController {
   }
 
   @Post(':bucketName')
-  @ImagesInterceptor()
+  @UseInterceptors(ImagesInterceptor)
   saveAssetToBucket(
-    @UploadedFiles() files: UploadFile[],
+    @Images() files: UploadFile[],
     @Param('bucketName') bucketName: CosBucket['name'],
     @UserFromAuth() user: User,
   ) {

@@ -76,9 +76,14 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
 export class AppModule implements NestModule {
   constructor(private logger: LoggerService, private bootstrapService: BootstrapService) {
     this.logger.setContext(AppModule.name);
-    this.bootstrapService.bootstrap().then(() => {
-      this.logger.info('loaded bootstrap scripts!');
-    });
+    this.bootstrapService
+      .bootstrap()
+      .then(() => {
+        this.logger.info('loaded bootstrap scripts!');
+      })
+      .catch((err) => {
+        this.logger.error(err);
+      });
   }
 
   configure(consumer: MiddlewareConsumer) {

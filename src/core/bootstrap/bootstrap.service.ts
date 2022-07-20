@@ -23,7 +23,7 @@ export class BootstrapService {
   }
 
   bootstrap() {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
         Promise.all([
           this.cacheUsers(),
@@ -31,25 +31,32 @@ export class BootstrapService {
           this.cachePathViewCount(),
           this.initBucket(),
           this.initIntendedData(),
-        ]).then(() => {
-          resolve();
-        });
+        ])
+          .then(() => {
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
       }, (isProdProcess && 1000 * 10) || 0);
     });
   }
 
   refreshObjectUrl() {
-    return this.cosObjectUrlScheduleService.refreshObjectUrl().then(() => {
-      this.logger.info('refreshObjectUrl success!');
-    });
+    return this.cosObjectUrlScheduleService.refreshObjectUrl();
   }
 
   async cacheUsers() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      return this.userService.cacheUsers().then(() => {
-        this.logger.info('cacheUsers success!');
-      });
+      return this.userService
+        .cacheUsers()
+        .then(() => {
+          this.logger.info('cacheUsers success!');
+        })
+        .catch((err) => {
+          this.logger.error(err);
+        });
     }
     return Promise.resolve();
   }
@@ -57,9 +64,14 @@ export class BootstrapService {
   async cachePathViewCount() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      return this.pathViewCountService.initPathViewCountCache().then(() => {
-        this.logger.info('cachePathViewCount success!');
-      });
+      return this.pathViewCountService
+        .initPathViewCountCache()
+        .then(() => {
+          this.logger.info('cachePathViewCount success!');
+        })
+        .catch((err) => {
+          this.logger.error(err);
+        });
     }
     return Promise.resolve();
   }
@@ -67,9 +79,14 @@ export class BootstrapService {
   async initBucket() {
     const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
-      return this.bucketService.initBucket().then(() => {
-        this.logger.info('initBucket success!');
-      });
+      return this.bucketService
+        .initBucket()
+        .then(() => {
+          this.logger.info('initBucket success!');
+        })
+        .catch((err) => {
+          this.logger.error(err);
+        });
     }
     return Promise.resolve();
   }
@@ -79,9 +96,13 @@ export class BootstrapService {
     if (bool) {
       const p1 = this.roleService.initIntendedRoles();
       const p2 = this.userService.initIntendedUsers();
-      return Promise.all([p1, p2]).then(() => {
-        this.logger.info('initIntendedData success!');
-      });
+      return Promise.all([p1, p2])
+        .then(() => {
+          this.logger.info('initIntendedData success!');
+        })
+        .catch((err) => {
+          this.logger.error(err);
+        });
     }
     return Promise.resolve();
   }
