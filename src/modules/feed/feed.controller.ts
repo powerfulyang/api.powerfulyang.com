@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch, Post, UploadedFiles } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
@@ -15,7 +23,7 @@ export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
   @Post()
-  @ImagesInterceptor('assets')
+  @UseInterceptors(ImagesInterceptor)
   create(
     @Body() createFeedDto: CreateFeedDto,
     @UserFromAuth(['id']) user: User,

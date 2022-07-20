@@ -9,6 +9,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import fastifyCookie from '@fastify/cookie';
+import fastifyMultipart from '@fastify/multipart';
 import { AppModule } from './app.module';
 
 dayjs.extend(quarterOfYear);
@@ -44,6 +45,7 @@ async function bootstrap(): Promise<void> {
   app.use('/api/peerjs', peerServer);
 
   await app.register(fastifyCookie);
+  await app.register(fastifyMultipart);
 
   app.listen(process.env.PORT || 3000).then(() => {
     logger.info(`Server is running on port ${process.env.PORT || 3000}`, 'Bootstrap');

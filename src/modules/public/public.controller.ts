@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, UseInterceptors } from '@nestjs/common';
 import { pluck } from 'ramda';
 import { LoggerService } from '@/common/logger/logger.service';
 import { AssetService } from '@/modules/asset/asset.service';
@@ -12,6 +12,7 @@ import {
 } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
+import { ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -88,5 +89,11 @@ export class PublicController {
   @Get('asset/:id')
   getAssetById(@Param('id') id: string, @FamilyMembersFromAuth() users: User[]) {
     return this.assetService.getAccessAssetById(+id, pluck('id', users));
+  }
+
+  @Post()
+  @UseInterceptors(ImagesInterceptor)
+  upload() {
+    return 'upload';
   }
 }
