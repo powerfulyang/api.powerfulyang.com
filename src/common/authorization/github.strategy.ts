@@ -2,8 +2,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import type { Profile } from 'passport-github';
 import { Strategy } from 'passport-github';
 import { Inject, Injectable } from '@nestjs/common';
-import type { Request } from 'express';
-import type { ParamsDictionary } from 'express-serve-static-core';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -32,7 +30,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthAppli
     }
   }
 
-  authenticate(req: Request<ParamsDictionary, any, any, { redirect?: string }>) {
+  authenticate(req) {
     const { redirect = SERVER_ORIGIN } = req.query;
     super.authenticate(req, {
       state: Buffer.from(redirect).toString('base64'),

@@ -18,11 +18,11 @@ describe('CacheService', () => {
     const key = 'test_hash_key';
     let result = await service.del(key);
     expect(result).toBeGreaterThanOrEqual(0);
-    result = await service.hSet(key, '1', { user: 'first user' });
+    result = await service.hSetJSON(key, '1', { user: 'first user' });
     expect(result).toBe(1);
-    result = await service.hSet(key, '1', { user: 'second user' });
+    result = await service.hSetJSON(key, '1', { user: 'second user' });
     expect(result).toBe(0);
-    const selectUser = await service.hGet(key, '1');
+    const selectUser = await service.hGetJSON(key, '1');
     expect(selectUser).toStrictEqual({ user: 'second user' });
   });
 
@@ -30,17 +30,17 @@ describe('CacheService', () => {
     const key = 'test_hash_key';
     const res = await service.del(key);
     expect(res).toBeGreaterThanOrEqual(0);
-    const commandResult = await service.hSet(key, {
+    const commandResult = await service.hset(key, {
       a: 'a',
       b: {
         c: 'c',
       },
     });
     expect(commandResult).toBe(2);
-    const result = await service.hGet(key, 'a');
+    const result = await service.hget(key, 'a');
     expect(result).toBe('a');
-    const result2 = await service.hGet(key, 'b');
-    expect(result2).toStrictEqual({ c: 'c' });
+    const result2 = await service.hget(key, 'b');
+    expect(result2).toStrictEqual(String({ c: 'c' }));
   });
 
   it('set add test', async () => {
@@ -48,9 +48,9 @@ describe('CacheService', () => {
     const key = 'test_set_key';
     const res = await service.del(key);
     expect(res).toBeGreaterThanOrEqual(0);
-    const commandResult = await service.sAdd(key, toAdd);
+    const commandResult = await service.sadd(key, toAdd);
     expect(commandResult).toBe(toAdd.length);
-    const result = await service.sMembers(key);
+    const result = await service.smembers(key);
     expect(result).toStrictEqual(toAdd);
   });
 });

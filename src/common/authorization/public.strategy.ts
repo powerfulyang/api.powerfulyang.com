@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport';
-import type { Request } from 'express';
+import { Strategy } from '@fastify/passport';
 import { UserService } from '@/modules/user/user.service';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -13,7 +12,7 @@ export class PublicStrategy extends PassportStrategy(Strategy, 'public') {
     this.logger.setContext(PublicStrategy.name);
   }
 
-  async authenticate(req: Request) {
+  async authenticate(req) {
     try {
       // 解析 token 成功 获取到用户信息
       const user = await this.userService.verifyAuthorization(getTokenFromRequest(req));

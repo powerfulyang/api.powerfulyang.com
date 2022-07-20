@@ -95,11 +95,11 @@ export class UserService {
     this.logger.debug(`初始化用户缓存，删除 ${keyCount} 个缓存`);
     const users = await this.queryUserCascadeFamilyInfo();
     const userMap = users.reduce((acc, user) => {
-      Reflect.set(acc, user.id, user);
+      Reflect.set(acc, user.id, JSON.stringify(user));
       return acc;
     }, {} as Record<string, User>);
     if (users.length) {
-      const num = await this.cacheService.hSet(REDIS_KEYS.USERS, userMap);
+      const num = await this.cacheService.hset(REDIS_KEYS.USERS, userMap);
       this.logger.debug(`缓存 ${num} 个用户`);
     }
     return SUCCESS;
@@ -226,7 +226,7 @@ export class UserService {
   }
 
   getCachedUser(id: User['id']) {
-    return this.cacheService.hGet<User>(REDIS_KEYS.USERS, id);
+    return this.cacheService.hGetJSON<User>(REDIS_KEYS.USERS, id);
   }
 
   /**
@@ -330,7 +330,7 @@ export class UserService {
   private async saveUserAndCached<T extends User>(user: T) {
     const updatedUser = await this.userDao.save(user);
     // update to cache
-    await this.cacheService.hSet(REDIS_KEYS.USERS, user.id, updatedUser);
+    await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, updatedUser);
     return updatedUser;
   }
 }

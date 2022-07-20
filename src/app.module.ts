@@ -6,7 +6,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UdpServerModule } from 'api/udp-server';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import cookieParser from 'cookie-parser';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';
 import { LoggerService } from '@/common/logger/logger.service';
 import { LoggerModule } from '@/common/logger/logger.module';
@@ -85,6 +84,5 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     this.logger.verbose('register RequestMiddleware & CookieParser middleware for path *');
     consumer.apply(RequestMiddleware).forRoutes('*');
-    consumer.apply(cookieParser()).forRoutes('*');
   }
 }

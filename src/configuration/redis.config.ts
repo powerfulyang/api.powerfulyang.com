@@ -1,7 +1,8 @@
-import type { RedisClientOptions } from 'redis';
+import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
-export const redisConfig = (): RedisClientOptions<any, any> => ({
-  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+export const redisConfig = (): RedisOptions => ({
   password: process.env.REDIS_PASS,
-  database: 0,
+  db: 0,
+  port: Number(process.env.REDIS_PORT),
+  host: process.env.REDIS_HOST,
 });

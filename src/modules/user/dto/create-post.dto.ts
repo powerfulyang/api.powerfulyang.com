@@ -8,4 +8,6 @@ export class CreatePostDto extends PartialType(Post) {
 
   @IsNotEmpty()
   declare content: string;
+
+  declare posterId?: number;
 }

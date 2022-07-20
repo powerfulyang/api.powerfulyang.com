@@ -1,8 +1,8 @@
 import type { NestMiddleware } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import type { Request, Response } from 'express';
 import { LoggerService } from '@/common/logger/logger.service';
 import { inspectIp } from '@/utils/ipdb';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
@@ -10,7 +10,7 @@ export class RequestMiddleware implements NestMiddleware {
     this.logger.setContext(RequestMiddleware.name);
   }
 
-  use(req: Request, _res: Response, next: () => void) {
+  use(req: FastifyRequest, _res: FastifyReply, next: () => void) {
     // 此时还没有进路由
     const { headers } = req;
     const xRealIp = headers['x-real-ip'] as string;

@@ -26,7 +26,7 @@ export class PathViewCountService {
     Object.entries(mapSet).forEach(([path, set]) => {
       // 先清理再缓存
       const handleKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);
-      this.cacheService.sAdd(
+      this.cacheService.sadd(
         handleKey,
         set.map((x) => x.ip.toString()),
       );
@@ -38,8 +38,8 @@ export class PathViewCountService {
   async handlePathViewCount(path: string, ip: string) {
     const ipLong = ip2long(ip);
     const redisKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);
-    const result = await this.cacheService.sAdd(redisKey, ipLong);
-    const viewCount = await this.cacheService.sCard(redisKey);
+    const result = await this.cacheService.sadd(redisKey, ipLong);
+    const viewCount = await this.cacheService.scard(redisKey);
     if (result > 0) {
       this.pathViewCountDao.insert({ ip: ipLong, path }).catch((e) => {
         this.logger.error(e);

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
 import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import type { Profile as GithubProfile } from 'passport-github';
-import type { Request } from 'express';
+import type { FastifyRequest } from 'fastify';
 import { User } from '@/modules/user/entities/user.entity';
 import { GithubAuthGuard, GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
@@ -36,7 +36,7 @@ export class UserController {
   @GoogleAuthGuard()
   @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
   async googleAuthCallback(
-    @Req() req: Request & { user: GoogleProfile; query: { state: string } },
+    @Req() req: FastifyRequest & { user: GoogleProfile; query: { state: string } },
   ) {
     const profile = req.user;
     // if not register to add user!
@@ -64,7 +64,7 @@ export class UserController {
   @GithubAuthGuard()
   @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
   async githubAuthCallback(
-    @Req() req: Request & { user: GithubProfile; query: { state: string } },
+    @Req() req: FastifyRequest & { user: GithubProfile; query: { state: string } },
   ) {
     const profile = req.user;
     // if not register to add user!

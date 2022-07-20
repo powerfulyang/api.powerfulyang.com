@@ -23,6 +23,7 @@ describe('PostService', () => {
       createBy: {
         id: 1,
       } as User,
+      posterId: 12,
     });
     expect(res).toBeDefined();
     const post = await service.readPost(res.id, [res.createBy.id]);

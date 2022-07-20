@@ -1,23 +1,24 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
-import type { CookieOptions, Response } from 'express';
+import type { CookieSerializeOptions } from '@fastify/cookie';
 import { map, tap } from 'rxjs/operators';
 import { omit } from 'ramda';
 import { isArray } from '@powerfulyang/utils';
 import { serialize } from 'cookie';
 import { LoggerService } from '@/common/logger/logger.service';
 import { DefaultCookieOptions } from '@/constants/constants';
+import type { FastifyReply } from 'fastify';
 
 export type Cookie = {
   name: string;
   value: string;
-  options?: CookieOptions;
+  options?: CookieSerializeOptions;
 };
 
 export type CookieClear = {
   name: string;
-  options?: CookieOptions;
+  options?: CookieSerializeOptions;
 };
 
 @Injectable()
@@ -32,7 +33,7 @@ export class CookieInterceptor implements NestInterceptor {
         const cookies = data?.cookies as Cookie[];
         if (isArray(cookies)) {
           const ctx = context.switchToHttp();
-          const response = ctx.getResponse<Response>();
+          const response = ctx.getResponse<FastifyReply>();
           cookies.forEach((cookie) => {
             const c = serialize(
               cookie.name,

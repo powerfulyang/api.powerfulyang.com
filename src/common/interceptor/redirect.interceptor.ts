@@ -2,8 +2,8 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/com
 import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
-import type { Response } from 'express';
 import { LoggerService } from '@/common/logger/logger.service';
+import type { FastifyReply } from 'fastify';
 
 @Injectable()
 export class RedirectInterceptor implements NestInterceptor {
@@ -15,7 +15,7 @@ export class RedirectInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data) => {
         const ctx = _context.switchToHttp();
-        const res = ctx.getResponse<Response>();
+        const res = ctx.getResponse<FastifyReply>();
         if (data?.redirect?.url) {
           const {
             type = 'HTTP',

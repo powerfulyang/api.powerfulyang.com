@@ -1,6 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import type { Nullable } from '@powerfulyang/utils';
-import type { CookieOptions } from 'express';
+import type { CookieSerializeOptions } from '@fastify/cookie';
 
 export const MICROSERVICE_NAME = Symbol('RABBIT_MQ_MICROSERVICE');
 export const RMQ_COS_UPLOAD_QUEUE = 'RABBIT_MQ_COS_UPLOAD_QUEUE';
@@ -17,7 +17,7 @@ export const Authorization = 'authorization';
 
 export const { SERVER_ORIGIN } = process.env;
 
-export const DefaultCookieOptions: CookieOptions = {
+export const DefaultCookieOptions: CookieSerializeOptions = {
   httpOnly: true,
   sameSite: 'strict',
   secure: true,

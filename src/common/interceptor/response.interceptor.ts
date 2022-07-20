@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import type { Response } from 'express';
 import { serialize } from 'cookie';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import type { RequestExtend } from '@/type/RequestExtend';
+import type { FastifyReply } from 'fastify';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -23,10 +23,10 @@ export class ResponseInterceptor implements NestInterceptor {
 
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = _context.switchToHttp();
-    const response = ctx.getResponse<Response>();
+    const response = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<RequestExtend>();
     const path = request.url;
-    const { xRealIp } = request.extend;
+    const { xRealIp } = request.raw.extend;
 
     return next.handle().pipe(
       tap(async () => {

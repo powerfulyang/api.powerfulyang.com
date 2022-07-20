@@ -44,6 +44,9 @@ export class PostService {
       if (post.tags) {
         findPost.tags = post.tags;
       }
+      if (post.posterId) {
+        findPost.poster = await this.assetService.getAssetById(post.posterId);
+      }
       findPost.title = post.title;
       return this.postDao.save(findPost);
     }

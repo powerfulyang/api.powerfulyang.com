@@ -6,7 +6,7 @@ import type { RequestExtend } from '@/type/RequestExtend';
 
 export const UserFromAuth = createParamDecorator(
   (keys: Array<keyof User>, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
+    const request = ctx.switchToHttp().getRequest<RequestExtend>();
     if (keys?.length > 0) {
       return pick(keys)(request.user || {});
     }
