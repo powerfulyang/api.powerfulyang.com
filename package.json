@@ -51,7 +51,7 @@
     "cos-nodejs-sdk-v5": "2.11.12",
     "dayjs": "1.11.4",
     "dotenv": "16.0.1",
-    "fastify": "4.2.1",
+    "fastify": "4.3.0",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.2.1",
     "ipdb": "0.3.3",
