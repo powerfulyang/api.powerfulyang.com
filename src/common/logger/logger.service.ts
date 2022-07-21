@@ -1,7 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
 import type { Logger } from 'winston';
 import winston, { format } from 'winston';
-import { isProdProcess } from '@powerfulyang/utils';
+import { isProdProcess, isString } from '@powerfulyang/utils';
 import chalk from 'chalk';
 
 const { combine, timestamp, printf } = format;
@@ -71,7 +71,7 @@ export class LoggerService {
 
   error(message: string, stack?: Error, context?: string): void;
   error(error: Error): void;
-  error(error: Error | string, stack?: Error, context?: string) {
+  error(error: Error | string | Object, stack?: Error, context?: string) {
     if (error instanceof Error) {
       this.logger.error({
         ...error,
@@ -79,12 +79,15 @@ export class LoggerService {
         stack: error.stack,
         message: error.message,
       });
-    } else {
+    } else if (isString(error)) {
       this.logger.error({
         context: context || this.context,
         message: error,
         stack,
       });
+    } else {
+      // eslint-disable-next-line no-console
+      console.log({ ...error });
     }
   }
 

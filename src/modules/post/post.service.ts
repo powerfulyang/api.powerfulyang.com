@@ -22,6 +22,7 @@ export class PostService {
     private readonly esService: EsService,
     private readonly logger: LoggerService,
   ) {
+    this.logger.setContext(PostService.name);
     this.es = this.esService.getEsClient();
     this.buildPostEsIndex()
       .then((count) => {

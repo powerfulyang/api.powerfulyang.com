@@ -2,8 +2,6 @@ import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { GithubModule } from 'app/github-webhook';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { UdpServerModule } from 'api/udp-server';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';
@@ -39,9 +37,6 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
     GithubModule,
     BucketModule,
     AssetModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'assets'),
-    }),
     UdpServerModule,
     PostModule,
     PublicModule,

@@ -13,6 +13,6 @@ export class MqService {
   }
 
   hello() {
-    return this.microserviceClient.send(MessagePatterns.HELLO, 'hello');
+    return this.microserviceClient.emit(MessagePatterns.HELLO, 'hello');
   }
 }

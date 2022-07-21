@@ -1,15 +1,15 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import type { INestApplication } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common';
-import request from 'supertest';
-import { parse } from 'cookie';
 import { AppModule } from '@/app.module';
 import { UserService } from '@/modules/user/user.service';
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Authorization } from '@/constants/constants';
+import type { Cookie } from '@/common/interceptor/cookie.interceptor';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication;
+  let app: NestFastifyApplication;
   let userService: UserService;
 
   beforeAll(async () => {
@@ -17,39 +17,46 @@ describe('AppController (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
     userService = moduleFixture.get<UserService>(UserService);
     await app.init();
+    await app.getHttpAdapter().getInstance().ready();
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   it('/public/hello (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/public/hello')
-      .expect(HttpStatus.OK)
-      .expect((r) => {
-        expect(r.body.data).toContain('Hello,');
+    return app
+      .inject({
+        method: 'GET',
+        url: '/public/hello',
+      })
+      .then((res) => {
+        expect(res.statusCode).toBe(HttpStatus.OK);
+        expect(res.json()).toHaveProperty('data', 'Hello, unauthorized visitor!');
       });
   });
 
   it('/user/login (POST)', async () => {
     const user = await userService.getSaltByEmail('powerfulyang');
-    return request(app.getHttpServer())
-      .post('/user/login')
-      .send({
-        email: user.email,
-        password: user.salt,
+    return app
+      .inject({
+        method: 'POST',
+        url: '/user/login',
+        payload: {
+          email: user.email,
+          password: user.salt,
+        },
       })
-      .expect(HttpStatus.CREATED)
-      .expect(async (r) => {
-        const { header } = r;
-        const cookies = header['set-cookie'] as string[];
+      .then(async (res) => {
+        expect(res.statusCode).toBe(HttpStatus.CREATED);
+        const cookies = res.cookies as Pick<Cookie, 'name' | 'value'>[];
         const authorization = cookies
-          .filter((cookie) => cookie.includes(Authorization))
-          .find((cookie) => cookie);
-        expect(authorization).toBeDefined();
-        const parsed = parse(authorization!) as { [Authorization]: string };
-        expect(parsed).toBeDefined();
-        const verified = await userService.verifyAuthorization(parsed[Authorization]);
+          .filter((cookie) => cookie.name === Authorization)
+          .find((cookie) => cookie) || { value: '' };
+        const verified = await userService.verifyAuthorization(authorization.value);
         expect(verified.id).toBe(user.id);
       });
   });

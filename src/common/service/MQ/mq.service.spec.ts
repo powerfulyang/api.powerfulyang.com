@@ -14,7 +14,7 @@ describe('AssetService', () => {
     service = module.get<MqService>(MqService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('hello', () => {
+    expect(service.hello()).toBeDefined();
   });
 });

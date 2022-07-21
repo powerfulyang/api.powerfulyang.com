@@ -39,11 +39,11 @@ export class ResponseInterceptor implements NestInterceptor {
             const cookie = serialize(Authorization, authorization, DefaultCookieOptions);
             response.header('Set-Cookie', cookie);
             this.logger.info(
-              `Token left valid time is ${ValidPeriodHour} hour, refresh token [user=>${user.email}]`,
+              `Token valid within ${ValidPeriodHour}hour, refresh token [user=>${user.email}]`,
             );
           } else {
             this.logger.debug(
-              `Token left valid time is ${ValidPeriodHour} hour, it's unnecessary to refresh token [user=>${user.email}]`,
+              `Token valid within ${ValidPeriodHour}hour, it's unnecessary to refresh token [user=>${user.email}]`,
             );
           }
         }
