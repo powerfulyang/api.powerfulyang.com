@@ -49,6 +49,7 @@ async function bootstrap(): Promise<void> {
     decorateReply: false,
   });
 
+  // @ts-ignore todo: fix this
   const adapter = new FastifyAdapter(fastifyInstance);
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, {
     logger,
