@@ -382,7 +382,7 @@ export class AssetService {
         `
         round(cast(size ->> 'width' as numeric) / cast(size ->> 'height' as numeric), 2) > 1.5 --- 宽高比大于 1.5
         and "bucketId" = ANY(:publicBucketIds)  --- 公开的 bucket
-        and cast(metadata->>'size' as int) < 100 * 1000 --- limit 100kb
+        and cast(metadata->>'size' as int) < 500 * 1000 --- limit 500kb
                `,
         { publicBucketIds },
       )
