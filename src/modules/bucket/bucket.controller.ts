@@ -1,11 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard } from '@/common/decorator';
 import { BucketService } from '@/modules/bucket/bucket.service';
 import { CreateBucketDto } from '@/modules/bucket/entities/create-bucket.dto';
 
 @Controller('bucket')
 @AdminAuthGuard()
-@JwtAuthGuard()
 export class BucketController {
   constructor(private readonly bucketService: BucketService) {}
 

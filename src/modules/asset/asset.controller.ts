@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { UploadFile } from '@/type/UploadFile';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
@@ -9,7 +9,6 @@ import { Images, ImagesInterceptor } from '@/common/interceptor/images.file.uplo
 
 @Controller('asset')
 @AdminAuthGuard() // 2nd
-@JwtAuthGuard() // 1st
 export class AssetController {
   constructor(private assetService: AssetService) {}
 

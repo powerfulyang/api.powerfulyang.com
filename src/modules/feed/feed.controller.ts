@@ -3,14 +3,13 @@ import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { Images, ImagesInterceptor } from '@/common/interceptor/images.file.upload.interceptor';
 import type { UploadFile } from '@/type/UploadFile';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard } from '@/common/decorator';
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
 
 @Controller('feed')
 @AdminAuthGuard()
-@JwtAuthGuard()
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 

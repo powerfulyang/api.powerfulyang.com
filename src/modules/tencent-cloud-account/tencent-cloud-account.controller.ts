@@ -1,11 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard } from '@/common/decorator';
 import { CreateTencentCloudAccountDto } from '@/modules/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
 import { TencentCloudAccountService } from './tencent-cloud-account.service';
 
 @Controller('tencent-cloud-account')
 @AdminAuthGuard()
-@JwtAuthGuard()
 export class TencentCloudAccountController {
   constructor(private readonly tencentCloudAccountService: TencentCloudAccountService) {}
 

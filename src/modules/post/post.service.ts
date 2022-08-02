@@ -38,7 +38,7 @@ export class PostService {
   }
 
   async publishPost(post: PublishPostDto) {
-    if (!post.poster) {
+    if (!post.posterId) {
       const poster = await this.assetService.randomAsset();
       Reflect.set(post, 'poster', poster);
     }

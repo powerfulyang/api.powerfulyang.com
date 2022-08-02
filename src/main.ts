@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
-import { ExpressPeerServer } from 'peer';
+import { PeerServer } from 'peer';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -25,7 +25,7 @@ async function bootstrap(): Promise<void> {
   logger.setContext('Bootstrap');
 
   // Create fastify instance
-  const fastifyInstance = fastify({});
+  const fastifyInstance = fastify();
   fastifyInstance.addHook('onRequest', (request, reply, done) => {
     // @ts-ignore
     // eslint-disable-next-line no-param-reassign
@@ -88,10 +88,11 @@ async function bootstrap(): Promise<void> {
   SwaggerModule.setup('doc', app, document);
 
   // PeerServer
-  const peerServer = ExpressPeerServer(app.getHttpServer(), {
+  PeerServer({
     allow_discovery: true,
+    port: 4000,
+    path: '/peer',
   });
-  app.use('/api/peerjs', peerServer);
 
   // Running Host and Port
   app

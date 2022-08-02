@@ -7,7 +7,6 @@ import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 
 @Controller('menu')
-@JwtAuthGuard()
 export class MenuController {
   constructor(
     private readonly menuService: MenuService,
@@ -24,7 +23,8 @@ export class MenuController {
   }
 
   @Get('current')
-  currentMenus(@UserFromAuth() user: User) {
+  @JwtAuthGuard()
+  currentUserMenus(@UserFromAuth() user: User) {
     return this.userService.queryMenusByUserId(user.id);
   }
 }

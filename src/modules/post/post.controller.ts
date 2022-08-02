@@ -1,25 +1,24 @@
-import { Body, Controller, Delete, Param, Post as PostDecorator } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
-import type { Post } from '@/modules/post/entities/post.entity';
 import { CreatePostDto } from '@/modules/user/dto/create-post.dto';
+import type { DeletePostDto } from '@/modules/user/dto/delete-post.dto';
 
 @Controller('post')
 @AdminAuthGuard()
-@JwtAuthGuard()
 export class PostController {
   constructor(private postService: PostService) {}
 
-  @PostDecorator()
+  @Post()
   createPost(@Body() draft: CreatePostDto, @UserFromAuth(['id']) user: User) {
     draft.createBy = user;
     return this.postService.publishPost(draft);
   }
 
   @Delete(':id')
-  deletePost(@Param('id') id: Post['id'], @UserFromAuth(['id']) user: User) {
+  deletePost(@Param('id') id: DeletePostDto['id'], @UserFromAuth(['id']) user: User) {
     return this.postService.deletePost({
       id,
       createBy: user,
