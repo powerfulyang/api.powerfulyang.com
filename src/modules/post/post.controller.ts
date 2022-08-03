@@ -3,8 +3,8 @@ import { PostService } from '@/modules/post/post.service';
 import { AdminAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
-import { CreatePostDto } from '@/modules/user/dto/create-post.dto';
-import type { DeletePostDto } from '@/modules/user/dto/delete-post.dto';
+import type { DeletePostDto } from '@/modules/post/dto/delete-post.dto';
+import { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 
 @Controller('post')
 @AdminAuthGuard()
@@ -12,7 +12,7 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Post()
-  createPost(@Body() draft: CreatePostDto, @UserFromAuth(['id']) user: User) {
+  createPost(@Body() draft: PublishPostDto, @UserFromAuth(['id']) user: User) {
     draft.createBy = user;
     return this.postService.publishPost(draft);
   }

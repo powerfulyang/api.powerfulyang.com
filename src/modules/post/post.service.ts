@@ -37,26 +37,43 @@ export class PostService {
     return this.postDao.find();
   }
 
-  async publishPost(post: PublishPostDto) {
+  async updatePost(post: PublishPostDto) {
+    // update
+    const findPost = await this.postDao.findOneOrFail({
+      where: {
+        id: post.id,
+      },
+      relations: ['createBy'],
+    });
+    findPost.content = post.content;
+    findPost.title = post.title;
+    if (post.tags) {
+      findPost.tags = post.tags;
+    }
+    if (post.posterId) {
+      findPost.poster = await this.assetService.getAssetById(post.posterId);
+    }
+    findPost.urlTitle = Post.generateUrlTitle(findPost);
+    return this.postDao.save(findPost);
+  }
+
+  async createPost(post: PublishPostDto) {
     if (!post.posterId) {
       const poster = await this.assetService.randomAsset();
       Reflect.set(post, 'poster', poster);
-    }
-    if (post.id) {
-      // update
-      const findPost = await this.postDao.findOneByOrFail({ id: post.id });
-      findPost.content = post.content;
-      if (post.tags) {
-        findPost.tags = post.tags;
-      }
-      if (post.posterId) {
-        findPost.poster = await this.assetService.getAssetById(post.posterId);
-      }
-      findPost.title = post.title;
-      return this.postDao.save(findPost);
+    } else {
+      const poster = await this.assetService.getAssetById(post.posterId);
+      Reflect.set(post, 'poster', poster);
     }
     const toSave = this.postDao.create(post);
     return this.postDao.save(toSave);
+  }
+
+  async publishPost(post: PublishPostDto) {
+    if (post.id) {
+      return this.updatePost(post);
+    }
+    return this.createPost(post);
   }
 
   async deletePost(post: Pick<Post, 'id' | 'createBy'>) {
@@ -72,12 +89,19 @@ export class PostService {
     throw new ForbiddenException('You can only delete your own post!');
   }
 
-  readPost(id: Post['id'], ids: User['id'][] = []) {
+  readPost(id: Post['id'] | Post['urlTitle'], ids: User['id'][] = []) {
     return this.postDao.findOneOrFail({
       where: [
-        { id, public: true },
+        { id: Number(id), public: true },
         {
-          id,
+          id: Number(id),
+          createBy: {
+            id: In(ids),
+          },
+        },
+        { urlTitle: String(id), public: true },
+        {
+          urlTitle: String(id),
           createBy: {
             id: In(ids),
           },

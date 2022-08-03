@@ -3,7 +3,12 @@ import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import type { Profile as GithubProfile } from 'passport-github';
 import type { FastifyRequest } from 'fastify';
 import { User } from '@/modules/user/entities/user.entity';
-import { GithubAuthGuard, GoogleAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import {
+  GithubAuthGuard,
+  GoogleAuthGuard,
+  JwtAuthGuard,
+  PublicAuthGuard,
+} from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -104,7 +109,7 @@ export class UserController {
   }
 
   @Get('current')
-  @JwtAuthGuard()
+  @PublicAuthGuard()
   current(@UserFromAuth() user: User) {
     this.logger.debug(`${user.email} try to get current user info!!!`);
     return user;
