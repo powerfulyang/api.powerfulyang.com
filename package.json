@@ -30,6 +30,7 @@
     "@fastify/multipart": "7.1.0",
     "@fastify/passport": "2.1.0",
     "@fastify/static": "6.5.0",
+    "@napi-rs/pinyin": "1.7.0",
     "@nestjs/common": "9.0.7",
     "@nestjs/core": "9.0.7",
     "@nestjs/elasticsearch": "9.0.0",
