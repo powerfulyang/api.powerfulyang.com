@@ -11,6 +11,7 @@ import { SUCCESS } from '@/constants/constants';
 import { EsService, POST_INDEX } from '@/common/service/ES/es.service';
 import type { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
+import { isNumeric } from '@powerfulyang/utils';
 
 @Injectable()
 export class PostService {
@@ -90,15 +91,21 @@ export class PostService {
   }
 
   readPost(id: Post['id'] | Post['urlTitle'], ids: User['id'][] = []) {
+    if (isNumeric(id)) {
+      return this.postDao.findOneOrFail({
+        where: [
+          { id: Number(id), public: true },
+          {
+            id: Number(id),
+            createBy: {
+              id: In(ids),
+            },
+          },
+        ],
+      });
+    }
     return this.postDao.findOneOrFail({
       where: [
-        { id: Number(id), public: true },
-        {
-          id: Number(id),
-          createBy: {
-            id: In(ids),
-          },
-        },
         { urlTitle: String(id), public: true },
         {
           urlTitle: String(id),
@@ -116,6 +123,7 @@ export class PostService {
         id: true,
         title: true,
         createAt: true,
+        urlTitle: true,
         poster: {
           objectUrl: true,
           size: {
