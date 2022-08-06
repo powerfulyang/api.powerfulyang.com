@@ -28,7 +28,7 @@
     "@elastic/elasticsearch": "8.2.1",
     "@fastify/cookie": "7.3.1",
     "@fastify/multipart": "7.1.0",
-    "@fastify/passport": "2.1.0",
+    "@fastify/passport": "2.2.0",
     "@fastify/static": "6.5.0",
     "@napi-rs/pinyin": "1.7.0",
     "@nestjs/common": "9.0.8",
