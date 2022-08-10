@@ -20,7 +20,7 @@
     "build": "nest build -p tsconfig.build.json",
     "test": "jest",
     "test:cov": "jest --coverage",
-    "prepare": "husky install",
+    "postprepare": "husky install",
     "tsc-check": "tsc --noEmit",
     "precommit": "lint-staged && npm run tsc-check"
   },
@@ -53,7 +53,6 @@
     "cos-nodejs-sdk-v5": "2.11.12",
     "dayjs": "1.11.4",
     "dotenv": "16.0.1",
-    "fastify": "4.4.0",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.2.2",
     "ipdb": "0.3.3",

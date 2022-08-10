@@ -24,3 +24,4 @@ assets/*
 !assets/test.jpg
 
 /build
+package-lock.json
