@@ -18,10 +18,14 @@ RUN apk add --no-cache tzdata \
     vips-dev \
     && apk add --no-cache --virtual native-deps \
          g++ gcc libgcc libstdc++ linux-headers make python3 \
-    && npm ci --quiet \
-    && npm run build \
-    && npm prune --omit=dev \
-    && npm cache clean --force \
+#    && npm ci --quiet \
+#    && npm run build \
+#    && npm prune --omit=dev \
+#    && npm cache clean --force \
+    && npm i -g pnpm \
+    && pnpm run bootstrap \
+    && pnpm run build \
+    && pnpm prune --prod \
     && apk del native-deps g++ gcc libgcc libstdc++ linux-headers make python3
 
 CMD npm run start:prod

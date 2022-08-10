@@ -12,6 +12,7 @@
     "owner": "powerfulyang"
   },
   "scripts": {
+    "bootstrap": "pnpm install --shamefully-hoist --frozen-lockfile",
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint:js": "eslint src --ext .ts libs --ext .ts --fix",
     "qa:dev": "cross-env PORT=3001 APP_ENV=qa nest start --watch",
@@ -20,7 +21,7 @@
     "build": "nest build -p tsconfig.build.json",
     "test": "jest",
     "test:cov": "jest --coverage",
-    "postprepare": "husky install",
+    "postinstall": "npx husky install && node-gyp rebuild",
     "tsc-check": "tsc --noEmit",
     "precommit": "lint-staged && npm run tsc-check"
   },
@@ -53,12 +54,14 @@
     "cos-nodejs-sdk-v5": "2.11.12",
     "dayjs": "1.11.4",
     "dotenv": "16.0.1",
+    "fastify": "latest",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.2.2",
     "ipdb": "0.3.3",
     "node-fetch": "2.6.7",
     "node-telegram-bot-api": "0.58.0",
     "nodemailer": "6.7.7",
+    "passport": "0.6.0",
     "passport-github": "1.1.0",
     "passport-google-oauth20": "2.0.0",
     "passport-jwt": "4.0.0",
@@ -75,6 +78,11 @@
     "winston": "3.8.1",
     "xml2js": "0.4.23"
   },
+  "pnpm": {
+    "overrides": {
+      "@nestjs/platform-fastify>fastify": "latest"
+    }
+  },
   "devDependencies": {
     "@nestjs/cli": "9.0.0",
     "@nestjs/schematics": "9.0.1",
@@ -84,16 +92,15 @@
     "@types/node-fetch": "2.6.2",
     "@types/node-telegram-bot-api": "0.57.1",
     "@types/nodemailer": "6.4.5",
+    "@types/passport": "1.0.9",
     "@types/passport-github": "1.1.7",
     "@types/passport-google-oauth20": "2.0.11",
     "@types/passport-jwt": "3.0.6",
     "@types/ramda": "0.28.15",
     "@types/sharp": "0.30.5",
-    "@types/supertest": "2.0.12",
     "@types/xml2js": "0.4.11",
     "node-addon-api": "5.0.0",
-    "node-gyp": "9.1.0",
-    "supertest": "6.2.4"
+    "node-gyp": "9.1.0"
   },
   "gypfile": true
 }
