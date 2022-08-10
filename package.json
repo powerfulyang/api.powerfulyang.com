@@ -92,7 +92,7 @@
     "@types/node-fetch": "2.6.2",
     "@types/node-telegram-bot-api": "0.57.1",
     "@types/nodemailer": "6.4.5",
-    "@types/passport": "1.0.9",
+    "@types/passport": "1.0.10",
     "@types/passport-github": "1.1.7",
     "@types/passport-google-oauth20": "2.0.11",
     "@types/passport-jwt": "3.0.6",
