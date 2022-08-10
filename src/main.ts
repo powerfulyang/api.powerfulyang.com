@@ -10,6 +10,7 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import fastifyCookie from '@fastify/cookie';
 import fastifyMultipart from '@fastify/multipart';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import fastify from 'fastify';
 import fastifyStatic from '@fastify/static';
 import { join } from 'path';
