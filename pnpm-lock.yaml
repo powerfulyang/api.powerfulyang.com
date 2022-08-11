@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@elastic/elasticsearch': 8.2.1
-  '@fastify/cookie': 7.3.1
+  '@fastify/cookie': 7.4.0
   '@fastify/multipart': 7.1.0
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.5.0
@@ -72,7 +72,7 @@ specifiers:
 
 dependencies:
   '@elastic/elasticsearch': 8.2.1
-  '@fastify/cookie': 7.3.1
+  '@fastify/cookie': 7.4.0
   '@fastify/multipart': 7.1.0
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.5.0
@@ -773,11 +773,10 @@ packages:
       text-decoding: 1.0.0
     dev: false
 
-  /@fastify/cookie/7.3.1:
-    resolution: {integrity: sha512-io16UMtIkXKvHUTm63LHPQpMm1NcQ7NT2aAeGYLzX94jJXeQnu0by8VSm3iCrfnFuF0bGTWzUtefHSjKHNxppw==}
+  /@fastify/cookie/7.4.0:
+    resolution: {integrity: sha512-82MUHsZJY/Wl+rG2E+bnYxSifOtNRChm2M+8xnZHnKtYmyNfLvy/37ElCtqD3KzUyTycR+GE7v7uiDD/tY4TkA==}
     dependencies:
       cookie: 0.5.0
-      cookie-signature: 1.2.0
       fastify-plugin: 4.1.0
     dev: false
 
@@ -3515,11 +3514,6 @@ packages:
 
   /cookie-signature/1.0.6:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
-    dev: false
-
-  /cookie-signature/1.2.0:
-    resolution: {integrity: sha512-R0BOPfLGTitaKhgKROKZQN6iyq2iDQcH1DOF8nJoaWapguX5bC2w+Q/I9NmmM5lfcvEarnLZr+cCvmEYYSXvYA==}
-    engines: {node: '>=6.6.0'}
     dev: false
 
   /cookie/0.5.0:
