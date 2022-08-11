@@ -42,7 +42,7 @@
     "@nestjs/platform-fastify": "9.0.8",
     "@nestjs/schedule": "2.1.0",
     "@nestjs/swagger": "6.0.5",
-    "@nestjs/typeorm": "9.0.0",
+    "@nestjs/typeorm": "9.0.1",
     "@powerfulyang/node-utils": "1.2.1",
     "@powerfulyang/utils": "1.4.4",
     "amqp-connection-manager": "4.1.5",

@@ -20,7 +20,7 @@ specifiers:
   '@nestjs/schematics': 9.0.1
   '@nestjs/swagger': 6.0.5
   '@nestjs/testing': 9.0.8
-  '@nestjs/typeorm': 9.0.0
+  '@nestjs/typeorm': 9.0.1
   '@powerfulyang/lint': 2.0.2
   '@powerfulyang/node-utils': 1.2.1
   '@powerfulyang/utils': 1.4.4
@@ -87,7 +87,7 @@ dependencies:
   '@nestjs/platform-fastify': 9.0.8_ibrc622q32qy2sifp6dqvgccwm
   '@nestjs/schedule': 2.1.0_bnr7ep6snzlfkhaoqb7mdwsj4q
   '@nestjs/swagger': 6.0.5_xi3bnzbp47chajy7mihvbk2nyq
-  '@nestjs/typeorm': 9.0.0_y2o4tfyqpkk2hlczj3r36cju7u
+  '@nestjs/typeorm': 9.0.1_y2o4tfyqpkk2hlczj3r36cju7u
   '@powerfulyang/node-utils': 1.2.1_ap7hqdr5rlom6ijreei62bwmqy
   '@powerfulyang/utils': 1.4.4_j5hagqx4mwzscud4kyjdvubauy
   amqp-connection-manager: 4.1.5_amqplib@0.10.2
@@ -1594,8 +1594,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@nestjs/typeorm/9.0.0_y2o4tfyqpkk2hlczj3r36cju7u:
-    resolution: {integrity: sha512-pTH9ZlngObaPlt7//CY2lSb+3ouFczUQJln1ctXIpGwZdY3QBrwsxF3hnJXsCYNa+IPfz27qJUeoAQmp65kGZw==}
+  /@nestjs/typeorm/9.0.1_y2o4tfyqpkk2hlczj3r36cju7u:
+    resolution: {integrity: sha512-A2BgLIPsMtmMI0bPKEf4bmzgFPsnvHqNBx3KkvaJ7hJrBQy0OqYOb+Rr06ifblKWDWS2tUPNrAFQbZjtk3PI+g==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0
       '@nestjs/core': ^8.0.0 || ^9.0.0
