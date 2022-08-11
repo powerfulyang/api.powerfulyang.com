@@ -51,7 +51,7 @@ specifiers:
   node-fetch: 2.6.7
   node-gyp: 9.1.0
   node-telegram-bot-api: 0.58.0
-  nodemailer: 6.7.7
+  nodemailer: 6.7.8
   passport: 0.6.0
   passport-github: 1.1.0
   passport-google-oauth20: 2.0.0
@@ -104,7 +104,7 @@ dependencies:
   ipdb: 0.3.3
   node-fetch: 2.6.7
   node-telegram-bot-api: 0.58.0
-  nodemailer: 6.7.7
+  nodemailer: 6.7.8
   passport: 0.6.0
   passport-github: 1.1.0
   passport-google-oauth20: 2.0.0
@@ -6978,8 +6978,8 @@ packages:
       - supports-color
     dev: false
 
-  /nodemailer/6.7.7:
-    resolution: {integrity: sha512-pOLC/s+2I1EXuSqO5Wa34i3kXZG3gugDssH+ZNCevHad65tc8vQlCQpOLaUjopvkRQKm2Cki2aME7fEOPRy3bA==}
+  /nodemailer/6.7.8:
+    resolution: {integrity: sha512-2zaTFGqZixVmTxpJRCFC+Vk5eGRd/fYtvIR+dl5u9QXLTQWGIf48x/JXvo58g9sa0bU6To04XUv554Paykum3g==}
     engines: {node: '>=6.0.0'}
     dev: false
 
