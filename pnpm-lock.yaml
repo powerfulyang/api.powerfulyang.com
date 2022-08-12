@@ -42,7 +42,7 @@ specifiers:
   class-validator: 0.13.2
   cookie: 0.5.0
   cos-nodejs-sdk-v5: 2.11.12
-  dayjs: 1.11.4
+  dayjs: 1.11.5
   dotenv: 16.0.1
   instagram-private-api: 1.45.3
   ioredis: 5.2.2
@@ -97,7 +97,7 @@ dependencies:
   class-validator: 0.13.2
   cookie: 0.5.0
   cos-nodejs-sdk-v5: 2.11.12
-  dayjs: 1.11.4
+  dayjs: 1.11.5
   dotenv: 16.0.1
   instagram-private-api: 1.45.3
   ioredis: 5.2.2
@@ -3676,8 +3676,8 @@ packages:
     engines: {node: '>=0.11'}
     dev: false
 
-  /dayjs/1.11.4:
-    resolution: {integrity: sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g==}
+  /dayjs/1.11.5:
+    resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
     dev: false
 
   /debounce-fn/4.0.0:
