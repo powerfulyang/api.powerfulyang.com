@@ -2,6 +2,7 @@ import { sha1 } from '@powerfulyang/node-utils';
 import { createSocket } from 'dgram';
 import { basename, extname } from 'path';
 import { inspectIp } from '@/utils/ipdb';
+import { convertUuidToNumber } from '@/utils/uuid';
 
 describe('utils test', () => {
   it('sha1', () => {
@@ -34,5 +35,11 @@ describe('utils test', () => {
     const base = basename(filename, ext);
     expect(ext).toBe('.jpg');
     expect(base).toBe('d.test');
+  });
+
+  it('uuid', () => {
+    const result = convertUuidToNumber();
+    const mod = result % 10000;
+    expect(mod).toBeLessThan(10000);
   });
 });

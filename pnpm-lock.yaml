@@ -34,6 +34,7 @@ specifiers:
   '@types/passport-jwt': 3.0.6
   '@types/ramda': 0.28.15
   '@types/sharp': 0.30.5
+  '@types/uuid': 8.3.4
   '@types/xml2js': 0.4.11
   amqp-connection-manager: 4.1.6
   amqplib: 0.10.2
@@ -124,9 +125,9 @@ dependencies:
 
 devDependencies:
   '@nestjs/cli': 9.0.0
-  '@nestjs/schematics': 9.0.1_nobats3jkocaued6l3papcxri4
+  '@nestjs/schematics': 9.0.1_typescript@4.7.4
   '@nestjs/testing': 9.0.9_whquisxk2phx72ywit7cmallwq
-  '@powerfulyang/lint': 2.0.2_@babel+core@7.18.10
+  '@powerfulyang/lint': 2.0.2
   '@types/cookie': 0.5.1
   '@types/node-fetch': 2.6.2
   '@types/node-telegram-bot-api': 0.57.1
@@ -137,6 +138,7 @@ devDependencies:
   '@types/passport-jwt': 3.0.6
   '@types/ramda': 0.28.15
   '@types/sharp': 0.30.5
+  '@types/uuid': 8.3.4
   '@types/xml2js': 0.4.11
   node-addon-api: 5.0.0
   node-gyp: 9.1.0
@@ -150,6 +152,22 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.14
+    dev: true
+
+  /@angular-devkit/core/14.0.5:
+    resolution: {integrity: sha512-/CUGi6QLwh79FvsOY7M+1LQL3asZsbQW/WBd5f1iu5y7TLNqCwo+wOb0ZXLDNPw45vYBxFajtt3ob3U7qx3jNg==}
+    engines: {node: ^14.15.0 || >=16.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    peerDependencies:
+      chokidar: ^3.5.2
+    peerDependenciesMeta:
+      chokidar:
+        optional: true
+    dependencies:
+      ajv: 8.11.0
+      ajv-formats: 2.1.1
+      jsonc-parser: 3.0.0
+      rxjs: 6.6.7
+      source-map: 0.7.3
     dev: true
 
   /@angular-devkit/core/14.0.5_chokidar@3.5.3:
@@ -180,6 +198,19 @@ packages:
       inquirer: 8.2.4
       symbol-observable: 4.0.0
       yargs-parser: 21.0.1
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
+  /@angular-devkit/schematics/14.0.5:
+    resolution: {integrity: sha512-sufxITBkn2MvgEREt9JQ3QCKHS+sue1WsVzLE+TWqG5MC/RPk0f9tQ5VoHk6ZTzDKUvOtSoc7G+n0RscQsyp5g==}
+    engines: {node: ^14.15.0 || >=16.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    dependencies:
+      '@angular-devkit/core': 14.0.5
+      jsonc-parser: 3.0.0
+      magic-string: 0.26.1
+      ora: 5.4.1
+      rxjs: 6.6.7
     transitivePeerDependencies:
       - chokidar
     dev: true
@@ -1549,6 +1580,21 @@ packages:
       - chokidar
     dev: true
 
+  /@nestjs/schematics/9.0.1_typescript@4.7.4:
+    resolution: {integrity: sha512-QU7GbnQvADFXdumcdADmv4vil3bhnYl2IFHWKieRt0MgIhghgBxIB7kDKWhswcuZ0kZztVbyYjo9aCrlf62fcw==}
+    peerDependencies:
+      typescript: ^4.3.5
+    dependencies:
+      '@angular-devkit/core': 14.0.5
+      '@angular-devkit/schematics': 14.0.5
+      fs-extra: 10.1.0
+      jsonc-parser: 3.0.0
+      pluralize: 8.0.0
+      typescript: 4.7.4
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
   /@nestjs/swagger/6.0.5_e2tmvwljxvv52xanr6ipkvi5ei:
     resolution: {integrity: sha512-Iy6/Xvd+YVC2F6flIDew5/VnpM2m7kK3IMoft0JqQc0RVXEO45+9gSasN6c8E/s0PbOy9de055mivAhFjk/+lA==}
     peerDependencies:
@@ -1658,7 +1704,7 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@powerfulyang/lint/2.0.2_@babel+core@7.18.10:
+  /@powerfulyang/lint/2.0.2:
     resolution: {integrity: sha512-V4PFTp7qshwuET1evPtL3RZwjpIeXvccdg7wVMEJK7VOVYGZ1Y45hsbl/6evASOQ53opdmFGi6lVp2aRfLW4kw==}
     hasBin: true
     dependencies:
@@ -1704,7 +1750,7 @@ packages:
       stylelint-prettier: 2.0.0_5qhrdhtpq2rnf2xbhb7pigm7yq
       stylelint-scss: 4.2.0_stylelint@14.8.5
       tailwindcss: 3.0.24
-      ts-jest: 28.0.3_5jmdcay7q3u7xsjubzvhmf4wbi
+      ts-jest: 28.0.3_7sa2e64agunq5kj4zcolhrnkbm
       tsc-alias: 1.6.7
       tslib: 2.4.0
       typescript: 4.7.2
@@ -2095,6 +2141,10 @@ packages:
 
   /@types/tough-cookie/4.0.2:
     resolution: {integrity: sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw==}
+
+  /@types/uuid/8.3.4:
+    resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
+    dev: true
 
   /@types/ws/7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
@@ -9220,7 +9270,7 @@ packages:
     deprecated: npm package tarball contains useless codeclimate-reporter binary, please update to version 3.1.1. See https://github.com/adriengibrat/ts-custom-error/issues/32
     dev: false
 
-  /ts-jest/28.0.3_5jmdcay7q3u7xsjubzvhmf4wbi:
+  /ts-jest/28.0.3_7sa2e64agunq5kj4zcolhrnkbm:
     resolution: {integrity: sha512-HzgbEDQ2KgVtDmpXToqAcKTyGHdHsG23i/iUjfxji92G5eT09S1m9UHZd7csF0Bfgh9txM4JzwHnv7r1waFPlw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     hasBin: true
@@ -9241,7 +9291,6 @@ packages:
       esbuild:
         optional: true
     dependencies:
-      '@babel/core': 7.18.10
       '@types/jest': 27.5.1
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
