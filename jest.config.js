@@ -11,7 +11,9 @@ const moduleNameMapper = pathsToModuleNameMapper(tsconfig.compilerOptions.paths,
 module.exports = {
   moduleNameMapper,
   maxConcurrency: 5,
-  preset: 'ts-jest',
+  transform: {
+    '^.+\\.(t|j)s?$': '@swc/jest',
+  },
   setupFiles: ['./.jest/loadTestEnv.ts'],
   setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
   testRegex: '.spec.ts$',
