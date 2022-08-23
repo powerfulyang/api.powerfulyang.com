@@ -60,7 +60,7 @@ specifiers:
   passport-google-oauth20: 2.0.0
   passport-jwt: 4.0.0
   peer: 0.6.1
-  pg: 8.7.3
+  pg: 8.8.0
   qqwry.ipdb: 2022.6.15
   ramda: 0.28.0
   reflect-metadata: 0.1.13
@@ -113,7 +113,7 @@ dependencies:
   passport-google-oauth20: 2.0.0
   passport-jwt: 4.0.0
   peer: 0.6.1
-  pg: 8.7.3
+  pg: 8.8.0
   qqwry.ipdb: 2022.6.15
   ramda: 0.28.0
   reflect-metadata: 0.1.13
@@ -121,7 +121,7 @@ dependencies:
   sharp: 0.30.7
   socks-proxy-agent: 7.0.0
   source-map-support: 0.5.21
-  typeorm: 0.3.7_ioredis@5.2.3+pg@8.7.3
+  typeorm: 0.3.7_ioredis@5.2.3+pg@8.8.0
   winston: 3.8.1
   xml2js: 0.4.23
 
@@ -1674,7 +1674,7 @@ packages:
       '@nestjs/core': 9.0.11_jekf3ziphn52mxrmswvchcpj4m
       reflect-metadata: 0.1.13
       rxjs: 7.5.6
-      typeorm: 0.3.7_ioredis@5.2.3+pg@8.7.3
+      typeorm: 0.3.7_ioredis@5.2.3+pg@8.8.0
       uuid: 8.3.2
     dev: false
 
@@ -7698,12 +7698,12 @@ packages:
     engines: {node: '>=4.0.0'}
     dev: false
 
-  /pg-pool/3.5.1_pg@8.7.3:
-    resolution: {integrity: sha512-6iCR0wVrro6OOHFsyavV+i6KYL4lVNyYAB9RD18w66xSzN+d8b66HiwuP30Gp1SH5O9T82fckkzsRjlrhD0ioQ==}
+  /pg-pool/3.5.2_pg@8.8.0:
+    resolution: {integrity: sha512-His3Fh17Z4eg7oANLob6ZvH8xIVen3phEZh2QuyrIl4dQSDVEabNducv6ysROKpDNPSD+12tONZVWfSgMvDD9w==}
     peerDependencies:
       pg: '>=8.0'
     dependencies:
-      pg: 8.7.3
+      pg: 8.8.0
     dev: false
 
   /pg-protocol/1.5.0:
@@ -7721,11 +7721,11 @@ packages:
       postgres-interval: 1.2.0
     dev: false
 
-  /pg/8.7.3:
-    resolution: {integrity: sha512-HPmH4GH4H3AOprDJOazoIcpI49XFsHCe8xlrjHkWiapdbHK+HLtbm/GQzXYAZwmPju/kzKhjaSfMACG+8cgJcw==}
+  /pg/8.8.0:
+    resolution: {integrity: sha512-UXYN0ziKj+AeNNP7VDMwrehpACThH7LUl/p8TDFpEUuSejCUIwGSfxpHsPvtM6/WXFy6SU4E5RG4IJV/TZAGjw==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
-      pg-native: '>=2.0.0'
+      pg-native: '>=3.0.1'
     peerDependenciesMeta:
       pg-native:
         optional: true
@@ -7733,7 +7733,7 @@ packages:
       buffer-writer: 2.0.0
       packet-reader: 1.0.0
       pg-connection-string: 2.5.0
-      pg-pool: 3.5.1_pg@8.7.3
+      pg-pool: 3.5.2_pg@8.8.0
       pg-protocol: 1.5.0
       pg-types: 2.2.0
       pgpass: 1.0.5
@@ -9652,7 +9652,7 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /typeorm/0.3.7_ioredis@5.2.3+pg@8.7.3:
+  /typeorm/0.3.7_ioredis@5.2.3+pg@8.8.0:
     resolution: {integrity: sha512-MsPJeP6Zuwfe64c++l80+VRqpGEGxf0CkztIEnehQ+CMmQPSHjOnFbFxwBuZ2jiLqZTjLk2ZqQdVF0RmvxNF3Q==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
@@ -9722,7 +9722,7 @@ packages:
       ioredis: 5.2.3
       js-yaml: 4.1.0
       mkdirp: 1.0.4
-      pg: 8.7.3
+      pg: 8.8.0
       reflect-metadata: 0.1.13
       sha.js: 2.4.11
       tslib: 2.4.0
