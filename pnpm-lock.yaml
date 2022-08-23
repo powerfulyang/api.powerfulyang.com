@@ -48,7 +48,7 @@ specifiers:
   dayjs: 1.11.5
   dotenv: 16.0.1
   instagram-private-api: 1.45.3
-  ioredis: 5.2.2
+  ioredis: 5.2.3
   ipdb: 0.3.3
   node-addon-api: 5.0.0
   node-fetch: 2.6.7
@@ -85,7 +85,7 @@ dependencies:
   '@nestjs/elasticsearch': 9.0.0_6lkwnaci6vb3gwnvhm2gnm3cpa
   '@nestjs/jwt': 9.0.0_@nestjs+common@9.0.11
   '@nestjs/mapped-types': 1.1.0_tqmdse6qmtytdi6db7pggninv4
-  '@nestjs/microservices': 9.0.11_xand457zyi7zch6vfa2axcumoq
+  '@nestjs/microservices': 9.0.11_6cd3n23t37wn6n7tpohb2fkcnq
   '@nestjs/passport': 9.0.0_qmmxbt2dwte7f4tgsyyoa7ob5i
   '@nestjs/platform-fastify': 9.0.11_ipnr4fefuhr2x3on7pwr6cwcw4
   '@nestjs/schedule': 2.1.0_fvppslgepxggj3fnmtlnh4cori
@@ -103,7 +103,7 @@ dependencies:
   dayjs: 1.11.5
   dotenv: 16.0.1
   instagram-private-api: 1.45.3
-  ioredis: 5.2.2
+  ioredis: 5.2.3
   ipdb: 0.3.3
   node-fetch: 2.6.7
   node-telegram-bot-api: 0.58.0
@@ -121,7 +121,7 @@ dependencies:
   sharp: 0.30.7
   socks-proxy-agent: 7.0.0
   source-map-support: 0.5.21
-  typeorm: 0.3.7_ioredis@5.2.2+pg@8.7.3
+  typeorm: 0.3.7_ioredis@5.2.3+pg@8.7.3
   winston: 3.8.1
   xml2js: 0.4.23
 
@@ -1437,7 +1437,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.0.11_c3ywp5uae7mfm5pv3l6tu7kcju
-      '@nestjs/microservices': 9.0.11_xand457zyi7zch6vfa2axcumoq
+      '@nestjs/microservices': 9.0.11_6cd3n23t37wn6n7tpohb2fkcnq
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
@@ -1490,7 +1490,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/microservices/9.0.11_xand457zyi7zch6vfa2axcumoq:
+  /@nestjs/microservices/9.0.11_6cd3n23t37wn6n7tpohb2fkcnq:
     resolution: {integrity: sha512-SalP+y96HAsrNnPkt+RQAYlPSzofs/D90Y0ZS9oveBiCQhezKSnkBZ7Qpv3uLFbs6TsL/VHG9nVoQC6aiZA0ww==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -1530,7 +1530,7 @@ packages:
       '@nestjs/core': 9.0.11_jekf3ziphn52mxrmswvchcpj4m
       amqp-connection-manager: 4.1.6_amqplib@0.10.2
       amqplib: 0.10.2
-      ioredis: 5.2.2
+      ioredis: 5.2.3
       iterare: 1.2.1
       reflect-metadata: 0.1.13
       rxjs: 7.5.6
@@ -1657,7 +1657,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.0.11_c3ywp5uae7mfm5pv3l6tu7kcju
       '@nestjs/core': 9.0.11_jekf3ziphn52mxrmswvchcpj4m
-      '@nestjs/microservices': 9.0.11_xand457zyi7zch6vfa2axcumoq
+      '@nestjs/microservices': 9.0.11_6cd3n23t37wn6n7tpohb2fkcnq
       tslib: 2.4.0
     dev: true
 
@@ -1674,7 +1674,7 @@ packages:
       '@nestjs/core': 9.0.11_jekf3ziphn52mxrmswvchcpj4m
       reflect-metadata: 0.1.13
       rxjs: 7.5.6
-      typeorm: 0.3.7_ioredis@5.2.2+pg@8.7.3
+      typeorm: 0.3.7_ioredis@5.2.3+pg@8.7.3
       uuid: 8.3.2
     dev: false
 
@@ -5658,8 +5658,8 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
-  /ioredis/5.2.2:
-    resolution: {integrity: sha512-wryKc1ur8PcCmNwfcGkw5evouzpbDXxxkMkzPK8wl4xQfQf7lHe11Jotell5ikMVAtikXJEu/OJVaoV51BggRQ==}
+  /ioredis/5.2.3:
+    resolution: {integrity: sha512-gQNcMF23/NpvjCaa1b5YycUyQJ9rBNH2xP94LWinNpodMWVUPP5Ai/xXANn/SM7gfIvI62B5CCvZxhg5pOgyMw==}
     engines: {node: '>=12.22.0'}
     dependencies:
       '@ioredis/commands': 1.2.0
@@ -9652,7 +9652,7 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /typeorm/0.3.7_ioredis@5.2.2+pg@8.7.3:
+  /typeorm/0.3.7_ioredis@5.2.3+pg@8.7.3:
     resolution: {integrity: sha512-MsPJeP6Zuwfe64c++l80+VRqpGEGxf0CkztIEnehQ+CMmQPSHjOnFbFxwBuZ2jiLqZTjLk2ZqQdVF0RmvxNF3Q==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
@@ -9719,7 +9719,7 @@ packages:
       debug: 4.3.4
       dotenv: 16.0.1
       glob: 7.2.3
-      ioredis: 5.2.2
+      ioredis: 5.2.3
       js-yaml: 4.1.0
       mkdirp: 1.0.4
       pg: 8.7.3
