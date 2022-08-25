@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@elastic/elasticsearch': 8.2.1
-  '@fastify/cookie': 7.4.0
+  '@fastify/cookie': 8.0.0
   '@fastify/multipart': 7.1.0
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.5.0
@@ -75,7 +75,7 @@ specifiers:
 
 dependencies:
   '@elastic/elasticsearch': 8.2.1
-  '@fastify/cookie': 7.4.0
+  '@fastify/cookie': 8.0.0
   '@fastify/multipart': 7.1.0
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.5.0
@@ -808,8 +808,8 @@ packages:
       text-decoding: 1.0.0
     dev: false
 
-  /@fastify/cookie/7.4.0:
-    resolution: {integrity: sha512-82MUHsZJY/Wl+rG2E+bnYxSifOtNRChm2M+8xnZHnKtYmyNfLvy/37ElCtqD3KzUyTycR+GE7v7uiDD/tY4TkA==}
+  /@fastify/cookie/8.0.0:
+    resolution: {integrity: sha512-VYEKAeJXx0ezormR7IlVd7iwMZDY+ksMUk50ruGKiMiuvMBkivzsPzNckR8dMme+5rxjXgOyfLunpS9jCvWlqA==}
     dependencies:
       cookie: 0.5.0
       fastify-plugin: 4.1.0
