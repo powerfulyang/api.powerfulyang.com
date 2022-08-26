@@ -18,7 +18,7 @@ specifiers:
   '@nestjs/platform-fastify': 9.0.11
   '@nestjs/schedule': 2.1.0
   '@nestjs/schematics': 9.0.1
-  '@nestjs/swagger': 6.0.5
+  '@nestjs/swagger': 6.1.0
   '@nestjs/testing': 9.0.11
   '@nestjs/typeorm': 9.0.1
   '@powerfulyang/lint': 2.0.2
@@ -89,7 +89,7 @@ dependencies:
   '@nestjs/passport': 9.0.0_qmmxbt2dwte7f4tgsyyoa7ob5i
   '@nestjs/platform-fastify': 9.0.11_ipnr4fefuhr2x3on7pwr6cwcw4
   '@nestjs/schedule': 2.1.0_fvppslgepxggj3fnmtlnh4cori
-  '@nestjs/swagger': 6.0.5_rau4qacjo2snurbqsfd6gbpclu
+  '@nestjs/swagger': 6.1.0_rau4qacjo2snurbqsfd6gbpclu
   '@nestjs/typeorm': 9.0.1_sp4gtzkbiyh24r2ydcb6yqstha
   '@powerfulyang/node-utils': 1.2.1_ap7hqdr5rlom6ijreei62bwmqy
   '@powerfulyang/utils': 1.4.4_j5hagqx4mwzscud4kyjdvubauy
@@ -1617,8 +1617,8 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/swagger/6.0.5_rau4qacjo2snurbqsfd6gbpclu:
-    resolution: {integrity: sha512-Iy6/Xvd+YVC2F6flIDew5/VnpM2m7kK3IMoft0JqQc0RVXEO45+9gSasN6c8E/s0PbOy9de055mivAhFjk/+lA==}
+  /@nestjs/swagger/6.1.0_rau4qacjo2snurbqsfd6gbpclu:
+    resolution: {integrity: sha512-Lflplv216nXkH6By/jMggQjpuH1V67M07tgHXUAZujAwG3LAJ1CfSvzuFckK4MAb54xQTYvFgfVPWkXqvKXzdA==}
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0
@@ -1636,7 +1636,7 @@ packages:
       lodash: 4.17.21
       path-to-regexp: 3.2.0
       reflect-metadata: 0.1.13
-      swagger-ui-dist: 4.13.2
+      swagger-ui-dist: 4.14.0
     transitivePeerDependencies:
       - class-transformer
       - class-validator
@@ -9180,8 +9180,8 @@ packages:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
     dev: true
 
-  /swagger-ui-dist/4.13.2:
-    resolution: {integrity: sha512-jHL6UyIYpvEI7NsuWd0R3hJaPQTg6Oo4qSBo+oVfOEkv6rrQm/475RGSMmZgV6ajp+Sgrp9CqrDjQYAgQqiv1A==}
+  /swagger-ui-dist/4.14.0:
+    resolution: {integrity: sha512-TBzhheU15s+o54Cgk9qxuYcZMiqSm/SkvKnapoGHOF66kz0Y5aGjpzj5BT/vpBbn6rTPJ9tUYXQxuDWfsjiGMw==}
     dev: false
 
   /symbol-observable/4.0.0:
