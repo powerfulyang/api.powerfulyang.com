@@ -53,7 +53,7 @@ specifiers:
   node-addon-api: 5.0.0
   node-fetch: 2.6.7
   node-gyp: 9.1.0
-  node-telegram-bot-api: 0.58.0
+  node-telegram-bot-api: 0.59.0
   nodemailer: 6.7.8
   passport: 0.6.0
   passport-github: 1.1.0
@@ -106,7 +106,7 @@ dependencies:
   ioredis: 5.2.3
   ipdb: 0.3.3
   node-fetch: 2.6.7
-  node-telegram-bot-api: 0.58.0
+  node-telegram-bot-api: 0.59.0
   nodemailer: 6.7.8
   passport: 0.6.0
   passport-github: 1.1.0
@@ -4084,6 +4084,7 @@ packages:
   /depd/1.1.2:
     resolution: {integrity: sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==}
     engines: {node: '>= 0.6'}
+    dev: true
 
   /depd/2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
@@ -7295,15 +7296,13 @@ packages:
     resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
     dev: true
 
-  /node-telegram-bot-api/0.58.0:
-    resolution: {integrity: sha512-DmP5wBON9stOiunvUw/NvTb1clMYvj+c3NnSqbPZdVd6hNkNRnM97eqPZIH4UsBJ+4n+XFGpU33dCzjqD1sv3A==}
+  /node-telegram-bot-api/0.59.0:
+    resolution: {integrity: sha512-APQ7qf4KDrVWuvsstGnuhoC44HoCw+SnoCsnCtwRPdb6/FzQmACNySG1I6VWZG7itYAGntQK299fDiylF222GA==}
     engines: {node: '>=0.12'}
     dependencies:
       array.prototype.findindex: 2.2.0
       bl: 1.2.3
-      bluebird: 3.7.2
       debug: 3.2.7
-      depd: 1.1.2
       eventemitter3: 3.1.2
       file-type: 3.9.0
       mime: 1.6.0
