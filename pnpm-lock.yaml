@@ -46,7 +46,7 @@ specifiers:
   cookie: 0.5.0
   cos-nodejs-sdk-v5: 2.11.12
   dayjs: 1.11.5
-  dotenv: 16.0.1
+  dotenv: 16.0.2
   instagram-private-api: 1.45.3
   ioredis: 5.2.3
   ipdb: 0.3.3
@@ -101,7 +101,7 @@ dependencies:
   cookie: 0.5.0
   cos-nodejs-sdk-v5: 2.11.12
   dayjs: 1.11.5
-  dotenv: 16.0.1
+  dotenv: 16.0.2
   instagram-private-api: 1.45.3
   ioredis: 5.2.3
   ipdb: 0.3.3
@@ -4181,8 +4181,8 @@ packages:
       is-obj: 2.0.0
     dev: false
 
-  /dotenv/16.0.1:
-    resolution: {integrity: sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ==}
+  /dotenv/16.0.2:
+    resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
     engines: {node: '>=12'}
     dev: false
 
@@ -9817,7 +9817,7 @@ packages:
       cli-highlight: 2.1.11
       date-fns: 2.29.1
       debug: 4.3.4
-      dotenv: 16.0.1
+      dotenv: 16.0.2
       glob: 7.2.3
       ioredis: 5.2.3
       js-yaml: 4.1.0
