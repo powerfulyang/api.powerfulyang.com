@@ -12,7 +12,7 @@ export class UdpServerService {
 
   private udpSocket;
 
-  constructor(private logger: LoggerService) {
+  constructor(private readonly logger: LoggerService) {
     this.logger.setContext(UdpServerService.name);
     this.udpServer = createSocket({ type: 'udp4' });
     this.udpServer.bind({

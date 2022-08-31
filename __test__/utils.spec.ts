@@ -1,5 +1,4 @@
 import { sha1 } from '@powerfulyang/node-utils';
-import { createSocket } from 'dgram';
 import { basename, extname } from 'path';
 import { inspectIp } from '@/utils/ipdb';
 import { convertUuidToNumber } from '@/utils/uuid';
@@ -22,11 +21,6 @@ describe('utils test', () => {
         region_name: '美国',
       },
     });
-  });
-
-  it('UDP test', () => {
-    const socket = createSocket('udp4');
-    socket.send('你好', 30000, 'localhost');
   });
 
   it('extname', () => {

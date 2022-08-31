@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '@/modules/user/entities/role.entity';
@@ -58,17 +59,17 @@ export class User {
 
   @JoinColumn()
   @ManyToOne(() => Asset, { eager: true })
-  timelineBackground: Asset;
+  timelineBackground: Relation<Asset>;
 
   @ManyToMany(() => Role, { eager: true })
   @JoinTable()
-  roles: Role[];
+  roles: Relation<Role[]>;
 
   @ManyToMany(() => Family, (family) => family.members, { onDelete: 'CASCADE' })
   @JoinTable()
-  families: Family[];
+  families: Relation<Family[]>;
 
   // 大部分时间应该不需要 { eager: true }
   @OneToMany(() => OauthOpenid, (o) => o.user)
-  oauthOpenidArr: OauthOpenid[];
+  oauthOpenidArr: Relation<OauthOpenid[]>;
 }

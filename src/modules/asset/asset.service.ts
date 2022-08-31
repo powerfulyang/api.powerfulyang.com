@@ -33,7 +33,7 @@ import { MqService } from '@/common/service/MQ/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
-import { getEXIF } from '../../../addon.api';
+import { getEXIF } from '../../../addon-api';
 
 @Injectable()
 export class AssetService {

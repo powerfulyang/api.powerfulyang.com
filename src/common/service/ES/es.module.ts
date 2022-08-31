@@ -7,12 +7,12 @@ import { LoggerModule } from '@/common/logger/logger.module';
 
 @Module({
   imports: [
+    LoggerModule,
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.getElasticsearchConfig(),
     }),
-    LoggerModule,
   ],
   exports: [EsService],
   providers: [EsService],

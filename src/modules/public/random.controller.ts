@@ -21,7 +21,7 @@ export class RandomController {
     @Res() res: FastifyReply,
     @Query('size') size: string = '300',
   ) {
-    const parsedUuid = convertUuidToNumber(uuid) % 10000;
+    const parsedUuid = (convertUuidToNumber(uuid) % 9999) + 1;
     const dir = join(CWD, 'assets', 'azuki');
     let path = join(dir, `${parsedUuid}.png`);
     if (!existsSync(path)) {

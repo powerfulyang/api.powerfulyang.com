@@ -7,6 +7,7 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Authorization } from '@/constants/constants';
 import type { Cookie } from '@/common/interceptor/cookie.interceptor';
+import fastifyInstance from '@/fastify/hook';
 
 describe('AppController (e2e)', () => {
   let app: NestFastifyApplication;
@@ -17,7 +18,9 @@ describe('AppController (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(
+      new FastifyAdapter(fastifyInstance),
+    );
     userService = moduleFixture.get<UserService>(UserService);
     await app.init();
     await app.getHttpAdapter().getInstance().ready();

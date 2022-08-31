@@ -7,13 +7,14 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Metadata } from 'sharp';
 import { pick } from 'ramda';
 import { User } from '@/modules/user/entities/user.entity';
 import { CosBucket } from '../../bucket/entities/bucket.entity';
-import { Exif } from '../../../../addon.api/types/Exif';
+import { Exif } from '../../../../addon-api/types/Exif';
 
 @Entity('asset')
 export class Asset {
@@ -22,7 +23,7 @@ export class Asset {
 
   @JoinColumn()
   @ManyToOne(() => CosBucket, { nullable: false, eager: true })
-  bucket: CosBucket;
+  bucket: Relation<CosBucket>;
 
   @Column({ default: '' })
   cosUrl: string;
@@ -65,7 +66,7 @@ export class Asset {
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
-  uploadBy: User;
+  uploadBy: Relation<User>;
 
   @CreateDateColumn()
   createAt: Date;

@@ -76,8 +76,8 @@ describe('AssetService', () => {
   it('persistentToCos', async () => {
     const res = await service.persistentToCos({
       name: 'test',
-      sha1: 'ce023b330af210666072c097f33666e5bbf2b2df',
-      suffix: 'jpeg',
+      sha1: 'test',
+      suffix: 'jpg',
     });
     expect(res).toBeDefined();
   });

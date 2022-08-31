@@ -1,8 +1,7 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ProxyFetchModule } from 'api/proxy-fetch';
 import { TelegramBotService } from './telegram-bot.service';
 
-@Global()
 @Module({
   imports: [ProxyFetchModule.forRoot()],
   providers: [TelegramBotService],

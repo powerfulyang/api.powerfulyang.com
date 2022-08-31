@@ -18,9 +18,4 @@ describe('SearchService', () => {
     const result = await service.showAllIndex();
     expect(result).toBeDefined();
   });
-
-  it('inspectLogstashIndex', async () => {
-    const result = await service.inspectLogstash();
-    expect(result).toBeDefined();
-  });
 });

@@ -12,7 +12,7 @@
     "owner": "powerfulyang"
   },
   "scripts": {
-    "bootstrap": "pnpm install --shamefully-hoist --frozen-lockfile",
+    "bootstrap": "pnpm install --frozen-lockfile",
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint:js": "eslint src --ext .ts libs --ext .ts --fix",
     "qa:dev": "cross-env PORT=3001 APP_ENV=qa nest start --watch",
@@ -51,7 +51,6 @@
     "bindings": "1.5.0",
     "chalk": "4.1.2",
     "class-validator": "0.13.2",
-    "cookie": "0.5.0",
     "cos-nodejs-sdk-v5": "2.11.12",
     "dayjs": "1.11.5",
     "dotenv": "16.0.2",
@@ -82,10 +81,7 @@
     "@nestjs/cli": "9.1.1",
     "@nestjs/schematics": "9.0.1",
     "@nestjs/testing": "9.0.11",
-    "@powerfulyang/lint": "2.0.2",
-    "@swc/core": "1.2.245",
-    "@swc/jest": "0.2.22",
-    "@types/cookie": "0.5.1",
+    "@powerfulyang/lint": "3.0.0",
     "@types/node-fetch": "2.6.2",
     "@types/node-telegram-bot-api": "0.57.1",
     "@types/nodemailer": "6.4.5",

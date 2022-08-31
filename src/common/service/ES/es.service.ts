@@ -7,8 +7,8 @@ export const POST_INDEX = 'posts';
 @Injectable()
 export class EsService {
   constructor(
-    private readonly logger: LoggerService,
     private readonly elasticsearchService: ElasticsearchService,
+    private readonly logger: LoggerService,
   ) {
     this.logger.setContext(EsService.name);
   }

@@ -14,11 +14,7 @@ describe('UdpServerService', () => {
     service = module.get<UdpServerService>(UdpServerService);
   });
 
-  it('udp test', (done) => {
-    service.on((message) => {
-      expect(message).toBe('尼嚎');
-      done();
-    });
-    service.send('尼嚎');
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });

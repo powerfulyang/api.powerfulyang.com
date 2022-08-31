@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { serialize } from 'cookie';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
@@ -23,7 +22,7 @@ export class ResponseInterceptor implements NestInterceptor {
 
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = _context.switchToHttp();
-    const response = ctx.getResponse<FastifyReply>();
+    const reply = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<ExtendRequest>();
     const path = request.url;
     const { xRealIp } = request.raw.extend;
@@ -36,8 +35,7 @@ export class ResponseInterceptor implements NestInterceptor {
           const ValidPeriodHour = ValidPeriodSecond / 3600;
           if (ValidPeriodHour < 6) {
             const authorization = await this.userService.generateAuthorization(user);
-            const cookie = serialize(Authorization, authorization, DefaultCookieOptions);
-            response.header('Set-Cookie', cookie);
+            reply.setCookie(Authorization, authorization, DefaultCookieOptions);
             this.logger.info(
               `Token valid within ${ValidPeriodHour}hour, refresh token [user=>${user.email}]`,
             );
@@ -53,10 +51,12 @@ export class ResponseInterceptor implements NestInterceptor {
         if (xRealIp) {
           pathViewCount = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
         }
-        const contentType = response.getHeader('Content-Type');
-        if (contentType) {
+        const contentType = reply.getHeader('Content-Type');
+        // 如果有 content-type 不处理
+        if (contentType && contentType !== 'application/json') {
           return data;
         }
+        // 默认返回json格式
         return {
           data,
           timestamp: new Date().toISOString(),

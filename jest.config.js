@@ -6,17 +6,15 @@ const moduleNameMapper = pathsToModuleNameMapper(tsconfig.compilerOptions.paths,
 });
 
 /**
- * @type {import('ts-jest').InitialOptionsTsJest}
+ * @type {import('@jest/types').Config.InitialOptions}
  */
 module.exports = {
   moduleNameMapper,
   maxConcurrency: 5,
   transform: {
-    '^.+\\.(t|j)s?$': '@swc/jest',
+    '^.+\\.ts$': '@swc/jest',
   },
   setupFiles: ['./.jest/loadTestEnv.ts'],
   setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
   testRegex: '.spec.ts$',
-  testPathIgnorePatterns: ['node_modules'],
-  testEnvironment: 'node',
 };

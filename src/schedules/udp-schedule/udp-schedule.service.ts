@@ -6,8 +6,8 @@ import { LoggerService } from '@/common/logger/logger.service';
 @Injectable()
 export class UdpScheduleService {
   constructor(
-    private readonly udpServerService: UdpServerService,
     private readonly logger: LoggerService,
+    private readonly udpServerService: UdpServerService,
   ) {
     this.logger.setContext(UdpScheduleService.name);
   }

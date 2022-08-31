@@ -5,7 +5,6 @@ import type { CookieSerializeOptions } from '@fastify/cookie';
 import { map, tap } from 'rxjs/operators';
 import { omit } from 'ramda';
 import { isArray } from '@powerfulyang/utils';
-import { serialize } from 'cookie';
 import { LoggerService } from '@/common/logger/logger.service';
 import { DefaultCookieOptions } from '@/constants/constants';
 import type { FastifyReply } from 'fastify';
@@ -33,14 +32,9 @@ export class CookieInterceptor implements NestInterceptor {
         const cookies = data?.cookies as Cookie[];
         if (isArray(cookies)) {
           const ctx = context.switchToHttp();
-          const response = ctx.getResponse<FastifyReply>();
+          const reply = ctx.getResponse<FastifyReply>();
           cookies.forEach((cookie) => {
-            const c = serialize(
-              cookie.name,
-              cookie.value || '',
-              cookie.options || DefaultCookieOptions,
-            );
-            response.header('Set-Cookie', c);
+            reply.setCookie(cookie.name, cookie.value, cookie.options || DefaultCookieOptions);
             if (cookie.options?.maxAge === 0) {
               this.logger.info(`Cookie ${cookie.name} cleared.`);
             } else {
