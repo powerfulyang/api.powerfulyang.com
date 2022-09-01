@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@elastic/elasticsearch': 8.2.1
+  '@elastic/elasticsearch': 8.4.0
   '@fastify/cookie': 8.1.0
   '@fastify/multipart': 7.1.1
   '@fastify/passport': 2.2.0
@@ -70,7 +70,7 @@ specifiers:
   xml2js: 0.4.23
 
 dependencies:
-  '@elastic/elasticsearch': 8.2.1
+  '@elastic/elasticsearch': 8.4.0
   '@fastify/cookie': 8.1.0
   '@fastify/multipart': 7.1.1
   '@fastify/passport': 2.2.0
@@ -78,7 +78,7 @@ dependencies:
   '@napi-rs/pinyin': 1.7.0
   '@nestjs/common': 9.0.11_c3ywp5uae7mfm5pv3l6tu7kcju
   '@nestjs/core': 9.0.11_jekf3ziphn52mxrmswvchcpj4m
-  '@nestjs/elasticsearch': 9.0.0_6lkwnaci6vb3gwnvhm2gnm3cpa
+  '@nestjs/elasticsearch': 9.0.0_daip2rcfiju5bl34aakbzliv3i
   '@nestjs/jwt': 9.0.0_@nestjs+common@9.0.11
   '@nestjs/mapped-types': 1.1.0_tqmdse6qmtytdi6db7pggninv4
   '@nestjs/microservices': 9.0.11_6cd3n23t37wn6n7tpohb2fkcnq
@@ -792,8 +792,8 @@ packages:
       kuler: 2.0.0
     dev: false
 
-  /@elastic/elasticsearch/8.2.1:
-    resolution: {integrity: sha512-Kwerd8DfNZdBGgl7fkn+20kXkw1QePB3goTv5QwW9poo2d4VbPE0EChmh6irpXWAGsVSYiKr8x6bh8dH5YdylA==}
+  /@elastic/elasticsearch/8.4.0:
+    resolution: {integrity: sha512-0QZDBePnb5a+d76zjlMYq96IDf0AOuGP7JHugFUYlYwTC7rZvROuZSpoUsvpUjNH2CzMqWgNLIekIR6EHRMIQA==}
     engines: {node: '>=14'}
     dependencies:
       '@elastic/transport': 8.2.0
@@ -1506,14 +1506,14 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@nestjs/elasticsearch/9.0.0_6lkwnaci6vb3gwnvhm2gnm3cpa:
+  /@nestjs/elasticsearch/9.0.0_daip2rcfiju5bl34aakbzliv3i:
     resolution: {integrity: sha512-+NhXg0od/luNuObrCoouO8IGJ5d8esd2LbqOyX4wqM3PtzoVgQC5uDoxHu0ZyWkp/Coj7OiT0osYN9rgctEPbg==}
     peerDependencies:
       '@elastic/elasticsearch': ^7.4.0 || ^8.0.0
       '@nestjs/common': ^8.0.0 || ^9.0.0
       rxjs: ^7.2.0
     dependencies:
-      '@elastic/elasticsearch': 8.2.1
+      '@elastic/elasticsearch': 8.4.0
       '@nestjs/common': 9.0.11_c3ywp5uae7mfm5pv3l6tu7kcju
       rxjs: 7.5.6
     dev: false
@@ -1831,7 +1831,7 @@ packages:
       prettier: 2.7.1
       rimraf: 3.0.2
       rollup: 2.79.0
-      sass: 1.54.7
+      sass: 1.54.8
       stylelint: 14.11.0
       stylelint-config-css-modules: 4.1.0_stylelint@14.11.0
       stylelint-config-prettier: 9.0.3_stylelint@14.11.0
@@ -6381,7 +6381,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.6.5
+      '@types/node': 18.7.14
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -8511,8 +8511,8 @@ packages:
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sass/1.54.7:
-    resolution: {integrity: sha512-3q7MQz7sCpVG6TLhUfZwGOcd2/sm2ghYN2JEdRjNiW04ILdvahdo9GuAs+bxsxZ3hDCKv+wUT5w0iFWGU0CxlA==}
+  /sass/1.54.8:
+    resolution: {integrity: sha512-ib4JhLRRgbg6QVy6bsv5uJxnJMTS2soVcCp9Y88Extyy13A8vV0G1fAwujOzmNkFQbR3LvedudAMbtuNRPbQww==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
