@@ -13,8 +13,8 @@ RUN apk add --no-cache tzdata \
     # requires the use of a globally-installed libvips  \
     # compiled with support for libheif, libde265 and x265.
     && apk add --no-cache  \
-    # sharp Changelog: v0.30 - dresser -> Requires libvips v8.12.2 which is in Alpine 3.15
-    --repository https://dl-3.alpinelinux.org/alpine/v3.15/community \
+    # sharp Changelog: v0.31 - eagle -> Requires libvips v8.13.1 which is in Alpine edge
+    --repository https://dl-3.alpinelinux.org/alpine/edge/community \
     vips-dev \
     && apk add --no-cache --virtual native-deps \
          g++ gcc libgcc libstdc++ linux-headers make python3 \

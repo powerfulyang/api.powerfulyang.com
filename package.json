@@ -12,6 +12,7 @@
     "owner": "powerfulyang"
   },
   "scripts": {
+    "update:lock": "pnpm i --lockfile-only",
     "bootstrap": "pnpm install --frozen-lockfile",
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
     "lint:js": "eslint src --ext .ts libs --ext .ts --fix",
@@ -70,7 +71,7 @@
     "ramda": "0.28.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.6",
-    "sharp": "0.30.7",
+    "sharp": "0.31.0",
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
     "typeorm": "0.3.9",
