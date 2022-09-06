@@ -42,7 +42,7 @@
     "@nestjs/passport": "9.0.0",
     "@nestjs/platform-fastify": "9.0.11",
     "@nestjs/schedule": "2.1.0",
-    "@nestjs/swagger": "6.1.1",
+    "@nestjs/swagger": "6.1.2",
     "@nestjs/typeorm": "9.0.1",
     "@powerfulyang/node-utils": "1.2.1",
     "@powerfulyang/utils": "1.4.4",
