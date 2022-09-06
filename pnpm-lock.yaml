@@ -18,7 +18,7 @@ specifiers:
   '@nestjs/platform-fastify': 9.0.11
   '@nestjs/schedule': 2.1.0
   '@nestjs/schematics': 9.0.3
-  '@nestjs/swagger': 6.1.1
+  '@nestjs/swagger': 6.1.2
   '@nestjs/testing': 9.0.11
   '@nestjs/typeorm': 9.0.1
   '@powerfulyang/lint': 3.1.0
@@ -85,7 +85,7 @@ dependencies:
   '@nestjs/passport': 9.0.0_qmmxbt2dwte7f4tgsyyoa7ob5i
   '@nestjs/platform-fastify': 9.0.11_ipnr4fefuhr2x3on7pwr6cwcw4
   '@nestjs/schedule': 2.1.0_fvppslgepxggj3fnmtlnh4cori
-  '@nestjs/swagger': 6.1.1_rau4qacjo2snurbqsfd6gbpclu
+  '@nestjs/swagger': 6.1.2_rau4qacjo2snurbqsfd6gbpclu
   '@nestjs/typeorm': 9.0.1_tq7xycdignr3g27t42km5o6vju
   '@powerfulyang/node-utils': 1.2.1_ap7hqdr5rlom6ijreei62bwmqy
   '@powerfulyang/utils': 1.4.4_j5hagqx4mwzscud4kyjdvubauy
@@ -1646,8 +1646,8 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/swagger/6.1.1_rau4qacjo2snurbqsfd6gbpclu:
-    resolution: {integrity: sha512-csCVDIpGm7Bc63lc/QdmXSTvOZICgsTK91rEPOZHn9mzqUZVjnCfWo4bFi678a5Ue1LoqdZBLSyKBbcit/JnRw==}
+  /@nestjs/swagger/6.1.2_rau4qacjo2snurbqsfd6gbpclu:
+    resolution: {integrity: sha512-RU1DeTDyuN/lRXKFWaf7I9LYF34/ale3IIGeY3romAcXL/N9W0+50Ek3ou+Ajd5FqpLqzt7saYhnaQegVuU4UQ==}
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0
@@ -6347,7 +6347,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.14
+      '@types/node': 18.7.15
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
