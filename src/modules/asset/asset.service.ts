@@ -173,7 +173,7 @@ export class AssetService {
       Key,
       Bucket,
       Region,
-      Expires: 60 * 60 * 24, // 1day
+      Expires: 60 * 60 * 24 * 31, // 31day
     });
     return objectUrl;
   }
@@ -427,7 +427,7 @@ export class AssetService {
       Bucket,
       Region,
       Key,
-      Expires: 60 * 60 * 24, // 1day
+      Expires: 60 * 60 * 24 * 31, // 31day
     });
     return this.updateAssetByHash(data.sha1, {
       cosUrl: `https://${res.Location}`,

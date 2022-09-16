@@ -3,7 +3,6 @@ import { isProdProcess } from '@powerfulyang/utils';
 import { UserService } from '@/modules/user/user.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
-import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import { BucketService } from '@/modules/bucket/bucket.service';
 import { RoleService } from '@/modules/user/role/role.service';
@@ -14,7 +13,6 @@ export class BootstrapService {
     private readonly userService: UserService,
     private readonly logger: LoggerService,
     private readonly coreService: CoreService,
-    private readonly cosObjectUrlScheduleService: CosObjectUrlScheduleService,
     private readonly pathViewCountService: PathViewCountService,
     private readonly bucketService: BucketService,
     private readonly roleService: RoleService,
@@ -27,7 +25,6 @@ export class BootstrapService {
       setTimeout(() => {
         Promise.all([
           this.cacheUsers(),
-          this.refreshObjectUrl(),
           this.cachePathViewCount(),
           this.initBucket(),
           this.initIntendedData(),
@@ -40,10 +37,6 @@ export class BootstrapService {
           });
       }, (isProdProcess && 1000 * 10) || 0);
     });
-  }
-
-  refreshObjectUrl() {
-    return this.cosObjectUrlScheduleService.refreshObjectUrl();
   }
 
   async cacheUsers() {

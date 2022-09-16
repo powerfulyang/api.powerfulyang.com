@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Interval } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { AssetService } from '@/modules/asset/asset.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
@@ -16,18 +16,21 @@ export class CosObjectUrlScheduleService {
     this.logger.setContext(CosObjectUrlScheduleService.name);
   }
 
-  @Interval(60 * 60 * 24 * 999)
+  /**
+   * 每月1号执行一次
+   */
+  @Cron('0 0 0 1 * *')
   async refreshObjectUrl() {
     const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
-      this.logger.info('===========每24小时刷新资源的COS对象链接===========');
+      this.logger.info('===========每个月1号刷新资源的COS对象链接===========');
       await this.main();
     }
   }
 
   async main() {
     const assets = await this.assetService.all();
-    Promise.allSettled(
+    return Promise.allSettled(
       assets.map((asset) => {
         return this.assetService
           .getObjectUrl(`${asset.sha1}.${asset.fileSuffix}`, asset.bucket)
