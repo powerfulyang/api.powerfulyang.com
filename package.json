@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "8.4.0",
-    "@fastify/cookie": "8.1.0",
+    "@fastify/cookie": "8.2.0",
     "@fastify/multipart": "7.2.0",
     "@fastify/passport": "2.2.0",
     "@fastify/static": "6.5.0",
