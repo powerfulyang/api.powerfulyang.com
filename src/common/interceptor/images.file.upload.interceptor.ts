@@ -22,7 +22,7 @@ export class ImagesInterceptor implements NestInterceptor {
     const body = {};
     const images: UploadFile[] = [];
     for await (const part of parts) {
-      if (part.file) {
+      if ('file' in part) {
         if (part.mimetype.startsWith('image/')) {
           const buffer = await part.toBuffer();
           images.push({
@@ -30,7 +30,7 @@ export class ImagesInterceptor implements NestInterceptor {
             fieldname: part.fieldname,
             encoding: part.encoding,
             mimetype: part.mimetype,
-            originalname: part.fieldname,
+            originalname: part.filename,
             size: buffer.length,
           });
         } else {

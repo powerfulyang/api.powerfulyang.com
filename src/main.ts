@@ -51,12 +51,14 @@ async function bootstrap(): Promise<void> {
 
   // Swagger
   const config = new DocumentBuilder()
-    .setTitle('PowerfulYang API')
-    .setDescription('PowerfulYang API')
+    .setTitle('Backend API')
+    .setDescription('The API is used for powerfulyang.com')
     .setVersion('1.0')
+    .addServer('https://api.powerfulyang.com')
+    .addServer('https://qa.powerfulyang.com')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('doc', app, document);
+  SwaggerModule.setup('/api/swagger', app, document);
 
   // PeerServer
   PeerServer({
