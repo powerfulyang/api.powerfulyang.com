@@ -54,7 +54,7 @@
     "class-validator": "0.13.2",
     "cos-nodejs-sdk-v5": "2.11.12",
     "dayjs": "1.11.5",
-    "dotenv": "16.0.2",
+    "dotenv": "16.0.3",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.2.3",
     "ipdb": "0.3.3",
