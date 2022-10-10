@@ -378,14 +378,12 @@ export class AssetService {
     const publicBucketIds = await this.bucketService.listPublicBucket(true);
     const result = await this.assetDao
       .createQueryBuilder()
-      .where(
-        `
-        round(cast(size ->> 'width' as numeric) / cast(size ->> 'height' as numeric), 2) > 1.5 --- 宽高比大于 1.5
-        and "bucketId" = ANY(:publicBucketIds)  --- 公开的 bucket
-        and cast(metadata->>'size' as int) < 500 * 1000 --- limit 500kb
-               `,
-        { publicBucketIds },
-      )
+      // 宽高比大于 1
+      .where("round(cast(size ->> 'width' as numeric) / cast(size ->> 'height' as numeric), 2) > 1")
+      // 公开的 bucket
+      .andWhere('"bucketId" = ANY(:publicBucketIds)', { publicBucketIds })
+      // 小于 100kb
+      .andWhere("cast(metadata->>'size' as int) < 100 * 1000")
       .orderBy('random()')
       .limit(1)
       .getOne();
