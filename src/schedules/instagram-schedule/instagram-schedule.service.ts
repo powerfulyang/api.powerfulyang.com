@@ -28,6 +28,8 @@ export class InstagramScheduleService {
   }
 
   main() {
+    // due to `Avoid poor quality proxies. Instagram is now very sensitive with datacenter IP Addresses.`
+    return;
     this.assetService.assetBotSchedule(ScheduleType.instagram).catch((e) => {
       this.logger.error(e);
     });
