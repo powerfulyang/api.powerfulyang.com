@@ -2,6 +2,8 @@ import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
 import { PeerServer } from 'peer';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
@@ -13,6 +15,8 @@ import { AppModule } from './app.module';
 import fastifyInstance from './fastify/hook';
 
 dayjs.extend(quarterOfYear);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 require('source-map-support').install();
 
@@ -30,7 +34,9 @@ async function bootstrap(): Promise<void> {
   app
     .startAllMicroservices()
     .then(() => {
-      logger.info(`Microservice started at ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`);
+      logger.info(
+        `Microservice started at ${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}`,
+      );
     })
     .catch((err) => {
       logger.error('Fail to startAllMicroservices!', err);

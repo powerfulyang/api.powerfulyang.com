@@ -3,6 +3,7 @@ import type { Logger } from 'winston';
 import winston, { format } from 'winston';
 import { isProdProcess, isString } from '@powerfulyang/utils';
 import chalk from 'chalk';
+import dayjs from 'dayjs';
 
 const { combine, timestamp, printf } = format;
 const transport = new winston.transports.Console();
@@ -12,7 +13,11 @@ const logger = winston.createLogger({
   level: (isProdProcess && 'info') || 'debug',
   transports: [transport],
   format: combine(
-    timestamp({ format: 'MM/DD/YYYY, h:mm:ss A' }),
+    timestamp({
+      format: () => {
+        return dayjs().tz('Asia/Shanghai').format('MM/DD/YYYY, h:mm:ss A');
+      },
+    }),
     printf(({ level, message, ...others }) => {
       const {
         context,
