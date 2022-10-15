@@ -31,6 +31,10 @@ export class Feed {
   @ManyToOne(() => User, { nullable: false })
   createBy: User;
 
+  @JoinColumn()
+  @ManyToOne(() => User)
+  updateBy: User;
+
   @CreateDateColumn()
   createAt: Date;
 

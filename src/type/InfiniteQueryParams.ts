@@ -9,7 +9,3 @@ export type InfiniteQueryParams<T> = {
 export type AuthorizationParams = {
   userIds?: User['id'][];
 };
-
-export const DefaultCursor = 2 ** 31 - 1;
-
-export const DefaultTake = 10;

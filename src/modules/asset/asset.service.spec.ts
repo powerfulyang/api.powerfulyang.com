@@ -2,7 +2,7 @@ import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { readFileSync } from 'fs';
 import { AssetModule } from '@/modules/asset/asset.module';
-import { OrmModule } from '@/common/service/ORM/orm.module';
+import { OrmModule } from '@/common/service/orm/orm.module';
 import type { User } from '@/modules/user/entities/user.entity';
 import { AssetService } from './asset.service';
 

@@ -1,7 +1,7 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { MailService } from '@/common/service/MAIL/mail.service';
-import { MailModule } from '@/common/service/MAIL/mail.module';
+import { MailService } from '@/common/service/mail/mail.service';
+import { MailModule } from '@/common/service/mail/mail.module';
 import { SUCCESS } from '@/constants/constants';
 
 describe('test mail module', () => {

@@ -6,7 +6,7 @@ import {
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, LessThan, MoreThan, Not, Repository } from 'typeorm';
+import { DataSource, In, Not, Repository } from 'typeorm';
 import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, extname, join } from 'path';
@@ -29,14 +29,14 @@ import { ScheduleType } from '@/enum/ScheduleType';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
 import { UserService } from '@/modules/user/user.service';
 import { BucketService } from '@/modules/bucket/bucket.service';
-import { MqService } from '@/common/service/MQ/mq.service';
+import { MqService } from '@/common/service/mq/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
-import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
+import { BaseService } from '@/common/service/base/BaseService';
 import { getEXIF } from '../../../addon-api';
 
 @Injectable()
-export class AssetService {
+export class AssetService extends BaseService {
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
     @InjectDataSource() private readonly dataSource: DataSource,
@@ -50,6 +50,7 @@ export class AssetService {
     private readonly userService: UserService,
     private readonly bucketService: BucketService,
   ) {
+    super();
     this.logger.setContext(AssetService.name);
   }
 
@@ -341,11 +342,12 @@ export class AssetService {
 
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
     const { userIds = [], prevCursor, nextCursor } = params;
-    const take = Number(params.take || DefaultTake);
+    const take = this.formatInfiniteTake(params.take);
     const BotUser = await this.userService.getAssetBotUser();
-    const cursor = nextCursor
-      ? MoreThan(Number(nextCursor))
-      : LessThan(Number(prevCursor || DefaultCursor));
+    const cursor = this.generateInfiniteCursor({
+      nextCursor,
+      prevCursor,
+    });
     const res = await this.assetDao.find({
       select: {
         id: true,

@@ -8,7 +8,7 @@ import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { SUCCESS } from '@/constants/constants';
-import { EsService, POST_INDEX } from '@/common/service/ES/es.service';
+import { EsService, POST_INDEX } from '@/common/service/es/es.service';
 import type { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
 import { isNumeric } from '@powerfulyang/utils';

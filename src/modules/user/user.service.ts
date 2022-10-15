@@ -25,7 +25,7 @@ import { Family } from '@/modules/user/entities/family.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
 import { SUCCESS } from '@/constants/constants';
 import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { MailService } from '@/common/service/MAIL/mail.service';
+import { MailService } from '@/common/service/mail/mail.service';
 
 @Injectable()
 export class UserService {

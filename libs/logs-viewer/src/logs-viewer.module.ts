@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EsModule } from '@/common/service/ES/es.module';
+import { EsModule } from '@/common/service/es/es.module';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { LogsViewerController } from 'api/logs-viewer/logs-viewer.controller';
 import { LogsViewerService } from './logs-viewer.service';

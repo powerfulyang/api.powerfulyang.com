@@ -16,7 +16,7 @@ describe('FeedService', () => {
   });
 
   it('postNewFeed', async () => {
-    const result = await service.postNewFeed({ content: 'test', createBy: <User>{ id: 1 } });
+    const result = await service.postFeed({ content: 'test', createBy: <User>{ id: 1 } });
     expect(result.content).toBe('test');
     const res = await service.updateFeed(result.id, { content: 'test2' });
     expect(res).toBeDefined();

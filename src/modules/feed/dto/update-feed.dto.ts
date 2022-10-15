@@ -5,4 +5,10 @@ import { CreateFeedDto } from './create-feed.dto';
 export class UpdateFeedDto extends PartialType(CreateFeedDto) {
   @IsNotEmpty()
   declare content: string;
+
+  @IsNotEmpty()
+  declare public: boolean;
+
+  @IsNotEmpty()
+  declare id: number;
 }

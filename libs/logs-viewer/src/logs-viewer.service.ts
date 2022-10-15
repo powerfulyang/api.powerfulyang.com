@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EsService } from '@/common/service/ES/es.service';
+import { EsService } from '@/common/service/es/es.service';
 import type { ElasticsearchService } from '@nestjs/elasticsearch';
-import type { LogstashSource } from '@/common/service/ES/types/LogstashSource';
+import type { LogstashSource } from '@/common/service/es/types/LogstashSource';
 import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()

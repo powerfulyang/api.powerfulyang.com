@@ -1,6 +1,6 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { EsModule } from '@/common/service/ES/es.module';
+import { EsModule } from '@/common/service/es/es.module';
 import { EsService } from './es.service';
 
 describe('SearchService', () => {

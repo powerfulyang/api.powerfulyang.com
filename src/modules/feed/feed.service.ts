@@ -1,24 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, LessThan, MoreThan, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { firstItem, lastItem } from '@powerfulyang/utils';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { UploadFile } from '@/type/UploadFile';
 import { BuiltinBucket } from '@/modules/bucket/entities/bucket.entity';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
-import { DefaultCursor, DefaultTake } from '@/type/InfiniteQueryParams';
+import { BaseService } from '@/common/service/base/BaseService';
 import { AssetService } from '../asset/asset.service';
 import type { CreateFeedDto } from './dto/create-feed.dto';
 import type { UpdateFeedDto } from './dto/update-feed.dto';
 
 @Injectable()
-export class FeedService {
+export class FeedService extends BaseService {
   constructor(
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
     private readonly logger: LoggerService,
     private readonly assetService: AssetService,
   ) {
+    super();
     this.logger.setContext(FeedService.name);
   }
 
@@ -26,10 +27,7 @@ export class FeedService {
     return this.feedDao.find();
   }
 
-  async postNewFeed(
-    createFeedDto: CreateFeedDto & Pick<Feed, 'createBy'>,
-    files: UploadFile[] = [],
-  ) {
+  async postFeed(createFeedDto: CreateFeedDto & Pick<Feed, 'createBy'>, files: UploadFile[] = []) {
     const assets = await this.assetService.saveAssetToBucket(
       files,
       BuiltinBucket.timeline,
@@ -38,12 +36,33 @@ export class FeedService {
     return this.feedDao.save({ ...createFeedDto, assets });
   }
 
+  async modifyFeed(
+    updateFeedDto: UpdateFeedDto & Pick<Feed, 'updateBy'>,
+    files: UploadFile[] = [],
+  ) {
+    const feed = await this.feedDao.findOneOrFail({
+      where: {
+        id: updateFeedDto.id,
+      },
+      relations: ['assets', 'createBy'],
+    });
+    feed.public = updateFeedDto.public;
+    feed.content = updateFeedDto.content;
+    feed.assets = await this.assetService.saveAssetToBucket(
+      files,
+      BuiltinBucket.timeline,
+      updateFeedDto.updateBy,
+    );
+    return this.feedDao.save(feed);
+  }
+
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
     const { userIds = [], prevCursor, nextCursor } = params;
-    const take = Number(params.take) || DefaultTake;
-    const cursor = nextCursor
-      ? MoreThan(Number(nextCursor))
-      : LessThan(Number(prevCursor || DefaultCursor));
+    const take = this.formatInfiniteTake(params.take);
+    const cursor = this.generateInfiniteCursor({
+      nextCursor,
+      prevCursor,
+    });
     const res = await this.feedDao.find({
       select: {
         id: true,
@@ -52,6 +71,7 @@ export class FeedService {
         createBy: {
           avatar: true,
           nickname: true,
+          id: true,
         },
         assets: {
           id: true,
@@ -61,6 +81,7 @@ export class FeedService {
             height: true,
           },
         },
+        public: true,
       },
       relations: {
         createBy: true,
@@ -86,7 +107,11 @@ export class FeedService {
     };
   }
 
-  updateFeed(id: number, updateFeedDto: UpdateFeedDto) {
+  updateFeed(id: number, updateFeedDto: Partial<UpdateFeedDto>) {
     return this.feedDao.update(id, updateFeedDto);
+  }
+
+  deleteFeed(id: Feed['id']) {
+    return this.feedDao.delete(id);
   }
 }
