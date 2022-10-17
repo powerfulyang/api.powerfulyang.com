@@ -429,10 +429,12 @@ export class AssetService extends BaseService {
       Key,
       Expires: 60 * 60 * 24 * 31, // 31day
     });
-    return this.updateAssetByHash(data.sha1, {
-      cosUrl: `https://${res.Location}`,
+    const cosUrl = `https://${res.Location}`;
+    await this.updateAssetByHash(data.sha1, {
+      cosUrl,
       objectUrl,
     });
+    return { cosUrl, objectUrl };
   }
 
   private async getCosUrl(Key: string, bucket: CosBucket) {
@@ -506,7 +508,9 @@ export class AssetService extends BaseService {
         suffix: asset.fileSuffix,
         name: asset.bucket.name,
       };
-      await this.persistentToCos(data);
+      const { cosUrl, objectUrl } = await this.persistentToCos(data);
+      asset.objectUrl = objectUrl;
+      asset.cosUrl = cosUrl;
     } catch (e) {
       this.logger.error(e);
     }
