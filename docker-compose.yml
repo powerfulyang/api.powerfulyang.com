@@ -1,0 +1,34 @@
+version: '3'
+services:
+  pg:
+    image: postgres
+    container_name: pg
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: change_me
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    command: redis-server --save "" --appendfsync no
+    ports:
+      - "6379:6379"
+  elasticsearch:
+    image: elastic/elasticsearch:8.2.0
+    container_name: elasticsearch
+    restart: always
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ingest.geoip.downloader.enabled=false
+      - network.host=0.0.0.0
