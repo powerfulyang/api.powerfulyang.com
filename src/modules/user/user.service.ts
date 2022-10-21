@@ -184,7 +184,11 @@ export class UserService {
     return this.generateAuthorization(userInfo);
   }
 
-  getUserByEmail(email: string): Promise<User> {
+  getUserByEmail(email: string) {
+    return this.userDao.findOneBy({ email });
+  }
+
+  getUserByEmailOrFail(email: string) {
     return this.userDao.findOneByOrFail({ email });
   }
 
@@ -278,7 +282,9 @@ export class UserService {
   }
 
   getAssetBotUser() {
-    return this.getUserByEmail(User.IntendedUsers.BotUser);
+    return this.userDao.findOneByOrFail({
+      email: User.IntendedUsers.BotUser,
+    });
   }
 
   async listAssetPublicUser() {
@@ -329,8 +335,9 @@ export class UserService {
 
   private async saveUserAndCached<T extends User>(user: T) {
     const updatedUser = await this.userDao.save(user);
+    const cache = await this.queryUserCascadeFamilyInfo(updatedUser.id);
     // update to cache
-    await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, updatedUser);
-    return updatedUser;
+    await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, cache);
+    return cache;
   }
 }

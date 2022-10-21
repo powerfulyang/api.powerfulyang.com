@@ -28,7 +28,7 @@ describe('UserService', () => {
   it('cacheUsers', async () => {
     const result = await service.cacheUsers();
     expect(result).toBe(SUCCESS);
-    const adminUser = await service.getUserByEmail(User.IntendedUsers.AdminUser);
+    const adminUser = await service.getUserByEmailOrFail(User.IntendedUsers.AdminUser);
     const cachedUser = await service.getCachedUser(adminUser.id);
     const users = getUserFamiliesMembers(cachedUser);
     expect(users).toBeDefined();
@@ -56,7 +56,7 @@ describe('UserService', () => {
   });
 
   it('update password & login & verifyAuthorization', async () => {
-    const user = await service.getUserByEmail(User.IntendedUsers.AdminUser);
+    const user = await service.getUserByEmailOrFail(User.IntendedUsers.AdminUser);
     const result = await service.updatePassword(user.id);
     const token = await service.login({
       email: User.IntendedUsers.AdminUser,
@@ -67,7 +67,7 @@ describe('UserService', () => {
   });
 
   it('getUserCascadeFamilyInfo', async () => {
-    const user = await service.getUserByEmail(User.IntendedUsers.AdminUser);
+    const user = await service.getUserByEmailOrFail(User.IntendedUsers.AdminUser);
     const result = await service.queryUserCascadeFamilyInfo(user.id);
     const result2 = await service.queryUserCascadeFamilyInfo([user.id]);
     const result3 = await service.queryUserCascadeFamilyInfo();
@@ -87,7 +87,7 @@ describe('UserService', () => {
     }
     family = await service.getFamilyById(family.id);
     expect(family).toHaveProperty('name', 'test family');
-    const adminUserSimple = await service.getUserByEmail(User.IntendedUsers.AdminUser);
+    const adminUserSimple = await service.getUserByEmailOrFail(User.IntendedUsers.AdminUser);
     const res = await service.setUserFamily(adminUserSimple.id, family.id, 'add');
     expect(res.families).toContainEqual(family);
     // remove adminUser test family

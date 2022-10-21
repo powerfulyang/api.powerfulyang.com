@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { countBy, flatten, map, pick, pluck, prop, trim } from 'ramda';
+import { countBy, flatten, pick, pluck, trim } from 'ramda';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
@@ -159,8 +159,8 @@ export class PostService {
         { public: true },
       ],
     });
-    const allTags = flatten(map(prop('tags'))(tagsArr));
-    return countBy(trim)(allTags);
+    const tags = flatten(tagsArr.map((item) => item.tags));
+    return countBy(trim)(tags);
   }
 
   async getPublishedYears(ids: User['id'][] = []) {
