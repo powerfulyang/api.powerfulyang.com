@@ -20,6 +20,6 @@ if (isProd) {
 }
 
 if (isTest) {
-  // config({ path: '.env.test' });
-  dotenv.config({ path: '.env.prod' });
+  // must load the highest priority
+  dotenv.config({ path: '.env.test' });
 }

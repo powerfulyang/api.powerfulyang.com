@@ -4,14 +4,14 @@ import { In, Repository } from 'typeorm';
 import { countBy, flatten, pick, pluck, trim } from 'ramda';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
-import type { PublishPostDto } from '@/modules/post/dto/publish-post.dto';
+import type { PublishNewPostDto } from '@/modules/post/dto/publish-new-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
-import { SUCCESS } from '@/constants/constants';
 import { EsService, POST_INDEX } from '@/common/service/es/es.service';
 import type { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
 import { isNumeric } from '@powerfulyang/utils';
+import type { UpdatePostDto } from '@/modules/post/dto/update-post.dto';
 
 @Injectable()
 export class PostService {
@@ -34,11 +34,7 @@ export class PostService {
       });
   }
 
-  all() {
-    return this.postDao.find();
-  }
-
-  async updatePost(post: PublishPostDto) {
+  async updatePost(post: UpdatePostDto) {
     // update
     const findPost = await this.postDao.findOneOrFail({
       where: {
@@ -46,6 +42,11 @@ export class PostService {
       },
       relations: ['createBy'],
     });
+
+    if (findPost.createBy.id !== post.updateBy.id) {
+      throw new ForbiddenException('You can only update your own post!');
+    }
+
     findPost.content = post.content;
     findPost.title = post.title;
     if (post.tags) {
@@ -58,7 +59,7 @@ export class PostService {
     return this.postDao.save(findPost);
   }
 
-  async createPost(post: PublishPostDto) {
+  async createPost(post: PublishNewPostDto) {
     if (!post.posterId) {
       const poster = await this.assetService.randomAsset();
       Reflect.set(post, 'poster', poster);
@@ -70,8 +71,8 @@ export class PostService {
     return this.postDao.save(toSave);
   }
 
-  async publishPost(post: PublishPostDto) {
-    if (post.id) {
+  async publishPost(post: PublishNewPostDto | UpdatePostDto) {
+    if ('id' in post) {
       return this.updatePost(post);
     }
     return this.createPost(post);
@@ -84,10 +85,9 @@ export class PostService {
         id: post.createBy.id,
       },
     });
-    if (result.affected === 1) {
-      return SUCCESS;
+    if (result.affected === 0) {
+      throw new ForbiddenException('You can only delete your own post!');
     }
-    throw new ForbiddenException('You can only delete your own post!');
   }
 
   readPost(id: Post['id'] | Post['urlTitle'], ids: User['id'][] = []) {
@@ -104,6 +104,7 @@ export class PostService {
         ],
       });
     }
+
     return this.postDao.findOneOrFail({
       where: [
         { urlTitle: String(id), public: true },
@@ -117,7 +118,7 @@ export class PostService {
     });
   }
 
-  queryPosts(post: SearchPostDto, ids: User['id'][] = []) {
+  queryPosts(post?: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
       select: {
         id: true,
@@ -198,7 +199,7 @@ export class PostService {
         { ignore: [400] },
       );
     }
-    const posts = await this.all();
+    const posts = await this.queryPosts();
     const body = posts.flatMap((post) => {
       return [
         { index: { _index: POST_INDEX, _id: post.id } },

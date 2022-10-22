@@ -92,7 +92,7 @@ export class UserService {
   async cacheUsers() {
     // 初始化用户缓存
     const keyCount = await this.cacheService.del(REDIS_KEYS.USERS);
-    this.logger.debug(`初始化用户缓存，删除 ${keyCount} 个缓存`);
+    this.logger.debug(`初始化用户缓存，删除缓存${keyCount ? '成功' : '失败'}`);
     const users = await this.queryUserCascadeFamilyInfo();
     const userMap = users.reduce((acc, user) => {
       Reflect.set(acc, user.id, JSON.stringify(user));

@@ -20,7 +20,6 @@ import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { SUCCESS } from '@/constants/constants';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
-import type { Pagination } from '@/common/decorator/pagination.decorator';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
@@ -61,25 +60,6 @@ export class AssetService extends BaseService {
       publicBucketIds: publicBuckets.map((bucket) => bucket.id),
       publicUserIds: publicUsers.map((user) => user.id),
     };
-  }
-
-  // 获取有权限的资源
-  async getAssets(pagination: Partial<Pagination> = {}, ids: User['id'][] = []) {
-    const publicAssetSource = await this.listPublicAssetSource();
-    return this.assetDao.findAndCount({
-      ...pagination,
-      order: { id: 'DESC' },
-      where: [
-        {
-          uploadBy: {
-            id: In([...ids, ...publicAssetSource.publicUserIds]),
-          },
-          bucket: {
-            id: In(publicAssetSource.publicBucketIds),
-          },
-        },
-      ],
-    });
   }
 
   all() {
@@ -126,13 +106,13 @@ export class AssetService extends BaseService {
   }
 
   async saveAssetToBucket(
-    files: Pick<UploadFile, 'buffer'>[],
+    files: Pick<UploadFile, 'data'>[],
     bucketName: CosBucket['name'],
     uploadBy: User,
   ) {
     const assets: Asset[] = [];
     for (const file of files) {
-      const asset = await this.manualUploadImageToCos(file.buffer, bucketName, uploadBy);
+      const asset = await this.manualUploadImageToCos(file.data, bucketName, uploadBy);
       assets.push(asset);
     }
     return assets;

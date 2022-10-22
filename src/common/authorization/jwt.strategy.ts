@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { User } from '@/modules/user/entities/user.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
@@ -30,6 +30,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate({ raw: { extend } }: ExtendRequest, user: User & { iat: number; exp: number }) {
     // to check user status;
     const cachedUser = await this.userService.getCachedUser(user.id);
+    if (!cachedUser) {
+      throw new UnauthorizedException('User cache not found');
+    }
     process.nextTick(() => {
       this.userService.updateUserWithoutCache(user.id, {
         lastIp: extend.xRealIp,

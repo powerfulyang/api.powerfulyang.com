@@ -24,7 +24,7 @@ fastifyInstance.addHook('onRequest', (request, reply, done) => {
   done();
 });
 fastifyInstance.register(fastifyCookie);
-fastifyInstance.register(fastifyMultipart);
+fastifyInstance.register(fastifyMultipart, { addToBody: true });
 fastifyInstance.register(fastifyStatic, {
   root: join(process.cwd(), 'assets'),
   decorateReply: false,

@@ -43,6 +43,7 @@ specifiers:
   cos-nodejs-sdk-v5: 2.11.13
   dayjs: 1.11.6
   dotenv: 16.0.3
+  form-data: 4.0.0
   instagram-private-api: 1.45.3
   ioredis: 5.2.3
   ipdb: 0.3.3
@@ -136,6 +137,7 @@ devDependencies:
   '@types/sharp': 0.31.0
   '@types/uuid': 8.3.4
   '@types/xml2js': 0.4.11
+  form-data: 4.0.0
   node-addon-api: 5.0.0
   node-gyp: 9.3.0
   typescript: 4.8.4
@@ -1141,7 +1143,7 @@ packages:
     resolution: {integrity: sha512-3Ab5HgYIIAnS0HjqJHQYZS+zXc4tUmTmBH3z83ajI6afXp8X3ZtdLX+nXx+I7LNkJD7uN9LAVhgnjDgZa2z0kA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@sinclair/typebox': 0.24.47
+      '@sinclair/typebox': 0.24.48
     dev: true
 
   /@jest/source-map/29.2.0:
@@ -1896,8 +1898,8 @@ packages:
       rxjs: 7.5.7
     dev: false
 
-  /@sinclair/typebox/0.24.47:
-    resolution: {integrity: sha512-J4Xw0xYK4h7eC34MNOPQi6IkNxGRck6n4VJpWDzXIFVTW8I/D43Gf+NfWz/v/7NHlzWOPd3+T4PJ4OqklQ2u7A==}
+  /@sinclair/typebox/0.24.48:
+    resolution: {integrity: sha512-WPGpRNHbkOsfBDmh8QHU7a5NWzEuYNThST8x1cISvX0RpP+1+V8zjuJqNwGJkHGIlhdIIhv6qVYqXz2q5/gjAA==}
     dev: true
 
   /@sinonjs/commons/1.8.3:
@@ -3669,7 +3671,7 @@ packages:
     dev: true
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
 
   /conf/9.0.2:
     resolution: {integrity: sha512-rLSiilO85qHgaTBIIHQpsv8z+NnVfZq3cKuYNCXN1AOqPzced0GWZEe/A517VldRLyQYXUMyV+vszavE2jSAqw==}

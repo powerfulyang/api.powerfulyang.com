@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { firstItem, lastItem } from '@powerfulyang/utils';
@@ -111,7 +111,15 @@ export class FeedService extends BaseService {
     return this.feedDao.update(id, updateFeedDto);
   }
 
-  deleteFeed(id: Feed['id']) {
-    return this.feedDao.delete(id);
+  async deleteFeed(feed: Pick<Feed, 'id' | 'createBy'>) {
+    const result = await this.feedDao.delete({
+      id: feed.id,
+      createBy: {
+        id: feed.createBy.id,
+      },
+    });
+    if (result.affected === 0) {
+      throw new ForbiddenException('You can only delete your own post!');
+    }
   }
 }

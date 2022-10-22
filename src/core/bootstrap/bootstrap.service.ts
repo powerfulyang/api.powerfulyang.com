@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { isProdProcess } from '@powerfulyang/utils';
 import { UserService } from '@/modules/user/user.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
@@ -21,22 +20,12 @@ export class BootstrapService {
   }
 
   bootstrap() {
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        Promise.all([
-          this.cacheUsers(),
-          this.cachePathViewCount(),
-          this.initBucket(),
-          this.initIntendedData(),
-        ])
-          .then(() => {
-            resolve();
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      }, (isProdProcess && 1000 * 10) || 0);
-    });
+    return Promise.all([
+      this.cacheUsers(),
+      this.cachePathViewCount(),
+      this.initBucket(),
+      this.initIntendedData(),
+    ]);
   }
 
   async cacheUsers() {

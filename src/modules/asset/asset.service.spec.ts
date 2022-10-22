@@ -22,11 +22,6 @@ describe('AssetService', () => {
     expect(res).toBeDefined();
   });
 
-  it('getAssets', async () => {
-    const res = await service.getAssets();
-    expect(res).toBeDefined();
-  });
-
   it('all', async () => {
     const res = await service.all();
     expect(res).toBeDefined();
@@ -42,7 +37,7 @@ describe('AssetService', () => {
     const res = await service.saveAssetToBucket(
       [
         {
-          buffer: file,
+          data: file,
         },
       ],
       'test',
@@ -76,8 +71,8 @@ describe('AssetService', () => {
   it('persistentToCos', async () => {
     const res = await service.persistentToCos({
       name: 'test',
-      sha1: 'test',
-      suffix: 'jpg',
+      sha1: 'ce023b330af210666072c097f33666e5bbf2b2df',
+      suffix: 'jpeg',
     });
     expect(res).toBeDefined();
   });

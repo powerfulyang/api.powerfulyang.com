@@ -24,7 +24,7 @@ export class Feed {
   @JoinTable()
   assets: Asset[];
 
-  @Column({ default: true })
+  @Column({ default: false })
   public: boolean;
 
   @JoinColumn()

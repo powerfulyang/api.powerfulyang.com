@@ -31,7 +31,7 @@ export class Post {
   @Column({ type: 'json' })
   tags: string[];
 
-  @Column({ default: true })
+  @Column({ default: false })
   public: boolean;
 
   @Column()
@@ -40,6 +40,10 @@ export class Post {
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
   createBy: User;
+
+  @JoinColumn()
+  @ManyToOne(() => User, { nullable: true })
+  updateBy: User;
 
   @JoinColumn()
   @ManyToOne(() => Asset, { eager: true })
