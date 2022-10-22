@@ -40,7 +40,7 @@ specifiers:
   bindings: 1.5.0
   chalk: 4.1.2
   class-validator: 0.13.2
-  cos-nodejs-sdk-v5: 2.11.13
+  cos-nodejs-sdk-v5: 2.11.14
   dayjs: 1.11.6
   dotenv: 16.0.3
   form-data: 4.0.0
@@ -95,7 +95,7 @@ dependencies:
   bindings: 1.5.0
   chalk: 4.1.2
   class-validator: 0.13.2
-  cos-nodejs-sdk-v5: 2.11.13
+  cos-nodejs-sdk-v5: 2.11.14
   dayjs: 1.11.6
   dotenv: 16.0.3
   instagram-private-api: 1.45.3
@@ -3776,8 +3776,8 @@ packages:
       vary: 1.1.2
     dev: false
 
-  /cos-nodejs-sdk-v5/2.11.13:
-    resolution: {integrity: sha512-unt3rOrA27dapsdlFpofmVI5KvkZPrzqkkCebuBeKybnsxmlUdHXK23Lik4snWRX6F2TL3BILusK12Zza48yPA==}
+  /cos-nodejs-sdk-v5/2.11.14:
+    resolution: {integrity: sha512-PCkGa1tJikjIr42GqihTnefZntPHp64so55E2rcSYzim6nUCrJdcFM9eBLU3rMS4Nz11mBjhSPqyQJq+avfHqg==}
     engines: {node: '>= 6'}
     dependencies:
       conf: 9.0.2
