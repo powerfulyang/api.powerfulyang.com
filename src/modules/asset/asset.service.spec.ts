@@ -50,7 +50,7 @@ describe('AssetService', () => {
 
   it('syncFromCos', async () => {
     const res = await service.syncFromCos();
-    expect(res).toBeDefined();
+    expect(res).not.toBeDefined();
   });
 
   it('infiniteQuery', async () => {

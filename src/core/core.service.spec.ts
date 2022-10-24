@@ -14,8 +14,10 @@ describe('core service test', () => {
     service = module.get<CoreService>(CoreService);
   });
 
-  it('setCommonNodeUuid', async () => {
-    const bool = await service.isProdScheduleNode();
-    expect(bool).toBeFalsy();
+  it('node check', async () => {
+    const isProdScheduleNode = await service.isProdScheduleNode();
+    expect(isProdScheduleNode).toBeFalsy();
+    const isScheduleNode = await service.isScheduleNode();
+    expect(isScheduleNode).toBeFalsy();
   });
 });

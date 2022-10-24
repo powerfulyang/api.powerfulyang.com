@@ -1,59 +1,55 @@
-import { Body, Controller, Delete, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import type { UploadFile } from '@/type/UploadFile';
-import type { Feed } from '@/modules/feed/entities/feed.entity';
-import { AccessInterceptor } from '@/common/interceptor/access.interceptor';
-import { JwtAuthGuard } from '@/common/decorator';
+import { AccessAuthGuard } from '@/common/decorator';
+import { DeleteFeedDto } from '@/modules/feed/dto/delete-feed.dto';
 import { FeedService } from './feed.service';
 import { CreateFeedDto } from './dto/create-feed.dto';
 import { UpdateFeedDto } from './dto/update-feed.dto';
 
 @Controller('feed')
-@JwtAuthGuard()
+@AccessAuthGuard()
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
   @Post()
-  @UseInterceptors(AccessInterceptor)
   create(
     @Body() createFeedDto: CreateFeedDto,
     @UserFromAuth(['id']) user: User,
     @Body('assets') assets: UploadFile[],
   ) {
-    // 因为是 FormData 格式, 只能传 string
-    const isPublic = Object.is(createFeedDto.public, 'true');
+    const { content, public: isPublic } = createFeedDto;
     return this.feedService.postFeed(
       {
-        ...createFeedDto,
+        content,
         createBy: user,
-        public: isPublic,
+        public: Object.is(isPublic, 'true'),
       },
       assets,
     );
   }
 
   @Put()
-  @UseInterceptors(AccessInterceptor)
   update(
     @Body() updateFeedDto: UpdateFeedDto,
     @UserFromAuth(['id']) user: User,
     @Body('assets') assets: UploadFile[],
   ) {
-    // 因为是 FormData 格式, 只能传 string
-    const isPublic = Object.is(updateFeedDto.public, 'true');
+    const { id, content, public: isPublic } = updateFeedDto;
     return this.feedService.modifyFeed(
       {
-        ...updateFeedDto,
+        id,
+        content,
         updateBy: user,
-        public: isPublic,
+        public: Object.is(isPublic, 'true'),
       },
       assets,
     );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: Feed['id'], @UserFromAuth(['id']) user: User) {
+  remove(@Param() { id }: DeleteFeedDto, @UserFromAuth(['id']) user: User) {
     return this.feedService.deleteFeed({
       id,
       createBy: user,

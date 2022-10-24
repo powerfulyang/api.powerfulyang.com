@@ -10,20 +10,9 @@ import { checkRedisResult } from '@/constants/constants';
 export class CoreService {
   constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
     this.logger.setContext(CoreService.name);
-    if (isProdProcess) {
-      this.initScheduleNode()
-        .then((hostname) => {
-          this.logger.info(
-            `NODE_ENV ====> ${process.env.NODE_ENV || 'UNSET'}, HOSTNAME ====> ${hostname}`,
-          );
-        })
-        .catch((err) => {
-          this.logger.error(err);
-        });
-    }
   }
 
-  async initScheduleNode() {
+  async leadScheduleNode() {
     const result = await this.cacheService.set(REDIS_KEYS.SCHEDULE_NODE, HOSTNAME);
     checkRedisResult(result);
     return HOSTNAME;

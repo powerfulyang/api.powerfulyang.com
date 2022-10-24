@@ -1,33 +1,36 @@
-import { Body, Controller, Delete, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
-import { JwtAuthGuard } from '@/common/decorator';
+import { AccessAuthGuard } from '@/common/decorator';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
-import type { DeletePostDto } from '@/modules/post/dto/delete-post.dto';
-import { PublishNewPostDto } from '@/modules/post/dto/publish-new-post.dto';
-import { UpdatePostDto } from '@/modules/post/dto/update-post.dto';
-import { AccessInterceptor } from '@/common/interceptor/access.interceptor';
+import { DeletePostDto } from '@/modules/post/dto/delete-post.dto';
+import { CreatePostDto } from '@/modules/post/dto/create-post.dto';
+import { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 
 @Controller('post')
-@JwtAuthGuard()
-@UseInterceptors(AccessInterceptor)
+@AccessAuthGuard()
 export class PostController {
   constructor(private postService: PostService) {}
 
   @Post()
-  createPost(@Body() draft: PublishNewPostDto, @UserFromAuth(['id']) user: User) {
+  createPost(@Body() draft: CreatePostDto, @UserFromAuth(['id']) user: User) {
     draft.createBy = user;
-    return this.postService.publishPost(draft);
+    return this.postService.createPost(draft);
   }
 
-  @Put()
-  updatePost(@Body() draft: UpdatePostDto, @UserFromAuth(['id']) user: User) {
+  @Patch(':id')
+  updatePost(
+    @Param() { id }: DeletePostDto,
+    @Body() draft: PatchPostDto,
+    @UserFromAuth(['id']) user: User,
+  ) {
     draft.updateBy = user;
-    return this.postService.publishPost(draft);
+    draft.id = id;
+    return this.postService.updatePost(draft);
   }
 
   @Delete(':id')
-  deletePost(@Param('id') id: DeletePostDto['id'], @UserFromAuth(['id']) user: User) {
+  deletePost(@Param() { id }: DeletePostDto, @UserFromAuth(['id']) user: User) {
     return this.postService.deletePost({
       id,
       createBy: user,

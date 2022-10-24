@@ -3,7 +3,6 @@ import type { Transporter } from 'nodemailer';
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { ConfigService } from '@/common/config/config.service';
-import { SUCCESS } from '@/constants/constants';
 import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
@@ -29,6 +28,6 @@ export class MailService {
     if (res.accepted.length === 0) {
       throw new InternalServerErrorException('Mail not accepted!');
     }
-    return SUCCESS;
+    return res;
   }
 }

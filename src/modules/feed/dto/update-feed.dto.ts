@@ -1,14 +1,14 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumberString } from 'class-validator';
 import { CreateFeedDto } from './create-feed.dto';
 
 export class UpdateFeedDto extends PartialType(CreateFeedDto) {
   @IsNotEmpty()
+  @IsNumberString()
+  declare id: number;
+
+  @IsNotEmpty()
   declare content: string;
 
-  @IsNotEmpty()
   declare public: boolean;
-
-  @IsNotEmpty()
-  declare id: number;
 }

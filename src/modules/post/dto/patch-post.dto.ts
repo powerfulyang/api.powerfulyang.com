@@ -3,8 +3,7 @@ import { IsNotEmpty, Length } from 'class-validator';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 
-export class UpdatePostDto extends PartialType(Post) {
-  @IsNotEmpty()
+export class PatchPostDto extends PartialType(Post) {
   declare id: number;
 
   @Length(1, 30)

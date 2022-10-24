@@ -1,7 +1,6 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { PostModule } from '@/modules/post/post.module';
-import { SUCCESS } from '@/constants/constants';
 import type { User } from '@/modules/user/entities/user.entity';
 import { PostService } from './post.service';
 
@@ -17,7 +16,7 @@ describe('PostService', () => {
   });
 
   it('create new post', async () => {
-    const res = await service.publishPost({
+    const res = await service.createPost({
       content: 'test content',
       title: 'test title',
       createBy: {
@@ -25,11 +24,11 @@ describe('PostService', () => {
       } as User,
       posterId: 12,
     });
-    expect(res).toBeDefined();
+    expect(res.public).toBe(false);
     const post = await service.readPost(res.id, [res.createBy.id]);
     expect(post).toHaveProperty('content', 'test content');
     const result = await service.deletePost(res);
-    expect(result).toBe(SUCCESS);
+    expect(result).not.toBeDefined();
   });
 
   it('getPosts', async () => {

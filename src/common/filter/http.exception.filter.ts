@@ -15,9 +15,12 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
     const response = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<FastifyRequest>();
     const statusCode = exception.getStatus();
+    const r = exception.getResponse();
+    // @ts-ignore
+    const message = typeof r === 'string' ? r : r.message;
     response.status(statusCode).send({
       statusCode,
-      message: exception.message,
+      message,
       timestamp: new Date().toISOString(),
       path: request.url,
     });

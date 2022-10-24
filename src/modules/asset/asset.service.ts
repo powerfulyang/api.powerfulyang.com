@@ -18,7 +18,6 @@ import { PinterestBotService } from 'api/pinterest-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
-import { SUCCESS } from '@/constants/constants';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import type { User } from '@/modules/user/entities/user.entity';
@@ -122,8 +121,8 @@ export class AssetService extends BaseService {
    * 批量删除 asset
    * @param ids
    */
-  async deleteAsset(ids: number[]) {
-    await this.dataSource.transaction(async (transactionalEntityManager) => {
+  deleteAsset(ids: number[]) {
+    return this.dataSource.transaction(async (transactionalEntityManager) => {
       for (const id of ids) {
         const asset = await transactionalEntityManager.findOneOrFail(Asset, {
           where: { id },
@@ -142,7 +141,6 @@ export class AssetService extends BaseService {
         await transactionalEntityManager.remove(asset);
       }
     });
-    return SUCCESS;
   }
 
   async getObjectUrl(Key: string, bucket: CosBucket) {
@@ -213,7 +211,6 @@ export class AssetService extends BaseService {
         }
       }
     }
-    return SUCCESS;
   }
 
   getAssetById(id: Asset['id']): Promise<Asset>;
@@ -450,9 +447,9 @@ export class AssetService extends BaseService {
 
   /**
    * 手动上传图片
-   * @param buffer
-   * @param bucketName
-   * @param uploadBy
+   * @param buffer - 图片 buffer
+   * @param bucketName - bucket 名称
+   * @param uploadBy - 上传者
    */
   private async manualUploadImageToCos(
     buffer: Buffer,

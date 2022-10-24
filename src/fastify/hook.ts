@@ -5,8 +5,9 @@ import fastifyMultipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
 import { join } from 'path';
 
-// Create fastify instance
 const fastifyInstance = fastify();
+
+// adapt passport
 fastifyInstance.addHook('onRequest', (request, reply, done) => {
   // @ts-ignore
   // eslint-disable-next-line no-param-reassign
@@ -23,6 +24,7 @@ fastifyInstance.addHook('onRequest', (request, reply, done) => {
   request.res = reply;
   done();
 });
+
 fastifyInstance.register(fastifyCookie);
 fastifyInstance.register(fastifyMultipart, { addToBody: true });
 fastifyInstance.register(fastifyStatic, {

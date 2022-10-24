@@ -3,7 +3,6 @@ import { Test } from '@nestjs/testing';
 import { isNull } from '@powerfulyang/utils';
 import { generateRandomString } from '@powerfulyang/node-utils';
 import { User } from '@/modules/user/entities/user.entity';
-import { SUCCESS } from '@/constants/constants';
 import { UserModule } from '@/modules/user/user.module';
 import { Family } from '@/modules/user/entities/family.entity';
 import { getUserFamiliesMembers } from '@/common/decorator/user-from-auth.decorator';
@@ -26,8 +25,7 @@ describe('UserService', () => {
   });
 
   it('cacheUsers', async () => {
-    const result = await service.cacheUsers();
-    expect(result).toBe(SUCCESS);
+    await service.cacheUsers();
     const adminUser = await service.getUserByEmailOrFail(User.IntendedUsers.AdminUser);
     const cachedUser = await service.getCachedUser(adminUser.id);
     const users = getUserFamiliesMembers(cachedUser);
@@ -37,7 +35,7 @@ describe('UserService', () => {
 
   it('sendDefaultPassword', async () => {
     const res = await service.sendDefaultPassword('i@Powerfulyang.com', generateRandomString());
-    expect(res).toBe(SUCCESS);
+    expect(res.accepted).toEqual(['i@powerfulyang.com']);
   });
 
   it(`get user's menus`, async () => {

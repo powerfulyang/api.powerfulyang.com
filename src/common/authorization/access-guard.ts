@@ -1,9 +1,8 @@
-import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { Observable } from 'rxjs';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Role } from '@/modules/user/entities/role.entity';
 import type { ExtendRequest } from '@/type/ExtendRequest';
+import { Role } from '@/modules/user/entities/role.entity';
 import type { UploadFile } from '@/type/UploadFile';
 
 type AccessRequest = ExtendRequest & {
@@ -14,12 +13,12 @@ type AccessRequest = ExtendRequest & {
 };
 
 @Injectable()
-export class AccessInterceptor implements NestInterceptor {
-  constructor(private readonly loggerService: LoggerService) {
-    this.loggerService.setContext(AccessInterceptor.name);
+export class AccessGuard implements CanActivate {
+  constructor(private readonly logger: LoggerService) {
+    this.logger.setContext(AccessGuard.name);
   }
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<AccessRequest>();
     const useRoles = request.user.roles;
     const isAdmin = useRoles.some((role) => role.roleName === Role.IntendedRoles.admin);
@@ -30,10 +29,10 @@ export class AccessInterceptor implements NestInterceptor {
         'Only admin can create public content, please set public field to false or remove it.',
       );
     }
-    const hasAttachments = request.body.assets?.length;
+    const hasAttachments = body.assets?.length;
     if (hasAttachments && !isAdmin) {
       throw new ForbiddenException('Only admin can upload assets, please remove assets field.');
     }
-    return next.handle();
+    return true;
   }
 }

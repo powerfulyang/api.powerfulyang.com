@@ -4,14 +4,14 @@ import { In, Repository } from 'typeorm';
 import { countBy, flatten, pick, pluck, trim } from 'ramda';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
-import type { PublishNewPostDto } from '@/modules/post/dto/publish-new-post.dto';
+import type { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { EsService, POST_INDEX } from '@/common/service/es/es.service';
 import type { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
 import { isNumeric } from '@powerfulyang/utils';
-import type { UpdatePostDto } from '@/modules/post/dto/update-post.dto';
+import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 
 @Injectable()
 export class PostService {
@@ -34,7 +34,7 @@ export class PostService {
       });
   }
 
-  async updatePost(post: UpdatePostDto) {
+  async updatePost(post: PatchPostDto) {
     // update
     const findPost = await this.postDao.findOneOrFail({
       where: {
@@ -59,23 +59,17 @@ export class PostService {
     return this.postDao.save(findPost);
   }
 
-  async createPost(post: PublishNewPostDto) {
-    if (!post.posterId) {
+  async createPost(post: CreatePostDto) {
+    const draft = pick(['title', 'content', 'tags', 'posterId', 'createBy', 'poster'], post);
+    if (!draft.posterId) {
       const poster = await this.assetService.randomAsset();
-      Reflect.set(post, 'poster', poster);
+      draft.poster = poster || undefined;
     } else {
-      const poster = await this.assetService.getAssetById(post.posterId);
-      Reflect.set(post, 'poster', poster);
+      const poster = await this.assetService.getAssetById(draft.posterId);
+      draft.poster = poster || undefined;
     }
-    const toSave = this.postDao.create(post);
+    const toSave = this.postDao.create(draft);
     return this.postDao.save(toSave);
-  }
-
-  async publishPost(post: PublishNewPostDto | UpdatePostDto) {
-    if ('id' in post) {
-      return this.updatePost(post);
-    }
-    return this.createPost(post);
   }
 
   async deletePost(post: Pick<Post, 'id' | 'createBy'>) {

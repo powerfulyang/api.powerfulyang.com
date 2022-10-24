@@ -7,7 +7,7 @@ import { User } from '@/modules/user/entities/user.entity';
 import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 
 @Controller('asset')
-@AdminAuthGuard() // 2nd
+@AdminAuthGuard()
 export class AssetController {
   constructor(private assetService: AssetService) {}
 

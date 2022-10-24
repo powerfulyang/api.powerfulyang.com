@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { isProdProcess } from '@powerfulyang/utils';
 import { UserService } from '@/modules/user/user.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
@@ -20,25 +21,41 @@ export class BootstrapService {
   }
 
   bootstrap() {
-    return Promise.all([
-      this.cacheUsers(),
-      this.cachePathViewCount(),
-      this.initBucket(),
-      this.initIntendedData(),
-    ]);
+    if (isProdProcess) {
+      // 因为这里是异步的，所以 bootstrap 的主任务延迟一下
+      this.coreService
+        .leadScheduleNode()
+        .then((hostname) => {
+          this.logger.info(
+            `NODE_ENV ====> ${process.env.NODE_ENV || 'UNSET'}, HOSTNAME ====> ${hostname}`,
+          );
+        })
+        .catch((err) => {
+          this.logger.error(err);
+        });
+    }
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        Promise.all([
+          this.cacheUsers(),
+          this.cachePathViewCount(),
+          this.initBucket(),
+          this.initIntendedData(),
+        ])
+          .then(() => {
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }, (isProdProcess && 1000 * 10) || 0);
+    });
   }
 
   async cacheUsers() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      return this.userService
-        .cacheUsers()
-        .then(() => {
-          this.logger.info('cacheUsers success!');
-        })
-        .catch((err) => {
-          this.logger.error(err);
-        });
+      return this.userService.cacheUsers();
     }
     return Promise.resolve();
   }
@@ -46,14 +63,7 @@ export class BootstrapService {
   async cachePathViewCount() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      return this.pathViewCountService
-        .initPathViewCountCache()
-        .then(() => {
-          this.logger.info('cachePathViewCount success!');
-        })
-        .catch((err) => {
-          this.logger.error(err);
-        });
+      return this.pathViewCountService.initPathViewCountCache();
     }
     return Promise.resolve();
   }
@@ -61,14 +71,7 @@ export class BootstrapService {
   async initBucket() {
     const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
-      return this.bucketService
-        .initBucket()
-        .then(() => {
-          this.logger.info('initBucket success!');
-        })
-        .catch((err) => {
-          this.logger.error(err);
-        });
+      return this.bucketService.initBucket();
     }
     return Promise.resolve();
   }
@@ -78,13 +81,7 @@ export class BootstrapService {
     if (bool) {
       const p1 = this.roleService.initIntendedRoles();
       const p2 = this.userService.initIntendedUsers();
-      return Promise.all([p1, p2])
-        .then(() => {
-          this.logger.info('initIntendedData success!');
-        })
-        .catch((err) => {
-          this.logger.error(err);
-        });
+      return Promise.all([p1, p2]);
     }
     return Promise.resolve();
   }

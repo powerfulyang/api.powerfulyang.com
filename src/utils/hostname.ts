@@ -1,1 +1,1 @@
-export const { HOSTNAME = '' } = process.env;
+export const { HOSTNAME = 'dev' } = process.env;
