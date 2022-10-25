@@ -10,7 +10,7 @@ import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { EsService, POST_INDEX } from '@/common/service/es/es.service';
 import type { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
-import { isNumeric } from '@powerfulyang/utils';
+import { isDefined, isNumeric } from '@powerfulyang/utils';
 import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 
 @Injectable()
@@ -55,18 +55,21 @@ export class PostService {
     if (post.posterId) {
       findPost.poster = await this.assetService.getAssetById(post.posterId);
     }
+    if (isDefined(post.public)) {
+      findPost.public = post.public;
+    }
     findPost.urlTitle = Post.generateUrlTitle(findPost);
     return this.postDao.save(findPost);
   }
 
   async createPost(post: CreatePostDto) {
-    const draft = pick(['title', 'content', 'tags', 'posterId', 'createBy', 'poster'], post);
+    const draft = pick(['title', 'content', 'tags', 'posterId', 'public', 'createBy'], post);
     if (!draft.posterId) {
       const poster = await this.assetService.randomAsset();
-      draft.poster = poster || undefined;
+      Reflect.set(draft, 'poster', poster);
     } else {
       const poster = await this.assetService.getAssetById(draft.posterId);
-      draft.poster = poster || undefined;
+      Reflect.set(draft, 'poster', poster);
     }
     const toSave = this.postDao.create(draft);
     return this.postDao.save(toSave);
