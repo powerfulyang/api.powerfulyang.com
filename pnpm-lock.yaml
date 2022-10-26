@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@elastic/elasticsearch': 8.4.0
   '@fastify/cookie': 8.3.0
-  '@fastify/multipart': 7.2.0
+  '@fastify/multipart': 7.3.0
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.5.0
   '@napi-rs/pinyin': 1.7.1
@@ -73,7 +73,7 @@ specifiers:
 dependencies:
   '@elastic/elasticsearch': 8.4.0
   '@fastify/cookie': 8.3.0
-  '@fastify/multipart': 7.2.0
+  '@fastify/multipart': 7.3.0
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.5.0
   '@napi-rs/pinyin': 1.7.1
@@ -914,8 +914,8 @@ packages:
       reusify: 1.0.4
     dev: false
 
-  /@fastify/multipart/7.2.0:
-    resolution: {integrity: sha512-LwfwbCLy30Be1pa5q7F8xCTygxJdEWkfkQhD4OWZ13+vMH4tP/6Bu3OkSTlFatxLAmbEl2UpHLf7CU7w7csRIw==}
+  /@fastify/multipart/7.3.0:
+    resolution: {integrity: sha512-tbzQiRFxoADCn0G10CqiQ/nDWWcfegtwg826Pfz2h7+XvuqJhGnko0TbafrWIY7hnGD+sNCGMdiTVsxxs6zigA==}
     dependencies:
       '@fastify/busboy': 1.1.0
       '@fastify/deepmerge': 1.1.0
@@ -2131,7 +2131,7 @@ packages:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.11.3
+      '@types/node': 18.11.6
 
   /@types/caseless/0.12.2:
     resolution: {integrity: sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==}
@@ -2143,7 +2143,7 @@ packages:
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 18.11.6
 
   /@types/cors/2.8.12:
     resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
@@ -2170,7 +2170,7 @@ packages:
   /@types/express-serve-static-core/4.17.31:
     resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==}
     dependencies:
-      '@types/node': 18.11.3
+      '@types/node': 18.11.6
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
 
@@ -2403,7 +2403,7 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.11.3
+      '@types/node': 18.11.6
 
   /@types/sharp/0.31.0:
     resolution: {integrity: sha512-nwivOU101fYInCwdDcH/0/Ru6yIRXOpORx25ynEOc6/IakuCmjOAGpaO5VfUl4QkDtUC6hj+Z2eCQvgXOioknw==}
