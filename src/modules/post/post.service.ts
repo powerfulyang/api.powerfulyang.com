@@ -129,9 +129,13 @@ export class PostService {
             height: true,
           },
         },
+        content: true,
+        createBy: {
+          nickname: true,
+        },
       },
       order: { id: 'DESC' },
-      relations: ['poster'],
+      relations: ['poster', 'createBy'],
       loadEagerRelations: false,
       where: [
         {
