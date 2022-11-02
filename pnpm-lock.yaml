@@ -45,7 +45,7 @@ specifiers:
   dotenv: 16.0.3
   form-data: 4.0.0
   instagram-private-api: 1.45.3
-  ioredis: 5.2.3
+  ioredis: 5.2.4
   ipdb: 0.3.3
   node-addon-api: 5.0.0
   node-fetch: 2.6.7
@@ -82,7 +82,7 @@ dependencies:
   '@nestjs/elasticsearch': 9.0.0_mw6i62cf3qnjg5me23hhjabjz4
   '@nestjs/jwt': 9.0.0_@nestjs+common@9.1.6
   '@nestjs/mapped-types': 1.2.0_ecjt3shgnq7r6pibzvjbw262ze
-  '@nestjs/microservices': 9.1.6_jqwgvpg33bvxyq6ntaz2qzs7ui
+  '@nestjs/microservices': 9.1.6_57ez5umb3b3hrkbnzqpurxvnsq
   '@nestjs/passport': 9.0.0_pkfoh2sq4j5mhokn7ayryfespi
   '@nestjs/platform-fastify': 9.1.6_frdr3xk4e6zl6uz67hsjykt7si
   '@nestjs/schedule': 2.1.0_6gc6obcawnp52bp7gggit3czna
@@ -99,7 +99,7 @@ dependencies:
   dayjs: 1.11.6
   dotenv: 16.0.3
   instagram-private-api: 1.45.3
-  ioredis: 5.2.3
+  ioredis: 5.2.4
   ipdb: 0.3.3
   node-fetch: 2.6.7
   node-telegram-bot-api: 0.59.0
@@ -117,7 +117,7 @@ dependencies:
   sharp: 0.31.1
   socks-proxy-agent: 7.0.0
   source-map-support: 0.5.21
-  typeorm: 0.3.10_ioredis@5.2.3+pg@8.8.0
+  typeorm: 0.3.10_ioredis@5.2.4+pg@8.8.0
   winston: 3.8.2
   xml2js: 0.4.23
 
@@ -1497,7 +1497,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.1.6_upcmjahfwlai3vw7b2ah62xipi
-      '@nestjs/microservices': 9.1.6_jqwgvpg33bvxyq6ntaz2qzs7ui
+      '@nestjs/microservices': 9.1.6_57ez5umb3b3hrkbnzqpurxvnsq
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
@@ -1550,7 +1550,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/microservices/9.1.6_jqwgvpg33bvxyq6ntaz2qzs7ui:
+  /@nestjs/microservices/9.1.6_57ez5umb3b3hrkbnzqpurxvnsq:
     resolution: {integrity: sha512-ppcA+ihIEJRvjpGc/ognlWwpp3Kra6wyH66BvqWJiNQa8T44V4Jrgn4mhQkd91TuVlGVS2vhG2KGeColLb70Sw==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -1590,7 +1590,7 @@ packages:
       '@nestjs/core': 9.1.6_chrjhvo72slcybvlgaz2t656fi
       amqp-connection-manager: 4.1.9_amqplib@0.10.3
       amqplib: 0.10.3
-      ioredis: 5.2.3
+      ioredis: 5.2.4
       iterare: 1.2.1
       reflect-metadata: 0.1.13
       rxjs: 7.5.7
@@ -1717,7 +1717,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.1.6_upcmjahfwlai3vw7b2ah62xipi
       '@nestjs/core': 9.1.6_chrjhvo72slcybvlgaz2t656fi
-      '@nestjs/microservices': 9.1.6_jqwgvpg33bvxyq6ntaz2qzs7ui
+      '@nestjs/microservices': 9.1.6_57ez5umb3b3hrkbnzqpurxvnsq
       tslib: 2.4.0
     dev: true
 
@@ -1734,7 +1734,7 @@ packages:
       '@nestjs/core': 9.1.6_chrjhvo72slcybvlgaz2t656fi
       reflect-metadata: 0.1.13
       rxjs: 7.5.7
-      typeorm: 0.3.10_ioredis@5.2.3+pg@8.8.0
+      typeorm: 0.3.10_ioredis@5.2.4+pg@8.8.0
       uuid: 8.3.2
     dev: false
 
@@ -2131,7 +2131,7 @@ packages:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.11.6
+      '@types/node': 18.11.9
 
   /@types/caseless/0.12.2:
     resolution: {integrity: sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==}
@@ -2143,7 +2143,7 @@ packages:
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.11.6
+      '@types/node': 18.11.9
 
   /@types/cors/2.8.12:
     resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
@@ -2170,7 +2170,7 @@ packages:
   /@types/express-serve-static-core/4.17.31:
     resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==}
     dependencies:
-      '@types/node': 18.11.6
+      '@types/node': 18.11.9
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
 
@@ -2274,16 +2274,8 @@ packages:
     resolution: {integrity: sha512-3JRwhbjI+cHLAkUorhf8RnqUbFXajvzX4q6fMn5JwkgtuwfYtRQYI3u4V92vI6NJuTsbBQWWh3RZjFsuevyMGQ==}
     dev: true
 
-  /@types/node/18.11.6:
-    resolution: {integrity: sha512-j3CEDa2vd96K0AXF8Wur7UucACvnjkk8hYyQAHhUNciabZLDl9nfAEVUSwmh245OOZV15bRA3Y590Gi5jUcDJg==}
-
-  /@types/node/18.11.7:
-    resolution: {integrity: sha512-LhFTglglr63mNXUSRYD8A+ZAIu5sFqNJ4Y2fPuY7UlrySJH87rRRlhtVmMHplmfk5WkoJGmDjE9oiTfyX94CpQ==}
-    dev: false
-
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
-    dev: true
 
   /@types/nodemailer/6.4.6:
     resolution: {integrity: sha512-pD6fL5GQtUKvD2WnPmg5bC2e8kWCAPDwMPmHe/ohQbW+Dy0EcHgZ2oCSuPlWNqk74LS5BVMig1SymQbFMPPK3w==}
@@ -2411,7 +2403,7 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.11.6
+      '@types/node': 18.11.9
 
   /@types/sharp/0.31.0:
     resolution: {integrity: sha512-nwivOU101fYInCwdDcH/0/Ru6yIRXOpORx25ynEOc6/IakuCmjOAGpaO5VfUl4QkDtUC6hj+Z2eCQvgXOioknw==}
@@ -2433,7 +2425,7 @@ packages:
   /@types/ws/7.4.7:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
     dependencies:
-      '@types/node': 18.11.7
+      '@types/node': 18.11.9
     dev: false
 
   /@types/xml2js/0.4.11:
@@ -5728,8 +5720,8 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
-  /ioredis/5.2.3:
-    resolution: {integrity: sha512-gQNcMF23/NpvjCaa1b5YycUyQJ9rBNH2xP94LWinNpodMWVUPP5Ai/xXANn/SM7gfIvI62B5CCvZxhg5pOgyMw==}
+  /ioredis/5.2.4:
+    resolution: {integrity: sha512-qIpuAEt32lZJQ0XyrloCRdlEdUUNGG9i0UOk6zgzK6igyudNWqEBxfH6OlbnOOoBBvr1WB02mm8fR55CnikRng==}
     engines: {node: '>=12.22.0'}
     dependencies:
       '@ioredis/commands': 1.2.0
@@ -9664,7 +9656,7 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /typeorm/0.3.10_ioredis@5.2.3+pg@8.8.0:
+  /typeorm/0.3.10_ioredis@5.2.4+pg@8.8.0:
     resolution: {integrity: sha512-VMKiM84EpJQ+Mz9xDIPqnfplWhyUy1d8ccaKdMY9obifxJOTFnv8GYVyPsGwG8Lk7Nb8MlttHyHWENGAhBA3WA==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
@@ -9731,7 +9723,7 @@ packages:
       debug: 4.3.4
       dotenv: 16.0.3
       glob: 7.2.3
-      ioredis: 5.2.3
+      ioredis: 5.2.4
       js-yaml: 4.1.0
       mkdirp: 1.0.4
       pg: 8.8.0
