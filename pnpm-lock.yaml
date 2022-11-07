@@ -50,7 +50,7 @@ specifiers:
   node-addon-api: 5.0.0
   node-fetch: 2.6.7
   node-gyp: 9.3.0
-  node-telegram-bot-api: 0.59.0
+  node-telegram-bot-api: 0.60.0
   nodemailer: 6.8.0
   passport: 0.6.0
   passport-github: 1.1.0
@@ -102,7 +102,7 @@ dependencies:
   ioredis: 5.2.4
   ipdb: 0.3.3
   node-fetch: 2.6.7
-  node-telegram-bot-api: 0.59.0
+  node-telegram-bot-api: 0.60.0
   nodemailer: 6.8.0
   passport: 0.6.0
   passport-github: 1.1.0
@@ -7185,8 +7185,8 @@ packages:
     resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
     dev: true
 
-  /node-telegram-bot-api/0.59.0:
-    resolution: {integrity: sha512-APQ7qf4KDrVWuvsstGnuhoC44HoCw+SnoCsnCtwRPdb6/FzQmACNySG1I6VWZG7itYAGntQK299fDiylF222GA==}
+  /node-telegram-bot-api/0.60.0:
+    resolution: {integrity: sha512-SBI2PjfCAfMVuieQb95GBvaWiprRdk5SKfzX6B6G2ciG7J4SjOVwaMvaYhm9dJDTqvRSzl5pbioGbqRO/vx1Zg==}
     engines: {node: '>=0.12'}
     dependencies:
       array.prototype.findindex: 2.2.0
