@@ -22,7 +22,7 @@ services:
     ports:
       - "6379:6379"
   elasticsearch:
-    image: elastic/elasticsearch:8.5.0
+    image: elastic/elasticsearch:8.5.1
     container_name: elasticsearch
     restart: always
     ports:
