@@ -21,6 +21,9 @@ type IProcessEnv = {
   PG_DATABASE: string;
 
   SERVER_ORIGIN: string;
+
+  WECHAT_APP_ID: string;
+  WECHAT_APP_SECRET: string;
 };
 
 export declare global {

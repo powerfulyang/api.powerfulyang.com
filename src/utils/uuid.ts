@@ -12,3 +12,5 @@ export const convertUuidToNumber = (uuid?: string) => {
     return tmp.split('').reduce((acc, cur) => acc + cur.charCodeAt(0), 0);
   }
 };
+
+export const generateUuid = () => v4();
