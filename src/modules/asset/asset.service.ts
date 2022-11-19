@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, In, Not, Repository } from 'typeorm';
-import { hammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
+import { binaryHammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { basename, extname, join } from 'path';
 import fetch from 'node-fetch';
@@ -74,7 +74,7 @@ export class AssetService extends BaseService {
       const next = assets.pop();
       if (next) {
         assets.forEach((asset) => {
-          const distance = hammingDistance(asset.pHash, next.pHash);
+          const distance = binaryHammingDistance(asset.pHash, next.pHash);
           if (distance <= 10) {
             const arr = distanceMap.get(asset.id) || [];
             if (arr[distance]) {
