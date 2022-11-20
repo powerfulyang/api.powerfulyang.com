@@ -82,7 +82,7 @@
     "@nestjs/cli": "9.1.5",
     "@nestjs/schematics": "9.0.3",
     "@nestjs/testing": "9.2.0",
-    "@powerfulyang/lint": "3.1.1",
+    "@powerfulyang/lint": "3.1.2",
     "@types/node-fetch": "2.6.2",
     "@types/node-telegram-bot-api": "0.57.6",
     "@types/nodemailer": "6.4.6",
