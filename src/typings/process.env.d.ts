@@ -24,6 +24,9 @@ type IProcessEnv = {
 
   WECHAT_APP_ID: string;
   WECHAT_APP_SECRET: string;
+
+  WECHAT_MINI_APP_ID: string;
+  WECHAT_MINI_APP_SECRET: string;
 };
 
 export declare global {

@@ -58,7 +58,7 @@ specifiers:
   passport-jwt: 4.0.0
   peer: 0.6.1
   pg: 8.8.0
-  qqwry.ipdb: 2022.11.16
+  qqwry.ipdb: 2022.11.23
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.5.7
@@ -110,7 +110,7 @@ dependencies:
   passport-jwt: 4.0.0
   peer: 0.6.1
   pg: 8.8.0
-  qqwry.ipdb: 2022.11.16
+  qqwry.ipdb: 2022.11.23
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.5.7
@@ -1840,8 +1840,8 @@ packages:
       npm-run-all: 4.1.5
       postcss: 8.4.19
       postcss-scss: 4.0.5_postcss@8.4.19
-      prettier: 2.7.1
-      prettier-plugin-tailwindcss: 0.1.13_prettier@2.7.1
+      prettier: 2.8.0
+      prettier-plugin-tailwindcss: 0.1.13_prettier@2.8.0
       rimraf: 3.0.2
       rollup: 3.4.0
       sass: 1.56.1
@@ -1851,7 +1851,7 @@ packages:
       stylelint-config-standard: 29.0.0_stylelint@14.15.0
       stylelint-declaration-block-no-ignored-properties: 2.6.0_stylelint@14.15.0
       stylelint-order: 5.0.0_stylelint@14.15.0
-      stylelint-prettier: 2.0.0_44ee2bv67c3n5k5dtaao543d4a
+      stylelint-prettier: 2.0.0_gx7bxdqhns6mkagsrslabue4fy
       stylelint-scss: 4.3.0_stylelint@14.15.0
       tsc-alias: 1.7.1
       tslib: 2.4.1
@@ -8019,17 +8019,17 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier-plugin-tailwindcss/0.1.13_prettier@2.7.1:
+  /prettier-plugin-tailwindcss/0.1.13_prettier@2.8.0:
     resolution: {integrity: sha512-/EKQURUrxLu66CMUg4+1LwGdxnz8of7IDvrSLqEtDqhLH61SAlNNUSr90UTvZaemujgl3OH/VHg+fyGltrNixw==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
       prettier: '>=2.2.0'
     dependencies:
-      prettier: 2.7.1
+      prettier: 2.8.0
     dev: true
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.0:
+    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -8125,8 +8125,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb/2022.11.16:
-    resolution: {integrity: sha512-cM6EdqYHyAmbJab+eBrwjtIBUP/SzbBDhTotMxILdCawfVeLNJJJn8VSj2qRYmggPOjBVbWx0O0Ftum2/wC++w==}
+  /qqwry.ipdb/2022.11.23:
+    resolution: {integrity: sha512-w4F8nKwItEZrYn1w/DsGWynFE8WPjXofCZqgmKAmFSXl5qkCW15Z4N60qOSX6JGvvhnv/QZxDy5JZfm/6Cu8yw==}
     dev: false
 
   /qs/6.11.0:
@@ -9127,14 +9127,14 @@ packages:
       stylelint: 14.15.0
     dev: true
 
-  /stylelint-prettier/2.0.0_44ee2bv67c3n5k5dtaao543d4a:
+  /stylelint-prettier/2.0.0_gx7bxdqhns6mkagsrslabue4fy:
     resolution: {integrity: sha512-jvT3G+9lopkeB0ARmDPszyfaOnvnIF+30QCjZxyt7E6fynI1T9mOKgYDNb9bXX17M7PXMZaX3j/26wqakjp1tw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       prettier: '>=2.0.0'
       stylelint: '>=14.0.0'
     dependencies:
-      prettier: 2.7.1
+      prettier: 2.8.0
       prettier-linter-helpers: 1.0.0
       stylelint: 14.15.0
     dev: true
