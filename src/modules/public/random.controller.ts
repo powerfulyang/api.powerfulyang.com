@@ -1,6 +1,5 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { FastifyReply } from 'fastify';
 import { join } from 'path';
 import { CWD } from '@/constants/cookie-path';

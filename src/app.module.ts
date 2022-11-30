@@ -16,6 +16,7 @@ import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
 import { CatchFilter } from '@/common/filter/catch.filter';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { LogsViewerModule } from 'api/logs-viewer';
+import { WechatModule } from '@app/wechat';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
@@ -48,6 +49,7 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
     TencentCloudAccountModule,
     OauthApplicationModule,
     LogsViewerModule,
+    WechatModule,
   ],
   providers: [
     {

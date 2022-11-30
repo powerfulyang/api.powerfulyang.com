@@ -15,4 +15,5 @@ module.exports = {
   },
   setupFiles: ['./.jest/loadTestEnv.ts'],
   setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
+  forceExit: true,
 };

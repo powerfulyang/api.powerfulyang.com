@@ -1,10 +1,11 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import fetch from 'node-fetch';
 import dayjs from 'dayjs';
 import { generateUuid } from '@/utils/uuid';
 import { CacheService } from '@/common/cache/cache.service';
 import { checkRedisResult } from '@/constants/constants';
+import type { WechatGetAccessTokenResponse } from '@/typings/wechat';
 
 @Injectable()
 export class WechatService {
@@ -16,32 +17,34 @@ export class WechatService {
 
   constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
     this.logger.setContext(WechatService.name);
-    this.getAccessToken().catch((e) => {
-      this.logger.error(e);
-    });
+    if (this.appId && this.appSecret) {
+      this.getAccessToken().catch((e) => {
+        this.logger.error(e);
+      });
+    }
   }
 
-  async generateAccessToken(): Promise<string> {
+  async getAccessToken(): Promise<string> {
+    const accessToken = await this.cacheService.get(WechatService.Key);
+    if (accessToken) {
+      return accessToken;
+    }
     const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${this.appId}&secret=${this.appSecret}`;
     const response = await fetch(url);
-    const json = await response.json();
+    const json = (await response.json()) as WechatGetAccessTokenResponse;
+    if (json.errcode) {
+      this.logger.error(`getAccessToken error: ${json.errmsg}`);
+      throw new InternalServerErrorException(json.errmsg);
+    }
     this.logger.info(
       `access_token will be expired at ${dayjs()
         .add(json.expires_in, 'second')
         .format('YYYY-MM-DD HH:mm:ss')}`,
     );
-    const accessToken = json.access_token;
-    const res = await this.cacheService.set(WechatService.Key, accessToken, 'EX', json.expires_in);
+    const token = json.access_token;
+    const res = await this.cacheService.set(WechatService.Key, token, 'EX', json.expires_in);
     checkRedisResult(res);
-    return accessToken;
-  }
-
-  async getAccessToken() {
-    const accessToken = await this.cacheService.get(WechatService.Key);
-    if (accessToken) {
-      return accessToken;
-    }
-    return this.generateAccessToken();
+    return token;
   }
 
   async createTmpQrcode(QR_STR_SCENE: string = generateUuid()) {

@@ -17,7 +17,7 @@ describe('WechatService', () => {
   });
 
   it('generateAccessToken', async () => {
-    const accessToken = await service.generateAccessToken();
+    const accessToken = await service.getAccessToken();
     expect(accessToken).toBeDefined();
   });
 
