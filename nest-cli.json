@@ -95,6 +95,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/wechat/tsconfig.lib.json"
       }
+    },
+    "weather": {
+      "type": "library",
+      "root": "libs/weather",
+      "entryFile": "index",
+      "sourceRoot": "libs/weather/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/weather/tsconfig.lib.json"
+      }
     }
   }
 }

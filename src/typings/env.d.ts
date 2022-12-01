@@ -30,5 +30,7 @@ declare namespace NodeJS {
     WECHAT_MINI_APP_SECRET: string;
     WECHAT_MINI_APP_TOKEN: string;
     WECHAT_MINI_APP_AES_KEY: string;
+
+    AMAP_KEY: string;
   }
 }

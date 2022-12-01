@@ -15,6 +15,7 @@ import { checkRedisResult } from '@/constants/constants';
 import dayjs from 'dayjs';
 import { sha1 } from '@powerfulyang/node-utils';
 import crypto from 'crypto';
+import { WeatherService } from '@app/weather';
 
 @Injectable()
 export class MiniProgramService {
@@ -24,7 +25,11 @@ export class MiniProgramService {
 
   private readonly appSecret = process.env.WECHAT_MINI_APP_SECRET;
 
-  constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly cacheService: CacheService,
+    private readonly weatherService: WeatherService,
+  ) {
     this.logger.setContext(MiniProgramService.name);
     if (this.appId && this.appSecret) {
       this.getAccessToken().catch((e) => {
@@ -140,5 +145,36 @@ export class MiniProgramService {
       throw new Error(json.errmsg);
     }
     return json;
+  }
+
+  /**
+   * @description 发送天气预报订阅消息
+   * @param toUser - 接收者（用户）的 openid
+   */
+  async replyTodayWeather(toUser: string) {
+    const weather = await this.weatherService.getTodayWeather();
+    return this.replySubscribeMessage({
+      touser: toUser,
+      template_id: 'k-EspzqmrO2YOZ9ZQCEKwA5ptCYXjQits4k-aJeokaw',
+      page: 'pages/index/index',
+      miniprogram_state: 'trial',
+      data: {
+        phrase2: {
+          value: weather.city,
+        },
+        date1: {
+          value: dayjs().format('YYYY-MM-DD'),
+        },
+        phrase3: {
+          value: weather.weather,
+        },
+        character_string4: {
+          value: `${weather.temperature}℃`,
+        },
+        thing5: {
+          value: weather.description,
+        },
+      },
+    });
   }
 }

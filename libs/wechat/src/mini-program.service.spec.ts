@@ -3,13 +3,14 @@ import { Test } from '@nestjs/testing';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { CacheModule } from '@/common/cache/cache.module';
 import { MiniProgramService } from '@app/wechat/mini-program.service';
+import { WeatherModule } from '@app/weather';
 
 describe('mini-program service', () => {
   let service: MiniProgramService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [LoggerModule, CacheModule],
+      imports: [LoggerModule, CacheModule, WeatherModule],
       providers: [MiniProgramService],
     }).compile();
 
@@ -17,29 +18,8 @@ describe('mini-program service', () => {
   });
 
   it('replySubscribeMessage', async () => {
-    const result = await service.replySubscribeMessage({
-      touser: 'o2mym5Thvbe231mZSYiBXdhhwNrM',
-      template_id: 'k-EspzqmrO2YOZ9ZQCEKwA5ptCYXjQits4k-aJeokaw',
-      page: 'pages/index/index',
-      miniprogram_state: 'trial',
-      data: {
-        phrase2: {
-          value: '上海',
-        },
-        date1: {
-          value: '2021-01-01',
-        },
-        phrase3: {
-          value: '晴',
-        },
-        character_string4: {
-          value: '20℃',
-        },
-        thing5: {
-          value: '请注意防护',
-        },
-      },
-    });
+    const toUser = 'o2mym5Thvbe231mZSYiBXdhhwNrM';
+    const result = await service.replyTodayWeather(toUser);
     expect(result).toBeDefined();
   });
 });

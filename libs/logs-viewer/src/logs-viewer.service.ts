@@ -9,7 +9,7 @@ export class LogsViewerService {
   private readonly es: ElasticsearchService;
 
   constructor(readonly esService: EsService, private readonly logger: LoggerService) {
-    this.logger.setContext(LoggerService.name);
+    this.logger.setContext(LogsViewerService.name);
     this.es = esService.getEsClient();
   }
 

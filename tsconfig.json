@@ -43,7 +43,9 @@
       "api/logs-viewer": ["libs/logs-viewer/src"],
       "api/logs-viewer/*": ["libs/logs-viewer/src/*"],
       "@app/wechat": ["libs/wechat/src"],
-      "@app/wechat/*": ["libs/wechat/src/*"]
+      "@app/wechat/*": ["libs/wechat/src/*"],
+      "@app/weather": ["libs/weather/src"],
+      "@app/weather/*": ["libs/weather/src/*"]
     },
     "resolveJsonModule": true
   },
