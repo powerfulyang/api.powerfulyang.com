@@ -8,6 +8,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Authorization } from '@/constants/constants';
 import { AppModule } from './app.module';
 import fastifyInstance from './fastify/hook';
 
@@ -53,8 +54,7 @@ async function bootstrap(): Promise<void> {
     .setTitle('Backend API')
     .setDescription('The API is used for powerfulyang.com')
     .setVersion('1.0')
-    .addServer('https://api.powerfulyang.com')
-    .addServer('https://qa.powerfulyang.com')
+    .addCookieAuth(Authorization)
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/swagger', app, document);

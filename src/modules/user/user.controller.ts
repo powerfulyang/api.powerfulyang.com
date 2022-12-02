@@ -18,8 +18,11 @@ import type { CookieClear } from '@/common/interceptor/cookie.interceptor';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkInterceptorResultResponse } from '@/common/swagger/ResponseInterceptorResult';
 
 @Controller('user')
+@ApiTags('user')
 export class UserController {
   constructor(private userService: UserService, private logger: LoggerService) {
     this.logger.setContext(UserController.name);
@@ -95,8 +98,21 @@ export class UserController {
 
   @Post('login')
   @UseInterceptors(CookieInterceptor)
+  @ApiOperation({ summary: '使用用户名密码登录' })
+  @ApiResponse({
+    status: 200,
+    headers: {
+      'set-cookie': {
+        schema: {
+          type: 'string',
+          example:
+            'Authorization=auth-token; Path=/; HttpOnly; Max-Age=3600; SameSite=Lax; Secure; Domain=example.com; ',
+        },
+      },
+    },
+  })
   async login(@Body() user: UserLoginDto) {
-    this.logger.info(`${user.email} try to login in!!!`);
+    this.logger.info(`${user.email} try to login in`);
     const token = await this.userService.login(user);
     return {
       cookies: [
@@ -110,8 +126,13 @@ export class UserController {
 
   @Get('current')
   @PublicAuthGuard()
+  @ApiOperation({ summary: '获取当前登录用户信息' })
+  @ApiOkInterceptorResultResponse({
+    model: User,
+  })
+  @ApiCookieAuth()
   current(@UserFromAuth() user: User) {
-    this.logger.debug(`${user.email} try to get current user info!!!`);
+    this.logger.info(`${user.email} try to get current user info`);
     return user;
   }
 
