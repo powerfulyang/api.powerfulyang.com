@@ -7,8 +7,10 @@ import sharp from 'sharp';
 import { convertUuidToNumber } from '@/utils/uuid';
 import { existsSync, readdirSync } from 'fs';
 import { randomItem } from '@powerfulyang/utils';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('random')
+@ApiTags('random')
 export class RandomController {
   constructor(private readonly logger: LoggerService) {
     this.logger.setContext(RandomController.name);

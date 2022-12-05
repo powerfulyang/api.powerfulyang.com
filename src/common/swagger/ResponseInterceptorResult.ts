@@ -1,7 +1,6 @@
 import type { Type } from '@nestjs/common';
 import { applyDecorators } from '@nestjs/common';
 import { ApiExtraModels, ApiOkResponse, ApiResponseProperty, getSchemaPath } from '@nestjs/swagger';
-import type { ReferenceObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
 class ResponseInterceptorResult {
   @ApiResponseProperty()
@@ -20,7 +19,7 @@ export const ApiOkInterceptorResultResponse = <T extends Type>(options: {
   isArray?: boolean;
 }) => {
   const { model, description, isArray } = options;
-  const ref: ReferenceObject = { $ref: getSchemaPath(model) };
+  const ref = { $ref: getSchemaPath(model) };
   return applyDecorators(
     ApiExtraModels(ResponseInterceptorResult),
     ApiExtraModels(model),

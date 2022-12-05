@@ -7,8 +7,10 @@ import {
   WechatMiniProgramMessageRequest,
 } from '@/typings/wechat';
 import { FastifyReply } from 'fastify';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('mini-program')
+@ApiTags('mini-program')
 export class MiniProgramController {
   constructor(
     private readonly logger: LoggerService,

@@ -1,13 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { UploadFile } from '@/type/UploadFile';
-import { AdminAuthGuard } from '@/common/decorator';
+import { UploadFilesDto } from '@/type/UploadFile';
+import { AdminAuthGuard } from '@/common/decorator/auth-guard';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
-import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 @Controller('asset')
 @AdminAuthGuard()
+@ApiTags('asset')
 export class AssetController {
   constructor(private assetService: AssetService) {}
 
@@ -22,12 +24,17 @@ export class AssetController {
   }
 
   @Post(':bucketName')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: UploadFilesDto,
+  })
   saveAssetToBucket(
-    @Body('files') files: UploadFile[],
-    @Param('bucketName') bucketName: CosBucket['name'],
+    @Body('assets') files: UploadFile[],
+    @Body('files') files_compatible: UploadFile[],
+    @Param('bucketName') bucketName: string,
     @UserFromAuth() user: User,
   ) {
-    return this.assetService.saveAssetToBucket(files, bucketName, user);
+    return this.assetService.saveAssetToBucket(files || files_compatible, bucketName, user);
   }
 
   @Delete()

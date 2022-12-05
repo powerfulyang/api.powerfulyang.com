@@ -1,8 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty, IsNumberString } from 'class-validator';
 import { Feed } from '@/modules/feed/entities/feed.entity';
+import { PickType } from '@nestjs/swagger';
 
-export class DeleteFeedDto extends PartialType(Feed) {
+export class SpecificFeedDto extends PickType(Feed, ['id']) {
   @IsNotEmpty()
   @IsNumberString()
   declare id: number;

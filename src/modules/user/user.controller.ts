@@ -8,7 +8,7 @@ import {
   GoogleAuthGuard,
   JwtAuthGuard,
   PublicAuthGuard,
-} from '@/common/decorator';
+} from '@/common/decorator/auth-guard';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -18,7 +18,7 @@ import type { CookieClear } from '@/common/interceptor/cookie.interceptor';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { ApiCookieAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiOkInterceptorResultResponse } from '@/common/swagger/ResponseInterceptorResult';
 
 @Controller('user')
@@ -130,7 +130,6 @@ export class UserController {
   @ApiOkInterceptorResultResponse({
     model: User,
   })
-  @ApiCookieAuth()
   current(@UserFromAuth() user: User) {
     this.logger.info(`${user.email} try to get current user info`);
     return user;

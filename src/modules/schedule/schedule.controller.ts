@@ -2,12 +2,14 @@ import { Controller, ForbiddenException, Get, Param } from '@nestjs/common';
 import { PixivScheduleService } from '@/schedules/pixiv-schedule/pixiv-schedule.service';
 import { InstagramScheduleService } from '@/schedules/instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from '@/schedules/pinterest-schedule/pinterest-schedule.service';
-import { AdminAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard } from '@/common/decorator/auth-guard';
 import { UdpScheduleService } from '@/schedules/udp-schedule/udp-schedule.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { ScheduleType } from '@/enum/ScheduleType';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('schedule')
+@ApiTags('schedule')
 @AdminAuthGuard()
 export class ScheduleController {
   constructor(

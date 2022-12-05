@@ -12,6 +12,8 @@ import type { CORSRule } from 'cos-nodejs-sdk-v5';
 import { BucketACL, RefererConfiguration } from 'cos-nodejs-sdk-v5';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
+import { ApiProperty } from '@nestjs/swagger';
+import { TEST_BUCKET_ONLY } from '@/utils/env';
 
 export enum BuiltinBucket {
   timeline = 'timeline',
@@ -23,6 +25,7 @@ export class CosBucket {
   id: number;
 
   @Column({ unique: true })
+  @ApiProperty({ default: TEST_BUCKET_ONLY, description: 'bucket 在系统中的名称' })
   name: string;
 
   @Column({ unique: true })

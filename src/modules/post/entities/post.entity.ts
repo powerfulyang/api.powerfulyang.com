@@ -12,11 +12,15 @@ import {
 import { User } from '@/modules/user/entities/user.entity';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { pinyin } from '@napi-rs/pinyin';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })
 export class Post {
   @PrimaryGeneratedColumn()
+  @ApiProperty({
+    description: 'post id',
+  })
   id: number;
 
   @Column()

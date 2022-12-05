@@ -3,13 +3,15 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
 import { FeedService } from '@/modules/feed/feed.service';
-import { PublicAuthGuard } from '@/common/decorator';
+import { PublicAuthGuard } from '@/common/decorator/auth-guard';
 import { FamilyMembersIdFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('public')
 @PublicAuthGuard()
+@ApiTags('public-api')
 export class PublicController {
   constructor(
     private readonly logger: LoggerService,

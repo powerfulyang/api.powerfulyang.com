@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { MenuService } from '@/modules/user/menu/menu.service';
-import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator';
+import { AdminAuthGuard, JwtAuthGuard } from '@/common/decorator/auth-guard';
 import { UserService } from '@/modules/user/user.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';

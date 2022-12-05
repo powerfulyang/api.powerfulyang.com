@@ -4,7 +4,6 @@ import { In, Repository } from 'typeorm';
 import { firstItem, lastItem } from '@powerfulyang/utils';
 import { Feed } from '@/modules/feed/entities/feed.entity';
 import { LoggerService } from '@/common/logger/logger.service';
-import type { UploadFile } from '@/type/UploadFile';
 import { BuiltinBucket } from '@/modules/bucket/entities/bucket.entity';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { BaseService } from '@/common/service/base/BaseService';
@@ -27,7 +26,8 @@ export class FeedService extends BaseService {
     return this.feedDao.find();
   }
 
-  async postFeed(createFeedDto: CreateFeedDto & Pick<Feed, 'createBy'>, files: UploadFile[] = []) {
+  async postFeed(createFeedDto: CreateFeedDto) {
+    const files = createFeedDto.assets || [];
     const assets = await this.assetService.saveAssetToBucket(
       files,
       BuiltinBucket.timeline,
@@ -36,10 +36,8 @@ export class FeedService extends BaseService {
     return this.feedDao.save({ ...createFeedDto, assets });
   }
 
-  async modifyFeed(
-    updateFeedDto: UpdateFeedDto & Pick<Feed, 'updateBy'>,
-    files: UploadFile[] = [],
-  ) {
+  async modifyFeed(updateFeedDto: UpdateFeedDto) {
+    const files = updateFeedDto.assets || [];
     const feed = await this.feedDao.findOneOrFail({
       where: {
         id: updateFeedDto.id,
@@ -107,7 +105,7 @@ export class FeedService extends BaseService {
     };
   }
 
-  updateFeed(id: number, updateFeedDto: Partial<UpdateFeedDto>) {
+  updateFeed(id: number, updateFeedDto: Partial<Feed>) {
     return this.feedDao.update(id, updateFeedDto);
   }
 

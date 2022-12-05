@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsNumberString } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
 import { Post } from '@/modules/post/entities/post.entity';
+import { PickType } from '@nestjs/swagger';
 
-export class DeletePostDto extends PartialType(Post) {
+export class SpecificPostDto extends PickType(Post, ['id']) {
   @IsNotEmpty()
   @IsNumberString()
   declare id: number;
