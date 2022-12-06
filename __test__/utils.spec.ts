@@ -2,6 +2,7 @@ import { sha1 } from '@powerfulyang/node-utils';
 import { basename, extname } from 'path';
 import { inspectIp } from '@/utils/ipdb';
 import { convertUuidToNumber } from '@/utils/uuid';
+import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 
 describe('utils test', () => {
   it('sha1', () => {
@@ -35,5 +36,14 @@ describe('utils test', () => {
     const result = convertUuidToNumber();
     const mod = result % 10000;
     expect(mod).toBeLessThan(10000);
+  });
+
+  it('getBaseDomain', () => {
+    const domain = getBaseDomain('powerfulyang.com');
+    expect(domain).toBe('powerfulyang.com');
+    const domain2 = getBaseDomain('powerfulyang.com.cn');
+    expect(domain2).toBe('com.cn');
+    const domain3 = getBaseDomain('localhost:8000');
+    expect(domain3).toBe('localhost:8000');
   });
 });

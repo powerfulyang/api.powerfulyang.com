@@ -6,7 +6,7 @@ import { AdminAuthGuard } from '@/common/decorator/auth-guard';
 import { UdpScheduleService } from '@/schedules/udp-schedule/udp-schedule.service';
 import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule/cos-object-url-schedule.service';
 import { ScheduleType } from '@/enum/ScheduleType';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('schedule')
 @ApiTags('schedule')
@@ -21,6 +21,10 @@ export class ScheduleController {
   ) {}
 
   @Get(':scheduleType')
+  @ApiOperation({
+    summary: '手动触发定时任务',
+    operationId: 'triggerSchedule',
+  })
   async RunScheduleByRequest(
     @Param('scheduleType')
     scheduleType: ScheduleType,

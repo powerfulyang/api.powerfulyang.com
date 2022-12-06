@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
 import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import type { Profile as GithubProfile } from 'passport-github';
-import type { FastifyRequest } from 'fastify';
+import { FastifyRequest } from 'fastify';
 import { User } from '@/modules/user/entities/user.entity';
 import {
   GithubAuthGuard,
@@ -15,7 +15,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import type { CookieClear } from '@/common/interceptor/cookie.interceptor';
-import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
+import { CookieInterceptor, getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -98,7 +98,10 @@ export class UserController {
 
   @Post('login')
   @UseInterceptors(CookieInterceptor)
-  @ApiOperation({ summary: '使用用户名密码登录' })
+  @ApiOperation({
+    summary: '使用用户名密码登录',
+    operationId: 'loginWithEmail',
+  })
   @ApiResponse({
     status: 200,
     headers: {
@@ -126,7 +129,10 @@ export class UserController {
 
   @Get('current')
   @PublicAuthGuard()
-  @ApiOperation({ summary: '获取当前登录用户信息' })
+  @ApiOperation({
+    summary: '获取当前登录用户信息',
+    operationId: 'getCurrentUser',
+  })
   @ApiOkInterceptorResultResponse({
     model: User,
   })
@@ -138,7 +144,11 @@ export class UserController {
   @Post('logout')
   @JwtAuthGuard()
   @UseInterceptors(CookieInterceptor)
-  logout(@UserFromAuth() user: User): { cookies: CookieClear[] } {
+  @ApiOperation({
+    summary: '登出',
+    operationId: 'logout',
+  })
+  logout(@UserFromAuth() user: User, @Req() req: FastifyRequest): { cookies: CookieClear[] } {
     this.logger.info(`${user.email} try to logout!!!`);
     return {
       cookies: [
@@ -147,6 +157,7 @@ export class UserController {
           options: {
             ...DefaultCookieOptions,
             maxAge: 0,
+            domain: getBaseDomain(req.hostname),
           },
         },
       ],

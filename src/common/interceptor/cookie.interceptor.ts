@@ -4,10 +4,10 @@ import type { Observable } from 'rxjs';
 import type { CookieSerializeOptions } from '@fastify/cookie';
 import { map, tap } from 'rxjs/operators';
 import { omit } from 'ramda';
-import { isArray } from '@powerfulyang/utils';
+import { isArray, isDevProcess } from '@powerfulyang/utils';
 import { LoggerService } from '@/common/logger/logger.service';
 import { DefaultCookieOptions } from '@/constants/constants';
-import type { FastifyReply } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export type Cookie = {
   name: string;
@@ -18,6 +18,17 @@ export type Cookie = {
 export type CookieClear = {
   name: string;
   options?: CookieSerializeOptions;
+};
+
+/**
+ * @description 如果是开发环境，不设置 domain
+ * @supported 仅支持 powerfulyang.com 这种域名，不支持 powerfulyang.com.cn 这种
+ */
+export const getBaseDomain = (hostname: string) => {
+  if (isDevProcess) {
+    return undefined;
+  }
+  return hostname.split('.').slice(-2).join('.');
 };
 
 @Injectable()
@@ -32,9 +43,18 @@ export class CookieInterceptor implements NestInterceptor {
         const cookies = data?.cookies as Cookie[];
         if (isArray(cookies)) {
           const ctx = context.switchToHttp();
+          const request = ctx.getRequest<FastifyRequest>();
+          const domain = getBaseDomain(request.hostname);
           const reply = ctx.getResponse<FastifyReply>();
           cookies.forEach((cookie) => {
-            reply.setCookie(cookie.name, cookie.value, cookie.options || DefaultCookieOptions);
+            reply.setCookie(
+              cookie.name,
+              cookie.value,
+              cookie.options || {
+                ...DefaultCookieOptions,
+                domain,
+              },
+            );
             if (cookie.options?.maxAge === 0) {
               this.logger.info(`Cookie ${cookie.name} cleared.`);
             } else {

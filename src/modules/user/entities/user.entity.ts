@@ -40,39 +40,50 @@ export class User {
   salt: string;
 
   @Column()
+  @ApiProperty()
   nickname: string;
 
   @Column({ default: '' })
+  @ApiProperty()
   bio: string;
 
   @Column({ default: '' })
+  @ApiProperty()
   avatar?: string;
 
   @Column({ default: '' })
+  @ApiProperty()
   lastIp: string;
 
   @Column({ default: '' })
+  @ApiProperty()
   lastAddress: string;
 
   @CreateDateColumn()
+  @ApiProperty()
   createAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty()
   updateAt: Date;
 
   @JoinColumn()
   @ManyToOne(() => Asset, { eager: true })
+  @ApiProperty()
   timelineBackground: Relation<Asset>;
 
   @ManyToMany(() => Role, { eager: true })
   @JoinTable()
+  @ApiProperty()
   roles: Relation<Role[]>;
 
   @ManyToMany(() => Family, (family) => family.members, { onDelete: 'CASCADE' })
   @JoinTable()
+  @ApiProperty()
   families: Relation<Family[]>;
 
   // 大部分时间应该不需要 { eager: true }
   @OneToMany(() => OauthOpenid, (o) => o.user)
+  @ApiProperty()
   oauthOpenidArr: Relation<OauthOpenid[]>;
 }

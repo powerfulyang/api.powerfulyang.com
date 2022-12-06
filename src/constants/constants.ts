@@ -1,5 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import type { Nullable } from '@powerfulyang/utils';
+import { isDevProcess } from '@powerfulyang/utils';
 import type { CookieSerializeOptions } from '@fastify/cookie';
 
 export const MICROSERVICE_NAME = Symbol('RABBIT_MQ_MICROSERVICE');
@@ -20,7 +21,7 @@ export const { SERVER_ORIGIN } = process.env;
 export const DefaultCookieOptions: CookieSerializeOptions = {
   httpOnly: true,
   sameSite: 'strict',
-  secure: true,
+  secure: !isDevProcess,
   domain: 'powerfulyang.com',
   /**
    * If both Expires and Max-Age are set, Max-Age has precedence.

@@ -7,7 +7,7 @@ import { PublicAuthGuard } from '@/common/decorator/auth-guard';
 import { FamilyMembersIdFromAuth, UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -23,37 +23,59 @@ export class PublicController {
   }
 
   @Get('hello')
+  @ApiOperation({
+    summary: 'hello ping',
+    operationId: 'hello',
+  })
   hello(@UserFromAuth() user: User): string {
     return `Hello, ${user.nickname || 'unauthorized visitor'}!`;
   }
 
   @Get('post')
-  getPosts(@FamilyMembersIdFromAuth() userIds: User['id'][], @Query() post: SearchPostDto) {
+  @ApiOperation({
+    summary: '获取所有的公开文章列表',
+    operationId: 'queryPublicPosts',
+  })
+  queryPublicPosts(@FamilyMembersIdFromAuth() userIds: User['id'][], @Query() post: SearchPostDto) {
     return this.postService.queryPosts(post, userIds);
   }
 
-  @Get('post/search')
-  searchPosts(@Query('content') content: string) {
-    return this.postService.searchPostByContent(content);
-  }
-
   @Get('post/years')
-  getPublishedYears(@FamilyMembersIdFromAuth() userIds: User['id'][]) {
+  @ApiOperation({
+    summary: '获取所有的公开文章的年份列表',
+    operationId: 'queryPublicPostYears',
+  })
+  queryPublicPostYears(@FamilyMembersIdFromAuth() userIds: User['id'][]) {
     return this.postService.getPublishedYears(userIds);
   }
 
   @Get('post/tags')
-  getPublishedTags(@FamilyMembersIdFromAuth() userIds: User['id'][]) {
+  @ApiOperation({
+    summary: '获取所有的公开文章的标签列表',
+    operationId: 'queryPublicPostTags',
+  })
+  queryPublicPostTags(@FamilyMembersIdFromAuth() userIds: User['id'][]) {
     return this.postService.getPublishedTags(userIds);
   }
 
   @Get('post/:id')
-  readPost(@Param('id') idOrTitle: string, @FamilyMembersIdFromAuth() userIds: User['id'][]) {
+  @ApiOperation({
+    summary: '获取单个文章详细信息',
+    operationId: 'getPublicPostById',
+  })
+  getPublicPostById(
+    @Param('id') idOrTitle: string,
+    @FamilyMembersIdFromAuth() userIds: User['id'][],
+  ) {
     return this.postService.readPost(idOrTitle, userIds);
   }
 
   @Get('feed')
-  feeds(
+  @ApiOperation({
+    summary: '获取所有的公开时间线',
+    operationId: 'queryPublicTimeline',
+  })
+  queryPublicTimeline(
     @Query('prevCursor') prevCursor: string,
     @Query('nextCursor') nextCursor: string,
     @Query('take') take: string,
@@ -68,7 +90,11 @@ export class PublicController {
   }
 
   @Get('asset')
-  infiniteQuery(
+  @ApiOperation({
+    summary: '获取公开的图片资源',
+    operationId: 'infiniteQueryPublicAsset',
+  })
+  infiniteQueryPublicAsset(
     @Query('prevCursor') prevCursor: string,
     @Query('nextCursor') nextCursor: string,
     @Query('take') take: string,
@@ -83,7 +109,11 @@ export class PublicController {
   }
 
   @Get('asset/:id')
-  getAssetById(@Param('id') id: string, @FamilyMembersIdFromAuth() userIds: User['id'][]) {
+  @ApiOperation({
+    summary: '获取单个公开的图片资源',
+    operationId: 'getPublicAssetById',
+  })
+  getPublicAssetById(@Param('id') id: string, @FamilyMembersIdFromAuth() userIds: User['id'][]) {
     return this.assetService.getAccessAssetById(+id, userIds);
   }
 }

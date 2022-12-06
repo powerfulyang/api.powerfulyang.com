@@ -9,6 +9,7 @@ import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { FastifyReply } from 'fastify';
+import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -35,7 +36,11 @@ export class ResponseInterceptor implements NestInterceptor {
           const ValidPeriodHour = ValidPeriodSecond / 3600;
           if (ValidPeriodHour < 6) {
             const authorization = await this.userService.generateAuthorization(user);
-            reply.setCookie(Authorization, authorization, DefaultCookieOptions);
+            const domain = getBaseDomain(request.hostname);
+            reply.setCookie(Authorization, authorization, {
+              ...DefaultCookieOptions,
+              domain,
+            });
             this.logger.info(
               `Token valid within ${ValidPeriodHour}hour, refresh token [user=>${user.email}]`,
             );
