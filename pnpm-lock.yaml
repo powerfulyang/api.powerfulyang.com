@@ -41,7 +41,7 @@ specifiers:
   chalk: 4.1.2
   class-validator: 0.13.2
   cos-nodejs-sdk-v5: 2.11.18
-  dayjs: 1.11.6
+  dayjs: 1.11.7
   dotenv: 16.0.3
   fastify: latest
   form-data: 4.0.0
@@ -98,7 +98,7 @@ dependencies:
   chalk: 4.1.2
   class-validator: 0.13.2
   cos-nodejs-sdk-v5: 2.11.18
-  dayjs: 1.11.6
+  dayjs: 1.11.7
   dotenv: 16.0.3
   fastify: 4.10.2
   instagram-private-api: 1.45.3
@@ -3939,8 +3939,8 @@ packages:
     engines: {node: '>=0.11'}
     dev: false
 
-  /dayjs/1.11.6:
-    resolution: {integrity: sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==}
+  /dayjs/1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
     dev: false
 
   /debounce-fn/4.0.0:
