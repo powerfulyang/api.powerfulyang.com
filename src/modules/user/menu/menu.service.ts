@@ -23,18 +23,18 @@ export class MenuService {
 
   async initBuiltinMenus() {
     const menu = await this.menuDao.findOneBy({
-      name: '用户管理',
+      name: 'User Manage',
     });
     if (!menu) {
       const UserManage = {
         id: 1,
-        name: '用户管理',
+        name: 'User Manage',
         path: '/user',
       };
       await this.menuDao.save(UserManage);
       const UserList = {
         id: 2,
-        name: '用户列表',
+        name: 'User List',
         path: '/user/list',
         parent: UserManage,
       };

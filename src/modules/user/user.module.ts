@@ -13,6 +13,7 @@ import { LoggerModule } from '@/common/logger/logger.module';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { Role } from '@/modules/user/entities/role.entity';
 import { OrmModule } from '@/common/service/orm/orm.module';
+import { UserManageController } from '@/modules/user/user-manage.controller';
 import { RoleController } from './role/role.controller';
 import { RoleService } from './role/role.service';
 import { MenuController } from './menu/menu.controller';
@@ -41,7 +42,7 @@ import { UserController } from './user.controller';
     CacheModule,
     LoggerModule,
   ],
-  controllers: [UserController, MenuController, RoleController],
+  controllers: [UserController, MenuController, RoleController, UserManageController],
   providers: [UserService, MenuService, RoleService],
   exports: [UserService, RoleService],
 })

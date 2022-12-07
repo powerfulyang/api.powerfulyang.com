@@ -1,4 +1,4 @@
-import { Between, LessThan, MoreThan } from 'typeorm';
+import { Between, ILike, LessThan, MoreThan } from 'typeorm';
 import { isDefined } from '@powerfulyang/utils';
 
 export class BaseService {
@@ -23,5 +23,30 @@ export class BaseService {
 
   formatInfiniteTake(take?: string | number) {
     return isDefined(take) ? Number(take) : undefined;
+  }
+
+  convertDateRangeToBetween(dateRange?: [Date | undefined, Date | undefined]) {
+    if (!dateRange) {
+      return undefined;
+    }
+    const [start, end] = dateRange;
+    if (!start && end) {
+      return LessThan(end);
+    }
+    if (!end && start) {
+      return MoreThan(start);
+    }
+    if (start && end) {
+      return Between(start, end);
+    }
+    return undefined;
+  }
+
+  iLike(value?: string) {
+    return value ? ILike(`%${value}%`) : undefined;
+  }
+
+  ignoreFalsyValue<T>(value: T) {
+    return value || undefined;
   }
 }

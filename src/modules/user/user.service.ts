@@ -25,9 +25,11 @@ import { Family } from '@/modules/user/entities/family.entity';
 import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
 import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { MailService } from '@/common/service/mail/mail.service';
+import type { QueryUsersDto } from '@/modules/user/dto/query-users.dto';
+import { BaseService } from '@/common/service/base/BaseService';
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseService {
   constructor(
     @InjectRepository(User)
     private readonly userDao: Repository<User>,
@@ -40,6 +42,7 @@ export class UserService {
     private readonly oauthOpenidService: OauthOpenidService,
     private readonly mailService: MailService,
   ) {
+    super();
     this.logger.setContext(UserService.name);
   }
 
@@ -159,7 +162,6 @@ export class UserService {
     // 根据 menu id 去重
     const menus = flatten(user.roles.map((role) => role.menus));
     const uniqueMenus = uniqBy((x) => x.id, menus);
-    this.logger.debug(`用户 ${user.nickname} 的菜单有: ${JSON.stringify(uniqueMenus, null, 2)}`);
     return UserService.buildMenuTree(uniqueMenus);
   }
 
@@ -339,5 +341,20 @@ export class UserService {
     // update to cache
     await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, cache);
     return cache;
+  }
+
+  queryUsers(pagination: QueryUsersDto) {
+    return this.userDao.findAndCount({
+      skip: pagination.skip,
+      take: pagination.take,
+      where: {
+        id: this.ignoreFalsyValue(pagination.id),
+        email: this.iLike(pagination.email),
+        bio: this.iLike(pagination.bio),
+        nickname: this.iLike(pagination.nickname),
+        createAt: this.convertDateRangeToBetween(pagination.createAt),
+        updateAt: this.convertDateRangeToBetween(pagination.updateAt),
+      },
+    });
   }
 }

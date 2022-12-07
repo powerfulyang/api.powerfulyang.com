@@ -2,7 +2,6 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/com
 import { Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
@@ -10,6 +9,8 @@ import { PathViewCountService } from '@/modules/path-view-count/path-view-count.
 import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { FastifyReply } from 'fastify';
 import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
+import { HOSTNAME } from '@/utils/hostname';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -29,7 +30,7 @@ export class ResponseInterceptor implements NestInterceptor {
     const { xRealIp } = request.raw.extend;
 
     return next.handle().pipe(
-      tap(async () => {
+      map(async (data) => {
         if (request.user) {
           const { user } = request;
           const ValidPeriodSecond = user.exp - Date.now() / 1000;
@@ -50,24 +51,17 @@ export class ResponseInterceptor implements NestInterceptor {
             );
           }
         }
-      }),
-      map(async (data) => {
+        // 记录访问量等数据都放到 header 中
         let pathViewCount = 0;
         if (xRealIp) {
           pathViewCount = await this.pathViewCountService.handlePathViewCount(path, xRealIp);
         }
-        const contentType = reply.getHeader('Content-Type');
-        // 如果有 content-type 不处理
-        if (contentType && contentType !== 'application/json') {
-          return data;
-        }
-        // 默认返回json格式
-        return {
-          data,
-          timestamp: new Date().toISOString(),
-          path: request.url,
-          pathViewCount,
-        };
+        reply.header('x-path-view-count', pathViewCount);
+        reply.header('x-server-id', HOSTNAME);
+        reply.header('x-server-time', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+        reply.header('x-server-path', path);
+        // 不再做统一格式处理，直接返回原始数据
+        return data;
       }),
     );
   }

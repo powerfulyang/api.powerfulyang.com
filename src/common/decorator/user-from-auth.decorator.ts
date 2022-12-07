@@ -4,19 +4,12 @@ import { flatten, pick } from 'ramda';
 import type { User } from '@/modules/user/entities/user.entity';
 import type { ExtendRequest } from '@/type/ExtendRequest';
 
-export const UserFromAuth = createParamDecorator(
-  (keys: Array<keyof User>, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<ExtendRequest>();
-    if (keys?.length > 0) {
-      return pick(keys)(request.user || {});
-    }
-    return request.user || {};
-  },
-);
-
-export const UserIdFromAuth = createParamDecorator((_, ctx: ExecutionContext) => {
+export const AuthUser = createParamDecorator((keys: Array<keyof User>, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<ExtendRequest>();
-  return request.user?.id;
+  if (keys?.length > 0) {
+    return pick(keys)(request.user || {});
+  }
+  return request.user || {};
 });
 
 export const getUserFamiliesMembers = (user?: User) => {
@@ -27,12 +20,7 @@ export const getUserFamiliesMembers = (user?: User) => {
   return (user && [user]) || [];
 };
 
-export const FamilyMembersFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {
-  const { user } = ctx.switchToHttp().getRequest<ExtendRequest>();
-  return getUserFamiliesMembers(user);
-});
-
-export const FamilyMembersIdFromAuth = createParamDecorator((_: never, ctx: ExecutionContext) => {
+export const AuthFamilyMembersId = createParamDecorator((_: never, ctx: ExecutionContext) => {
   const { user } = ctx.switchToHttp().getRequest<ExtendRequest>();
   return getUserFamiliesMembers(user).map(({ id }) => id);
 });

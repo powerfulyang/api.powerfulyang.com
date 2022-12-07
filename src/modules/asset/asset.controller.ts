@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { UploadFile } from '@/type/UploadFile';
 import { UploadFilesDto } from '@/type/UploadFile';
-import { AdminAuthGuard } from '@/common/decorator/auth-guard';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
@@ -32,7 +32,7 @@ export class AssetController {
     @Body('assets') files: UploadFile[],
     @Body('files') files_compatible: UploadFile[],
     @Param('bucketName') bucketName: string,
-    @UserFromAuth() user: User,
+    @AuthUser() user: User,
   ) {
     return this.assetService.saveAssetToBucket(files || files_compatible, bucketName, user);
   }

@@ -8,8 +8,8 @@ import {
   GoogleAuthGuard,
   JwtAuthGuard,
   PublicAuthGuard,
-} from '@/common/decorator/auth-guard';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+} from '@/common/decorator/auth-guard.decorator';
+import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
 import { LoggerService } from '@/common/logger/logger.service';
 import { UserService } from '@/modules/user/user.service';
@@ -19,7 +19,6 @@ import { CookieInterceptor, getBaseDomain } from '@/common/interceptor/cookie.in
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ApiOkInterceptorResultResponse } from '@/common/swagger/ResponseInterceptorResult';
 
 @Controller('user')
 @ApiTags('user')
@@ -134,10 +133,7 @@ export class UserController {
     summary: '获取当前登录用户信息',
     operationId: 'getCurrentUser',
   })
-  @ApiOkInterceptorResultResponse({
-    model: User,
-  })
-  current(@UserFromAuth() user: User) {
+  current(@AuthUser() user: User) {
     this.logger.info(`${user.email} try to get current user info`);
     return user;
   }
@@ -149,7 +145,7 @@ export class UserController {
     summary: '登出',
     operationId: 'logout',
   })
-  logout(@UserFromAuth() user: User, @Req() req: FastifyRequest): { cookies: CookieClear[] } {
+  logout(@AuthUser() user: User, @Req() req: FastifyRequest): { cookies: CookieClear[] } {
     this.logger.info(`${user.email} try to logout!!!`);
     return {
       cookies: [
@@ -163,5 +159,15 @@ export class UserController {
         },
       ],
     };
+  }
+
+  @Get('menus')
+  @JwtAuthGuard()
+  @ApiOperation({
+    summary: '获取当前用户的菜单',
+    operationId: 'queryCurrentUserMenus',
+  })
+  currentUserMenus(@AuthUser() user: User) {
+    return this.userService.queryMenusByUserId(user.id);
   }
 }

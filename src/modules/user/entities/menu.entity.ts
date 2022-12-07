@@ -1,8 +1,10 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Relation,
   Tree,
   TreeChildren,
   TreeParent,
@@ -13,26 +15,36 @@ import {
 @Tree('closure-table')
 export class Menu {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
 
   @Column({ unique: true })
+  @ApiProperty()
   name: string;
 
   @Column()
+  @ApiProperty()
   path: string;
 
   @TreeChildren()
-  children: Menu[];
+  children: Relation<Menu[]>;
 
   @TreeParent()
-  parent: Menu;
+  @ApiProperty()
+  parent: Relation<Menu>;
 
   @Column({ default: null })
+  @ApiProperty({
+    type: Number,
+    nullable: true,
+  })
   readonly parentId: number | null;
 
   @CreateDateColumn()
+  @ApiProperty()
   createAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty()
   updateAt: Date;
 }

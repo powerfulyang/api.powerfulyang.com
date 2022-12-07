@@ -74,7 +74,10 @@ export class User {
 
   @ManyToMany(() => Role, { eager: true })
   @JoinTable()
-  @ApiProperty()
+  @ApiProperty({
+    type: [Role],
+    description: 'User roles',
+  })
   roles: Relation<Role[]>;
 
   @ManyToMany(() => Family, (family) => family.members, { onDelete: 'CASCADE' })

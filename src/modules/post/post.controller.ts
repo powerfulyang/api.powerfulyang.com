@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
-import { AccessAuthGuard } from '@/common/decorator/auth-guard';
-import { UserFromAuth } from '@/common/decorator/user-from-auth.decorator';
+import { AccessAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { SpecificPostDto } from '@/modules/post/dto/specific-post.dto';
 import { CreatePostDto } from '@/modules/post/dto/create-post.dto';
@@ -15,7 +15,7 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Post()
-  createPost(@Body() draft: CreatePostDto, @UserFromAuth(['id']) user: User) {
+  createPost(@Body() draft: CreatePostDto, @AuthUser(['id']) user: User) {
     draft.createBy = user;
     return this.postService.createPost(draft);
   }
@@ -24,7 +24,7 @@ export class PostController {
   updatePost(
     @Param() { id }: SpecificPostDto,
     @Body() draft: PatchPostDto,
-    @UserFromAuth(['id']) user: User,
+    @AuthUser(['id']) user: User,
   ) {
     draft.updateBy = user;
     draft.id = id;
@@ -32,7 +32,7 @@ export class PostController {
   }
 
   @Delete(':id')
-  deletePost(@Param() { id }: SpecificPostDto, @UserFromAuth(['id']) user: User) {
+  deletePost(@Param() { id }: SpecificPostDto, @AuthUser(['id']) user: User) {
     return this.postService.deletePost({
       id,
       createBy: user,
