@@ -18,7 +18,7 @@ specifiers:
   '@nestjs/platform-fastify': 9.2.1
   '@nestjs/schedule': 2.1.0
   '@nestjs/schematics': 9.0.3
-  '@nestjs/swagger': 6.1.3
+  '@nestjs/swagger': 6.1.4
   '@nestjs/testing': 9.2.1
   '@nestjs/typeorm': 9.0.1
   '@powerfulyang/lint': 3.1.3
@@ -88,7 +88,7 @@ dependencies:
   '@nestjs/passport': 9.0.0_6o47igfla2pj7yzh7agpvpttka
   '@nestjs/platform-fastify': 9.2.1_ikxpgcebo3djgwayhrp6upsvza
   '@nestjs/schedule': 2.1.0_dntc3uqqknzoduyjojusds5kla
-  '@nestjs/swagger': 6.1.3_jkdrzavt34lz4ltxz7krqfdjim
+  '@nestjs/swagger': 6.1.4_jkdrzavt34lz4ltxz7krqfdjim
   '@nestjs/typeorm': 9.0.1_mftfacht74hczh4so74rsxvzxq
   '@powerfulyang/node-utils': 1.3.1_wls62afmtzms6dslsemdj727nu
   '@powerfulyang/utils': 1.5.0_whg6pvy6vwu66ypq7idiq2suxq
@@ -1688,29 +1688,33 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/swagger/6.1.3_jkdrzavt34lz4ltxz7krqfdjim:
-    resolution: {integrity: sha512-H9C/yRgLFb5QrAt6iGrYmIX9X7Q0zXkgZaTNUATljUBra+RCWrEUbLHBcGjTAOtcIyGV/vmyCLv68YSVcZoE0Q==}
+  /@nestjs/swagger/6.1.4_jkdrzavt34lz4ltxz7krqfdjim:
+    resolution: {integrity: sha512-kE8VjR+NaoKqxg8XqM/YYfALScPh4AcoR8Wywga8/OxHsTHY+MKxqvTpWp7IhCUWSA6xT8nQUpcC9Rt7C+r7Hw==}
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0
       '@nestjs/core': ^9.0.0
+      class-transformer: '*'
+      class-validator: '*'
       reflect-metadata: ^0.1.12
     peerDependenciesMeta:
       '@fastify/static':
+        optional: true
+      class-transformer:
+        optional: true
+      class-validator:
         optional: true
     dependencies:
       '@fastify/static': 6.6.0
       '@nestjs/common': 9.2.1_hfgw5ujxhe7lhbmj362tsjogea
       '@nestjs/core': 9.2.1_sgbfwoadz3slpr6hje3bjxwiye
       '@nestjs/mapped-types': 1.2.0_hg5tfylnbc77ki4bn6cjtva53a
+      class-validator: 0.13.2
       js-yaml: 4.1.0
       lodash: 4.17.21
       path-to-regexp: 3.2.0
       reflect-metadata: 0.1.13
-      swagger-ui-dist: 4.15.1
-    transitivePeerDependencies:
-      - class-transformer
-      - class-validator
+      swagger-ui-dist: 4.15.5
     dev: false
 
   /@nestjs/testing/9.2.1_t6j6bmv6lsxnofi6ilydr2n3ma:
@@ -1857,7 +1861,7 @@ packages:
       stylelint-order: 5.0.0_stylelint@14.15.0
       stylelint-prettier: 2.0.0_gx7bxdqhns6mkagsrslabue4fy
       stylelint-scss: 4.3.0_stylelint@14.15.0
-      tsc-alias: 1.8.1
+      tsc-alias: 1.8.2
       tslib: 2.4.1
     transitivePeerDependencies:
       - '@swc/wasm'
@@ -9189,8 +9193,8 @@ packages:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
     dev: true
 
-  /swagger-ui-dist/4.15.1:
-    resolution: {integrity: sha512-DlZARu6ckUFqDe0j5IPayO4k0gQvYQw9Un02MhxAgaMtVnTH2vmyyDe+yKeV0r1LiiPx3JbasdS/5Yyb/AV3iw==}
+  /swagger-ui-dist/4.15.5:
+    resolution: {integrity: sha512-V3eIa28lwB6gg7/wfNvAbjwJYmDXy1Jo1POjyTzlB6wPcHiGlRxq39TSjYGVjQrUSAzpv+a7nzp7mDxgNy57xA==}
     dev: false
 
   /symbol-observable/4.0.0:
@@ -9497,8 +9501,8 @@ packages:
     resolution: {integrity: sha512-0u70/SDLSCaX23UddnwAb2GvZZ2N0Rbjnmemn5pHoR40D32Xcva5KRGWV9SdJOKHCjJUlmctmCTvT0z+2yT8aw==}
     dev: false
 
-  /tsc-alias/1.8.1:
-    resolution: {integrity: sha512-d8Oc3y/XI9OvpdbdjzOWNYskEvFxqtobitHcTszmQr9iVt/tHL7pwV0WHKuCQ4uXHcHh+oDMx+uTlvMQBlpYcw==}
+  /tsc-alias/1.8.2:
+    resolution: {integrity: sha512-ukBkcNekOgwtnSWYLD5QsMX3yQWg7JviAs8zg3qJGgu4LGtY3tsV4G6vnqvOXIDkbC+XL9vbhObWSpRA5/6wbg==}
     hasBin: true
     dependencies:
       chokidar: 3.5.3
