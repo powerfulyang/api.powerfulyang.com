@@ -12,19 +12,14 @@ import {
 @Entity('menu')
 @Tree('closure-table')
 export class Menu {
-  constructor(menuName?: string, path?: string) {
-    this.menuName = menuName;
-    this.path = path;
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ unique: true })
-  menuName?: string;
+  name: string;
 
   @Column()
-  path?: string;
+  path: string;
 
   @TreeChildren()
   children: Menu[];
@@ -32,8 +27,8 @@ export class Menu {
   @TreeParent()
   parent: Menu;
 
-  @Column({ default: 0 })
-  readonly parentId: number;
+  @Column({ default: null })
+  readonly parentId: number | null;
 
   @CreateDateColumn()
   createAt: Date;

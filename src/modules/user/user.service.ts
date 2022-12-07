@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { generateRandomString, sha1 } from '@powerfulyang/node-utils';
-import { flatten, pick } from 'ramda';
+import { flatten, pick, uniqBy } from 'ramda';
 import type { Profile } from 'passport';
 import {
   firstItem,
@@ -43,24 +43,20 @@ export class UserService {
     this.logger.setContext(UserService.name);
   }
 
-  private static idMapping(data: any[]) {
-    return data.reduce((draft, el, i) => {
-      draft[el.id] = i;
-      return draft;
-    }, {});
-  }
-
-  private static buildTree(menus: Set<Menu>) {
-    const menusArr = [...menus];
-    const idMapping = UserService.idMapping(menusArr);
+  private static buildMenuTree(menus: Array<Menu>) {
+    const helperMap = new Map<Menu['id'], Menu>();
     const root: Menu[] = [];
-    menusArr.forEach((menu) => {
-      if (menu.parentId === 0) {
-        return root.push(menu);
+    menus.forEach((menu) => {
+      helperMap.set(menu.id, menu);
+      if (menu.parentId === null) {
+        root.push(menu);
+        Reflect.set(menu, 'children', []);
+      } else {
+        const parent = helperMap.get(menu.parentId);
+        if (parent) {
+          parent.children.push(menu);
+        }
       }
-      const parentEl = menusArr[idMapping[menu.parentId]];
-      parentEl.children = [...parentEl.children, menu];
-      return parentEl;
     });
     return root;
   }
@@ -160,8 +156,11 @@ export class UserService {
 
   async queryMenusByUserId(id: User['id']) {
     const user = await this.userDao.findOneByOrFail({ id });
-    const menus = new Set(flatten(user.roles.map((role) => role.menus)));
-    return UserService.buildTree(menus);
+    // 根据 menu id 去重
+    const menus = flatten(user.roles.map((role) => role.menus));
+    const uniqueMenus = uniqBy((x) => x.id, menus);
+    this.logger.debug(`用户 ${user.nickname} 的菜单有: ${JSON.stringify(uniqueMenus, null, 2)}`);
+    return UserService.buildMenuTree(uniqueMenus);
   }
 
   /**
@@ -179,7 +178,10 @@ export class UserService {
     if (isFalsy(bool)) {
       throw new UnauthorizedException('密码错误！');
     }
-    return this.generateAuthorization(userInfo);
+    return {
+      token: await this.generateAuthorization(userInfo),
+      user: await this.getCachedUser(userInfo.id),
+    };
   }
 
   getUserByEmail(email: string) {

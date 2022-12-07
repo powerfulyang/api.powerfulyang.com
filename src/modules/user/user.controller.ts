@@ -116,14 +116,15 @@ export class UserController {
   })
   async login(@Body() user: UserLoginDto) {
     this.logger.info(`${user.email} try to login in`);
-    const token = await this.userService.login(user);
+    const info = await this.userService.login(user);
     return {
       cookies: [
         {
           name: Authorization,
-          value: token,
+          value: info.token,
         },
       ],
+      ...info.user,
     };
   }
 

@@ -56,11 +56,11 @@ describe('UserService', () => {
   it('update password & login & verifyAuthorization', async () => {
     const user = await service.getUserByEmailOrFail(User.IntendedUsers.AdminUser);
     const result = await service.updatePassword(user.id);
-    const token = await service.login({
+    const info = await service.login({
       email: User.IntendedUsers.AdminUser,
       password: result.salt,
     });
-    const verify = await service.verifyAuthorization(token);
+    const verify = await service.verifyAuthorization(info.token);
     expect(verify).toHaveProperty('id', result.id);
   });
 
