@@ -45,7 +45,9 @@
       "@app/wechat": ["libs/wechat/src"],
       "@app/wechat/*": ["libs/wechat/src/*"],
       "@app/weather": ["libs/weather/src"],
-      "@app/weather/*": ["libs/weather/src/*"]
+      "@app/weather/*": ["libs/weather/src/*"],
+      "@app/chat-gpt": ["libs/chat-gpt/src"],
+      "@app/chat-gpt/*": ["libs/chat-gpt/src/*"]
     },
     "resolveJsonModule": true
   },

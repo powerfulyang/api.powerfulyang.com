@@ -13,7 +13,10 @@ describe('ProxyFetchService', () => {
     service = module.get<ProxyFetchService>(ProxyFetchService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('timeout 1ms', async () => {
+    const p = service.proxyFetch(`https://google.com`, {
+      timeout: 1,
+    });
+    await expect(p).rejects.toThrow();
   });
 });
