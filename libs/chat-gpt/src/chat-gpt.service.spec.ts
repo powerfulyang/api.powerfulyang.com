@@ -1,5 +1,6 @@
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { ChatGptModule } from '@app/chat-gpt/chat-gpt.module';
 import { ChatGptService } from './chat-gpt.service';
 
 describe('ChatGptService', () => {
@@ -7,13 +8,14 @@ describe('ChatGptService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ChatGptService],
+      imports: [ChatGptModule],
     }).compile();
 
     service = module.get<ChatGptService>(ChatGptService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('send Message', async () => {
+    const res = await service.sendMessage('hello');
+    expect(res).toBeDefined();
   });
 });
