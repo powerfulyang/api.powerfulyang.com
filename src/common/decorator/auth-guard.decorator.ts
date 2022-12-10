@@ -20,5 +20,5 @@ export const AccessAuthGuard = () => {
   return applyDecorators(UseGuards(AuthGuard('jwt'), AccessGuard), ApiCookieAuth());
 };
 export const PublicAuthGuard = () => {
-  return applyDecorators(UseGuards(AuthGuard('jwt'), AccessGuard), ApiCookieAuth());
+  return applyDecorators(UseGuards(AuthGuard('public')), ApiCookieAuth());
 };

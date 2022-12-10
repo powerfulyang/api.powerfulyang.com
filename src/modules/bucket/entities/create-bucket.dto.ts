@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 
