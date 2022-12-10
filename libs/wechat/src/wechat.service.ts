@@ -8,7 +8,8 @@ import type {
   WechatCheckSignatureRequest,
   WechatCode2sessionResponse,
   WechatGetAccessTokenResponse,
-  WechatMiniProgramMessageRequest,
+  WechatMessageOriginalRequest,
+  WechatMessageRequest,
 } from '@/typings/wechat';
 import { sha1 } from '@powerfulyang/node-utils';
 import crypto from 'crypto';
@@ -91,7 +92,7 @@ export class WechatService {
     return decipher.update(encryptedData, 'base64', 'utf8');
   }
 
-  async subscribeMessage(request: WechatMiniProgramMessageRequest) {
+  async handleMessage(request: WechatMessageOriginalRequest): Promise<WechatMessageRequest> {
     const decryptData = this.decryptData(request.Encrypt);
     let json;
     // drop random string
@@ -109,6 +110,7 @@ export class WechatService {
       json = JSON.parse(str);
     }
     this.logger.debug(`corpId: ${corpId}\nsubscribeMessage:\n${JSON.stringify(json, null, 2)}`);
+    return json;
   }
 
   async code2session(code: string) {

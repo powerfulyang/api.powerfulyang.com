@@ -5,18 +5,26 @@ import type {
   ReplySubscribeMessageRequest,
   WechatBaseResponse,
   WechatGetUnlimitedQRCodeRequest,
+  WechatMessageOriginalRequest,
+  WechatMiniProgramSendCustomMessageRequest,
 } from '@/typings/wechat';
 import { CacheService } from '@/common/cache/cache.service';
 import dayjs from 'dayjs';
 import { WeatherService } from '@app/weather';
 import { WechatService } from '@app/wechat/wechat.service';
+import { ChatGptService } from '@app/chat-gpt';
 
 @Injectable()
 export class MiniProgramService extends WechatService {
+  static conversationsKey = 'chat-gpt:conversations';
+
+  static maxConversations = 10;
+
   constructor(
     protected readonly logger: LoggerService,
     protected readonly cacheService: CacheService,
     private readonly weatherService: WeatherService,
+    private readonly chatGptService: ChatGptService,
   ) {
     super(logger, cacheService);
     this.logger.setContext(MiniProgramService.name);
@@ -88,5 +96,90 @@ export class MiniProgramService extends WechatService {
         },
       },
     });
+  }
+
+  async sendCustomMessage(request: WechatMiniProgramSendCustomMessageRequest) {
+    const accessToken = await this.getAccessToken();
+    const url = `https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=${accessToken}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(request),
+    });
+    const json = (await res.json()) as WechatBaseResponse;
+    if (json.errcode) {
+      this.logger.error(`sendCustomMessage error: ${json.errmsg}`);
+      throw new Error(json.errmsg);
+    }
+    return json;
+  }
+
+  async handleMiniProgramMessage(request: WechatMessageOriginalRequest) {
+    const json = await this.handleMessage(request);
+    if ('MsgType' in json) {
+      if (json.MsgType === 'event' && json.Event === 'user_enter_tempsession') {
+        // enter temp session
+      }
+      if (json.MsgType === 'text') {
+        const conversionCount = await this.cacheService.hlen(MiniProgramService.conversationsKey);
+        if (conversionCount >= MiniProgramService.maxConversations) {
+          return this.sendCustomMessage({
+            touser: json.FromUserName,
+            msgtype: 'text',
+            text: {
+              content: '当前服务人数过多，请稍后再试',
+            },
+          });
+        }
+        // handle text message, use chat-gpt service
+        const conversation = await this.cacheService.hGetJSON<any>(
+          MiniProgramService.conversationsKey,
+          json.FromUserName,
+        );
+        if (conversation?.isLoading) {
+          return this.sendCustomMessage({
+            touser: json.FromUserName,
+            msgtype: 'text',
+            text: {
+              content: '上一条消息正在处理中，请稍后再试...',
+            },
+          });
+        }
+        await this.cacheService.hSetJSON(MiniProgramService.conversationsKey, json.FromUserName, {
+          isLoading: true,
+        });
+        this.chatGptService
+          .sendMessage(json.Content, {
+            parentMessageId: conversation?.parentMessageId,
+            conversationId: conversation?.conversationId,
+          })
+          .then((res) => {
+            this.sendCustomMessage({
+              touser: json.FromUserName,
+              msgtype: 'text',
+              text: {
+                content: res.content,
+              },
+            });
+            this.cacheService.hSetJSON(MiniProgramService.conversationsKey, json.FromUserName, {
+              parentMessageId: res.messageId,
+              conversationId: res.conversationId,
+              isLoading: false,
+            });
+          })
+          .catch(() => {
+            this.sendCustomMessage({
+              touser: json.FromUserName,
+              msgtype: 'text',
+              text: {
+                content: '5分钟内未从 chat-gpt 服务获取到回复，该次对话处理失败，请重试',
+              },
+            });
+            this.cacheService.hSetJSON(MiniProgramService.conversationsKey, json.FromUserName, {
+              isLoading: false,
+            });
+          });
+      }
+    }
+    return Promise.resolve();
   }
 }

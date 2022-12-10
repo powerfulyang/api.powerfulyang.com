@@ -49,15 +49,58 @@ interface ListItem {
   PopupScene: string;
 }
 
-export interface WechatMiniProgramSubscribeMessageRequest {
+export interface WechatMessageRequestBase {
+  /**
+   * @description 微信公众号的 AppId
+   */
+  ToUserName: string;
+  /**
+   * @description 微信用户的 openid
+   */
   FromUserName: string;
-  CreateTime: string;
+  /**
+   * @description 消息创建时间
+   */
+  CreateTime: number;
+  /**
+   * @description 消息类型
+   */
   MsgType: string;
+}
+
+export interface WechatEventMessageRequest extends WechatMessageRequestBase {
+  MsgType: 'event';
+  /**
+   * @description 事件类型
+   */
   Event: string;
+}
+
+export interface WechatUserEnterTempsessionEventMessageRequest extends WechatEventMessageRequest {
+  Event: 'user_enter_tempsession';
+  /**
+   * @description 会话来源
+   */
+  SessionFrom: string;
+}
+
+export interface WechatTemplateSubscribeMessageRequest extends WechatEventMessageRequest {
+  Event: 'subscribe_msg_popup_event';
   List: ListItem | ListItem[];
 }
 
-export type WechatMiniProgramMessageRequest = {
+export interface WechatTextMessageRequest extends WechatMessageRequestBase {
+  MsgType: 'text';
+  Content: string;
+  MsgId: number;
+}
+
+export type WechatMessageRequest =
+  | WechatUserEnterTempsessionEventMessageRequest
+  | WechatTextMessageRequest
+  | WechatTemplateSubscribeMessageRequest;
+
+export type WechatMessageOriginalRequest = {
   ToUserName: string;
   Encrypt: string;
 };
@@ -70,3 +113,45 @@ export type ReplySubscribeMessageRequest = {
   miniprogram_state?: 'developer' | 'trial' | 'formal';
   lang?: 'zh_CN' | 'en_US' | 'zh_TW';
 };
+
+type TextMessage = {
+  msgtype: 'text';
+  text: {
+    content: string;
+  };
+};
+
+type ImageMessage = {
+  msgtype: 'image';
+  image: {
+    media_id: string;
+  };
+};
+
+type LinkMessage = {
+  msgtype: 'link';
+  link: {
+    title: string;
+    description: string;
+    url: string;
+    thumb_url: string;
+  };
+};
+
+type MiniProgramMessage = {
+  msgtype: 'miniprogrampage';
+  miniprogrampage: {
+    title: string;
+    pagepath: string;
+    thumb_media_id: string;
+  };
+};
+
+type Message = TextMessage | ImageMessage | LinkMessage | MiniProgramMessage;
+
+export type WechatMiniProgramSendCustomMessageRequest = {
+  /**
+   * @description 微信用户的 openid
+   */
+  touser: string;
+} & Message;

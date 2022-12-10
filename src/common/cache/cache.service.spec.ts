@@ -14,6 +14,11 @@ describe('CacheService', () => {
     service = module.get<CacheService>(CacheService);
   });
 
+  it('hgetall', async () => {
+    const res = await service.hgetall('test');
+    expect(res).toEqual({});
+  });
+
   it('hash set, hash get test', async () => {
     const key = 'test_hash_key';
     let result = await service.del(key);

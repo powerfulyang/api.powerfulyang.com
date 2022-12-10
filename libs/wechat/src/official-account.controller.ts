@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, Post, Query, Res } from '@nestjs/commo
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OfficialAccountService } from '@app/wechat/official-account.service';
-import { WechatCheckSignatureRequest, WechatMiniProgramMessageRequest } from '@/typings/wechat';
+import { WechatCheckSignatureRequest, WechatMessageOriginalRequest } from '@/typings/wechat';
 import { FastifyReply } from 'fastify';
 
 @Controller('official-account')
@@ -25,13 +25,13 @@ export class OfficialAccountController {
   @Post('subscribe-message')
   @ApiExcludeEndpoint()
   @HttpCode(200)
-  subscribeMessage(
+  async subscribeMessage(
     @Query() query: WechatCheckSignatureRequest,
     @Res() reply: FastifyReply,
-    @Body() body: WechatMiniProgramMessageRequest,
+    @Body() body: WechatMessageOriginalRequest,
   ) {
     this.officialAccountService.checkSignature(query);
-    this.officialAccountService.subscribeMessage(body);
+    await this.officialAccountService.handleMessage(body);
     reply.send('success');
   }
 }

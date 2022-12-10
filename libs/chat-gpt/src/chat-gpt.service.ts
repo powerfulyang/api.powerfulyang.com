@@ -16,7 +16,7 @@ export class ChatGptService {
   private readonly useAgent =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36';
 
-  static Key = 'chat-gpt-access-token';
+  static Key = 'chat-gpt:access-token';
 
   constructor(
     private readonly proxyFetchService: ProxyFetchService,
@@ -57,15 +57,16 @@ export class ChatGptService {
     if (error) {
       throw new Error(error);
     }
-    this.cacheService.set(ChatGptService.Key, accessToken, 'EX', 60);
-    const cookie = res.headers.get('set-cookie');
-    if (cookie) {
+    this.cacheService.set(ChatGptService.Key, accessToken, 'EX', 60 * 60 * 24 * 30);
+    const setCookie = res.headers.get('set-cookie');
+    if (setCookie) {
+      const cookie = setCookie.split(';')[0];
       fs.writeFileSync(chatGptSessionTokenFilePath, cookie, 'utf-8');
     }
     return accessToken;
   }
 
-  async sendMessage(
+  private async send(
     message: string,
     opt: {
       parentMessageId?: string;
@@ -105,6 +106,7 @@ export class ChatGptService {
           Cookie: persistenceCookie,
         },
         body: JSON.stringify(body),
+        timeout: 1000 * 60 * 10,
       },
     );
     const buffer = await res.buffer();
@@ -120,5 +122,26 @@ export class ChatGptService {
     const responseLine = lines[lines.length - 2];
     this.logger.debug(`responseLine: ${responseLine}`);
     return JSON.parse(responseLine);
+  }
+
+  async sendMessage(
+    msg: string,
+    opt: {
+      parentMessageId?: string;
+      conversationId?: string;
+    } = {},
+  ) {
+    const res = await this.send(msg, opt);
+    const { message, conversation_id, error } = res;
+    if (error) {
+      throw new Error(error);
+    }
+    const messageId = message.id;
+    const content = message.content.parts[0];
+    return {
+      messageId,
+      content,
+      conversationId: conversation_id,
+    };
   }
 }

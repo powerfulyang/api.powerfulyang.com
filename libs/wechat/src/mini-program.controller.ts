@@ -4,7 +4,7 @@ import { MiniProgramService } from '@app/wechat/mini-program.service';
 import {
   WechatCheckSignatureRequest,
   WechatGetUnlimitedQRCodeRequest,
-  WechatMiniProgramMessageRequest,
+  WechatMessageOriginalRequest,
 } from '@/typings/wechat';
 import { FastifyReply } from 'fastify';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -29,13 +29,13 @@ export class MiniProgramController {
   @Post('subscribe-message')
   @ApiExcludeEndpoint()
   @HttpCode(200)
-  subscribeMessage(
+  async subscribeMessage(
     @Query() query: WechatCheckSignatureRequest,
     @Res() reply: FastifyReply,
-    @Body() body: WechatMiniProgramMessageRequest,
+    @Body() body: WechatMessageOriginalRequest,
   ) {
     this.miniProgramService.checkSignature(query);
-    this.miniProgramService.subscribeMessage(body);
+    await this.miniProgramService.handleMiniProgramMessage(body);
     reply.send('success');
   }
 
