@@ -166,12 +166,13 @@ export class MiniProgramService extends WechatService {
               isLoading: false,
             });
           })
-          .catch(() => {
+          .catch((e) => {
+            this.logger.error(e);
             this.sendCustomMessage({
               touser: json.FromUserName,
               msgtype: 'text',
               text: {
-                content: '5分钟内未从 chat-gpt 服务获取到回复，该次对话处理失败，请重试',
+                content: e.message,
               },
             });
             this.cacheService.hSetJSON(MiniProgramService.conversationsKey, json.FromUserName, {
