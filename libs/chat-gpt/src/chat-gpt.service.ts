@@ -61,7 +61,16 @@ export class ChatGptService {
     const setCookie = res.headers.get('set-cookie');
     if (setCookie) {
       const cookie = setCookie.split(';')[0];
-      fs.writeFileSync(chatGptSessionTokenFilePath, cookie, 'utf-8');
+      const newCookie = persistenceCookie
+        .split('; ')
+        .map((item) => {
+          if (item.includes('session-token')) {
+            return cookie;
+          }
+          return item;
+        })
+        .join('; ');
+      fs.writeFileSync(chatGptSessionTokenFilePath, newCookie, 'utf-8');
     }
     return accessToken;
   }
