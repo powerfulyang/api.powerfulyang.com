@@ -7,31 +7,18 @@ import type { User } from '@/modules/user/entities/user.entity';
 import type { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
-import { EsService, POST_INDEX } from '@/common/service/es/es.service';
-import type { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
 import { isDefined, isNumeric } from '@powerfulyang/utils';
 import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 
 @Injectable()
 export class PostService {
-  private readonly es: ElasticsearchService;
-
   constructor(
     @InjectRepository(Post) private readonly postDao: Repository<Post>,
     private readonly assetService: AssetService,
-    private readonly esService: EsService,
     private readonly logger: LoggerService,
   ) {
     this.logger.setContext(PostService.name);
-    this.es = this.esService.getEsClient();
-    this.buildPostEsIndex()
-      .then((count) => {
-        this.logger.info(`build post es index success, count: ${count}`);
-      })
-      .catch((err) => {
-        this.logger.error(`build post es index failed`, err);
-      });
   }
 
   async updatePost(post: PatchPostDto) {
@@ -58,12 +45,18 @@ export class PostService {
     if (isDefined(post.public)) {
       findPost.public = post.public;
     }
+    if (post.summary) {
+      findPost.summary = post.summary;
+    }
     findPost.urlTitle = Post.generateUrlTitle(findPost);
     return this.postDao.save(findPost);
   }
 
   async createPost(post: CreatePostDto) {
-    const draft = pick(['title', 'content', 'tags', 'posterId', 'public', 'createBy'], post);
+    const draft = pick(
+      ['title', 'content', 'summary', 'tags', 'posterId', 'public', 'createBy'],
+      post,
+    );
     if (!draft.posterId) {
       const poster = await this.assetService.randomAsset();
       Reflect.set(draft, 'poster', poster);
@@ -129,7 +122,7 @@ export class PostService {
             height: true,
           },
         },
-        content: true,
+        summary: true,
         createBy: {
           nickname: true,
         },
@@ -181,56 +174,5 @@ export class PostService {
       .distinct(true)
       .getRawMany();
     return pluck('publishYear')(res);
-  }
-
-  async buildPostEsIndex() {
-    const exist = await this.es.indices.exists({ index: POST_INDEX });
-    if (!exist) {
-      await this.es.indices.create(
-        {
-          index: POST_INDEX,
-          mappings: {
-            properties: {
-              id: { type: 'integer' },
-              content: { type: 'text' },
-              title: { type: 'text' },
-            },
-          },
-        },
-        { ignore: [400] },
-      );
-    }
-    const posts = await this.queryPosts();
-    const body = posts.flatMap((post) => {
-      return [
-        { index: { _index: POST_INDEX, _id: post.id } },
-        pick(['id', 'content', 'title'], post),
-      ];
-    });
-    const result = await this.es.bulk({
-      body,
-    });
-    return result.items.length;
-  }
-
-  async searchPostByContent(content: string) {
-    const results: any[] = [];
-    const result = await this.es.search({
-      index: POST_INDEX,
-      body: {
-        query: {
-          match: {
-            content: {
-              query: content,
-            },
-          },
-        },
-      },
-    });
-    result.hits.hits.forEach((item) => {
-      results.push(item._source);
-    });
-
-    return { results, total: result.hits.hits.length };
   }
 }

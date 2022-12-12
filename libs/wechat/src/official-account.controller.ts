@@ -15,23 +15,23 @@ export class OfficialAccountController {
     this.logger.setContext(OfficialAccountController.name);
   }
 
-  @Get('subscribe-message')
+  @Get('handle-message')
   @ApiExcludeEndpoint()
   checkSignature(@Query() query: WechatCheckSignatureRequest, @Res() reply: FastifyReply) {
     const echostr = this.officialAccountService.checkSignature(query);
     reply.send(echostr);
   }
 
-  @Post('subscribe-message')
+  @Post('handle-message')
   @ApiExcludeEndpoint()
   @HttpCode(200)
-  async subscribeMessage(
+  async handleOfficialAccountMessage(
     @Query() query: WechatCheckSignatureRequest,
     @Res() reply: FastifyReply,
     @Body() body: WechatMessageOriginalRequest,
   ) {
     this.officialAccountService.checkSignature(query);
-    await this.officialAccountService.handleMessage(body);
+    await this.officialAccountService.handleOfficialAccountMessage(body);
     reply.send('success');
   }
 }

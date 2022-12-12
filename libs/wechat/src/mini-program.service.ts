@@ -13,10 +13,11 @@ import dayjs from 'dayjs';
 import { WeatherService } from '@app/weather';
 import { WechatService } from '@app/wechat/wechat.service';
 import { ChatGptService } from '@app/chat-gpt';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 
 @Injectable()
 export class MiniProgramService extends WechatService {
-  static conversationsKey = 'chat-gpt:conversations';
+  static conversationsKey = REDIS_KEYS.CHAT_GPT_CONVERSATIONS;
 
   static maxConversations = 10;
 
@@ -33,7 +34,13 @@ export class MiniProgramService extends WechatService {
     const token = process.env.WECHAT_MINI_PROGRAM_TOKEN;
     const encodingAESKey = process.env.WECHAT_MINI_PROGRAM_ENCODING_AES_KEY;
     if (appId && appSecret && token && encodingAESKey) {
-      this.init('wechat:mini-program:access-token', appId, appSecret, token, encodingAESKey);
+      this.init(
+        REDIS_KEYS.WECHAT_MINI_PROGRAM_ACCESS_TOKEN,
+        appId,
+        appSecret,
+        token,
+        encodingAESKey,
+      );
     }
   }
 

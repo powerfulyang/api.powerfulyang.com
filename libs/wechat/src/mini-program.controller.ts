@@ -19,17 +19,17 @@ export class MiniProgramController {
     this.logger.setContext(MiniProgramController.name);
   }
 
-  @Get('subscribe-message')
+  @Get('handle-message')
   @ApiExcludeEndpoint()
   checkSignature(@Query() query: WechatCheckSignatureRequest, @Res() reply: FastifyReply) {
     const echostr = this.miniProgramService.checkSignature(query);
     reply.send(echostr);
   }
 
-  @Post('subscribe-message')
+  @Post('handle-message')
   @ApiExcludeEndpoint()
   @HttpCode(200)
-  async subscribeMessage(
+  async handleMessage(
     @Query() query: WechatCheckSignatureRequest,
     @Res() reply: FastifyReply,
     @Body() body: WechatMessageOriginalRequest,

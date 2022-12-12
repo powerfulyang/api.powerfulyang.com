@@ -6,6 +6,7 @@ import { chatGptSessionTokenFilePath } from '@/constants/cookie-path';
 import { CacheService } from '@/common/cache/cache.service';
 import { generateUuid } from '@/utils/uuid';
 import type { ChatGPTResponse } from '@app/chat-gpt/type';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 
 /**
  * Service for chat.openai.com
@@ -16,7 +17,7 @@ export class ChatGptService {
   private readonly useAgent =
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36';
 
-  static Key = 'chat-gpt:access-token';
+  static Key = REDIS_KEYS.CHAT_GPT_ACCESS_TOKEN;
 
   constructor(
     private readonly proxyFetchService: ProxyFetchService,

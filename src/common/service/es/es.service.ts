@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { LoggerService } from '@/common/logger/logger.service';
 
-export const POST_INDEX = 'posts';
-
 @Injectable()
 export class EsService {
   constructor(

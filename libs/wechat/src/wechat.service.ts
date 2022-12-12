@@ -41,9 +41,6 @@ export class WechatService {
     this.Key = REDIS_KEY;
     this.TOKEN = token;
     this.encodingAESKey = encodingAESKey;
-    this.getAccessToken().catch((e) => {
-      this.logger.error(e);
-    });
   }
 
   async getAccessToken(): Promise<string> {

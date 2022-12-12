@@ -4,6 +4,8 @@ import { generateUuid } from '@/utils/uuid';
 import fetch from 'node-fetch';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CacheService } from '@/common/cache/cache.service';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import type { WechatMessageOriginalRequest } from '@/typings/wechat';
 
 @Injectable()
 export class OfficialAccountService extends WechatService {
@@ -18,7 +20,13 @@ export class OfficialAccountService extends WechatService {
     const token = process.env.WECHAT_OFFICIAL_ACCOUNT_TOKEN;
     const encodingAESKey = process.env.WECHAT_OFFICIAL_ACCOUNT_ENCODING_AES_KEY;
     if (appId && appSecret && token && encodingAESKey) {
-      this.init('wechat:official-account:access-token', appId, appSecret, token, encodingAESKey);
+      this.init(
+        REDIS_KEYS.WECHAT_OFFICIAL_ACCOUNT_ACCESS_TOKEN,
+        appId,
+        appSecret,
+        token,
+        encodingAESKey,
+      );
     }
   }
 
@@ -42,5 +50,9 @@ export class OfficialAccountService extends WechatService {
     });
     const json = await response.json();
     return json.url;
+  }
+
+  handleOfficialAccountMessage(request: WechatMessageOriginalRequest) {
+    return this.handleMessage(request);
   }
 }

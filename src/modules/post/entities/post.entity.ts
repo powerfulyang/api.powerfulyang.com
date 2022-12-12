@@ -32,6 +32,9 @@ export class Post {
   @Column({ type: 'text' })
   content: string;
 
+  @Column({ default: '' })
+  summary: string;
+
   @Column({ type: 'json' })
   tags: string[];
 
