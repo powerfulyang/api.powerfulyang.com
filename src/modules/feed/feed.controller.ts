@@ -21,15 +21,11 @@ export class FeedController {
     operationId: 'createFeed',
   })
   @ApiConsumes('multipart/form-data')
-  create(
-    @Body() createFeedDto: CreateFeedDto,
-    @AuthUser(['id']) user: User,
-    @Body('assets') assets: UploadFile[],
-  ) {
-    const { content, public: isPublic } = createFeedDto;
+  create(@Body() createFeedDto: CreateFeedDto, @AuthUser(['id']) createBy: User) {
+    const { content, public: isPublic, assets } = createFeedDto;
     return this.feedService.postFeed({
       content,
-      createBy: user,
+      createBy,
       public: Object.is(isPublic, 'true'),
       assets,
     });

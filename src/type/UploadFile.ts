@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export type UploadFileMsg = { sha1: string; suffix: string } & Pick<CosBucket, 'name'>;
 
-export class UploadFilesDto {
+export class UploadAssetsDto {
   @ApiProperty({ type: 'array', items: { type: 'file', format: 'binary' } })
   assets?: UploadFile[];
 }

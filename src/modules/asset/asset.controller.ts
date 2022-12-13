@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { UploadFile } from '@/type/UploadFile';
-import { UploadFilesDto } from '@/type/UploadFile';
+import { UploadAssetsDto } from '@/type/UploadFile';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
@@ -26,7 +26,7 @@ export class AssetController {
   @Post(':bucketName')
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    type: UploadFilesDto,
+    type: UploadAssetsDto,
   })
   saveAssetToBucket(
     @Body('assets') files: UploadFile[],
