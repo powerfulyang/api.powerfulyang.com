@@ -102,6 +102,10 @@ export class BucketService {
     return this.bucketDao.findOneByOrFail({ name });
   }
 
+  findBucketByName(name: string) {
+    return this.bucketDao.findOneBy({ name });
+  }
+
   /**
    *
    * 初始化逻辑修改

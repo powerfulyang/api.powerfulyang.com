@@ -250,7 +250,10 @@ export class AssetService extends BaseService {
    * @param bucketName
    */
   async assetBotSchedule(bucketName: CosBucket['name']) {
-    const bucket = await this.bucketService.getBucketByBucketName(bucketName);
+    const bucket = await this.bucketService.findBucketByName(bucketName);
+    if (isNull(bucket)) {
+      return;
+    }
     const max = await this.assetDao.findOne({
       order: { id: 'DESC' },
       where: {
