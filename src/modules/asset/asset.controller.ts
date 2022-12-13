@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { UploadFile } from '@/type/UploadFile';
 import { UploadAssetsDto } from '@/type/UploadFile';
@@ -38,6 +38,7 @@ export class AssetController {
   }
 
   @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
   deleteAsset(@Body('id') id: number, @Body('ids') ids: number[]) {
     return this.assetService.deleteAsset(ids || [id]);
   }

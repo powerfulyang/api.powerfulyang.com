@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { PostService } from '@/modules/post/post.service';
 import { AccessAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
@@ -32,6 +32,7 @@ export class PostController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   deletePost(@Param() { id }: SpecificPostDto, @AuthUser(['id']) user: User) {
     return this.postService.deletePost({
       id,

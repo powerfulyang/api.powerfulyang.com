@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import type { UploadFile } from '@/type/UploadFile';
@@ -53,6 +53,7 @@ export class FeedController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param() { id }: SpecificFeedDto, @AuthUser(['id']) user: User) {
     return this.feedService.deleteFeed({
       id,

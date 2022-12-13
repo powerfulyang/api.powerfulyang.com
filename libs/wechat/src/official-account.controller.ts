@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OfficialAccountService } from '@app/wechat/official-account.service';
@@ -24,7 +24,7 @@ export class OfficialAccountController {
 
   @Post('handle-message')
   @ApiExcludeEndpoint()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async handleOfficialAccountMessage(
     @Query() query: WechatCheckSignatureRequest,
     @Res() reply: FastifyReply,

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
 import { MiniProgramService } from '@app/wechat/mini-program.service';
 import {
@@ -28,7 +28,7 @@ export class MiniProgramController {
 
   @Post('handle-message')
   @ApiExcludeEndpoint()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async handleMessage(
     @Query() query: WechatCheckSignatureRequest,
     @Res() reply: FastifyReply,
