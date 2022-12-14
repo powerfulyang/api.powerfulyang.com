@@ -14,14 +14,11 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const statusCode = exception.getStatus();
-    const r = exception.getResponse();
-    // @ts-ignore
-    const message = typeof r === 'string' ? r : r.message;
     response
       .status(statusCode)
       .headers({
-        'x-error': message,
+        'x-error': exception.message || exception.name,
       })
-      .send();
+      .send(exception);
   }
 }

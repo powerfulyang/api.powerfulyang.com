@@ -14,12 +14,12 @@ export class CatchFilter<T extends Error> implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const statusCode = 500;
-    const { message } = exception;
+    const { name } = exception;
     response
       .status(statusCode)
       .headers({
-        'x-error': message,
+        'x-error': name,
       })
-      .send();
+      .send(exception);
   }
 }
