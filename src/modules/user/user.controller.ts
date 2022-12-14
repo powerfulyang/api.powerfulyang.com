@@ -134,8 +134,11 @@ export class UserController {
     operationId: 'getCurrentUser',
   })
   current(@AuthUser() user: User) {
-    this.logger.info(`${user.email} try to get current user info`);
-    return user;
+    if (user.email) {
+      this.logger.info(`${user.email} try to get current user info`);
+      return user;
+    }
+    return null;
   }
 
   @Post('logout')
