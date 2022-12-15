@@ -136,7 +136,7 @@ export class AssetService extends BaseService {
           Region: asset.bucket.Region,
         });
         if (res.statusCode !== HttpStatus.NO_CONTENT) {
-          throw new ServiceUnavailableException(`删除cos源文件失败, 数据库回滚`);
+          throw new ServiceUnavailableException(`delete asset ${id} failed, rollback`);
         }
         await transactionalEntityManager.remove(asset);
       }
@@ -275,7 +275,7 @@ export class AssetService extends BaseService {
         undoes = await this.pixivBotService.fetchUndo(max?.sn);
         break;
       default:
-        throw new UnprocessableEntityException();
+        throw new UnprocessableEntityException('bucketName is not support');
     }
     this.logger.info(`undoes count -> ${undoes.length}`);
     for (const undo of undoes.reverse()) {
@@ -473,7 +473,7 @@ export class AssetService extends BaseService {
     const s = sharp(buffer);
     const metadata = await s.metadata();
     if (!metadata.format) {
-      throw new UnsupportedMediaTypeException();
+      throw new UnsupportedMediaTypeException('unsupported media type');
     }
     asset.fileSuffix = metadata.format;
     asset.pHash = await pHash(buffer);

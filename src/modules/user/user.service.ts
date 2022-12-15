@@ -178,7 +178,7 @@ export class UserService extends BaseService {
     });
     const bool = UserService.verifyPassword(password, userInfo.salt, userInfo.saltedPassword);
     if (isFalsy(bool)) {
-      throw new UnauthorizedException('密码错误！');
+      throw new UnauthorizedException('email or password is wrong');
     }
     return {
       token: await this.generateAuthorization(userInfo),

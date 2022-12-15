@@ -92,7 +92,7 @@ export class BucketService {
       }
       // 上面的都完成啦
       if (res.statusCode !== HttpStatus.OK) {
-        throw new ServiceUnavailableException('创建bucket失败');
+        throw new ServiceUnavailableException('create bucket failed');
       }
     }
     return res;

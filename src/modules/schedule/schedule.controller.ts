@@ -46,7 +46,7 @@ export class ScheduleController {
         await this.cosObjectUrlScheduleService.main();
         break;
       default:
-        throw new ForbiddenException();
+        throw new ForbiddenException('scheduleType not found');
     }
     return 'action success';
   }

@@ -19,6 +19,6 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
       .headers({
         'x-error': exception.message || exception.name,
       })
-      .send(exception);
+      .send(exception.getResponse());
   }
 }

@@ -4,7 +4,7 @@ import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
 
 export class CreatePostDto extends PartialType(OmitType(Post, ['id'])) {
-  @Length(1, 30)
+  @Length(1, 100)
   @IsNotEmpty()
   declare title: string;
 

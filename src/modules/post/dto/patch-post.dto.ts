@@ -6,7 +6,7 @@ import type { User } from '@/modules/user/entities/user.entity';
 export class PatchPostDto extends PartialType(Post) {
   declare id: number;
 
-  @Length(1, 30)
+  @Length(1, 100)
   @IsNotEmpty()
   declare title: string;
 
