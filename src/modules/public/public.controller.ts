@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
@@ -8,6 +8,7 @@ import { AuthFamilyMembersId, AuthUser } from '@/common/decorator/user-from-auth
 import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ChatGptService } from '@app/chat-gpt';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -18,6 +19,7 @@ export class PublicController {
     private readonly assetService: AssetService,
     private readonly postService: PostService,
     private readonly feedService: FeedService,
+    private readonly chatGptService: ChatGptService,
   ) {
     this.logger.setContext(PublicController.name);
   }
@@ -112,5 +114,10 @@ export class PublicController {
   })
   getPublicAssetById(@Param('id') id: string, @AuthFamilyMembersId() userIds: User['id'][]) {
     return this.assetService.getAccessAssetById(+id, userIds);
+  }
+
+  @Post('chat')
+  chat(@Body() body: { message: string }) {
+    return this.chatGptService.sendMessage(body.message);
   }
 }
