@@ -71,7 +71,7 @@
     "ramda": "0.28.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.0",
-    "sharp": "0.31.2",
+    "sharp": "0.31.3",
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
     "typeorm": "0.3.11",
