@@ -47,4 +47,22 @@ export class PathViewCountService {
     }
     return viewCount;
   }
+
+  async viewCount() {
+    type Result = {
+      createAt: string;
+      requestCount: number;
+      distinctRequestCount: number;
+      distinctIpCount: number;
+    };
+    return this.pathViewCountDao
+      .createQueryBuilder()
+      .select(`"createAt"::date::varchar`, 'createAt')
+      .addSelect(`count(path)::int`, 'requestCount')
+      .addSelect(`count(distinct path)::int`, 'distinctRequestCount')
+      .addSelect(`count(distinct ip)::int`, 'distinctIpCount')
+      .groupBy(`"createAt"::date`)
+      .orderBy(`"createAt"::date`, 'DESC')
+      .getRawMany<Result>();
+  }
 }

@@ -9,6 +9,7 @@ import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChatGptService } from '@app/chat-gpt';
+import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -20,6 +21,7 @@ export class PublicController {
     private readonly postService: PostService,
     private readonly feedService: FeedService,
     private readonly chatGptService: ChatGptService,
+    private readonly pathViewCountService: PathViewCountService,
   ) {
     this.logger.setContext(PublicController.name);
   }
@@ -119,5 +121,10 @@ export class PublicController {
   @Post('chat')
   chat(@Body() body: { message: string }) {
     return this.chatGptService.sendMessage(body.message);
+  }
+
+  @Get('view-count')
+  viewCount() {
+    return this.pathViewCountService.viewCount();
   }
 }
