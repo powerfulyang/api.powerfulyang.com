@@ -7,7 +7,7 @@ specifiers:
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.6.0
   '@napi-rs/pinyin': 1.7.1
-  '@nestjs/cli': 9.1.7
+  '@nestjs/cli': 9.1.8
   '@nestjs/common': 9.2.1
   '@nestjs/core': 9.2.1
   '@nestjs/elasticsearch': 9.0.0
@@ -124,7 +124,7 @@ dependencies:
   xml2js: 0.4.23
 
 devDependencies:
-  '@nestjs/cli': 9.1.7
+  '@nestjs/cli': 9.1.8
   '@nestjs/schematics': 9.0.4_typescript@4.9.4
   '@nestjs/testing': 9.2.1_t6j6bmv6lsxnofi6ilydr2n3ma
   '@powerfulyang/lint': 3.1.3_typescript@4.9.4
@@ -1399,8 +1399,8 @@ packages:
     resolution: {integrity: sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==}
     dev: false
 
-  /@nestjs/cli/9.1.7:
-    resolution: {integrity: sha512-l0+vWXr571JcQ2LnQU3otxsvF5KUXqcAWCjnjMZH7ALVxcYi7BTif8q9YX0QHUETd9xPbH2YWkqV8SvlwgqEVg==}
+  /@nestjs/cli/9.1.8:
+    resolution: {integrity: sha512-53laCMoPLAkjyz3405FlMSrHnbr3DGeoaQjY963bEroezLlm/qfQhwj6oGJwtgA28eNFgx68mvQV2f1VZNUJtw==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
     dependencies:
