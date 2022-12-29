@@ -15,7 +15,7 @@ const logger = winston.createLogger({
   format: combine(
     timestamp({
       format: () => {
-        return dayjs().tz('Asia/Shanghai').format('MM/DD/YYYY, h:mm:ss A');
+        return dayjs().format('MM/DD/YYYY, h:mm:ss A');
       },
     }),
     printf(({ level, message, ...others }) => {

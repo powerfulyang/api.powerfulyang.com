@@ -17,9 +17,9 @@ export class PathViewCount {
   @Column({ type: 'bigint' })
   ip: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 }

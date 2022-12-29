@@ -59,11 +59,11 @@ export class User {
   @ApiProperty()
   lastAddress: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
   updateAt: Date;
 

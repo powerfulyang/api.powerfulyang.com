@@ -29,9 +29,9 @@ export class OauthApplication {
   @Column({ select: false })
   callbackUrl: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 }

@@ -29,9 +29,9 @@ export class OauthOpenid {
   @ManyToOne(() => User, { nullable: false, eager: true })
   user: Relation<User>;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 }

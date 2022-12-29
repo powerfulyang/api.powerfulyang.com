@@ -25,11 +25,11 @@ export class Role {
   @ApiProperty()
   roleName: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
   updateAt: Date;
 

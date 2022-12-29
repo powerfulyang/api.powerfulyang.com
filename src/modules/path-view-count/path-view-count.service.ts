@@ -48,7 +48,7 @@ export class PathViewCountService {
     return viewCount;
   }
 
-  async viewCount() {
+  async viewCount(timezone = 'Asia/Shanghai') {
     type Result = {
       createAt: string;
       requestCount: number;
@@ -57,12 +57,13 @@ export class PathViewCountService {
     };
     return this.pathViewCountDao
       .createQueryBuilder()
-      .select(`"createAt"::date::varchar`, 'createAt')
+      .select(`("createAt"::timestamptz AT TIME ZONE :timezone)::date::text`, 'date')
+      .setParameters({ timezone })
       .addSelect(`count(path)::int`, 'requestCount')
       .addSelect(`count(distinct path)::int`, 'distinctRequestCount')
       .addSelect(`count(distinct ip)::int`, 'distinctIpCount')
-      .groupBy(`"createAt"::date`)
-      .orderBy(`"createAt"::date`, 'DESC')
+      .groupBy('date')
+      .orderBy('date', 'DESC')
       .getRawMany<Result>();
   }
 }

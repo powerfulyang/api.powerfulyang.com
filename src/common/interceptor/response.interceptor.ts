@@ -10,7 +10,7 @@ import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { FastifyReply } from 'fastify';
 import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 import { HOSTNAME } from '@/utils/hostname';
-import dayjs from 'dayjs';
+import { DateTimeFormat } from '@/utils/dayjs';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -58,7 +58,7 @@ export class ResponseInterceptor implements NestInterceptor {
         }
         reply.header('x-path-view-count', pathViewCount);
         reply.header('x-server-id', HOSTNAME);
-        reply.header('x-server-time', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+        reply.header('x-server-time', DateTimeFormat());
         reply.header('x-server-path', path);
         // 不再做统一格式处理，直接返回原始数据
         return data;

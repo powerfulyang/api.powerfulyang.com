@@ -19,10 +19,10 @@ export class Family {
   @Column({ default: '' })
   description: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 
   @ManyToMany(() => User, (user) => user.families)

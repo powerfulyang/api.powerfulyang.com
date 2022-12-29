@@ -40,11 +40,11 @@ export class Menu {
   })
   readonly parentId: number | null;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
   updateAt: Date;
 }

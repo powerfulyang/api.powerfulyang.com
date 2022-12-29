@@ -45,9 +45,9 @@ export class Feed {
   @ManyToOne(() => User)
   updateBy: User;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 }

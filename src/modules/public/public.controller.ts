@@ -10,6 +10,7 @@ import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChatGptService } from '@app/chat-gpt';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
+import { ClientTimezone } from '@/common/decorator/client-timezone';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -124,7 +125,7 @@ export class PublicController {
   }
 
   @Get('view-count')
-  viewCount() {
-    return this.pathViewCountService.viewCount();
+  viewCount(@ClientTimezone() timezone: string) {
+    return this.pathViewCountService.viewCount(timezone);
   }
 }

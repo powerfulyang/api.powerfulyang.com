@@ -68,10 +68,10 @@ export class Asset {
   @ManyToOne(() => User, { nullable: false })
   uploadBy: Relation<User>;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 
   @BeforeInsert()

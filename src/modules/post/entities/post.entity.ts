@@ -56,10 +56,10 @@ export class Post {
   @ManyToOne(() => Asset, { eager: true })
   poster: Asset;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 
   static generateUrlTitle(post: Post) {

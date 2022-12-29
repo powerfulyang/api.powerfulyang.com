@@ -43,10 +43,10 @@ export class CosBucket {
   @Column({ type: 'json' })
   RefererConfiguration: RefererConfiguration;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 
   @JoinColumn()

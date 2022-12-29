@@ -1,6 +1,5 @@
 import './loadEnv';
 import { NestFactory } from '@nestjs/core';
-import dayjs from 'dayjs';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
 import { PeerServer } from 'peer';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
@@ -9,6 +8,7 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Authorization } from '@/constants/constants';
+import { DateTimeFormat } from '@/utils/dayjs';
 import { AppModule } from './app.module';
 import fastifyInstance from './fastify/hook';
 
@@ -28,9 +28,7 @@ async function bootstrap(): Promise<void> {
   app
     .startAllMicroservices()
     .then(() => {
-      logger.info(
-        `Microservice started at ${dayjs().tz('Asia/Shanghai').format('YYYY-MM-DD HH:mm:ss')}`,
-      );
+      logger.info(`Microservice started at ${DateTimeFormat()}`);
     })
     .catch((err) => {
       logger.error('Fail to startAllMicroservices!', err);
