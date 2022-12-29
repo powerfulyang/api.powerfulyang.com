@@ -39,7 +39,7 @@ specifiers:
   bindings: 1.5.0
   chalk: 4.1.2
   class-validator: 0.14.0
-  cos-nodejs-sdk-v5: 2.11.18
+  cos-nodejs-sdk-v5: 2.11.19
   dayjs: 1.11.7
   dotenv: 16.0.3
   fastify: latest
@@ -95,7 +95,7 @@ dependencies:
   bindings: 1.5.0
   chalk: 4.1.2
   class-validator: 0.14.0
-  cos-nodejs-sdk-v5: 2.11.18
+  cos-nodejs-sdk-v5: 2.11.19
   dayjs: 1.11.7
   dotenv: 16.0.3
   fastify: 4.10.2
@@ -3788,8 +3788,8 @@ packages:
       vary: 1.1.2
     dev: false
 
-  /cos-nodejs-sdk-v5/2.11.18:
-    resolution: {integrity: sha512-Sr7P4s5iYNJILwLBJ5e9R45FyCuyXBge51dtlMFrItpahYiHZzegftxuXDhgpvp3DgRso5ve4Qxl77RVfAezyA==}
+  /cos-nodejs-sdk-v5/2.11.19:
+    resolution: {integrity: sha512-lYqjUWWUhifarWupDlDA0sH8yyzXE7tD3ipOKcATIB1Hxkk7REeRleNSLkU/zfSP61Osmwaaw/nkfroujHaJZA==}
     engines: {node: '>= 6'}
     dependencies:
       conf: 9.0.2
