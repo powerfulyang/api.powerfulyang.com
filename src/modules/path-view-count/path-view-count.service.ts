@@ -38,13 +38,12 @@ export class PathViewCountService {
   async handlePathViewCount(path: string, ip: string) {
     const ipLong = ip2long(ip);
     const redisKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);
-    const result = await this.cacheService.sadd(redisKey, ipLong);
+    await this.cacheService.sadd(redisKey, ipLong);
     const viewCount = await this.cacheService.scard(redisKey);
-    if (result > 0) {
-      this.pathViewCountDao.insert({ ip: ipLong, path }).catch((e) => {
-        this.logger.error(e);
-      });
-    }
+    // 不管是否是新的 ip 访问，都要记录。
+    this.pathViewCountDao.insert({ ip: ipLong, path }).catch((e) => {
+      this.logger.error(e);
+    });
     return viewCount;
   }
 
