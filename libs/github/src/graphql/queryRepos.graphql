@@ -1,0 +1,17 @@
+query queryRepos($login: String = "powerfulyang", $cursor: String = null) {
+  user(login: $login) {
+    repositories(first: 100, after: $cursor, orderBy: {field: UPDATED_AT, direction: DESC}, ownerAffiliations: OWNER) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      nodes {
+        name
+        description
+        url
+        stargazerCount
+        forkCount
+      }
+    }
+  }
+}

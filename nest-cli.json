@@ -51,13 +51,13 @@
         "tsConfigPath": "libs/pixiv-bot/tsconfig.lib.json"
       }
     },
-    "github-webhook": {
+    "github": {
       "type": "library",
-      "root": "libs/github-webhook",
+      "root": "libs/github",
       "entryFile": "index",
-      "sourceRoot": "libs/github-webhook/src",
+      "sourceRoot": "libs/github/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/github-webhook/tsconfig.lib.json"
+        "tsConfigPath": "libs/github/tsconfig.lib.json"
       }
     },
     "tencent-cloud-cos": {

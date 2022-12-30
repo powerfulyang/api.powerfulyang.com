@@ -1,7 +1,7 @@
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { GithubModule } from 'app/github-webhook';
+import { GithubModule } from 'app/github';
 import { UdpServerModule } from 'api/udp-server';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';

@@ -1,0 +1,33 @@
+query queryContributions($login: String = "powerfulyang") {
+  user(login: $login) {
+    contributionsCollection {
+      contributionCalendar {
+        isHalloween
+        totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+            contributionLevel
+            date
+          }
+        }
+      }
+      commitContributionsByRepository(maxRepositories: 100) {
+        repository {
+          primaryLanguage {
+            name
+            color
+          }
+        }
+        contributions {
+          totalCount
+        }
+      }
+      totalCommitContributions
+      totalIssueContributions
+      totalPullRequestContributions
+      totalPullRequestReviewContributions
+      totalRepositoryContributions
+    }
+  }
+}

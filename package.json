@@ -25,7 +25,8 @@
     "test:cov": "jest --coverage",
     "postinstall": "npx husky install && node-gyp rebuild",
     "tsc-check": "tsc --noEmit",
-    "precommit": "lint-staged && npm run tsc-check"
+    "precommit": "lint-staged && npm run tsc-check",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@elastic/elasticsearch": "8.5.0",
@@ -33,6 +34,7 @@
     "@fastify/multipart": "7.3.0",
     "@fastify/passport": "2.2.0",
     "@fastify/static": "6.6.0",
+    "@graphql-codegen/cli": "latest",
     "@napi-rs/pinyin": "1.7.1",
     "@nestjs/common": "9.2.1",
     "@nestjs/core": "9.2.1",
@@ -46,7 +48,7 @@
     "@nestjs/typeorm": "9.0.1",
     "@powerfulyang/node-utils": "1.3.1",
     "@powerfulyang/utils": "1.6.0",
-    "amqp-connection-manager": "4.1.9",
+    "amqp-connection-manager": "4.1.10",
     "amqplib": "0.10.3",
     "bindings": "1.5.0",
     "chalk": "4.1.2",
@@ -55,6 +57,9 @@
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "fastify": "latest",
+    "graphql": "latest",
+    "graphql-request": "5.1.0",
+    "graphql-tag": "2.12.6",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.2.4",
     "ipdb": "0.3.3",
@@ -80,6 +85,11 @@
     "xml2js": "0.4.23"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "3.2.3",
+    "@graphql-codegen/cli": "2.16.2",
+    "@graphql-codegen/typescript": "2.8.6",
+    "@graphql-codegen/typescript-graphql-request": "4.5.8",
+    "@graphql-codegen/typescript-operations": "2.5.11",
     "@nestjs/cli": "9.1.8",
     "@nestjs/schematics": "9.0.4",
     "@nestjs/testing": "9.2.1",
