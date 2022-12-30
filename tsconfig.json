@@ -11,7 +11,7 @@
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "incremental": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -32,8 +32,8 @@
       "api/pixiv-bot": ["libs/pixiv-bot/src"],
       "api/pixiv-bot/*": ["libs/pixiv-bot/src/*"],
       "@/*": ["src/*"],
-      "app/github-webhook": ["libs/github-webhook/src"],
-      "app/github-webhook/*": ["libs/github-webhook/src/*"],
+      "app/github": ["libs/github/src"],
+      "app/github/*": ["libs/github/src/*"],
       "api/tencent-cloud-cos": ["libs/tencent-cloud-cos/src"],
       "api/tencent-cloud-cos/*": ["libs/tencent-cloud-cos/src/*"],
       "api/proxy-fetch": ["libs/proxy-fetch/src"],
@@ -52,5 +52,5 @@
     "resolveJsonModule": true
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/**/*.ts", "__test__", "libs/**/*.ts", "test", "addon-api/**/*.ts"]
+  "include": ["src/**/*.ts", "__test__", "libs/**/*.ts", "test", "addon-api/**/*.ts", "codegen.ts"]
 }

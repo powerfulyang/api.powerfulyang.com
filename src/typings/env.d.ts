@@ -34,5 +34,7 @@ declare namespace NodeJS {
     WECHAT_MINI_PROGRAM_ENCODING_AES_KEY: string;
 
     AMAP_KEY: string;
+
+    GITHUB_TOKEN: string;
   }
 }
