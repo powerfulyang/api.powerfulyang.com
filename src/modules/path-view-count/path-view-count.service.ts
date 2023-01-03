@@ -7,6 +7,7 @@ import { PathViewCount } from '@/modules/path-view-count/entities/path-view-coun
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import type { ViewCountDto } from '@/modules/path-view-count/dto/view-count.dto';
 
 @Injectable()
 export class PathViewCountService {
@@ -48,21 +49,14 @@ export class PathViewCountService {
   }
 
   async viewCount(timezone = 'Asia/Shanghai') {
-    type Result = {
-      createAt: string;
-      requestCount: number;
-      distinctRequestCount: number;
-      distinctIpCount: number;
-    };
     return this.pathViewCountDao
       .createQueryBuilder()
       .select(`("createAt"::timestamptz AT TIME ZONE :timezone)::date::text`, 'date')
       .setParameters({ timezone })
       .addSelect(`count(path)::int`, 'requestCount')
-      .addSelect(`count(distinct path)::int`, 'distinctRequestCount')
       .addSelect(`count(distinct ip)::int`, 'distinctIpCount')
       .groupBy('date')
       .orderBy('date', 'DESC')
-      .getRawMany<Result>();
+      .getRawMany<ViewCountDto>();
   }
 }
