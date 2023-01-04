@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { QueryReposQuery } from 'app/github/__generated__/github-graphql';
 import { getSdk } from 'app/github/__generated__/github-graphql';
 import { GraphQLClient } from 'graphql-request';
+import type { NonNullableElement } from '@/type/NonNullableElement';
 
 @Injectable()
 export class GithubService {
@@ -24,7 +25,9 @@ export class GithubService {
   async queryRepositories(login?: string) {
     let hasNextPage = true;
     let after: string | null = null;
-    const repositories: NonNullable<QueryReposQuery['user']>['repositories']['nodes'] = [];
+    const repositories: NonNullableElement<
+      NonNullable<QueryReposQuery['user']>['repositories']['nodes']
+    > = [];
     while (hasNextPage) {
       const res = await getSdk(this.client).queryRepos({
         login,
@@ -35,9 +38,11 @@ export class GithubService {
       }
       hasNextPage = res.user.repositories.pageInfo.hasNextPage;
       after = res.user.repositories.pageInfo.endCursor;
-      if (res.user.repositories.nodes) {
-        repositories.push(...res.user.repositories.nodes);
-      }
+      res.user.repositories.nodes?.forEach((node) => {
+        if (node) {
+          repositories.push(node);
+        }
+      });
     }
     return repositories;
   }
