@@ -36,7 +36,7 @@ specifiers:
   '@types/passport-google-oauth20': 2.0.11
   '@types/passport-jwt': 3.0.8
   '@types/ramda': 0.28.20
-  '@types/sharp': 0.31.0
+  '@types/sharp': 0.31.1
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
   amqp-connection-manager: 4.1.10
@@ -152,7 +152,7 @@ devDependencies:
   '@types/passport-google-oauth20': 2.0.11
   '@types/passport-jwt': 3.0.8
   '@types/ramda': 0.28.20
-  '@types/sharp': 0.31.0
+  '@types/sharp': 0.31.1
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
   form-data: 4.0.0
@@ -3321,10 +3321,10 @@ packages:
       '@types/mime': 3.0.1
       '@types/node': 18.11.17
 
-  /@types/sharp/0.31.0:
-    resolution: {integrity: sha512-nwivOU101fYInCwdDcH/0/Ru6yIRXOpORx25ynEOc6/IakuCmjOAGpaO5VfUl4QkDtUC6hj+Z2eCQvgXOioknw==}
+  /@types/sharp/0.31.1:
+    resolution: {integrity: sha512-5nWwamN9ZFHXaYEincMSuza8nNfOof8nmO+mcI+Agx1uMUk4/pQnNIcix+9rLPXzKrm1pS34+6WRDbDV0Jn7ag==}
     dependencies:
-      '@types/node': 18.11.11
+      '@types/node': 18.11.18
     dev: true
 
   /@types/stack-utils/2.0.1:
