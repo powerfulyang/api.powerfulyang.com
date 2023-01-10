@@ -36,7 +36,11 @@ async function bootstrap(): Promise<void> {
 
   // CORS
   app.enableCors({
-    origin: ['https://local.powerfulyang.com', 'https://powerfulyang.github.io'],
+    origin: [
+      'https://local.powerfulyang.com',
+      'https://powerfulyang.github.io',
+      'https://us4ever.com',
+    ],
     credentials: true,
   });
 

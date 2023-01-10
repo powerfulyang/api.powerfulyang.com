@@ -56,7 +56,6 @@
     "cos-nodejs-sdk-v5": "2.11.19",
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
-    "fastify": "latest",
     "graphql": "latest",
     "graphql-request": "5.1.0",
     "graphql-tag": "2.12.6",
@@ -110,5 +109,8 @@
     "node-gyp": "9.3.1",
     "typescript": "latest"
   },
+  "bundledDependencies": [
+    "fastify"
+  ],
   "gypfile": true
 }
