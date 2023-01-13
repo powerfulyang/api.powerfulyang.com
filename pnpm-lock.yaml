@@ -54,7 +54,7 @@ specifiers:
   instagram-private-api: 1.45.3
   ioredis: 5.2.4
   ipdb: 0.3.3
-  node-addon-api: 5.0.0
+  node-addon-api: 5.1.0
   node-fetch: 2.6.8
   node-gyp: 9.3.1
   node-telegram-bot-api: 0.61.0
@@ -154,7 +154,7 @@ devDependencies:
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
   form-data: 4.0.0
-  node-addon-api: 5.0.0
+  node-addon-api: 5.1.0
   node-gyp: 9.3.1
   typescript: 4.9.4
 
@@ -8647,8 +8647,8 @@ packages:
     resolution: {integrity: sha512-/ujIVxthRs+7q6hsdjHMaj8hRG9NuWmwrz+JdRwZ14jdFoKSkm+vDsCbF9PLpnSqjaWQJuTmVtcWHNLr+vrOFw==}
     dev: true
 
-  /node-addon-api/5.0.0:
-    resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
+  /node-addon-api/5.1.0:
+    resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
 
   /node-domexception/1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
@@ -10189,7 +10189,7 @@ packages:
     dependencies:
       color: 4.2.3
       detect-libc: 2.0.1
-      node-addon-api: 5.0.0
+      node-addon-api: 5.1.0
       prebuild-install: 7.1.1
       semver: 7.3.8
       simple-get: 4.0.1
