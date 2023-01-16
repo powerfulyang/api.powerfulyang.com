@@ -11,7 +11,6 @@ specifiers:
   '@graphql-codegen/typescript': 2.8.7
   '@graphql-codegen/typescript-graphql-request': 4.5.8
   '@graphql-codegen/typescript-operations': 2.5.12
-  '@napi-rs/pinyin': 1.7.1
   '@nestjs/cli': 9.1.8
   '@nestjs/common': 9.2.1
   '@nestjs/core': 9.2.1
@@ -85,7 +84,6 @@ dependencies:
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.6.1
   '@graphql-codegen/cli': 2.16.4_fi2unsm2uqmoikyi4dmwfwvz5i
-  '@napi-rs/pinyin': 1.7.1
   '@nestjs/common': 9.2.1_ca43gjgfb2qovizjnmxfs634zy
   '@nestjs/core': 9.2.1_pwdo3q3a7waqiisplezqjzetmq
   '@nestjs/elasticsearch': 9.0.0_anwldfygmy4bbl2t6vvhkmi2au
@@ -2245,149 +2243,6 @@ packages:
     resolution: {integrity: sha512-GlM2AbzrErd/TmLL3E8hAHmb5Q7VhDJp35vIbyPVA5Rz55LZuRr8pwL3qrwwkVNo05gMX1J44gURKb4MHQZo7w==}
     dev: false
 
-  /@napi-rs/pinyin-android-arm-eabi/1.7.1:
-    resolution: {integrity: sha512-Dhvhz3qm3SJoPQUd2wEnUFQH0OizjBkUQOEGPcyGIpwbdyS5tVppxuAC7dO+iUh9F/uvhtKwoibDdLiupqdptw==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm]
-    os: [android]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-android-arm64/1.7.1:
-    resolution: {integrity: sha512-h+qYBRDu7mUkKiOPRaZmNUPdlxfbURUggKqncYUlV2TmHAALfoPBPoT3DD8ClQXVax1eYp4UWSloRA3hUxFLcQ==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm64]
-    os: [android]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-darwin-arm64/1.7.1:
-    resolution: {integrity: sha512-5NYFZT6PtBtO02N23vG1pcCGnDlwjlYFaq7I/V6pbI5reGDzP6Xg1TqnK635jb0AgC2yM9ojjBfR5kJYViPQTQ==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-darwin-x64/1.7.1:
-    resolution: {integrity: sha512-xomDqZC7qAmBCAqPPKgvhJRUreCgVLIa7KHdP1kMq3iOJD99ZoV9fkf8EHP54Ia5zNxUVgGSUOcEA8BwLwT1ig==}
-    engines: {node: '>= 10.0'}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-freebsd-x64/1.7.1:
-    resolution: {integrity: sha512-nGZhpA2vyTWPKguGFKMWUo8zFwPhgwNyVqVDF6T+djgzi6VKr3IUQHX5vs2lWyQixPxkrq4oxPHISvy+nHyrcg==}
-    engines: {node: '>= 10.0'}
-    cpu: [x64]
-    os: [freebsd]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-linux-arm-gnueabihf/1.7.1:
-    resolution: {integrity: sha512-PfCuDa8S0Zh2QSOoVnowlHb7j/XkaZtRDq7GoqS7Hy4cuXDM00pHVclh9C5RfbEPQ8Nefz9ryeyYItYxaRt7Qg==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-linux-arm64-gnu/1.7.1:
-    resolution: {integrity: sha512-ay+tonSYDRhJDy95fRtXsu5wDyMcf3v2qxqVKG69ly8PW2ekbGTKLSJILJbhFx5NOwyB6DcmiFZvZQqlpaWNKQ==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-linux-arm64-musl/1.7.1:
-    resolution: {integrity: sha512-wR3FOgewIoGeB9HsGqB2AZBzC+G1QKviPSG9BD5joXSsffcekhG47/aWvy4bnILF1gCDf1SGDo4o4WMRlpD+oQ==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-linux-x64-gnu/1.7.1:
-    resolution: {integrity: sha512-p+S9kmdZlTtv4UVpCoyhHZRZ7WcuHY5OOAniWoBn9S3pq2ac8ptX9zvZkqwJ4jUvaeoXOQKqKNQnJTw05ECfSA==}
-    engines: {node: '>= 10.0'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-linux-x64-musl/1.7.1:
-    resolution: {integrity: sha512-qfpbsIHw9wdzdm6YyrUhgKwCyHl4eutOIcJDWRZcvVeuxaFwaYiSTyhn57uMCVkk/M4zTLFW+iUZra6a9tDw/g==}
-    engines: {node: '>= 10.0'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-win32-arm64-msvc/1.7.1:
-    resolution: {integrity: sha512-MNorAzMFmmPxqq3pzJGQ11fV/cGuKD8AQfZ2r0es32+4oQX/Ke6HF1CRr1ijG9ERyhCz1H0U4BnjUTwadpjjcQ==}
-    engines: {node: '>= 10.0'}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-win32-ia32-msvc/1.7.1:
-    resolution: {integrity: sha512-LraMduh848NTS+EpVRI8ufCWoCucbDOyq8GL874aaKL514xqMSgRWaPMEz7WkDE0R/8egpJK9eA6N7pDBpF92w==}
-    engines: {node: '>= 10.0'}
-    cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin-win32-x64-msvc/1.7.1:
-    resolution: {integrity: sha512-W5hKb0AusXieCDot4O1SOTee1u46vKkHZ/vhdJqudzSubNmb6mQgMxSxPkfLMEvm+1hchOzrwVO0xCVtrLW1bw==}
-    engines: {node: '>= 10.0'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@napi-rs/pinyin/1.7.1:
-    resolution: {integrity: sha512-+Mutbfd28IPXFqK1MQIhzVn1riPuKPVDDfRvn1aN1o17xmWShE5orRr43UFdVVAsnagrgT9yvbXeAS7GwUYGZw==}
-    engines: {node: '>= 10.0'}
-    requiresBuild: true
-    dependencies:
-      '@napi-rs/triples': 1.1.0
-    optionalDependencies:
-      '@napi-rs/pinyin-android-arm-eabi': 1.7.1
-      '@napi-rs/pinyin-android-arm64': 1.7.1
-      '@napi-rs/pinyin-darwin-arm64': 1.7.1
-      '@napi-rs/pinyin-darwin-x64': 1.7.1
-      '@napi-rs/pinyin-freebsd-x64': 1.7.1
-      '@napi-rs/pinyin-linux-arm-gnueabihf': 1.7.1
-      '@napi-rs/pinyin-linux-arm64-gnu': 1.7.1
-      '@napi-rs/pinyin-linux-arm64-musl': 1.7.1
-      '@napi-rs/pinyin-linux-x64-gnu': 1.7.1
-      '@napi-rs/pinyin-linux-x64-musl': 1.7.1
-      '@napi-rs/pinyin-win32-arm64-msvc': 1.7.1
-      '@napi-rs/pinyin-win32-ia32-msvc': 1.7.1
-      '@napi-rs/pinyin-win32-x64-msvc': 1.7.1
-    dev: false
-
-  /@napi-rs/triples/1.1.0:
-    resolution: {integrity: sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==}
-    dev: false
-
   /@nestjs/cli/9.1.8:
     resolution: {integrity: sha512-53laCMoPLAkjyz3405FlMSrHnbr3DGeoaQjY963bEroezLlm/qfQhwj6oGJwtgA28eNFgx68mvQV2f1VZNUJtw==}
     engines: {node: '>= 12.9.0'}
@@ -2830,7 +2685,7 @@ packages:
       postcss-scss: 4.0.6_postcss@8.4.21
       prettier: 2.8.3
       prettier-plugin-tailwindcss: 0.2.1_prettier@2.8.3
-      rimraf: 4.0.4
+      rimraf: 4.0.7
       rollup: 3.10.0
       sass: 1.57.1
       stylelint: 14.15.0
@@ -9992,8 +9847,8 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rimraf/4.0.4:
-    resolution: {integrity: sha512-R0hoVr9xTwemarQjoWlNt/nb5dEGVTBhVdkRmEX2zEkT8T6onH0XKiGjuaC7rNNj/gYzY2p4NVRJ3sjO1ascHQ==}
+  /rimraf/4.0.7:
+    resolution: {integrity: sha512-CUEDDrZvc0swDgVdXGiv3FcYYQMpJxjvSGt85Amj6yU+MCVWurrLCeLiJDdJPHCzNJnwuebBEdcO//eP11Xa7w==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true

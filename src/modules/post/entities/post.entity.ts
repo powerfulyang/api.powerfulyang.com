@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { User } from '@/modules/user/entities/user.entity';
 import { Asset } from '@/modules/asset/entities/asset.entity';
-import { pinyin } from '@napi-rs/pinyin';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('post')
@@ -25,9 +24,6 @@ export class Post {
 
   @Column()
   title: string;
-
-  @Column({ unique: true })
-  urlTitle: string;
 
   @Column({ type: 'text' })
   content: string;
@@ -62,10 +58,6 @@ export class Post {
   @UpdateDateColumn({ type: 'timestamptz' })
   updateAt: Date;
 
-  static generateUrlTitle(post: Post) {
-    return pinyin(post.title).join('-').replaceAll(' ', '-').concat(`-${post.createBy.id}`);
-  }
-
   @BeforeInsert()
   beforeInsert() {
     if (!this.publishYear) {
@@ -73,9 +65,6 @@ export class Post {
     }
     if (!this.tags?.length) {
       this.tags = ['这个人居然不写标签'];
-    }
-    if (this.title && this.createBy) {
-      this.urlTitle = Post.generateUrlTitle(this);
     }
   }
 }

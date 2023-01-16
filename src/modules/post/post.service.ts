@@ -8,7 +8,7 @@ import type { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 import { AssetService } from '@/modules/asset/asset.service';
 import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { LoggerService } from '@/common/logger/logger.service';
-import { isDefined, isNumeric } from '@powerfulyang/utils';
+import { isDefined } from '@powerfulyang/utils';
 import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 
 @Injectable()
@@ -48,7 +48,6 @@ export class PostService {
     if (post.summary) {
       findPost.summary = post.summary;
     }
-    findPost.urlTitle = Post.generateUrlTitle(findPost);
     return this.postDao.save(findPost);
   }
 
@@ -80,26 +79,12 @@ export class PostService {
     }
   }
 
-  readPost(id: Post['id'] | Post['urlTitle'], ids: User['id'][] = []) {
-    if (isNumeric(id)) {
-      return this.postDao.findOneOrFail({
-        where: [
-          { id: Number(id), public: true },
-          {
-            id: Number(id),
-            createBy: {
-              id: In(ids),
-            },
-          },
-        ],
-      });
-    }
-
+  readPost(id: Post['id'], ids: User['id'][] = []) {
     return this.postDao.findOneOrFail({
       where: [
-        { urlTitle: String(id), public: true },
+        { id: Number(id), public: true },
         {
-          urlTitle: String(id),
+          id: Number(id),
           createBy: {
             id: In(ids),
           },
@@ -114,7 +99,6 @@ export class PostService {
         id: true,
         title: true,
         createAt: true,
-        urlTitle: true,
         poster: {
           objectUrl: true,
           size: {

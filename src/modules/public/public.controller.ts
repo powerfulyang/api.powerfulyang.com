@@ -68,8 +68,8 @@ export class PublicController {
     summary: '获取单个文章详细信息',
     operationId: 'getPublicPostById',
   })
-  getPublicPostById(@Param('id') idOrTitle: string, @AuthFamilyMembersId() userIds: User['id'][]) {
-    return this.postService.readPost(idOrTitle, userIds);
+  getPublicPostById(@Param('id') id: number, @AuthFamilyMembersId() userIds: User['id'][]) {
+    return this.postService.readPost(id, userIds);
   }
 
   @Get('feed')

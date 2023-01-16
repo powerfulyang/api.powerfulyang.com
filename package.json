@@ -35,7 +35,6 @@
     "@fastify/passport": "2.2.0",
     "@fastify/static": "6.6.1",
     "@graphql-codegen/cli": "latest",
-    "@napi-rs/pinyin": "1.7.1",
     "@nestjs/common": "9.2.1",
     "@nestjs/core": "9.2.1",
     "@nestjs/elasticsearch": "9.0.0",
