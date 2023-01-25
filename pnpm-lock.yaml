@@ -51,7 +51,7 @@ specifiers:
   graphql-request: 5.1.0
   graphql-tag: 2.12.6
   instagram-private-api: 1.45.3
-  ioredis: 5.2.5
+  ioredis: 5.2.6
   ipdb: 0.3.3
   node-addon-api: 5.1.0
   node-fetch: 2.6.8
@@ -88,7 +88,7 @@ dependencies:
   '@nestjs/core': 9.2.1_pwdo3q3a7waqiisplezqjzetmq
   '@nestjs/elasticsearch': 9.0.0_anwldfygmy4bbl2t6vvhkmi2au
   '@nestjs/jwt': 10.0.1_@nestjs+common@9.2.1
-  '@nestjs/microservices': 9.2.1_dtlxjb3buw7opr6vqqy4ee3jsy
+  '@nestjs/microservices': 9.2.1_kdy35o5fpdx72kksg2ffpqekbi
   '@nestjs/passport': 9.0.0_6o47igfla2pj7yzh7agpvpttka
   '@nestjs/platform-fastify': 9.2.1_ui2bcodbmtemymm54pe3ykff2e
   '@nestjs/schedule': 2.1.0_dntc3uqqknzoduyjojusds5kla
@@ -108,7 +108,7 @@ dependencies:
   graphql-request: 5.1.0_graphql@16.6.0
   graphql-tag: 2.12.6_graphql@16.6.0
   instagram-private-api: 1.45.3
-  ioredis: 5.2.5
+  ioredis: 5.2.6
   ipdb: 0.3.3
   node-fetch: 2.6.8
   node-telegram-bot-api: 0.61.0
@@ -126,7 +126,7 @@ dependencies:
   sharp: 0.31.3
   socks-proxy-agent: 7.0.0
   source-map-support: 0.5.21
-  typeorm: 0.3.11_ioredis@5.2.5+pg@8.8.0
+  typeorm: 0.3.11_ioredis@5.2.6+pg@8.8.0
   uuid: 9.0.0
   winston: 3.8.2
   xml2js: 0.4.23
@@ -2320,7 +2320,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.2.1_ca43gjgfb2qovizjnmxfs634zy
-      '@nestjs/microservices': 9.2.1_dtlxjb3buw7opr6vqqy4ee3jsy
+      '@nestjs/microservices': 9.2.1_kdy35o5fpdx72kksg2ffpqekbi
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
@@ -2373,7 +2373,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/microservices/9.2.1_dtlxjb3buw7opr6vqqy4ee3jsy:
+  /@nestjs/microservices/9.2.1_kdy35o5fpdx72kksg2ffpqekbi:
     resolution: {integrity: sha512-ve4dqgoIaUG9VtinHHGCvf6SvtPjd3I44Mj8z8mSkcB8BEPfJnf4FNOShFBgsedtxLaiZyjpv8NCLcNVv5KKGg==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -2413,7 +2413,7 @@ packages:
       '@nestjs/core': 9.2.1_pwdo3q3a7waqiisplezqjzetmq
       amqp-connection-manager: 4.1.10_amqplib@0.10.3
       amqplib: 0.10.3
-      ioredis: 5.2.5
+      ioredis: 5.2.6
       iterare: 1.2.1
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
@@ -2544,7 +2544,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.2.1_ca43gjgfb2qovizjnmxfs634zy
       '@nestjs/core': 9.2.1_pwdo3q3a7waqiisplezqjzetmq
-      '@nestjs/microservices': 9.2.1_dtlxjb3buw7opr6vqqy4ee3jsy
+      '@nestjs/microservices': 9.2.1_kdy35o5fpdx72kksg2ffpqekbi
       tslib: 2.4.1
     dev: true
 
@@ -2561,7 +2561,7 @@ packages:
       '@nestjs/core': 9.2.1_pwdo3q3a7waqiisplezqjzetmq
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
-      typeorm: 0.3.11_ioredis@5.2.5+pg@8.8.0
+      typeorm: 0.3.11_ioredis@5.2.6+pg@8.8.0
       uuid: 8.3.2
     dev: false
 
@@ -2684,7 +2684,7 @@ packages:
       postcss: 8.4.21
       postcss-scss: 4.0.6_postcss@8.4.21
       prettier: 2.8.3
-      prettier-plugin-tailwindcss: 0.2.1_prettier@2.8.3
+      prettier-plugin-tailwindcss: 0.2.2_prettier@2.8.3
       rimraf: 4.1.2
       rollup: 3.10.1
       sass: 1.57.1
@@ -2699,12 +2699,26 @@ packages:
       tsc-alias: 1.8.2
       tslib: 2.4.1
     transitivePeerDependencies:
+      - '@prettier/plugin-php'
+      - '@prettier/plugin-pug'
+      - '@shopify/prettier-plugin-liquid'
+      - '@shufo/prettier-plugin-blade'
       - '@swc/wasm'
+      - '@trivago/prettier-plugin-sort-imports'
       - bufferutil
       - canvas
       - enquirer
       - eslint-import-resolver-webpack
       - node-notifier
+      - prettier-plugin-astro
+      - prettier-plugin-css-order
+      - prettier-plugin-import-sort
+      - prettier-plugin-jsdoc
+      - prettier-plugin-organize-attributes
+      - prettier-plugin-organize-imports
+      - prettier-plugin-style-order
+      - prettier-plugin-svelte
+      - prettier-plugin-twig-melody
       - supports-color
       - ts-node
       - typescript
@@ -6916,8 +6930,8 @@ packages:
       loose-envify: 1.4.0
     dev: true
 
-  /ioredis/5.2.5:
-    resolution: {integrity: sha512-7HKo/ClM2DGLRXdFq8ruS3Uuadensz4A76wPOU0adqlOqd1qkhoLPDaBhmVhUhNGpB+J65/bhLmNB8DDY99HJQ==}
+  /ioredis/5.2.6:
+    resolution: {integrity: sha512-F1xO+kYIz+TCOccvhThs2pem6sc9uTl9JsZybWpqe4FeCFDmf04XwbLQUGIqi2UWaDUuR61w2dhxx6NJEFehOA==}
     engines: {node: '>=12.22.0'}
     dependencies:
       '@ioredis/commands': 1.2.0
@@ -9418,11 +9432,54 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier-plugin-tailwindcss/0.2.1_prettier@2.8.3:
-    resolution: {integrity: sha512-aIO8IguumORyRsmT+E7JfJ3A9FEoyhqZR7Au7TBOege3VZkgMvHJMkufeYp4zjnDK2iq4ktkvGMNOQR9T8lisQ==}
+  /prettier-plugin-tailwindcss/0.2.2_prettier@2.8.3:
+    resolution: {integrity: sha512-5RjUbWRe305pUpc48MosoIp6uxZvZxrM6GyOgsbGLTce+ehePKNm7ziW2dLG2air9aXbGuXlHVSQQw4Lbosq3w==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
+      '@prettier/plugin-php': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@shufo/prettier-plugin-blade': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
       prettier: '>=2.2.0'
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-import-sort: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-style-order: '*'
+      prettier-plugin-svelte: '*'
+      prettier-plugin-twig-melody: '*'
+    peerDependenciesMeta:
+      '@prettier/plugin-php':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@shufo/prettier-plugin-blade':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-import-sort:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-style-order:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+      prettier-plugin-twig-melody:
+        optional: true
     dependencies:
       prettier: 2.8.3
     dev: true
@@ -11135,7 +11192,7 @@ packages:
       for-each: 0.3.3
       is-typed-array: 1.1.10
 
-  /typeorm/0.3.11_ioredis@5.2.5+pg@8.8.0:
+  /typeorm/0.3.11_ioredis@5.2.6+pg@8.8.0:
     resolution: {integrity: sha512-pzdOyWbVuz/z8Ww6gqvBW4nylsM0KLdUCDExr2gR20/x1khGSVxQkjNV/3YqliG90jrWzrknYbYscpk8yxFJVg==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
@@ -11202,7 +11259,7 @@ packages:
       debug: 4.3.4
       dotenv: 16.0.3
       glob: 7.2.3
-      ioredis: 5.2.5
+      ioredis: 5.2.6
       js-yaml: 4.1.0
       mkdirp: 1.0.4
       pg: 8.8.0
