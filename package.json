@@ -59,7 +59,7 @@
     "graphql-request": "5.1.0",
     "graphql-tag": "2.12.6",
     "instagram-private-api": "1.45.3",
-    "ioredis": "5.2.5",
+    "ioredis": "5.2.6",
     "ipdb": "0.3.3",
     "node-fetch": "2.6.8",
     "node-telegram-bot-api": "0.61.0",
