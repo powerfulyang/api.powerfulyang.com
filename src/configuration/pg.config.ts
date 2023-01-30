@@ -3,7 +3,6 @@ import { isDevProcess } from '@powerfulyang/utils';
 import { getMetadataArgsStorage } from 'typeorm';
 
 export const pgConfig = (): TypeOrmModuleOptions => ({
-  name: 'default',
   type: 'postgres',
   host: process.env.PG_HOST,
   port: Number(process.env.PG_PORT),
@@ -13,4 +12,7 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   synchronize: isDevProcess,
   logging: isDevProcess,
   entities: getMetadataArgsStorage().tables.map((t) => t.target),
+  extra: {
+    max: 10,
+  },
 });

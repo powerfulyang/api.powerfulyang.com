@@ -20,7 +20,8 @@ export class RequestMiddleware implements NestMiddleware {
       const { city_name, country_name, isp_domain, owner_domain, region_name } = ipInfo.data;
       address = `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
     }
-    Reflect.set(req, 'extend', { xRealIp, address });
+    const start = Date.now();
+    Reflect.set(req, 'extend', { xRealIp, address, start });
     next();
     const { url } = req;
     this.logger.verbose(

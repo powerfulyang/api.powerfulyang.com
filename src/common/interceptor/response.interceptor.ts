@@ -61,6 +61,7 @@ export class ResponseInterceptor implements NestInterceptor {
         reply.header('x-server-time', DateTimeFormat());
         reply.header('x-server-path', path);
         // 不再做统一格式处理，直接返回原始数据
+        this.logger.verbose(`response handled in ${Date.now() - request.raw.extend.start}ms`);
         return data;
       }),
     );

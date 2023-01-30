@@ -6,6 +6,7 @@ export interface ExtendRequest extends FastifyRequest {
     extend: {
       xRealIp: string;
       address: string;
+      start: number;
     };
   };
   user: User & { exp: number };

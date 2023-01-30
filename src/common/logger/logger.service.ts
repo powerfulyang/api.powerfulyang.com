@@ -15,7 +15,7 @@ const logger = winston.createLogger({
   format: combine(
     timestamp({
       format: () => {
-        return dayjs().format('MM/DD/YYYY, h:mm:ss A');
+        return dayjs().format('MM/DD/YYYY, h:mm:ss.SSS A');
       },
     }),
     printf(({ level, message, ...others }) => {
