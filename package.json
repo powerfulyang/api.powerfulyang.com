@@ -99,7 +99,7 @@
     "@types/passport-github": "1.1.7",
     "@types/passport-google-oauth20": "2.0.11",
     "@types/passport-jwt": "3.0.8",
-    "@types/ramda": "0.28.20",
+    "@types/ramda": "0.28.22",
     "@types/sharp": "0.31.1",
     "@types/uuid": "9.0.0",
     "@types/xml2js": "0.4.11",
