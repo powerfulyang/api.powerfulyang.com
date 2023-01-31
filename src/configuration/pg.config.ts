@@ -13,6 +13,8 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   logging: isDevProcess,
   entities: getMetadataArgsStorage().tables.map((t) => t.target),
   extra: {
-    max: 10,
+    idleTimeoutMillis: 0,
+    connectionTimeoutMillis: 10000,
+    application_name: 'backend-api',
   },
 });
