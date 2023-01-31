@@ -32,6 +32,7 @@ export class ResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map(async (data) => {
         if (request.user) {
+          // 这样写是有问题的，可能同时有多个请求带上即将过期的 cookie，导致不必要的连续刷新
           const { user } = request;
           const ValidPeriodSecond = user.exp - Date.now() / 1000;
           const ValidPeriodHour = ValidPeriodSecond / 3600;
