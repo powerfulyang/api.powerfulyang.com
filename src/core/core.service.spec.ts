@@ -20,4 +20,9 @@ describe('core service test', () => {
     const isScheduleNode = await service.isScheduleNode();
     expect(isScheduleNode).toBeFalsy();
   });
+
+  it('run algolia crawler', async () => {
+    const taskId = await service.reindexAlgoliaCrawler();
+    expect(taskId).toBeDefined();
+  });
 });

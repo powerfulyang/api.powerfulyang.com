@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { countBy, flatten, pick, pluck, trim } from 'ramda';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
@@ -10,14 +10,18 @@ import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { LoggerService } from '@/common/logger/logger.service';
 import { isDefined } from '@powerfulyang/utils';
 import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
+import { PostLog } from '@/modules/post/entities/post.log.entity';
+import { BaseService } from '@/common/service/base/BaseService';
 
 @Injectable()
-export class PostService {
+export class PostService extends BaseService {
   constructor(
     @InjectRepository(Post) private readonly postDao: Repository<Post>,
     private readonly assetService: AssetService,
     private readonly logger: LoggerService,
+    @InjectDataSource() private readonly dataSource: DataSource,
   ) {
+    super();
     this.logger.setContext(PostService.name);
   }
 
@@ -48,7 +52,18 @@ export class PostService {
     if (post.summary) {
       findPost.summary = post.summary;
     }
-    return this.postDao.save(findPost);
+    return this.dataSource.transaction(async (manager) => {
+      const saved = await manager.save(findPost);
+      await manager.save(PostLog, {
+        post: saved,
+        content: post.content,
+        title: post.title,
+      });
+      super.reindexAlgoliaCrawler().catch((e) => {
+        this.logger.error(e);
+      });
+      return saved;
+    });
   }
 
   async createPost(post: CreatePostDto) {
@@ -64,7 +79,18 @@ export class PostService {
       Reflect.set(draft, 'poster', poster);
     }
     const toSave = this.postDao.create(draft);
-    return this.postDao.save(toSave);
+    return this.dataSource.transaction(async (manager) => {
+      const saved = await manager.save(toSave);
+      await manager.save(PostLog, {
+        post: saved,
+        content: post.content,
+        title: post.title,
+      });
+      super.reindexAlgoliaCrawler().catch((e) => {
+        this.logger.error(e);
+      });
+      return saved;
+    });
   }
 
   async deletePost(post: Pick<Post, 'id' | 'createBy'>) {
@@ -77,19 +103,32 @@ export class PostService {
     if (result.affected === 0) {
       throw new ForbiddenException('You can only delete your own post!');
     }
+    super.reindexAlgoliaCrawler().catch((e) => {
+      this.logger.error(e);
+    });
   }
 
-  readPost(id: Post['id'], ids: User['id'][] = []) {
+  readPost(id: Post['id'], ids: User['id'][] = [], versions?: string[]) {
     return this.postDao.findOneOrFail({
       where: [
-        { id: Number(id), public: true },
+        {
+          id: Number(id),
+          public: true,
+          logs: {
+            id: super.ignoreEmptyArray(versions),
+          },
+        },
         {
           id: Number(id),
           createBy: {
             id: In(ids),
           },
+          logs: {
+            id: super.ignoreEmptyArray(versions),
+          },
         },
       ],
+      relations: ['logs'],
     });
   }
 

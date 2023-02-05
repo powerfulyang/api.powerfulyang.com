@@ -33,7 +33,11 @@ export class FeedService extends BaseService {
       BuiltinBucket.timeline,
       createFeedDto.createBy,
     );
-    return this.feedDao.save({ ...createFeedDto, assets });
+    const feed = await this.feedDao.save({ ...createFeedDto, assets });
+    super.reindexAlgoliaCrawler().catch((e) => {
+      this.logger.error(e);
+    });
+    return feed;
   }
 
   async modifyFeed(updateFeedDto: UpdateFeedDto) {
@@ -51,7 +55,11 @@ export class FeedService extends BaseService {
       BuiltinBucket.timeline,
       updateFeedDto.updateBy,
     );
-    return this.feedDao.save(feed);
+    const saved = await this.feedDao.save(feed);
+    super.reindexAlgoliaCrawler().catch((e) => {
+      this.logger.error(e);
+    });
+    return saved;
   }
 
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
@@ -105,10 +113,6 @@ export class FeedService extends BaseService {
     };
   }
 
-  updateFeed(id: number, updateFeedDto: Partial<Feed>) {
-    return this.feedDao.update(id, updateFeedDto);
-  }
-
   async deleteFeed(feed: Pick<Feed, 'id' | 'createBy'>) {
     const result = await this.feedDao.delete({
       id: feed.id,
@@ -119,5 +123,8 @@ export class FeedService extends BaseService {
     if (result.affected === 0) {
       throw new ForbiddenException('You can only delete your own post!');
     }
+    super.reindexAlgoliaCrawler().catch((e) => {
+      this.logger.error(e);
+    });
   }
 }

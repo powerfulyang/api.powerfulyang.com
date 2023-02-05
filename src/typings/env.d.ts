@@ -36,5 +36,9 @@ declare namespace NodeJS {
     AMAP_KEY: string;
 
     GITHUB_TOKEN: string;
+
+    ALGOLIA_CRAWLER_ID: string;
+    ALGOLIA_CRAWLER_USER_ID: string;
+    ALGOLIA_CRAWLER_API_KEY: string;
   }
 }

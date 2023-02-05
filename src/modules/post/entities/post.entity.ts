@@ -6,12 +6,14 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@/modules/user/entities/user.entity';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { PostLog } from '@/modules/post/entities/post.log.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })
@@ -51,6 +53,9 @@ export class Post {
   @JoinColumn()
   @ManyToOne(() => Asset, { eager: true })
   poster: Asset;
+
+  @OneToMany(() => PostLog, (log) => log.post)
+  logs: PostLog[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
