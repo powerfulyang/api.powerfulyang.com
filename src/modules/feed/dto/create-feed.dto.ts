@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { Feed } from '@/modules/feed/entities/feed.entity';
+import '@nestjs/mapped-types';
 import { IntersectionType, PickType } from '@nestjs/swagger';
 import { UploadAssetsDto } from '@/type/UploadFile';
 

@@ -5,8 +5,6 @@ export class REDIS_KEYS {
 
   static SCHEDULE_NODE = 'schedule:node';
 
-  static CHAT_GPT_ACCESS_TOKEN = 'chat-gpt:access-token';
-
   static CHAT_GPT_CONVERSATIONS = 'chat-gpt:conversations';
 
   static WECHAT_OFFICIAL_ACCOUNT_ACCESS_TOKEN = 'wechat:official-account:access-token';

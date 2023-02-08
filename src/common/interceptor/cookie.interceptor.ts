@@ -49,10 +49,10 @@ export class CookieInterceptor implements NestInterceptor {
           cookies.forEach((cookie) => {
             reply.setCookie(
               cookie.name,
-              cookie.value,
+              cookie.value || '',
               cookie.options || {
-                ...DefaultCookieOptions,
                 domain,
+                ...DefaultCookieOptions,
               },
             );
             if (cookie.options?.maxAge === 0) {

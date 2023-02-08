@@ -3,7 +3,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { AssetService } from '@/modules/asset/asset.service';
 import { PostService } from '@/modules/post/post.service';
 import { FeedService } from '@/modules/feed/feed.service';
-import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { JwtAuthGuard, PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AuthFamilyMembersId, AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
@@ -124,8 +124,12 @@ export class PublicController {
   }
 
   @Post('chat')
-  chat(@Body() body: { message: string }) {
-    return this.chatGptService.sendMessage(body.message);
+  @JwtAuthGuard()
+  chat(@Body() body: { message: string; parentMessageId?: string; conversationId?: string }) {
+    return this.chatGptService.sendMessage(body.message, {
+      parentMessageId: body.parentMessageId,
+      conversationId: body.conversationId,
+    });
   }
 
   @Get('view-count')

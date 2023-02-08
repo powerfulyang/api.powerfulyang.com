@@ -5,15 +5,18 @@ const moduleNameMapper = pathsToModuleNameMapper(tsconfig.compilerOptions.paths,
   prefix: '<rootDir>/',
 });
 
+const esModules = [''];
+
 /**
  * @type {import('@jest/types').Config.InitialOptions}
  */
 module.exports = {
   moduleNameMapper,
   transform: {
-    '^.+\\.ts$': '@swc/jest',
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': '@swc/jest',
   },
   setupFiles: ['./.jest/loadTestEnv.ts'],
   setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
   forceExit: true,
+  transformIgnorePatterns: [`node_modules/.pnpm/(?!${esModules})`],
 };

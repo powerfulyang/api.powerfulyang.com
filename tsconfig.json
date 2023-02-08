@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "moduleResolution": "Node16",
     "declaration": true,
     "rootDirs": ["src", "libs"],
     "removeComments": true,
