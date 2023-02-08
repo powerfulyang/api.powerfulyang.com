@@ -78,7 +78,7 @@
     "sharp": "0.31.3",
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
-    "typeorm": "0.3.11",
+    "typeorm": "0.3.12",
     "uuid": "latest",
     "winston": "3.8.2",
     "xml2js": "0.4.23"
