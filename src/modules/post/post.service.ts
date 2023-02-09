@@ -129,6 +129,11 @@ export class PostService extends BaseService {
         },
       ],
       relations: ['logs'],
+      order: {
+        logs: {
+          id: 'DESC',
+        },
+      },
     });
   }
 
