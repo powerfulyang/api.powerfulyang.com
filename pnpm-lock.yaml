@@ -65,7 +65,7 @@ specifiers:
   passport-jwt: 4.0.1
   peer: 0.6.1
   pg: 8.9.0
-  qqwry.ipdb: 2023.2.1
+  qqwry.ipdb: 2023.2.8
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -121,7 +121,7 @@ dependencies:
   passport-jwt: 4.0.1
   peer: 0.6.1
   pg: 8.9.0
-  qqwry.ipdb: 2023.2.1
+  qqwry.ipdb: 2023.2.8
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -9969,8 +9969,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb/2023.2.1:
-    resolution: {integrity: sha512-UQRKOFbgSM8zXeo+uQrMMEuI6qfX6dOtQa82r/oJ+keNX+qpRVXlGl6Yw9+pwNwY3XjtH1rZ3tGQ3IPIahuVxw==}
+  /qqwry.ipdb/2023.2.8:
+    resolution: {integrity: sha512-CVs8YU/NytbtbwjPPqf/1g2QZFXKYSUC2+3gD0gaSnQ7ag6kuR3SR0h+ufRqblBu0ZRumN0Jq+FAzJ5bk7dOIg==}
     dev: false
 
   /qs/6.11.0:
