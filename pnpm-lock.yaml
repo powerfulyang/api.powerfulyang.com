@@ -34,7 +34,7 @@ specifiers:
   '@types/passport-github': 1.1.7
   '@types/passport-google-oauth20': 2.0.11
   '@types/passport-jwt': 3.0.8
-  '@types/ramda': 0.28.22
+  '@types/ramda': 0.28.23
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
@@ -149,7 +149,7 @@ devDependencies:
   '@types/passport-github': 1.1.7
   '@types/passport-google-oauth20': 2.0.11
   '@types/passport-jwt': 3.0.8
-  '@types/ramda': 0.28.22
+  '@types/ramda': 0.28.23
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
@@ -3220,8 +3220,8 @@ packages:
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
 
-  /@types/ramda/0.28.22:
-    resolution: {integrity: sha512-DoIfh0sBxrL/aqADk+SGrfjJT9cB8modg+4NRlF7/Tfg4N2+KBEkAgpYYzrjiZxxR5YzWizjfVrTEdVDwYK7xQ==}
+  /@types/ramda/0.28.23:
+    resolution: {integrity: sha512-9TYWiwkew+mCMsL7jZ+kkzy6QXn8PL5/SKmBPmjgUlTpkokZWTBr+OhiIUDztpAEbslWyt24NNfEmZUBFmnXig==}
     dependencies:
       ts-toolbelt: 6.15.5
     dev: true
