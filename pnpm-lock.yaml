@@ -38,7 +38,7 @@ specifiers:
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
-  '@waylaidwanderer/chatgpt-api': 1.12.2
+  '@waylaidwanderer/chatgpt-api': 1.13.3
   amqp-connection-manager: 4.1.10
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -97,7 +97,7 @@ dependencies:
   '@nestjs/typeorm': 9.0.1_gricnmuqyfceqfz3faaorzr2oq
   '@powerfulyang/node-utils': 1.3.1_sd3s5zhrgwabxvhsrlrlslciau
   '@powerfulyang/utils': 1.6.0_mnr6j2del53muneqly5h4y27ai
-  '@waylaidwanderer/chatgpt-api': 1.12.2
+  '@waylaidwanderer/chatgpt-api': 1.13.3
   amqp-connection-manager: 4.1.10_amqplib@0.10.3
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -3518,8 +3518,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api/1.12.2:
-    resolution: {integrity: sha512-Q0TH94Dpn44f5D5NSUp3Qh4aojEhpdFgPnmKIxb5ui8fng1scoguGPpYS3Geopbuqe/8Y4W37p1e7ACPTBFhnQ==}
+  /@waylaidwanderer/chatgpt-api/1.13.3:
+    resolution: {integrity: sha512-do5dZ2t6H/6ksd0Xcri4ZtqsEjCk+DIowLgKwr+aId3IZ6WGiV/XDs5PKhYST8aqfewtSG7ix8wtpxwyNlQKAA==}
     hasBin: true
     dependencies:
       '@fastify/cors': 8.2.0
@@ -3527,8 +3527,8 @@ packages:
       boxen: 7.0.1
       clipboardy: 3.0.0
       dotenv: 16.0.3
-      fastify: 4.12.0
-      fastify-sse-v2: 3.0.0_fastify@4.12.0
+      fastify: 4.13.0
+      fastify-sse-v2: 3.0.0_fastify@4.13.0
       gpt-3-encoder: 1.1.4
       inquirer: 9.1.4
       inquirer-autocomplete-prompt: 3.0.0_inquirer@9.1.4
@@ -6158,37 +6158,15 @@ packages:
     resolution: {integrity: sha512-ovwFQG2qNy3jcCROiWpr94Hs0le+c7N/3t7m9aVwbFhkxcR/esp2xu25dP8e617HpQdmeDv+gFX4zagdUhDByw==}
     dev: false
 
-  /fastify-sse-v2/3.0.0_fastify@4.12.0:
+  /fastify-sse-v2/3.0.0_fastify@4.13.0:
     resolution: {integrity: sha512-UJF1BtyNOlLhOvlqMS/mBupmM8JOpJ3UmoFeNuKYdBClH+euJrO1mV2L0vfIpFKut9iy6tT23/JmN46QWCtBAg==}
     peerDependencies:
       fastify: '>=4'
     dependencies:
-      fastify: 4.12.0
+      fastify: 4.13.0
       fastify-plugin: 4.4.0
       it-pushable: 1.4.2
       it-to-stream: 1.0.0
-    dev: false
-
-  /fastify/4.12.0:
-    resolution: {integrity: sha512-Hh2GCsOCqnOuewWSvqXlpq5V/9VA+/JkVoooQWUhrU6gryO9+/UGOoF/dprGcKSDxkM/9TkMXSffYp8eA/YhYQ==}
-    dependencies:
-      '@fastify/ajv-compiler': 3.5.0
-      '@fastify/error': 3.2.0
-      '@fastify/fast-json-stringify-compiler': 4.2.0
-      abstract-logging: 2.0.1
-      avvio: 8.2.0
-      fast-content-type-parse: 1.0.0
-      find-my-way: 7.4.0
-      light-my-request: 5.8.0
-      pino: 8.8.0
-      process-warning: 2.1.0
-      proxy-addr: 2.0.7
-      rfdc: 1.3.0
-      secure-json-parse: 2.6.0
-      semver: 7.3.8
-      tiny-lru: 10.0.1
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /fastify/4.13.0:
