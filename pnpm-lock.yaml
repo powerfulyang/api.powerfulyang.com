@@ -65,7 +65,7 @@ specifiers:
   passport-jwt: 4.0.1
   peer: 0.6.1
   pg: 8.9.0
-  qqwry.ipdb: 2023.2.8
+  qqwry.ipdb: 2023.2.15
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -121,7 +121,7 @@ dependencies:
   passport-jwt: 4.0.1
   peer: 0.6.1
   pg: 8.9.0
-  qqwry.ipdb: 2023.2.8
+  qqwry.ipdb: 2023.2.15
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -3110,7 +3110,7 @@ packages:
   /@types/jsonwebtoken/9.0.0:
     resolution: {integrity: sha512-mM4TkDpA9oixqg1Fv2vVpOFyIVLJjm5x4k0V+K/rEsizfjD7Tk7LKk3GTtbB7KCfP0FEHQtsZqFxYA0+sijNVg==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 18.13.0
     dev: true
 
   /@types/jsonwebtoken/9.0.1:
@@ -3159,7 +3159,7 @@ packages:
   /@types/oauth/0.9.1:
     resolution: {integrity: sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 18.13.0
     dev: true
 
   /@types/parse-json/4.0.0:
@@ -9970,8 +9970,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb/2023.2.8:
-    resolution: {integrity: sha512-CVs8YU/NytbtbwjPPqf/1g2QZFXKYSUC2+3gD0gaSnQ7ag6kuR3SR0h+ufRqblBu0ZRumN0Jq+FAzJ5bk7dOIg==}
+  /qqwry.ipdb/2023.2.15:
+    resolution: {integrity: sha512-xeL0N43NeWSarNCYeT/zqj6u/L6lzC7G3QjzQeR2Fb+WwvLDFZgb8iN+FkB48VBNXZIXR4bX9YeGEtLiOgxfPQ==}
     dev: false
 
   /qs/6.11.0:
