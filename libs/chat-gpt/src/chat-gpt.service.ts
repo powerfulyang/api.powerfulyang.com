@@ -10,7 +10,9 @@ import { ProxyFetchService } from 'api/proxy-fetch';
  */
 @Injectable()
 export class ChatGptService {
-  private api;
+  private chatGPTApi;
+
+  private bingAIApi;
 
   constructor(
     private readonly logger: LoggerService,
@@ -19,15 +21,22 @@ export class ChatGptService {
     this.logger.setContext(ChatGptService.name);
   }
 
-  async getApiInstance() {
-    if (this.api) {
-      return this.api;
+  async getApiInstance(type: 'chat-gpt' | 'bing-ai' = 'chat-gpt') {
+    if (this.chatGPTApi && type === 'chat-gpt') {
+      return this.chatGPTApi;
     }
-    return import('@waylaidwanderer/chatgpt-api').then(({ default: ChatGPTClient }) => {
-      this.api = new ChatGPTClient(process.env.OPENAI_API_KEY, {
+    if (this.bingAIApi && type === 'bing-ai') {
+      return this.bingAIApi;
+    }
+    return import('@waylaidwanderer/chatgpt-api').then(({ ChatGPTClient, BingAIClient }) => {
+      this.chatGPTApi = new ChatGPTClient(process.env.OPENAI_API_KEY, {
         modelOptions: {
           model: 'text-davinci-003',
         },
+        debug: false,
+      });
+      this.bingAIApi = new BingAIClient({
+        cookies: process.env.BING_COOKIES,
         debug: false,
       });
       // @ts-ignore rewrite fetch
@@ -38,7 +47,10 @@ export class ChatGptService {
         }
         return fetch(input, init);
       };
-      return this.api;
+      if (type === 'bing-ai') {
+        return this.bingAIApi;
+      }
+      return this.chatGPTApi;
     });
   }
 
@@ -56,6 +68,33 @@ export class ChatGptService {
       messageId,
       content,
       conversationId,
+    };
+  }
+
+  async sendMessageWithBingAI(
+    msg: string,
+    opt: {
+      conversationSignature?: string;
+      conversationId?: string;
+      clientId?: string;
+      invocationId?: string;
+    } = {},
+  ) {
+    const instance = await this.getApiInstance('bing-ai');
+    const response = await instance.sendMessage(msg, opt);
+    const {
+      response: content,
+      conversationSignature,
+      conversationId,
+      clientId,
+      invocationId,
+    } = response;
+    return {
+      content,
+      conversationSignature,
+      conversationId,
+      clientId,
+      invocationId,
     };
   }
 }

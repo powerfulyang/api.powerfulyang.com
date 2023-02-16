@@ -18,4 +18,9 @@ describe('ChatGptService', () => {
     const res = await service.sendMessage('hello');
     expect(res).toBeDefined();
   });
+
+  it('send Message by bing ai', async () => {
+    const res = await service.sendMessageWithBingAI('hello');
+    expect(res).toBeDefined();
+  });
 });
