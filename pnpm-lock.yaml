@@ -28,7 +28,7 @@ specifiers:
   '@powerfulyang/node-utils': 1.3.1
   '@powerfulyang/utils': 1.6.0
   '@types/node-fetch': 2.6.2
-  '@types/node-telegram-bot-api': 0.61.0
+  '@types/node-telegram-bot-api': 0.61.1
   '@types/nodemailer': 6.4.7
   '@types/passport': 1.0.12
   '@types/passport-github': 1.1.7
@@ -143,7 +143,7 @@ devDependencies:
   '@nestjs/testing': 9.3.9_lgzn42ub3ca6c7rqpukbs5zw7u
   '@powerfulyang/lint': 3.1.3_typescript@4.9.5
   '@types/node-fetch': 2.6.2
-  '@types/node-telegram-bot-api': 0.61.0
+  '@types/node-telegram-bot-api': 0.61.1
   '@types/nodemailer': 6.4.7
   '@types/passport': 1.0.12
   '@types/passport-github': 1.1.7
@@ -3133,8 +3133,8 @@ packages:
       form-data: 3.0.1
     dev: true
 
-  /@types/node-telegram-bot-api/0.61.0:
-    resolution: {integrity: sha512-ggkc/PGx7oUpDrfP9tbTBkyrabbBxMTWU55x+qXRfKgm0+w4dCbAvhfQUHyvMWsW0PR2BhRqkMQ29nnFSsXjbg==}
+  /@types/node-telegram-bot-api/0.61.1:
+    resolution: {integrity: sha512-qJDSUAQgkTFfiEpo+4O1dd8fxMZ7Dr5ob/HhupstW0/1yOHEgX25HlWCckti+JxJ+2eiepMT+uHD0yMyrNIv4A==}
     dependencies:
       '@types/node': 18.13.0
       '@types/request': 2.48.8
