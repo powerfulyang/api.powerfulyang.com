@@ -38,7 +38,7 @@ specifiers:
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.0
   '@types/xml2js': 0.4.11
-  '@waylaidwanderer/chatgpt-api': 1.18.0
+  '@waylaidwanderer/chatgpt-api': 1.19.1
   amqp-connection-manager: 4.1.10
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -97,7 +97,7 @@ dependencies:
   '@nestjs/typeorm': 9.0.1_rfqdnwiybzocqbxtj3lzfvraga
   '@powerfulyang/node-utils': 1.3.1_sd3s5zhrgwabxvhsrlrlslciau
   '@powerfulyang/utils': 1.6.0_mnr6j2del53muneqly5h4y27ai
-  '@waylaidwanderer/chatgpt-api': 1.18.0
+  '@waylaidwanderer/chatgpt-api': 1.19.1
   amqp-connection-manager: 4.1.10_amqplib@0.10.3
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -2739,7 +2739,7 @@ packages:
       prettier: 2.8.4
       prettier-plugin-tailwindcss: 0.2.3_prettier@2.8.4
       rimraf: 4.1.2
-      rollup: 3.17.0
+      rollup: 3.17.1
       sass: 1.58.3
       stylelint: 14.15.0
       stylelint-config-css-modules: 4.1.0_stylelint@14.15.0
@@ -3163,7 +3163,7 @@ packages:
   /@types/oauth/0.9.1:
     resolution: {integrity: sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 18.14.0
     dev: true
 
   /@types/parse-json/4.0.0:
@@ -3523,8 +3523,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api/1.18.0:
-    resolution: {integrity: sha512-KwP0Uo7Ug3MsN7mGEW63VQUcj8t4RIOntmvclpID/EJ5xWPjtwCK5+Bjh0vujJhlHTlyrLalnQY9QMpkGQ0Efg==}
+  /@waylaidwanderer/chatgpt-api/1.19.1:
+    resolution: {integrity: sha512-bXR76eSK6tu5gPWCUnjNv8u6fIhmRR/0XTAZbOu2tY7QTLx198BRYIT4JjnFH9jx8DhQW1aYbwbIdM6z3Qg+iA==}
     hasBin: true
     dependencies:
       '@fastify/cors': 8.2.0
@@ -10335,8 +10335,8 @@ packages:
     hasBin: true
     dev: true
 
-  /rollup/3.17.0:
-    resolution: {integrity: sha512-0zZQ0J4p0ZtTla6l8sheDTUyNfGZQDpU5h0nPHf6xtUXIzKK70LmB2IRR0wLnzaL8a02fjmsJy+XCncbSwOpjg==}
+  /rollup/3.17.1:
+    resolution: {integrity: sha512-8RnSms6rNqHmZK+wiqgnPCqen+rRnUHXkciGDirh7B00g1rX1vpKbPDhuxCvAG2bburoI+W4Q9/PlUB/zYkiYA==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
