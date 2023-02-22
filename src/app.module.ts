@@ -66,6 +66,7 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
     },
     {
       provide: APP_PIPE,
+      // default forbidUnknownValues: true, is too strict
       useClass: ValidationPipe,
     },
   ],

@@ -133,6 +133,9 @@ export class UserController {
     summary: '获取当前登录用户信息',
     operationId: 'getCurrentUser',
   })
+  @ApiResponse({
+    type: User,
+  })
   current(@AuthUser() user: User) {
     if (user.email) {
       this.logger.info(`${user.email} try to get current user info`);

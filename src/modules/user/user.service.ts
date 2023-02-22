@@ -27,6 +27,7 @@ import type { SupportOauthApplication } from '@/modules/oauth-application/entiti
 import { MailService } from '@/common/service/mail/mail.service';
 import type { QueryUsersDto } from '@/modules/user/dto/query-users.dto';
 import { BaseService } from '@/common/service/base/BaseService';
+import type { EditUserDto } from '@/modules/user/dto/edit-user.dto';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -355,6 +356,17 @@ export class UserService extends BaseService {
         createAt: this.convertDateRangeToBetween(pagination.createAt),
         updateAt: this.convertDateRangeToBetween(pagination.updateAt),
       },
+      order: {
+        id: 'DESC',
+      },
     });
+  }
+
+  queryUserById(id: string) {
+    return this.userDao.findOneByOrFail({ id: Number(id) });
+  }
+
+  editUserById(id: string, body: EditUserDto) {
+    return this.userDao.update(Number(id), body);
   }
 }
