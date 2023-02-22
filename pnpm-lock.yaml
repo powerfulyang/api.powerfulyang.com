@@ -36,7 +36,7 @@ specifiers:
   '@types/passport-jwt': 3.0.8
   '@types/ramda': 0.28.23
   '@types/sharp': 0.31.1
-  '@types/uuid': 9.0.0
+  '@types/uuid': 9.0.1
   '@types/xml2js': 0.4.11
   '@waylaidwanderer/chatgpt-api': 1.20.8
   amqp-connection-manager: 4.1.10
@@ -151,7 +151,7 @@ devDependencies:
   '@types/passport-jwt': 3.0.8
   '@types/ramda': 0.28.23
   '@types/sharp': 0.31.1
-  '@types/uuid': 9.0.0
+  '@types/uuid': 9.0.1
   '@types/xml2js': 0.4.11
   form-data: 4.0.0
   node-addon-api: 6.0.0
@@ -3291,8 +3291,8 @@ packages:
   /@types/tough-cookie/4.0.2:
     resolution: {integrity: sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw==}
 
-  /@types/uuid/9.0.0:
-    resolution: {integrity: sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q==}
+  /@types/uuid/9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
     dev: true
 
   /@types/validator/13.7.10:
