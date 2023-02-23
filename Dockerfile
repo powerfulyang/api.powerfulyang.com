@@ -1,30 +1,8 @@
-FROM node:lts-alpine
-
-WORKDIR /usr/app
+FROM powerfulyang/api.powerfulyang.com-base
 
 COPY . .
 
-
-RUN apk add --no-cache tzdata \
-    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
-    && apk del tzdata \
-    && apk add --no-cache --virtual native-deps \
-         g++ gcc libgcc libstdc++ linux-headers make python3 \
-    # Support for patent-encumbered HEIC images  \
-    # requires the use of a globally-installed libvips  \
-    # compiled with support for libheif, libde265 and x265.
-    && apk add --no-cache  \
-    # sharp Changelog: v0.31.2 -> Requires libvips v8.13.3 which is in Alpine v3.17 \
-         --repository https://dl-3.alpinelinux.org/alpine/v3.17/community \
-         vips-dev \
-#    && npm ci --quiet \
-#    && npm run build \
-#    && npm prune --omit=dev \
-#    && npm cache clean --force \
-    && npm i -g pnpm \
-    && pnpm run bootstrap \
-    && pnpm run build \
-    && apk del native-deps g++ gcc libgcc libstdc++ linux-headers make python3
+RUN pnpm run bootstrap \
+    && pnpm run build
 
 CMD npm run start:prod
