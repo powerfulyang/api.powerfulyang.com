@@ -63,8 +63,8 @@ describe('AssetService', () => {
     }
   });
 
-  it('randomAsset', async () => {
-    const res = await service.randomAsset();
+  it('randomPoster', async () => {
+    const res = await service.randomPoster();
     expect(res).toBeDefined();
   });
 

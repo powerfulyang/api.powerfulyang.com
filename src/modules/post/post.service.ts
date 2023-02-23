@@ -72,7 +72,7 @@ export class PostService extends BaseService {
       post,
     );
     if (!draft.posterId) {
-      const poster = await this.assetService.randomAsset();
+      const poster = await this.assetService.randomPoster();
       Reflect.set(draft, 'poster', poster);
     } else {
       const poster = await this.assetService.getAssetById(draft.posterId);

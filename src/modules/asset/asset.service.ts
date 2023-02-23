@@ -356,7 +356,7 @@ export class AssetService extends BaseService {
     };
   }
 
-  async randomAsset() {
+  async randomPoster() {
     const publicBucketIds = await this.bucketService.listPublicBucket(true);
     const result = await this.assetDao
       .createQueryBuilder()
@@ -366,6 +366,8 @@ export class AssetService extends BaseService {
       .andWhere('"bucketId" = ANY(:publicBucketIds)', { publicBucketIds })
       // 小于 100kb
       .andWhere("cast(metadata->>'size' as int) < 100 * 1000")
+      // 不要已使用过的 post poster
+      .andWhere('id not in (select "posterId" from "post")')
       .orderBy('random()')
       .limit(1)
       .getOne();
