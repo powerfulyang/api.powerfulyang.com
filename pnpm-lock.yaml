@@ -65,7 +65,7 @@ specifiers:
   passport-jwt: 4.0.1
   peer: 0.6.1
   pg: 8.9.0
-  qqwry.ipdb: 2023.2.15
+  qqwry.ipdb: 2023.2.22
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -84,7 +84,7 @@ dependencies:
   '@fastify/multipart': 7.4.1
   '@fastify/passport': 2.2.0
   '@fastify/static': 6.9.0
-  '@graphql-codegen/cli': 3.1.0_eazlma3y33dbvdncxeer5lwmsu
+  '@graphql-codegen/cli': 3.2.0_eazlma3y33dbvdncxeer5lwmsu
   '@nestjs/common': 9.3.9_ca43gjgfb2qovizjnmxfs634zy
   '@nestjs/core': 9.3.9_qzie2x4y27zejjf374i4nkgexu
   '@nestjs/elasticsearch': 9.0.0_ghb4idir3oe4s7axrintqz7ama
@@ -121,7 +121,7 @@ dependencies:
   passport-jwt: 4.0.1
   peer: 0.6.1
   pg: 8.9.0
-  qqwry.ipdb: 2023.2.15
+  qqwry.ipdb: 2023.2.22
   ramda: 0.28.0
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
@@ -1349,8 +1349,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@graphql-codegen/cli/3.1.0_eazlma3y33dbvdncxeer5lwmsu:
-    resolution: {integrity: sha512-MUYyHkh/n8XVuONk7AYvJV/ObZDlPGwyevl8ch21jNFNj2M5PM39WViHKmIYwVw2n4fDmoh3BNdaeHQs1wb4HA==}
+  /@graphql-codegen/cli/3.2.0_eazlma3y33dbvdncxeer5lwmsu:
+    resolution: {integrity: sha512-o+oTOIMlBF4PE+JDo3m37W/xQNYUIASFOc5K9DHkWh4zW/qVHVkGyyu2fEgI8PbscODALyNYWG/ArGXoIAy2/A==}
     hasBin: true
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -1370,9 +1370,9 @@ packages:
       '@graphql-tools/prisma-loader': 7.2.50_graphql@16.6.0
       '@graphql-tools/url-loader': 7.16.29_graphql@16.6.0
       '@graphql-tools/utils': 9.2.0_graphql@16.6.0
+      '@parcel/watcher': 2.1.0
       '@whatwg-node/fetch': 0.8.1
       chalk: 4.1.2
-      chokidar: 3.5.3
       cosmiconfig: 7.1.0
       cosmiconfig-typescript-loader: 4.3.0_zdfuh5azfofic3ym2vxnbdjg6a
       debounce: 1.2.1
@@ -2663,6 +2663,17 @@ packages:
       node-fetch: 2.6.9
     transitivePeerDependencies:
       - encoding
+
+  /@parcel/watcher/2.1.0:
+    resolution: {integrity: sha512-8s8yYjd19pDSsBpbkOHnT6Z2+UJSuLQx61pCFM0s5wSRvKCEMDjd/cHY3/GI1szHIWbpXpsJdg3V6ISGGx9xDw==}
+    engines: {node: '>= 10.0.0'}
+    requiresBuild: true
+    dependencies:
+      is-glob: 4.0.3
+      micromatch: 4.0.5
+      node-addon-api: 3.2.1
+      node-gyp-build: 4.6.0
+    dev: false
 
   /@peculiar/asn1-schema/2.3.3:
     resolution: {integrity: sha512-6GptMYDMyWBHTUKndHaDsRZUO/XMSgIns2krxcm2L7SEExRHwawFvSwNBhqNPR9HJwv3MruAiF1bhN0we6j6GQ==}
@@ -3958,6 +3969,7 @@ packages:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.1
+    dev: true
 
   /app-root-path/3.1.0:
     resolution: {integrity: sha512-biN3PwB2gUtjaYy/isrU3aNWI5w+fAfvHkSvCKeQGxhmYpwKFUxudR3Yya+KqVRHBmEDYh+/lTozYCFbmzX4nA==}
@@ -4313,6 +4325,7 @@ packages:
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
+    dev: true
 
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
@@ -4637,6 +4650,7 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /chownr/1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
@@ -6500,6 +6514,7 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /function-bind/1.1.1:
@@ -7265,6 +7280,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       binary-extensions: 2.2.0
+    dev: true
 
   /is-boolean-object/1.1.2:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==}
@@ -8929,6 +8945,10 @@ packages:
     resolution: {integrity: sha512-/ujIVxthRs+7q6hsdjHMaj8hRG9NuWmwrz+JdRwZ14jdFoKSkm+vDsCbF9PLpnSqjaWQJuTmVtcWHNLr+vrOFw==}
     dev: true
 
+  /node-addon-api/3.2.1:
+    resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
+    dev: false
+
   /node-addon-api/5.1.0:
     resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
     dev: false
@@ -8969,6 +8989,11 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+
+  /node-gyp-build/4.6.0:
+    resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
+    hasBin: true
+    dev: false
 
   /node-gyp/9.3.1:
     resolution: {integrity: sha512-4Q16ZCqq3g8awk6UplT7AuxQ35XN4R/yf/+wSAwcBUAjg7l58RTactWaP8fIDTi0FzI7YcVLujwExakZlfWkXg==}
@@ -9057,6 +9082,7 @@ packages:
   /normalize-path/3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /normalize-range/0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
@@ -9982,8 +10008,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb/2023.2.15:
-    resolution: {integrity: sha512-xeL0N43NeWSarNCYeT/zqj6u/L6lzC7G3QjzQeR2Fb+WwvLDFZgb8iN+FkB48VBNXZIXR4bX9YeGEtLiOgxfPQ==}
+  /qqwry.ipdb/2023.2.22:
+    resolution: {integrity: sha512-0LLZ7H/lxOQidVgLU6950kuDfK8+n+ciOrxDMTG208WDhiA+QhSnOqHLASzev4idEjOVdF9qSy1kYquLaF1yTw==}
     dev: false
 
   /qs/6.11.0:
@@ -10131,6 +10157,7 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+    dev: true
 
   /real-require/0.2.0:
     resolution: {integrity: sha512-57frrGM/OCTLqLOAh0mhVA9VBMHd+9U7Zb2THMGdBUoZVOtGbJzjxsYGDJ3A9AYYCP4hn6y1TVbaOfzWtm5GFg==}
