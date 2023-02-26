@@ -1,6 +1,7 @@
 import { Between, ILike, In, LessThan, MoreThan } from 'typeorm';
 import { isDefined } from '@powerfulyang/utils';
 import { HttpStatus } from '@nestjs/common';
+import dayjs from 'dayjs';
 
 export class BaseService {
   generateInfiniteCursor({
@@ -30,7 +31,13 @@ export class BaseService {
     if (!dateRange) {
       return undefined;
     }
-    const [start, end] = dateRange;
+    let [start, end] = dateRange;
+    if (start) {
+      start = dayjs(start).startOf('date').toDate();
+    }
+    if (end) {
+      end = dayjs(end).endOf('date').toDate();
+    }
     if (!start && end) {
       return LessThan(end);
     }

@@ -23,7 +23,7 @@ export class Role {
 
   @Column({ unique: true })
   @ApiProperty()
-  roleName: string;
+  name: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
   @ApiProperty()

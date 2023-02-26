@@ -44,6 +44,6 @@ import { UserController } from './user.controller';
   ],
   controllers: [UserController, MenuController, RoleController, UserManageController],
   providers: [UserService, MenuService, RoleService],
-  exports: [UserService, RoleService],
+  exports: [UserService, MenuService, RoleService],
 })
 export class UserModule {}

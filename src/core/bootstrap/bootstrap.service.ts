@@ -6,6 +6,7 @@ import { CoreService } from '@/core/core.service';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import { BucketService } from '@/modules/bucket/bucket.service';
 import { RoleService } from '@/modules/user/role/role.service';
+import { MenuService } from '@/modules/user/menu/menu.service';
 
 @Injectable()
 export class BootstrapService {
@@ -16,6 +17,7 @@ export class BootstrapService {
     private readonly pathViewCountService: PathViewCountService,
     private readonly bucketService: BucketService,
     private readonly roleService: RoleService,
+    private readonly menuService: MenuService,
   ) {
     this.logger.setContext(BootstrapService.name);
   }
@@ -79,9 +81,9 @@ export class BootstrapService {
   async initIntendedData() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      const p1 = this.roleService.initIntendedRoles();
-      const p2 = this.userService.initIntendedUsers();
-      return Promise.all([p1, p2]);
+      await this.menuService.initBuiltinMenus();
+      await this.roleService.initIntendedRoles();
+      await this.userService.initIntendedUsers();
     }
     return Promise.resolve();
   }

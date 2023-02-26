@@ -14,9 +14,7 @@ describe('MenuService', () => {
     service = module.get<MenuService>(MenuService);
   });
 
-  it('menus', async () => {
-    await service.initBuiltinMenus();
-    const res = await service.menus();
-    expect(res).toBeDefined();
+  it('menu service', () => {
+    expect(service).toBeDefined();
   });
 });

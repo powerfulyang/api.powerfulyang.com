@@ -21,7 +21,7 @@ export class AccessGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<AccessRequest>();
     const useRoles = request.user.roles;
-    const isAdmin = useRoles.some((role) => role.roleName === Role.IntendedRoles.admin);
+    const isAdmin = useRoles.some((role) => role.name === Role.IntendedRoles.admin);
     const body = request.body || {};
     const isPublic = body.public === 'true' || body.public === true;
     if (isPublic && !isAdmin) {

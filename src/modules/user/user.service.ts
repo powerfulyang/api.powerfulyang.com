@@ -75,17 +75,18 @@ export class UserService extends BaseService {
   }
 
   async initIntendedUsers() {
-    const existedUsers = await this.userDao.find();
-    const users: Partial<User>[] = Object.values(User.IntendedUsers)
-      .filter((email) => {
-        return isUndefined(existedUsers.find((existedUser) => existedUser.email === email));
-      })
-      .map((v) => ({
-        nickname: v,
-        email: v,
-      }));
-    await this.userDao.insert(users);
-    return users;
+    const usernames = Object.values(User.IntendedUsers);
+    for (const username of usernames) {
+      const isExist = await this.userDao.findOneBy({
+        email: username,
+      });
+      if (!isExist) {
+        await this.userDao.insert({
+          email: username,
+          nickname: username,
+        });
+      }
+    }
   }
 
   async cacheUsers() {

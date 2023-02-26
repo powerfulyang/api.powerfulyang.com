@@ -18,7 +18,7 @@ export class AdminGuard implements CanActivate {
     const req = context.switchToHttp().getRequest<ExtendRequest>();
     const { user } = req;
     this.logger.debug(`User [id=${user.id}] is trying to access admin area`);
-    const result = user.roles.some((role) => role.roleName === Role.IntendedRoles.admin);
+    const result = user.roles.some((role) => role.name === Role.IntendedRoles.admin);
     if (!result) {
       throw new ForbiddenException('You are not authorized to access this area!');
     }

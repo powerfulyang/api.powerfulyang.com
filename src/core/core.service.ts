@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { isProdProcess } from '@powerfulyang/utils';
+import { isDevProcess, isProdProcess } from '@powerfulyang/utils';
 import { CacheService } from '@/common/cache/cache.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
@@ -22,7 +22,7 @@ export class CoreService extends BaseService {
 
   async isScheduleNode() {
     const node = await this.getScheduleNode();
-    return node === HOSTNAME;
+    return node === HOSTNAME || isDevProcess;
   }
 
   async isProdScheduleNode() {

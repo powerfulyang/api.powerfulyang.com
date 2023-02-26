@@ -10,7 +10,7 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
   synchronize: isDevProcess,
-  logging: isDevProcess,
+  logging: false,
   entities: getMetadataArgsStorage().tables.map((t) => t.target),
   extra: {
     idleTimeoutMillis: 0,
