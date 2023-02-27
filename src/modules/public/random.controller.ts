@@ -32,7 +32,7 @@ export class RandomController {
     }
     const s = sharp(path);
     res.type('image/webp');
-    res.header('Cache-Control', 'public, max-age=31536000, immutable');
+    res.header('Cache-Control', 'max-age=2592000');
     return s
       .resize({
         width: Number(size),

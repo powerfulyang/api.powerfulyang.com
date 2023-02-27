@@ -123,12 +123,34 @@ export class PublicController {
     return this.assetService.getAccessAssetById(+id, userIds);
   }
 
-  @Post('chat')
+  @Post('/chat-gpt/chat')
   @JwtAuthGuard()
-  chat(@Body() body: { message: string; parentMessageId?: string; conversationId?: string }) {
+  chatWithChatGPT(
+    @Body() body: { message: string; parentMessageId?: string; conversationId?: string },
+  ) {
     return this.chatGptService.sendMessage(body.message, {
       parentMessageId: body.parentMessageId,
       conversationId: body.conversationId,
+    });
+  }
+
+  @Post('/bing-ai/chat')
+  @JwtAuthGuard()
+  chatWithBingAI(
+    @Body()
+    body: {
+      message: string;
+      conversationSignature?: string;
+      conversationId?: string;
+      clientId?: string;
+      invocationId?: string;
+    },
+  ) {
+    return this.chatGptService.sendMessageWithBingAI(body.message, {
+      conversationSignature: body.conversationSignature,
+      conversationId: body.conversationId,
+      clientId: body.clientId,
+      invocationId: body.invocationId,
     });
   }
 
