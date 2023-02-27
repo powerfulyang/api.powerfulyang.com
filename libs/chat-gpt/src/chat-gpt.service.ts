@@ -104,7 +104,7 @@ export class ChatGptService {
     }
     const { response: content, conversationId, messageId } = response;
     return {
-      messageId,
+      parentMessageId: messageId,
       content,
       conversationId,
     };

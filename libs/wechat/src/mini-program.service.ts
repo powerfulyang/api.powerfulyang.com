@@ -168,7 +168,7 @@ export class MiniProgramService extends WechatService {
               },
             });
             this.cacheService.hSetJSON(MiniProgramService.conversationsKey, json.FromUserName, {
-              parentMessageId: res.messageId,
+              parentMessageId: res.parentMessageId,
               conversationId: res.conversationId,
               isLoading: false,
             });
