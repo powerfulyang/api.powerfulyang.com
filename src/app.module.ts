@@ -13,10 +13,11 @@ import { PathViewCountModule } from '@/modules/path-view-count/path-view-count.m
 import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
 import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
-import { CatchFilter } from '@/common/filter/catch.filter';
+import { ErrorFilter } from '@/common/filter/error.filter';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
 import { LogsViewerModule } from 'api/logs-viewer';
 import { WechatModule } from '@app/wechat';
+import { CatchFilter } from '@/common/filter/catch.filter';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
 import { UserModule } from './modules/user/user.module';
 import { BucketModule } from './modules/bucket/bucket.module';
@@ -58,7 +59,11 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
     },
     {
       provide: APP_FILTER,
-      useClass: CatchFilter, // second
+      useClass: CatchFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: ErrorFilter, // second
     },
     {
       provide: APP_FILTER,
