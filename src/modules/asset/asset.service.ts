@@ -148,13 +148,11 @@ export class AssetService extends BaseService {
       bucket.tencentCloudAccount.id,
     );
     const { Bucket, Region } = bucket;
-    const { Url: objectUrl } = await util.getObjectUrl({
-      Key,
+    return util.getSignedObjectUrl({
       Bucket,
       Region,
-      Expires: 60 * 60 * 24 * 31, // 31day
+      Key,
     });
-    return objectUrl;
   }
 
   async syncFromCos() {
@@ -171,13 +169,12 @@ export class AssetService extends BaseService {
         const asset = await this.getAssetByHash(hash);
         // asset 不存在
         if (isNull(asset)) {
-          const cosUrl = await this.getCosUrl(object.Key, bucket);
           const objectUrl = await this.getObjectUrl(object.Key, bucket);
           const path = join(process.cwd(), 'assets', `${hash}.${fileSuffix}`);
           const exist = existsSync(path);
           if (!exist) {
             // 需要下载下来
-            const res = await fetch(objectUrl);
+            const res = await fetch(objectUrl.original);
             const buffer = await res.buffer();
             // 校验 hash
             const tmp = sha1(buffer);
@@ -195,7 +192,6 @@ export class AssetService extends BaseService {
           const phash = await pHash(buffer);
           const uploadBy = await this.userService.getAssetBotUser();
           const newAsset = this.assetDao.create({
-            cosUrl,
             sha1: hash,
             objectUrl,
             fileSuffix,
@@ -316,10 +312,6 @@ export class AssetService extends BaseService {
     }
   }
 
-  updateAssetObjectUrl(id: number, objectUrl: string) {
-    return this.assetDao.update(id, { objectUrl });
-  }
-
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
     const { userIds = [], prevCursor, nextCursor } = params;
     const take = this.formatInfiniteTake(params.take);
@@ -335,7 +327,13 @@ export class AssetService extends BaseService {
           width: true,
           height: true,
         },
-        objectUrl: true,
+        objectUrl: {
+          original: true,
+          thumbnail_300_: true,
+          thumbnail_700_: true,
+          webp: true,
+          thumbnail_blur_: true,
+        },
       },
       where: {
         uploadBy: {
@@ -405,32 +403,20 @@ export class AssetService extends BaseService {
       Key,
       Body: buffer,
     });
-    const { Url: objectUrl } = await util.getObjectUrl({
+    if (res.statusCode !== HttpStatus.OK) {
+      throw new Error('upload to cos error');
+    }
+    const objectUrl = await util.getSignedObjectUrl({
       Bucket,
       Region,
       Key,
-      Expires: 60 * 60 * 24 * 31, // 31day
     });
-    const cosUrl = `https://${res.Location}`;
     await this.updateAssetByHash(data.sha1, {
-      cosUrl,
       objectUrl,
     });
-    return { cosUrl, objectUrl };
-  }
-
-  private async getCosUrl(Key: string, bucket: CosBucket) {
-    const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
-      bucket.tencentCloudAccount.id,
-    );
-    const { Bucket, Region } = bucket;
-    const { Url: cosUrl } = await util.getObjectUrl({
-      Sign: false,
-      Key,
-      Bucket,
-      Region,
-    });
-    return cosUrl;
+    return {
+      objectUrl,
+    };
   }
 
   private getAssetByHash(hash: string) {
@@ -490,9 +476,8 @@ export class AssetService extends BaseService {
         suffix: asset.fileSuffix,
         name: asset.bucket.name,
       };
-      const { cosUrl, objectUrl } = await this.persistentToCos(data);
+      const { objectUrl } = await this.persistentToCos(data);
       asset.objectUrl = objectUrl;
-      asset.cosUrl = cosUrl;
     } catch (e) {
       this.logger.error(e);
     }
@@ -506,5 +491,11 @@ export class AssetService extends BaseService {
       },
       asset,
     );
+  }
+
+  updateAssetObjectUrl(id: number, objectUrl: Asset['objectUrl']) {
+    return this.assetDao.update(id, {
+      objectUrl,
+    });
   }
 }

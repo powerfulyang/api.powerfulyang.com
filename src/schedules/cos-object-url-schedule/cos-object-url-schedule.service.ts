@@ -35,6 +35,7 @@ export class CosObjectUrlScheduleService {
         return this.assetService
           .getObjectUrl(`${asset.sha1}.${asset.fileSuffix}`, asset.bucket)
           .then((objectUrl) => {
+            this.logger.debug(`获取 objectUtl 成功: ${JSON.stringify(objectUrl, null, 2)}`);
             return this.assetService.updateAssetObjectUrl(asset.id, objectUrl);
           })
           .catch((err) => {

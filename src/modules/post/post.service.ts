@@ -144,7 +144,13 @@ export class PostService extends BaseService {
         title: true,
         createAt: true,
         poster: {
-          objectUrl: true,
+          objectUrl: {
+            thumbnail_300_: true,
+            thumbnail_700_: true,
+            original: true,
+            webp: true,
+            thumbnail_blur_: true,
+          },
           size: {
             width: true,
             height: true,

@@ -9,6 +9,7 @@ import type {
 import COS from 'cos-nodejs-sdk-v5';
 import { promisify } from 'util';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
+import { AssetStyles } from '@/modules/asset/entities/asset.entity';
 
 @Injectable()
 export class TencentCloudCosService extends COS {
@@ -22,9 +23,43 @@ export class TencentCloudCosService extends COS {
     return result;
   }
 
-  // @ts-ignore
-  async getObjectUrl(params: GetObjectUrlParams) {
-    return promisify(super.getObjectUrl.bind(this))(params);
+  async getSignedObjectUrl(params: GetObjectUrlParams) {
+    const { Url: original } = await promisify(super.getObjectUrl.bind(this))({
+      ...params,
+      Sign: true,
+      Expires: 60 * 60 * 24 * 31, // 31day
+    });
+    const { Url: webp } = await promisify(super.getObjectUrl.bind(this))({
+      ...params,
+      Sign: true,
+      Key: `${params.Key}${AssetStyles.webp}`,
+      Expires: 60 * 60 * 24 * 31, // 31day
+    });
+    const { Url: thumbnail_300_ } = await promisify(super.getObjectUrl.bind(this))({
+      ...params,
+      Sign: true,
+      Key: `${params.Key}${AssetStyles.thumbnail_300_}`,
+      Expires: 60 * 60 * 24 * 31, // 31day
+    });
+    const { Url: thumbnail_700_ } = await promisify(super.getObjectUrl.bind(this))({
+      ...params,
+      Sign: true,
+      Key: `${params.Key}${AssetStyles.thumbnail_700_}`,
+      Expires: 60 * 60 * 24 * 31, // 31day
+    });
+    const { Url: thumbnail_blur_ } = await promisify(super.getObjectUrl.bind(this))({
+      ...params,
+      Sign: true,
+      Key: `${params.Key}${AssetStyles.thumbnail_blur_}`,
+      Expires: 60 * 60 * 24 * 31, // 31day
+    });
+    return {
+      original,
+      webp,
+      thumbnail_300_,
+      thumbnail_700_,
+      thumbnail_blur_,
+    };
   }
 
   getBucketCors(params: GetBucketCorsParams) {

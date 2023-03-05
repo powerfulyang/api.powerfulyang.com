@@ -16,6 +16,13 @@ import { User } from '@/modules/user/entities/user.entity';
 import { CosBucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon-api/types/Exif';
 
+export const AssetStyles = {
+  thumbnail_700_: `/thumbnail_700_`,
+  thumbnail_300_: `/thumbnail_300_`,
+  webp: '/webp',
+  thumbnail_blur_: '/thumbnail_blur_',
+};
+
 @Entity('asset')
 export class Asset {
   @PrimaryGeneratedColumn()
@@ -25,11 +32,14 @@ export class Asset {
   @ManyToOne(() => CosBucket, { nullable: false, eager: true })
   bucket: Relation<CosBucket>;
 
-  @Column({ default: '' })
-  cosUrl: string;
-
-  @Column({ default: '', length: 400 })
-  objectUrl: string;
+  @Column({ type: 'json', default: {} })
+  objectUrl: {
+    webp: string;
+    original: string;
+    thumbnail_300_: string;
+    thumbnail_700_: string;
+    thumbnail_blur_: string;
+  };
 
   @Column({ default: '' })
   originUrl: string;

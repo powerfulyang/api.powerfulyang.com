@@ -40,11 +40,11 @@ describe('TencentCloudAccountService', () => {
       Body: file,
     });
     expect(putObjectResult.statusCode).toBe(HttpStatus.OK);
-    const getObjectUrlResult = await cosUtil.getObjectUrl({
+    const getObjectUrlResult = await cosUtil.getSignedObjectUrl({
       Bucket: bucket.Name,
       Region: bucket.Location,
       Key: 'test.jpg',
     });
-    expect(getObjectUrlResult.Url).toBeDefined();
+    expect(getObjectUrlResult.original).toBeDefined();
   });
 });

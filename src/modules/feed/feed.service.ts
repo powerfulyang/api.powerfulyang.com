@@ -81,7 +81,13 @@ export class FeedService extends BaseService {
         },
         assets: {
           id: true,
-          objectUrl: true,
+          objectUrl: {
+            webp: true,
+            original: true,
+            thumbnail_blur_: true,
+            thumbnail_700_: true,
+            thumbnail_300_: true,
+          },
           size: {
             width: true,
             height: true,

@@ -57,7 +57,7 @@
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "graphql": "latest",
-    "graphql-request": "5.2.0",
+    "graphql-request": "5.1.0",
     "graphql-tag": "2.12.6",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.3.1",
