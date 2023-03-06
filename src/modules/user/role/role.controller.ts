@@ -1,11 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '@/modules/user/role/role.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
-import { pick } from 'ramda';
 import { CreateRoleDto } from '@/modules/user/dto/create-role.dto';
 
 @Controller('role-manage')
@@ -44,17 +43,16 @@ export class RoleController {
     operationId: 'createRole',
   })
   createRole(@Body() role: CreateRoleDto) {
-    return this.roleService.createRole(role);
+    return this.roleService.createOrUpdateRole(role);
   }
 
-  @Post(':id')
+  @Patch()
   @ApiOperation({
     summary: '更新角色',
-    operationId: 'updateRoleById',
+    operationId: 'updateRole',
   })
-  async updateRoleById(@Param('id') id: string, @Body() role: CreateRoleDto) {
-    const updated = pick(['name'], role);
-    return this.roleService.updateRoleById(id, updated);
+  async updateRole(@Body() role: CreateRoleDto) {
+    return this.roleService.createOrUpdateRole(role);
   }
 
   @Delete(':id')

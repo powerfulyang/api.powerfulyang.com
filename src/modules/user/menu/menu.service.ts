@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { TreeRepository } from 'typeorm';
-import { DataSource, IsNull } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -28,26 +28,15 @@ export class MenuService extends BaseService {
       order: {
         id: 'DESC',
       },
-      relations: ['children'],
-      where: [
-        {
-          parentId: IsNull(),
-          id: this.ignoreFalsyValue(pagination.id),
-          name: this.iLike(pagination.name),
-          path: this.iLike(pagination.path),
-          createAt: this.convertDateRangeToBetween(pagination.createAt),
-          updateAt: this.convertDateRangeToBetween(pagination.updateAt),
-        },
-        {
-          children: {
-            id: this.ignoreFalsyValue(pagination.id),
-            name: this.iLike(pagination.name),
-            path: this.iLike(pagination.path),
-            createAt: this.convertDateRangeToBetween(pagination.createAt),
-            updateAt: this.convertDateRangeToBetween(pagination.updateAt),
-          },
-        },
-      ],
+      relations: ['parent'],
+      loadEagerRelations: false,
+      where: {
+        id: this.ignoreFalsyValue(pagination.id),
+        name: this.iLike(pagination.name),
+        path: this.iLike(pagination.path),
+        createAt: this.convertDateRangeToBetween(pagination.createAt),
+        updateAt: this.convertDateRangeToBetween(pagination.updateAt),
+      },
     });
   }
 
@@ -102,16 +91,16 @@ export class MenuService extends BaseService {
     });
   }
 
-  editMenuById(id: string, menu: Menu) {
-    return this.menuDao.update(id, menu);
-  }
-
-  createMenu(menu: Menu) {
-    const _m = pick(['name', 'path', 'parentId'], menu);
+  async createOrEditMenu(menu: Menu) {
+    const _m = pick(['id', 'name', 'path', 'parent'], menu);
     return this.menuDao.save(_m);
   }
 
   deleteMenuById(id: string) {
     return this.menuDao.delete(id);
+  }
+
+  queryAllMenus() {
+    return this.menuDao.findTrees();
   }
 }

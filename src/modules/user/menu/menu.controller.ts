@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { MenuService } from '@/modules/user/menu/menu.service';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -17,7 +17,7 @@ export class MenuController {
 
   @Post('query-menus')
   @ApiOperation({
-    summary: '获取所有菜单',
+    summary: '分页获取所有菜单',
     operationId: 'queryMenus',
   })
   @ApiBody({
@@ -25,6 +25,15 @@ export class MenuController {
   })
   queryMenus(@Pagination() pagination: QueryMenusDto) {
     return this.menuService.queryMenus(pagination);
+  }
+
+  @Get('query-all-menus')
+  @ApiOperation({
+    summary: '获取所有菜单',
+    operationId: 'queryAllMenus',
+  })
+  queryAllMenus() {
+    return this.menuService.queryAllMenus();
   }
 
   @Get(':id')
@@ -42,16 +51,16 @@ export class MenuController {
     operationId: 'createMenu',
   })
   createMenu(@Body() menu: Menu) {
-    return this.menuService.createMenu(menu);
+    return this.menuService.createOrEditMenu(menu);
   }
 
-  @Post(':id')
+  @Patch()
   @ApiOperation({
-    summary: '根据id编辑菜单',
-    operationId: 'editMenuById',
+    summary: '编辑菜单',
+    operationId: 'editMenu',
   })
-  editMenuById(@Param('id') id: string, @Body() menu: Menu) {
-    return this.menuService.editMenuById(id, menu);
+  editMenu(@Body() menu: Menu) {
+    return this.menuService.createOrEditMenu(menu);
   }
 
   @Delete(':id')

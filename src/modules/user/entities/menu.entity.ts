@@ -27,6 +27,7 @@ export class Menu {
   path: string;
 
   @TreeChildren()
+  @ApiProperty()
   children: Relation<Menu[]>;
 
   @TreeParent()

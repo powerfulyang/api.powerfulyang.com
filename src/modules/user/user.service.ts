@@ -51,15 +51,17 @@ export class UserService extends BaseService {
     const helperMap = new Map<Menu['id'], Menu>();
     const root: Menu[] = [];
     menus.forEach((menu) => {
+      Reflect.set(menu, 'children', []);
       helperMap.set(menu.id, menu);
-      if (menu.parentId === null) {
-        root.push(menu);
-        Reflect.set(menu, 'children', []);
-      } else {
+    });
+    menus.forEach((menu) => {
+      if (menu.parentId) {
         const parent = helperMap.get(menu.parentId);
         if (parent) {
           parent.children.push(menu);
         }
+      } else {
+        root.push(menu);
       }
     });
     return root;
@@ -164,6 +166,7 @@ export class UserService extends BaseService {
     // 根据 menu id 去重
     const menus = flatten(user.roles.map((role) => role.menus));
     const uniqueMenus = uniqBy((x) => x.id, menus);
+    this.logger.debug(`user [id=${id}] menus: ${JSON.stringify(uniqueMenus, null, 2)}`);
     return UserService.buildMenuTree(uniqueMenus);
   }
 

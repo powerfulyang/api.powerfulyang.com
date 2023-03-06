@@ -61,20 +61,30 @@ export class RoleService extends BaseService {
   }
 
   queryRoleById(id: string) {
-    return this.roleDao.findOneByOrFail({
-      id: Number(id),
+    return this.roleDao.findOneOrFail({
+      where: {
+        id: Number(id),
+      },
+      loadRelationIds: true,
     });
-  }
-
-  updateRoleById(id: string, role: Pick<Role, 'name'>) {
-    return this.roleDao.update(id, role);
   }
 
   deleteRoleById(id: string) {
     return this.roleDao.delete(id);
   }
 
-  createRole(role: CreateRoleDto) {
-    return this.roleDao.save(role);
+  createOrUpdateRole(role: CreateRoleDto) {
+    let menus: Pick<Menu, 'id'>[] = [];
+    if (role.menus) {
+      menus = role.menus.map((menu) => {
+        return {
+          id: menu,
+        };
+      });
+    }
+    return this.roleDao.save({
+      ...role,
+      menus,
+    });
   }
 }
