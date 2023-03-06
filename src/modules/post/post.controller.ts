@@ -6,13 +6,16 @@ import { User } from '@/modules/user/entities/user.entity';
 import { SpecificPostDto } from '@/modules/post/dto/specific-post.dto';
 import { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 import { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Controller('post')
 @ApiTags('post')
 @AccessAuthGuard()
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(private readonly postService: PostService, private readonly logger: LoggerService) {
+    this.logger.setContext(PostController.name);
+  }
 
   @Post()
   createPost(@Body() draft: CreatePostDto, @AuthUser(['id']) user: User) {
@@ -33,6 +36,10 @@ export class PostController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: '删除文章',
+    operationId: 'deletePost',
+  })
   deletePost(@Param() { id }: SpecificPostDto, @AuthUser(['id']) user: User) {
     return this.postService.deletePost({
       id,

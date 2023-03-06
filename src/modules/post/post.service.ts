@@ -12,6 +12,7 @@ import { isDefined } from '@powerfulyang/utils';
 import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 import { PostLog } from '@/modules/post/entities/post.log.entity';
 import { BaseService } from '@/common/service/base/BaseService';
+import type { PaginateQueryPostDto } from '@/modules/post/dto/paginate-query-post.dto';
 
 @Injectable()
 export class PostService extends BaseService {
@@ -25,6 +26,10 @@ export class PostService extends BaseService {
     this.logger.setContext(PostService.name);
   }
 
+  /**
+   * 更新文章
+   * @param post
+   */
   async updatePost(post: PatchPostDto) {
     // update
     const findPost = await this.postDao.findOneOrFail({
@@ -66,6 +71,10 @@ export class PostService extends BaseService {
     });
   }
 
+  /**
+   * 新建文章
+   * @param post
+   */
   async createPost(post: CreatePostDto) {
     const draft = pick(
       ['title', 'content', 'summary', 'tags', 'posterId', 'public', 'createBy'],
@@ -93,6 +102,10 @@ export class PostService extends BaseService {
     });
   }
 
+  /**
+   * 删除文章
+   * @param post
+   */
   async deletePost(post: Pick<Post, 'id' | 'createBy'>) {
     const result = await this.postDao.delete({
       id: post.id,
@@ -108,6 +121,12 @@ export class PostService extends BaseService {
     });
   }
 
+  /**
+   * 读取文章
+   * @param id
+   * @param ids
+   * @param versions
+   */
   readPost(id: Post['id'], ids: User['id'][] = [], versions?: string[]) {
     return this.postDao.findOneOrFail({
       where: [
@@ -137,6 +156,11 @@ export class PostService extends BaseService {
     });
   }
 
+  /**
+   * 查询文章
+   * @param post
+   * @param ids
+   */
   queryPosts(post?: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
       select: {
@@ -176,7 +200,11 @@ export class PostService extends BaseService {
     });
   }
 
-  async getPublishedTags(ids: User['id'][] = []) {
+  /**
+   * 查询文章标签
+   * @param ids
+   */
+  async queryPublishedTags(ids: User['id'][] = []) {
     const tagsArr = await this.postDao.find({
       select: ['tags'],
       where: [
@@ -192,7 +220,11 @@ export class PostService extends BaseService {
     return countBy(trim)(tags);
   }
 
-  async getPublishedYears(ids: User['id'][] = []) {
+  /**
+   * 查询文章年份
+   * @param ids
+   */
+  async queryPublishedYears(ids: User['id'][] = []) {
     const res: Array<Pick<Post, 'publishYear'>> = await this.postDao
       .createQueryBuilder()
       .select(['"publishYear"'])
@@ -208,5 +240,43 @@ export class PostService extends BaseService {
       .distinct(true)
       .getRawMany();
     return pluck('publishYear')(res);
+  }
+
+  paginateQueryPost(paginateQueryPostDto: PaginateQueryPostDto) {
+    const {
+      id,
+      title,
+      take,
+      createAt,
+      skip,
+      content,
+      public: _p,
+      updateAt,
+      poster,
+      summary,
+      createBy,
+    } = paginateQueryPostDto;
+    return this.postDao.findAndCount({
+      where: {
+        id: super.ignoreFalsyValue(id),
+        title: super.iLike(title),
+        createAt: super.convertDateRangeToBetween(createAt),
+        content: super.iLike(content),
+        public: super.ignoreNilValue(_p),
+        updateAt: super.convertDateRangeToBetween(updateAt),
+        poster: {
+          id: super.ignoreFalsyValue(poster?.id),
+        },
+        summary: super.iLike(summary),
+        createBy: {
+          nickname: super.iLike(createBy?.nickname),
+        },
+      },
+      relations: {
+        createBy: true,
+      },
+      take,
+      skip,
+    });
   }
 }

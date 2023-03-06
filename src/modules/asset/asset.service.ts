@@ -501,13 +501,14 @@ export class AssetService extends BaseService {
   }
 
   queryAssets(pagination: QueryAssetsDto) {
-    const { take, skip, updateAt, createAt, sha1: _sha1, id } = pagination;
+    const { take, skip, updateAt, createAt, sha1: _sha1, id, originUrl } = pagination;
     return this.assetDao.findAndCount({
       where: {
         id: super.ignoreFalsyValue(id),
         sha1: super.ignoreFalsyValue(_sha1),
         createAt: super.convertDateRangeToBetween(createAt),
         updateAt: super.convertDateRangeToBetween(updateAt),
+        originUrl: super.ignoreFalsyValue(originUrl),
       },
       skip,
       take,

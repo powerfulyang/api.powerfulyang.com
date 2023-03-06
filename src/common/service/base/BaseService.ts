@@ -1,5 +1,5 @@
 import { Between, ILike, In, LessThan, MoreThan } from 'typeorm';
-import { isDefined } from '@powerfulyang/utils';
+import { isDefined, isNotNil } from '@powerfulyang/utils';
 import { HttpStatus } from '@nestjs/common';
 import dayjs from 'dayjs';
 
@@ -56,6 +56,10 @@ export class BaseService {
 
   ignoreFalsyValue<T>(value: T) {
     return value || undefined;
+  }
+
+  ignoreNilValue<T>(value: T) {
+    return isNotNil(value) ? value : undefined;
   }
 
   ignoreEmptyArray<T>(value?: T[]) {

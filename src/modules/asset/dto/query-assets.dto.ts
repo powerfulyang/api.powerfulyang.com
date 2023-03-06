@@ -4,11 +4,15 @@ import { Asset } from '@/modules/asset/entities/asset.entity';
 
 export class QueryAssetsDto extends IntersectionType(
   PaginatedBaseQuery,
-  PickType(Asset, ['id', 'sha1']),
+  PickType(Asset, ['id', 'sha1', 'originUrl']),
 ) {
-  @ApiProperty()
+  @ApiProperty({
+    type: [Date, Date],
+  })
   createAt?: [Date, Date];
 
-  @ApiProperty()
+  @ApiProperty({
+    type: [Date, Date],
+  })
   updateAt?: [Date, Date];
 }

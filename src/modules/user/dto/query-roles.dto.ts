@@ -7,12 +7,12 @@ export class QueryRolesDto extends IntersectionType(
   PickType(Role, ['id', 'name']),
 ) {
   @ApiProperty({
-    type: [Date],
+    type: [Date, Date],
   })
   createAt?: [Date, Date];
 
   @ApiProperty({
-    type: [Date],
+    type: [Date, Date],
   })
   updateAt?: [Date, Date];
 }

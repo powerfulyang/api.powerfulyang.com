@@ -6,9 +6,13 @@ export class QueryMenusDto extends IntersectionType(
   PaginatedBaseQuery,
   PickType(Menu, ['id', 'name', 'path']),
 ) {
-  @ApiProperty()
+  @ApiProperty({
+    type: [Date, Date],
+  })
   createAt?: [Date, Date];
 
-  @ApiProperty()
+  @ApiProperty({
+    type: [Date, Date],
+  })
   updateAt?: [Date, Date];
 }

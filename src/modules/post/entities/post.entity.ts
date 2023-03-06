@@ -64,7 +64,7 @@ export class Post {
   updateAt: Date;
 
   @BeforeInsert()
-  beforeInsert() {
+  protected beforeInsert() {
     if (!this.publishYear) {
       this.publishYear = new Date().getFullYear();
     }

@@ -37,12 +37,12 @@ describe('PostService', () => {
   });
 
   it('getPublishedTags', async () => {
-    const res = await service.getPublishedTags();
+    const res = await service.queryPublishedTags();
     expect(res).toBeDefined();
   });
 
   it('getPublishedYears', async () => {
-    const res = await service.getPublishedYears();
+    const res = await service.queryPublishedYears();
     expect(res).toBeDefined();
   });
 });

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { MenuService } from '@/modules/user/menu/menu.service';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryMenusDto } from '@/modules/user/dto/query-menus.dto';
 import { Menu } from '@/modules/user/entities/menu.entity';
@@ -19,9 +19,6 @@ export class MenuController {
   @ApiOperation({
     summary: '分页获取所有菜单',
     operationId: 'queryMenus',
-  })
-  @ApiBody({
-    type: QueryMenusDto,
   })
   queryMenus(@Pagination() pagination: QueryMenusDto) {
     return this.menuService.queryMenus(pagination);

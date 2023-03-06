@@ -20,9 +20,6 @@ export class AssetController {
 
   @Post('query-assets')
   @ApiOperation({ summary: '获取所有资源', operationId: 'queryAssets' })
-  @ApiBody({
-    type: QueryAssetsDto,
-  })
   queryAssets(@Pagination() pagination: QueryAssetsDto) {
     return this.assetService.queryAssets(pagination);
   }
@@ -53,6 +50,28 @@ export class AssetController {
 
   @Delete()
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: '删除资源',
+    operationId: 'deleteAsset',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'number',
+          nullable: true,
+        },
+        ids: {
+          type: 'array',
+          items: {
+            type: 'number',
+          },
+          nullable: true,
+        },
+      },
+    },
+  })
   deleteAsset(@Body('id') id: number, @Body('ids') ids: number[]) {
     return this.assetService.deleteAsset(ids || [id]);
   }

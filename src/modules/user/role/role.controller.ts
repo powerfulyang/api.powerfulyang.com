@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '@/modules/user/role/role.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
@@ -20,11 +20,7 @@ export class RoleController {
     summary: '查询角色列表',
     operationId: 'queryRoles',
   })
-  @ApiBody({
-    type: QueryRolesDto,
-  })
   async queryRoles(@Pagination() pagination: QueryRolesDto) {
-    this.logger.debug(`queryRoles: ${JSON.stringify(pagination)}`);
     return this.roleService.queryRoles(pagination);
   }
 

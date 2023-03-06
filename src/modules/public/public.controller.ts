@@ -51,7 +51,7 @@ export class PublicController {
     operationId: 'queryPublicPostYears',
   })
   queryPublicPostYears(@AuthFamilyMembersId() userIds: User['id'][]) {
-    return this.postService.getPublishedYears(userIds);
+    return this.postService.queryPublishedYears(userIds);
   }
 
   @Get('post/tags')
@@ -60,7 +60,7 @@ export class PublicController {
     operationId: 'queryPublicPostTags',
   })
   queryPublicPostTags(@AuthFamilyMembersId() userIds: User['id'][]) {
-    return this.postService.getPublishedTags(userIds);
+    return this.postService.queryPublishedTags(userIds);
   }
 
   @Get('post/:id')
