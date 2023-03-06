@@ -31,6 +31,7 @@ import { MqService } from '@/common/service/mq/mq.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
 import { BaseService } from '@/common/service/base/BaseService';
+import type { QueryAssetsDto } from '@/modules/asset/dto/query-assets.dto';
 import { getEXIF } from '../../../addon-api';
 
 @Injectable()
@@ -496,6 +497,23 @@ export class AssetService extends BaseService {
   updateAssetObjectUrl(id: number, objectUrl: Asset['objectUrl']) {
     return this.assetDao.update(id, {
       objectUrl,
+    });
+  }
+
+  queryAssets(pagination: QueryAssetsDto) {
+    const { take, skip, updateAt, createAt, sha1: _sha1, id } = pagination;
+    return this.assetDao.findAndCount({
+      where: {
+        id: super.ignoreFalsyValue(id),
+        sha1: super.ignoreFalsyValue(_sha1),
+        createAt: super.convertDateRangeToBetween(createAt),
+        updateAt: super.convertDateRangeToBetween(updateAt),
+      },
+      skip,
+      take,
+      order: {
+        id: 'DESC',
+      },
     });
   }
 }

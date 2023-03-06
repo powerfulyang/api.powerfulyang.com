@@ -53,22 +53,15 @@ export class ChatGptService {
     }
     return import('@waylaidwanderer/chatgpt-api').then(
       ({ ChatGPTClient, BingAIClient, ChatGPTBrowserClient }) => {
-        this.gpt3Api = new ChatGPTClient(process.env.OPENAI_API_KEY, {
-          modelOptions: {
-            model: 'text-davinci-003',
-          },
-          debug: false,
-        });
+        this.gpt3Api = new ChatGPTClient(process.env.OPENAI_API_KEY);
         this.BingAIClient = BingAIClient;
         this.bingAIApi = new this.BingAIClient({
           cookies: bing_ai_cookies,
-          debug: false,
         });
         this.ChatGPTBrowserClient = ChatGPTBrowserClient;
         this.chatGPTApi = new this.ChatGPTBrowserClient({
           reverseProxyUrl: 'https://chatgpt.duti.tech/api/conversation',
           accessToken: chat_gpt_access_token,
-          debug: false,
         });
         // @ts-ignore rewrite fetch
         globalThis.fetch = (input: RequestInfo, init: RequestInit = {}) => {

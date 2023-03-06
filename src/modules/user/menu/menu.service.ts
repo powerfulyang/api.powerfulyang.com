@@ -6,6 +6,7 @@ import { Menu } from '@/modules/user/entities/menu.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { BaseService } from '@/common/service/base/BaseService';
 import type { QueryMenusDto } from '@/modules/user/dto/query-menus.dto';
+import { pick } from 'ramda';
 
 @Injectable()
 export class MenuService extends BaseService {
@@ -103,5 +104,14 @@ export class MenuService extends BaseService {
 
   editMenuById(id: string, menu: Menu) {
     return this.menuDao.update(id, menu);
+  }
+
+  createMenu(menu: Menu) {
+    const _m = pick(['name', 'path', 'parentId'], menu);
+    return this.menuDao.save(_m);
+  }
+
+  deleteMenuById(id: string) {
+    return this.menuDao.delete(id);
   }
 }

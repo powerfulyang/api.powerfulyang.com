@@ -5,13 +5,27 @@ import { UploadAssetsDto } from '@/type/UploadFile';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
+import { QueryAssetsDto } from '@/modules/asset/dto/query-assets.dto';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Controller('asset')
 @AdminAuthGuard()
 @ApiTags('asset')
 export class AssetController {
-  constructor(private assetService: AssetService) {}
+  constructor(private readonly assetService: AssetService, private readonly logger: LoggerService) {
+    this.logger.setContext(AssetController.name);
+  }
+
+  @Post('query-assets')
+  @ApiOperation({ summary: '获取所有资源', operationId: 'queryAssets' })
+  @ApiBody({
+    type: QueryAssetsDto,
+  })
+  queryAssets(@Pagination() pagination: QueryAssetsDto) {
+    return this.assetService.queryAssets(pagination);
+  }
 
   @Get('sync')
   syncAllFromCos() {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { MenuService } from '@/modules/user/menu/menu.service';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -36,6 +36,15 @@ export class MenuController {
     return this.menuService.queryMenuById(id);
   }
 
+  @Post()
+  @ApiOperation({
+    summary: '创建菜单',
+    operationId: 'createMenu',
+  })
+  createMenu(@Body() menu: Menu) {
+    return this.menuService.createMenu(menu);
+  }
+
   @Post(':id')
   @ApiOperation({
     summary: '根据id编辑菜单',
@@ -43,5 +52,14 @@ export class MenuController {
   })
   editMenuById(@Param('id') id: string, @Body() menu: Menu) {
     return this.menuService.editMenuById(id, menu);
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: '根据id删除菜单',
+    operationId: 'deleteMenuById',
+  })
+  deleteMenuById(@Param('id') id: string) {
+    return this.menuService.deleteMenuById(id);
   }
 }
