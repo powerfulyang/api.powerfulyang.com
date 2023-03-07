@@ -38,7 +38,7 @@ specifiers:
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.1
   '@types/xml2js': 0.4.11
-  '@waylaidwanderer/chatgpt-api': 1.26.0
+  '@waylaidwanderer/chatgpt-api': 1.26.1
   amqp-connection-manager: 4.1.11
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -97,7 +97,7 @@ dependencies:
   '@nestjs/typeorm': 9.0.1_rfqdnwiybzocqbxtj3lzfvraga
   '@powerfulyang/node-utils': 1.3.1_sd3s5zhrgwabxvhsrlrlslciau
   '@powerfulyang/utils': 1.6.0_mnr6j2del53muneqly5h4y27ai
-  '@waylaidwanderer/chatgpt-api': 1.26.0
+  '@waylaidwanderer/chatgpt-api': 1.26.1
   amqp-connection-manager: 4.1.11_amqplib@0.10.3
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -3164,10 +3164,6 @@ packages:
     resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==}
     dev: true
 
-  /@types/node/18.14.3:
-    resolution: {integrity: sha512-1y36CC5iL5CMyKALzwX9cwwxcWIxvIBe3gzs4GrXWXEQ8klQnCZ2U/WDGiNrXHmQcUhnaun17XG9TEIDlGj2RA==}
-    dev: true
-
   /@types/node/18.14.6:
     resolution: {integrity: sha512-93+VvleD3mXwlLI/xASjw0FzKcwzl3OdTCzm1LaRfqgS21gfFtK3zDXM5Op9TeeMsJVOaJ2VRDpT9q4Y3d0AvA==}
 
@@ -3184,7 +3180,7 @@ packages:
   /@types/oauth/0.9.1:
     resolution: {integrity: sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==}
     dependencies:
-      '@types/node': 18.14.3
+      '@types/node': 18.14.6
     dev: true
 
   /@types/parse-json/4.0.0:
@@ -3544,8 +3540,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api/1.26.0:
-    resolution: {integrity: sha512-0hde3Uz02nklhSBp16hNfPtWiW3saFBqeI7PHPVtoU+7oFOHyB4747ewxIJwCYHzTo0aUZEDQHK3kAToPsKU9A==}
+  /@waylaidwanderer/chatgpt-api/1.26.1:
+    resolution: {integrity: sha512-cv9NqC0owO2EGCkVg4VQO0lcA5pDgv2VJrBE/0P6En27/v0gIC+7MedowX3htIUi4GLDkgyyDDDimst2i8ReMw==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 0.4.0
@@ -3563,6 +3559,7 @@ packages:
       keyv: 4.5.2
       keyv-file: 0.2.0
       ora: 6.1.2
+      undici: 5.20.0
       ws: 8.12.0
     transitivePeerDependencies:
       - bufferutil
@@ -3705,7 +3702,7 @@ packages:
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.6.9
-      undici: 5.14.0
+      undici: 5.20.0
       web-streams-polyfill: 3.2.1
     transitivePeerDependencies:
       - encoding
@@ -6271,7 +6268,7 @@ packages:
     resolution: {integrity: sha512-UHHu1HqW22ZhK6C/1Zmjf7mQpOwPwLYZ+xcsOgpzistONU8QqvCop6Od29p/kw1GUVoq2Ihu6ItpKLtlojx4FQ==}
     engines: {node: '>=16'}
     dependencies:
-      undici: 5.14.0
+      undici: 5.20.0
     dev: false
 
   /figures/3.2.0:
@@ -11801,6 +11798,13 @@ packages:
 
   /undici/5.14.0:
     resolution: {integrity: sha512-yJlHYw6yXPPsuOH0x2Ib1Km61vu4hLiRRQoafs+WUgX1vO64vgnxiCEN9dpIrhZyHFsai3F0AEj4P9zy19enEQ==}
+    engines: {node: '>=12.18'}
+    dependencies:
+      busboy: 1.6.0
+    dev: false
+
+  /undici/5.20.0:
+    resolution: {integrity: sha512-J3j60dYzuo6Eevbawwp1sdg16k5Tf768bxYK4TUJRH7cBM4kFCbf3mOnM/0E3vQYXvpxITbbWmBafaDbxLDz3g==}
     engines: {node: '>=12.18'}
     dependencies:
       busboy: 1.6.0
