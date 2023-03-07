@@ -1,4 +1,4 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable, Optional, Scope } from '@nestjs/common';
 import type { Logger } from 'winston';
 import winston, { format } from 'winston';
 import { isProdProcess, isString } from '@powerfulyang/utils';
@@ -68,7 +68,11 @@ const logger = winston.createLogger({
 export class LoggerService {
   private readonly logger: Logger = logger;
 
-  private context: string = 'LoggerService';
+  private context: string;
+
+  constructor(@Optional() readonly ctx?: string) {
+    this.context = ctx || 'LoggerService';
+  }
 
   setContext(context: string) {
     this.context = context;

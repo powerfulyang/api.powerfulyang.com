@@ -1,17 +1,19 @@
-import type { ExecutionContext } from '@nestjs/common';
-import { Body, createParamDecorator } from '@nestjs/common';
-import type { FastifyRequest } from 'fastify';
+import { Body, createParamDecorator, ValidationPipe } from '@nestjs/common';
+import { LoggerService } from '@/common/logger/logger.service';
 
-export const Pagination = createParamDecorator(
-  (_, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<FastifyRequest>();
-    // @ts-ignore
-    const { current, pageSize, ...others } = request.body || {};
-    return {
-      take: Number(pageSize),
-      skip: (Number(current) - 1) * Number(pageSize),
-      ...others,
-    };
-  },
-  [Body()],
-);
+export const Pagination = createParamDecorator(() => {
+  return new ValidationPipe({ validateCustomDecorators: true });
+}, [
+  Body({
+    transform(value) {
+      const { current, pageSize, ...others } = value;
+      const logger = new LoggerService('Pagination Param Decorator');
+      logger.debug(`params: ${JSON.stringify(value, undefined, 2)}`);
+      return {
+        take: Number(pageSize),
+        skip: (Number(current) - 1) * Number(pageSize),
+        ...others,
+      };
+    },
+  }),
+]);
