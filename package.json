@@ -69,7 +69,7 @@
     "passport-github": "1.1.0",
     "passport-google-oauth20": "2.0.0",
     "passport-jwt": "4.0.1",
-    "peer": "0.6.1",
+    "peer": "1.0.0",
     "pg": "8.10.0",
     "qqwry.ipdb": "2023.3.1",
     "ramda": "0.28.0",
