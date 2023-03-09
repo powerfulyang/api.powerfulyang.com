@@ -38,7 +38,7 @@ specifiers:
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.1
   '@types/xml2js': 0.4.11
-  '@waylaidwanderer/chatgpt-api': 1.28.0
+  '@waylaidwanderer/chatgpt-api': 1.28.2
   amqp-connection-manager: 4.1.11
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -97,7 +97,7 @@ dependencies:
   '@nestjs/typeorm': 9.0.1_rfqdnwiybzocqbxtj3lzfvraga
   '@powerfulyang/node-utils': 1.3.1_sd3s5zhrgwabxvhsrlrlslciau
   '@powerfulyang/utils': 1.6.0_mnr6j2del53muneqly5h4y27ai
-  '@waylaidwanderer/chatgpt-api': 1.28.0
+  '@waylaidwanderer/chatgpt-api': 1.28.2
   amqp-connection-manager: 4.1.11_amqplib@0.10.3
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -3530,8 +3530,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api/1.28.0:
-    resolution: {integrity: sha512-753dc/Eaf+1XmSXrLu+99LR4N+ACL7fQyA7GlsUXjRVXcH+m/iDqqXrU+o1JKGy84VlNKokAvq3oy9LVunKCIw==}
+  /@waylaidwanderer/chatgpt-api/1.28.2:
+    resolution: {integrity: sha512-efNvZr8uosiYD69zFq50OPM36s+tyRMixlHpwDzn2q9UuZrdHC++kmm23OAnDxv3/+vA4UwCsZXn+92c35NHBQ==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 0.4.0
