@@ -1,7 +1,6 @@
 import './loadEnv';
 import { NestFactory } from '@nestjs/core';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
-import { PeerServer } from 'peer';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -58,10 +57,12 @@ async function bootstrap(): Promise<void> {
   SwaggerModule.setup('/api/swagger', app, document);
 
   // PeerServer
-  PeerServer({
-    allow_discovery: true,
-    port: 4000,
-    path: '/peer',
+  import('peer').then(({ PeerServer }) => {
+    PeerServer({
+      allow_discovery: true,
+      port: 4000,
+      path: '/peer',
+    });
   });
 
   // Running Host and Port
