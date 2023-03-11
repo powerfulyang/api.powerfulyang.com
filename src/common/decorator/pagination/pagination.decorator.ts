@@ -1,10 +1,10 @@
-import { Body, createParamDecorator, ValidationPipe } from '@nestjs/common';
+import { createParamDecorator, Query, ValidationPipe } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
 
 export const Pagination = createParamDecorator(() => {
   return new ValidationPipe({ validateCustomDecorators: true });
 }, [
-  Body({
+  Query({
     transform(value) {
       const { current, pageSize, ...others } = value;
       const logger = new LoggerService('Pagination Param Decorator');

@@ -68,11 +68,11 @@ export class User {
   updateAt: Date;
 
   @JoinColumn()
-  @ManyToOne(() => Asset, { eager: true })
+  @ManyToOne(() => Asset)
   @ApiProperty()
   timelineBackground: Relation<Asset>;
 
-  @ManyToMany(() => Role, { eager: true })
+  @ManyToMany(() => Role)
   @JoinTable()
   @ApiProperty({
     type: [Role],

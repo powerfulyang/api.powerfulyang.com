@@ -2,7 +2,7 @@ import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 import { PaginatedBaseQuery } from '@/common/decorator/pagination/PaginationQuery';
 import { Post } from '../entities/post.entity';
 
-export class PaginateQueryPostDto extends IntersectionType(
+export class QueryPostsDto extends IntersectionType(
   PaginatedBaseQuery,
   PickType(Post, ['id', 'title', 'content', 'public', 'content', 'summary', 'poster', 'createBy']),
 ) {

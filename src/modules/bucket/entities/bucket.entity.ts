@@ -50,7 +50,7 @@ export class CosBucket {
   updateAt: Date;
 
   @JoinColumn()
-  @ManyToOne(() => TencentCloudAccount, { eager: true, nullable: false })
+  @ManyToOne(() => TencentCloudAccount, { nullable: false })
   tencentCloudAccount: Partial<TencentCloudAccount> & Pick<TencentCloudAccount, 'id'>;
 
   @OneToMany(() => Asset, (asset) => asset.bucket)

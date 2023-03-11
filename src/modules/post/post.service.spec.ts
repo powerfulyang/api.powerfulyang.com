@@ -32,7 +32,7 @@ describe('PostService', () => {
   });
 
   it('getPosts', async () => {
-    const res = await service.queryPosts({ publishYear: 2021 });
+    const res = await service.searchPosts({ publishYear: 2021 });
     expect(res).toBeDefined();
   });
 

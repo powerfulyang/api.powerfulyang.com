@@ -51,7 +51,7 @@ export class Post {
   updateBy: User;
 
   @JoinColumn()
-  @ManyToOne(() => Asset, { eager: true })
+  @ManyToOne(() => Asset)
   poster: Asset;
 
   @OneToMany(() => PostLog, (log) => log.post)

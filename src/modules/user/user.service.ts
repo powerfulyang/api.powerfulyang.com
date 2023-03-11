@@ -162,11 +162,17 @@ export class UserService extends BaseService {
   }
 
   async queryMenusByUserId(id: User['id']) {
-    const user = await this.userDao.findOneByOrFail({ id });
+    const user = await this.userDao.findOneOrFail({
+      where: { id },
+      relations: {
+        roles: {
+          menus: true,
+        },
+      },
+    });
     // 根据 menu id 去重
     const menus = flatten(user.roles.map((role) => role.menus));
     const uniqueMenus = uniqBy((x) => x.id, menus);
-    this.logger.debug(`user [id=${id}] menus: ${JSON.stringify(uniqueMenus, null, 2)}`);
     return UserService.buildMenuTree(uniqueMenus);
   }
 
@@ -223,16 +229,16 @@ export class UserService extends BaseService {
       if (isArray(id)) {
         return this.userDao.find({
           where: { id: In(id) },
-          relations: ['families', 'families.members'],
+          relations: ['families', 'families.members', 'roles'],
         });
       }
       return this.userDao.findOneOrFail({
         where: { id },
-        relations: ['families', 'families.members'],
+        relations: ['families', 'families.members', 'roles'],
       });
     }
     return this.userDao.find({
-      relations: ['families', 'families.members'],
+      relations: ['families', 'families.members', 'roles'],
     });
   }
 

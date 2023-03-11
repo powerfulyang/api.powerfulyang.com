@@ -29,7 +29,7 @@ export class Asset {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => CosBucket, { nullable: false, eager: true })
+  @ManyToOne(() => CosBucket, { nullable: false })
   bucket: Relation<CosBucket>;
 
   @Column({ type: 'json', default: {} })

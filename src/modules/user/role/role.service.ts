@@ -69,7 +69,7 @@ export class RoleService extends BaseService {
     });
   }
 
-  deleteRoleById(id: string) {
+  deleteRoleById(id: number) {
     return this.roleDao.delete(id);
   }
 

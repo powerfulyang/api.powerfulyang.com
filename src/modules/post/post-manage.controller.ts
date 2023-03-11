@@ -1,9 +1,9 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { PostService } from '@/modules/post/post.service';
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { PaginateQueryPostDto } from '@/modules/post/dto/paginate-query-post.dto';
+import { QueryPostsDto } from '@/modules/post/dto/query-posts.dto';
 import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
 
 @Controller('post-manage')
@@ -14,12 +14,12 @@ export class PostManageController {
     this.logger.setContext(PostManageController.name);
   }
 
-  @Post('query-post')
+  @Get('query-posts')
   @ApiOperation({
-    summary: '分页查询所有文章',
-    operationId: 'queryPost',
+    summary: '分页查询日志',
+    operationId: 'queryPosts',
   })
-  queryPost(@Pagination() paginateQueryPostDto: PaginateQueryPostDto) {
-    return this.postService.paginateQueryPost(paginateQueryPostDto);
+  queryPosts(@Pagination() paginateQueryPostDto: QueryPostsDto) {
+    return this.postService.queryPosts(paginateQueryPostDto);
   }
 }

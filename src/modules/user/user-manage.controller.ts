@@ -15,9 +15,9 @@ export class UserManageController {
     this.logger.setContext(UserManageController.name);
   }
 
-  @Post('query-users')
+  @Get('query-users')
   @ApiOperation({
-    summary: '分页查询用户列表',
+    summary: '分页查询用户',
     operationId: 'queryUsers',
   })
   queryUsers(@Pagination() pagination: QueryUsersDto) {

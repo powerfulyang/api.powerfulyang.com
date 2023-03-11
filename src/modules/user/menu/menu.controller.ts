@@ -15,9 +15,9 @@ export class MenuController {
     this.logger.setContext(MenuController.name);
   }
 
-  @Post('query-menus')
+  @Get('query-menus')
   @ApiOperation({
-    summary: '分页获取所有菜单',
+    summary: '分页获取菜单',
     operationId: 'queryMenus',
   })
   queryMenus(@Pagination() pagination: QueryMenusDto) {

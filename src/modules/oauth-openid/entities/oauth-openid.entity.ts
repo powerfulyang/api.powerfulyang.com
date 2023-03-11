@@ -19,14 +19,14 @@ export class OauthOpenid {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => OauthApplication, { eager: true, nullable: false })
+  @ManyToOne(() => OauthApplication, { nullable: false })
   application: OauthApplication;
 
   @Column()
   openid: string;
 
   @JoinColumn()
-  @ManyToOne(() => User, { nullable: false, eager: true })
+  @ManyToOne(() => User, { nullable: false })
   user: Relation<User>;
 
   @CreateDateColumn({ type: 'timestamptz' })

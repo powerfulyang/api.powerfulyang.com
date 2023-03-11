@@ -33,7 +33,7 @@ export class Role {
   @ApiProperty()
   updateAt: Date;
 
-  @ManyToMany(() => Menu, { eager: true })
+  @ManyToMany(() => Menu)
   @JoinTable()
   @ApiProperty({
     type: [Menu],

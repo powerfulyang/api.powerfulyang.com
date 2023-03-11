@@ -18,8 +18,11 @@ export class AssetController {
     this.logger.setContext(AssetController.name);
   }
 
-  @Post('query-assets')
-  @ApiOperation({ summary: '获取所有资源', operationId: 'queryAssets' })
+  @Get('query-assets')
+  @ApiOperation({
+    summary: '分页查询资源',
+    operationId: 'queryAssets',
+  })
   queryAssets(@Pagination() pagination: QueryAssetsDto) {
     return this.assetService.queryAssets(pagination);
   }

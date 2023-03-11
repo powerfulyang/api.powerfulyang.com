@@ -172,7 +172,7 @@ export class UserController {
     summary: '获取当前用户的菜单',
     operationId: 'queryCurrentUserMenus',
   })
-  currentUserMenus(@AuthUser() user: User) {
+  queryCurrentUserMenus(@AuthUser() user: User) {
     return this.userService.queryMenusByUserId(user.id);
   }
 }

@@ -7,6 +7,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { BuiltinBucket } from '@/modules/bucket/entities/bucket.entity';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { BaseService } from '@/common/service/base/BaseService';
+import type { QueryFeedsDto } from '@/modules/feed/dto/query-feeds.dto';
 import { AssetService } from '../asset/asset.service';
 import type { CreateFeedDto } from './dto/create-feed.dto';
 import type { UpdateFeedDto } from './dto/update-feed.dto';
@@ -132,5 +133,35 @@ export class FeedService extends BaseService {
     super.reindexAlgoliaCrawler().catch((e) => {
       this.logger.error(e);
     });
+  }
+
+  queryFeeds(pagination: QueryFeedsDto) {
+    const { id, skip, take } = pagination;
+    return this.feedDao.findAndCount({
+      select: {
+        id: true,
+        content: true,
+        createAt: true,
+        updateAt: true,
+        createBy: {
+          nickname: true,
+        },
+      },
+      relations: {
+        createBy: true,
+      },
+      where: {
+        id: super.ignoreFalsyValue(id),
+      },
+      skip,
+      take,
+      order: {
+        id: 'DESC',
+      },
+    });
+  }
+
+  deleteFeedById(id: number) {
+    return this.feedDao.delete(id);
   }
 }

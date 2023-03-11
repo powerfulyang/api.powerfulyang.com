@@ -15,9 +15,9 @@ export class RoleController {
     this.logger.setContext(RoleController.name);
   }
 
-  @Post('query-roles')
+  @Get('query-roles')
   @ApiOperation({
-    summary: '查询角色列表',
+    summary: '分页查询角色',
     operationId: 'queryRoles',
   })
   async queryRoles(@Pagination() pagination: QueryRolesDto) {
@@ -56,7 +56,7 @@ export class RoleController {
     summary: '删除角色',
     operationId: 'deleteRoleById',
   })
-  async deleteRoleById(@Param('id') id: string) {
+  async deleteRoleById(@Param('id') id: number) {
     return this.roleService.deleteRoleById(id);
   }
 }

@@ -12,7 +12,7 @@ import { isDefined } from '@powerfulyang/utils';
 import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 import { PostLog } from '@/modules/post/entities/post.log.entity';
 import { BaseService } from '@/common/service/base/BaseService';
-import type { PaginateQueryPostDto } from '@/modules/post/dto/paginate-query-post.dto';
+import type { QueryPostsDto } from '@/modules/post/dto/query-posts.dto';
 
 @Injectable()
 export class PostService extends BaseService {
@@ -161,7 +161,7 @@ export class PostService extends BaseService {
    * @param post
    * @param ids
    */
-  queryPosts(post?: SearchPostDto, ids: User['id'][] = []) {
+  searchPosts(post?: SearchPostDto, ids: User['id'][] = []) {
     return this.postDao.find({
       select: {
         id: true,
@@ -242,7 +242,7 @@ export class PostService extends BaseService {
     return pluck('publishYear')(res);
   }
 
-  paginateQueryPost(paginateQueryPostDto: PaginateQueryPostDto) {
+  queryPosts(paginateQueryPostDto: QueryPostsDto) {
     const {
       id,
       title,
@@ -274,9 +274,27 @@ export class PostService extends BaseService {
       },
       relations: {
         createBy: true,
+        poster: true,
+      },
+      select: {
+        createBy: {
+          nickname: true,
+        },
+        poster: {
+          objectUrl: {
+            thumbnail_300_: true,
+            thumbnail_700_: true,
+            original: true,
+            webp: true,
+            thumbnail_blur_: true,
+          },
+        },
       },
       take,
       skip,
+      order: {
+        id: 'DESC',
+      },
     });
   }
 }

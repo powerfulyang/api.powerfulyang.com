@@ -42,7 +42,7 @@ export class PublicController {
     operationId: 'queryPublicPosts',
   })
   queryPublicPosts(@AuthFamilyMembersId() userIds: User['id'][], @Query() post: SearchPostDto) {
-    return this.postService.queryPosts(post, userIds);
+    return this.postService.searchPosts(post, userIds);
   }
 
   @Get('post/years')
