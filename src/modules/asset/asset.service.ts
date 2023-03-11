@@ -63,7 +63,9 @@ export class AssetService extends BaseService {
   }
 
   all() {
-    return this.assetDao.find();
+    return this.assetDao.find({
+      relations: ['bucket', 'bucket.tencentCloudAccount'],
+    });
   }
 
   async pHashMap() {

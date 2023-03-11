@@ -24,6 +24,7 @@ export class OauthOpenidService {
         openid,
         application,
       },
+      relations: ['user'],
     });
   }
 

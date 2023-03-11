@@ -99,7 +99,12 @@ export class BucketService {
   }
 
   getBucketByBucketName(name: string) {
-    return this.bucketDao.findOneByOrFail({ name });
+    return this.bucketDao.findOneOrFail({
+      where: {
+        name,
+      },
+      relations: ['tencentCloudAccount'],
+    });
   }
 
   findBucketByName(name: string) {
