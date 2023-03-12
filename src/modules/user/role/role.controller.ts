@@ -16,6 +16,8 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
 import { CreateRoleDto } from '@/modules/user/dto/create-role.dto';
+import { Permission } from '@/common/decorator/permissions.decorator';
+import { getEnumValues } from '@powerfulyang/utils';
 
 @Controller('role-manage')
 @AdminAuthGuard()
@@ -57,7 +59,7 @@ export class RoleController {
     summary: '更新角色',
     operationId: 'updateRole',
   })
-  async updateRole(@Body() role: CreateRoleDto) {
+  updateRole(@Body() role: CreateRoleDto) {
     return this.roleService.createOrUpdateRole(role);
   }
 
@@ -69,5 +71,14 @@ export class RoleController {
   })
   async deleteRoleById(@Param('id') id: number) {
     return this.roleService.deleteRoleById(id);
+  }
+
+  @Get('permissions')
+  @ApiOperation({
+    summary: '获取用户权限',
+    operationId: 'listPermissions',
+  })
+  listPermissions() {
+    return getEnumValues(Permission);
   }
 }

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import type { Permission } from '@/common/decorator/permissions.decorator';
 
 @Entity('role')
 export class Role {
@@ -40,4 +41,11 @@ export class Role {
     description: '菜单列表',
   })
   menus: Menu[];
+
+  @Column({ type: 'jsonb', default: [] })
+  @ApiProperty({
+    description: '权限列表',
+    type: [String],
+  })
+  permissions: Permission[];
 }

@@ -69,8 +69,11 @@ export class RoleService extends BaseService {
     });
   }
 
-  deleteRoleById(id: number) {
-    return this.roleDao.delete(id);
+  async deleteRoleById(id: number) {
+    const res = await this.roleDao.delete(id);
+    if (res.affected === 0) {
+      throw new Error('Delete role failed');
+    }
   }
 
   createOrUpdateRole(role: CreateRoleDto) {

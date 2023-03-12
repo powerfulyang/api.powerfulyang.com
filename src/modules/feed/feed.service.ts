@@ -159,7 +159,10 @@ export class FeedService extends BaseService {
     });
   }
 
-  deleteFeedById(id: number) {
-    return this.feedDao.delete(id);
+  async deleteFeedById(id: number) {
+    const res = await this.feedDao.delete(id);
+    if (res.affected === 0) {
+      throw new Error('Delete feed failed');
+    }
   }
 }

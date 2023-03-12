@@ -96,8 +96,11 @@ export class MenuService extends BaseService {
     return this.menuDao.save(_m);
   }
 
-  deleteMenuById(id: string) {
-    return this.menuDao.delete(id);
+  async deleteMenuById(id: string) {
+    const res = await this.menuDao.delete(id);
+    if (res.affected === 0) {
+      throw new Error('Delete menu failed');
+    }
   }
 
   queryAllMenus() {

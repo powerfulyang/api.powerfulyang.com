@@ -2,7 +2,7 @@ import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Role } from '@/modules/user/entities/role.entity';
 import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
 
-export class CreateRoleDto extends PickType(Role, ['name']) {
+export class CreateRoleDto extends PickType(Role, ['name', 'permissions']) {
   @ApiProperty({
     description: '角色名称',
   })
