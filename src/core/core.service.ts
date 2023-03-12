@@ -5,12 +5,10 @@ import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { LoggerService } from '@/common/logger/logger.service';
 import { checkRedisResult } from '@/constants/constants';
-import { BaseService } from '@/common/service/base/BaseService';
 
 @Injectable()
-export class CoreService extends BaseService {
+export class CoreService {
   constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
-    super();
     this.logger.setContext(CoreService.name);
   }
 

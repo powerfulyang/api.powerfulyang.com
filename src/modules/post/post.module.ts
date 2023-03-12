@@ -6,12 +6,13 @@ import { OrmModule } from '@/common/service/orm/orm.module';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { PostLog } from '@/modules/post/entities/post.log.entity';
 import { PostManageController } from '@/modules/post/post-manage.controller';
+import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
 import { PostService } from './post.service';
 import { PostController } from './post.controller';
 
 @Module({
   imports: [OrmModule, TypeOrmModule.forFeature([Post, PostLog]), AssetModule, LoggerModule],
-  providers: [PostService],
+  providers: [PostService, AlgoliaService],
   controllers: [PostController, PostManageController],
   exports: [PostService],
 })

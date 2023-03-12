@@ -8,9 +8,7 @@ import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Authorization } from '@/constants/constants';
 import type { Cookie } from '@/common/interceptor/cookie.interceptor';
 import fastifyInstance from '@/fastify/hook';
-import type { Post } from '@/modules/post/entities/post.entity';
 import FormData from 'form-data';
-import type { Feed } from '@/modules/feed/entities/feed.entity';
 import { join } from 'path';
 import * as fs from 'fs';
 
@@ -44,7 +42,7 @@ describe('AppController (e2e)', () => {
       })
       .then((res) => {
         expect(res.statusCode).toBe(HttpStatus.OK);
-        expect(res.json()).toHaveProperty('data', 'Hello, unauthorized visitor!');
+        expect(res.body).toBe('Hello, unauthorized visitor!');
       });
   });
 
@@ -85,24 +83,22 @@ describe('AppController (e2e)', () => {
           })
           .then((res) => {
             expect(res.statusCode).toBe(HttpStatus.CREATED);
-            const json = res.json<{
-              data: Post;
-            }>();
-            expect(json).toHaveProperty(['data', 'title'], 'test-public-publish');
-            return [json.data.id, authorization];
+            const json = res.json();
+            expect(json).toHaveProperty(['title'], 'test-public-publish');
+            return json.id as string;
           })
-          .then(([id, auth]) => {
+          .then((id) => {
             // delete
             return app
               .inject({
                 method: 'DELETE',
                 url: `/post/${id}`,
                 headers: {
-                  authorization: auth,
+                  authorization,
                 },
               })
               .then((res) => {
-                expect(res.statusCode).toBe(HttpStatus.OK);
+                expect(res.statusCode).toBe(HttpStatus.NO_CONTENT);
               });
           });
       });
@@ -136,11 +132,9 @@ describe('AppController (e2e)', () => {
       },
     });
     expect(nonPublicPostRes.statusCode).toBe(HttpStatus.CREATED);
-    const json = nonPublicPostRes.json<{
-      data: Post;
-    }>();
-    expect(json).toHaveProperty(['data', 'title'], 'test-non-public-publish');
-    const { id } = json.data;
+    const json = nonPublicPostRes.json();
+    expect(json).toHaveProperty(['title'], 'test-non-public-publish');
+    const id = json.id as string;
     const deleteRes = await app.inject({
       method: 'DELETE',
       url: `/post/${id}`,
@@ -148,7 +142,7 @@ describe('AppController (e2e)', () => {
         authorization,
       },
     });
-    expect(deleteRes.statusCode).toBe(HttpStatus.OK);
+    expect(deleteRes.statusCode).toBe(HttpStatus.NO_CONTENT);
   });
 
   it('test user should only create non-public feed', async () => {
@@ -193,11 +187,9 @@ describe('AppController (e2e)', () => {
       payload: formData2,
     });
     expect(nonPublicPostRes.statusCode).toBe(HttpStatus.CREATED);
-    const json = nonPublicPostRes.json<{
-      data: Feed;
-    }>();
-    expect(json).toHaveProperty(['data', 'content'], 'test-non-public-publish');
-    const { id } = json.data;
+    const json = nonPublicPostRes.json();
+    expect(json).toHaveProperty(['content'], 'test-non-public-publish');
+    const id = json.id as string;
     const deleteRes = await app.inject({
       method: 'DELETE',
       url: `/feed/${id}`,
@@ -205,7 +197,7 @@ describe('AppController (e2e)', () => {
         authorization,
       },
     });
-    expect(deleteRes.statusCode).toBe(HttpStatus.OK);
+    expect(deleteRes.statusCode).toBe(HttpStatus.NO_CONTENT);
   });
 
   it('admin user should be able to create public content', async () => {
@@ -226,5 +218,16 @@ describe('AppController (e2e)', () => {
       payload: formData,
     });
     expect(publishPublicFeedRes.statusCode).toBe(HttpStatus.CREATED);
+    // delete
+    const json = publishPublicFeedRes.json();
+    const id = json.id as string;
+    const deleteRes = await app.inject({
+      method: 'DELETE',
+      url: `/feed/${id}`,
+      headers: {
+        authorization,
+      },
+    });
+    expect(deleteRes.statusCode).toBe(HttpStatus.NO_CONTENT);
   });
 });

@@ -5,7 +5,7 @@ import {
   WechatCheckSignatureRequest,
   WechatGetUnlimitedQRCodeRequest,
   WechatMessageOriginalRequest,
-} from '@/typings/wechat';
+} from '@/type/wechat';
 import { FastifyReply } from 'fastify';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 

@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Post } from '@/modules/post/entities/post.entity';
@@ -15,8 +16,8 @@ export class PostLog {
   id: number;
 
   @JoinColumn()
-  @ManyToOne(() => Post, { nullable: false })
-  post: Post;
+  @ManyToOne(() => Post, { nullable: false, onDelete: 'CASCADE' })
+  post: Relation<Post>;
 
   @Column()
   title: string;

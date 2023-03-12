@@ -13,6 +13,7 @@ import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
 import { PostLog } from '@/modules/post/entities/post.log.entity';
 import { BaseService } from '@/common/service/base/BaseService';
 import type { QueryPostsDto } from '@/modules/post/dto/query-posts.dto';
+import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
 
 @Injectable()
 export class PostService extends BaseService {
@@ -21,6 +22,7 @@ export class PostService extends BaseService {
     private readonly assetService: AssetService,
     private readonly logger: LoggerService,
     @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly algoliaService: AlgoliaService,
   ) {
     super();
     this.logger.setContext(PostService.name);
@@ -64,7 +66,7 @@ export class PostService extends BaseService {
         content: post.content,
         title: post.title,
       });
-      super.reindexAlgoliaCrawler().catch((e) => {
+      this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
         this.logger.error(e);
       });
       return saved;
@@ -95,7 +97,7 @@ export class PostService extends BaseService {
         content: post.content,
         title: post.title,
       });
-      super.reindexAlgoliaCrawler().catch((e) => {
+      this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
         this.logger.error(e);
       });
       return saved;
@@ -116,7 +118,7 @@ export class PostService extends BaseService {
     if (result.affected === 0) {
       throw new ForbiddenException('You can only delete your own post!');
     }
-    super.reindexAlgoliaCrawler().catch((e) => {
+    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
       this.logger.error(e);
     });
   }

@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { MenuService } from '@/modules/user/menu/menu.service';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -61,6 +71,7 @@ export class MenuController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: '根据id删除菜单',
     operationId: 'deleteMenuById',

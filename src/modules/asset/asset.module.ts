@@ -12,6 +12,7 @@ import { OrmModule } from '@/common/service/orm/orm.module';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { CoreModule } from '@/core/core.module';
 import { MqModule } from '@/common/service/mq/mq.module';
+import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
 import { AssetController } from './asset.controller';
 import { AssetService } from './asset.service';
 
@@ -30,7 +31,7 @@ import { AssetService } from './asset.service';
     MqModule,
     ProxyFetchModule.forRoot(),
   ],
-  providers: [AssetService],
+  providers: [AssetService, AlgoliaService],
   controllers: [AssetController],
   exports: [AssetService],
 })

@@ -10,7 +10,7 @@ import type {
   WechatGetAccessTokenResponse,
   WechatMessageOriginalRequest,
   WechatMessageRequest,
-} from '@/typings/wechat';
+} from '@/type/wechat';
 import { sha1 } from '@powerfulyang/node-utils';
 import crypto from 'crypto';
 import { parseStringPromise } from 'xml2js';

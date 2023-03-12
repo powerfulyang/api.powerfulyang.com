@@ -8,6 +8,7 @@ import { BuiltinBucket } from '@/modules/bucket/entities/bucket.entity';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { BaseService } from '@/common/service/base/BaseService';
 import type { QueryFeedsDto } from '@/modules/feed/dto/query-feeds.dto';
+import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
 import { AssetService } from '../asset/asset.service';
 import type { CreateFeedDto } from './dto/create-feed.dto';
 import type { UpdateFeedDto } from './dto/update-feed.dto';
@@ -18,13 +19,10 @@ export class FeedService extends BaseService {
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
     private readonly logger: LoggerService,
     private readonly assetService: AssetService,
+    private readonly algoliaService: AlgoliaService,
   ) {
     super();
     this.logger.setContext(FeedService.name);
-  }
-
-  all() {
-    return this.feedDao.find();
   }
 
   async postFeed(createFeedDto: CreateFeedDto) {
@@ -35,7 +33,7 @@ export class FeedService extends BaseService {
       createFeedDto.createBy,
     );
     const feed = await this.feedDao.save({ ...createFeedDto, assets });
-    super.reindexAlgoliaCrawler().catch((e) => {
+    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
       this.logger.error(e);
     });
     return feed;
@@ -57,7 +55,7 @@ export class FeedService extends BaseService {
       updateFeedDto.updateBy,
     );
     const saved = await this.feedDao.save(feed);
-    super.reindexAlgoliaCrawler().catch((e) => {
+    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
       this.logger.error(e);
     });
     return saved;
@@ -130,7 +128,7 @@ export class FeedService extends BaseService {
     if (result.affected === 0) {
       throw new ForbiddenException('You can only delete your own post!');
     }
-    super.reindexAlgoliaCrawler().catch((e) => {
+    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
       this.logger.error(e);
     });
   }

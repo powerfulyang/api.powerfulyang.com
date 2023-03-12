@@ -29,7 +29,7 @@ export class CosObjectUrlScheduleService {
   }
 
   async main() {
-    const assets = await this.assetService.all();
+    const assets = await this.assetService.allAssets();
     return Promise.allSettled(
       assets.map((asset) => {
         return this.assetService

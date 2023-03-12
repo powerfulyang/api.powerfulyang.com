@@ -7,7 +7,7 @@ import type {
   WechatGetUnlimitedQRCodeRequest,
   WechatMessageOriginalRequest,
   WechatMiniProgramSendCustomMessageRequest,
-} from '@/typings/wechat';
+} from '@/type/wechat';
 import { CacheService } from '@/common/cache/cache.service';
 import dayjs from 'dayjs';
 import { WeatherService } from '@app/weather';

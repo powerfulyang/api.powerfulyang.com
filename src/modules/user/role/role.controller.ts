@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '@/modules/user/role/role.service';
@@ -52,6 +62,7 @@ export class RoleController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: '删除角色',
     operationId: 'deleteRoleById',
