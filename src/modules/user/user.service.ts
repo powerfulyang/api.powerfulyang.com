@@ -363,8 +363,8 @@ export class UserService extends BaseService {
         email: this.iLike(pagination.email),
         bio: this.iLike(pagination.bio),
         nickname: this.iLike(pagination.nickname),
-        createAt: this.convertDateRangeToBetween(pagination.createAt),
-        updateAt: this.convertDateRangeToBetween(pagination.updateAt),
+        createdAt: this.convertDateRangeToBetween(pagination.createdAt),
+        updatedAt: this.convertDateRangeToBetween(pagination.updatedAt),
       },
       order: {
         id: 'DESC',

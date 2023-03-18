@@ -167,7 +167,7 @@ export class BucketService {
     }).map((bucket) => ({
       Bucket: bucket.Name,
       Region: bucket.Location,
-      createAt: new Date(bucket.CreationDate),
+      createdAt: new Date(bucket.CreationDate),
     }));
 
     const listBucketAclPromises = list.map((bucket) =>

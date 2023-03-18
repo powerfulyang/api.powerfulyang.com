@@ -54,8 +54,8 @@ export class RoleService extends BaseService {
       where: {
         name: this.iLike(pagination.name),
         id: this.ignoreFalsyValue(pagination.id),
-        createAt: this.convertDateRangeToBetween(pagination.createAt),
-        updateAt: this.convertDateRangeToBetween(pagination.updateAt),
+        createdAt: this.convertDateRangeToBetween(pagination.createdAt),
+        updatedAt: this.convertDateRangeToBetween(pagination.updatedAt),
       },
     });
   }

@@ -10,11 +10,11 @@ export class QueryUsersDto extends IntersectionType(
     description: '创建时间',
     type: [Date, Date],
   })
-  createAt?: [Date, Date];
+  createdAt?: [Date, Date];
 
   @ApiProperty({
     description: '更新时间',
     type: [Date, Date],
   })
-  updateAt?: [Date, Date];
+  updatedAt?: [Date, Date];
 }

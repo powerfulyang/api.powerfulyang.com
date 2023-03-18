@@ -46,8 +46,8 @@ export class Feed {
   updateBy: User;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updateAt: Date;
+  updatedAt: Date;
 }

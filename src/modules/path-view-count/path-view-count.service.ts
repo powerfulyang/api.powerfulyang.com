@@ -51,7 +51,7 @@ export class PathViewCountService {
   async viewCount(timezone = 'Asia/Shanghai') {
     return this.pathViewCountDao
       .createQueryBuilder()
-      .select(`("createAt"::timestamptz AT TIME ZONE :timezone)::date::text`, 'date')
+      .select(`("createdAt"::timestamptz AT TIME ZONE :timezone)::date::text`, 'date')
       .setParameters({ timezone })
       .addSelect(`count(path)::int`, 'requestCount')
       .addSelect(`count(distinct ip)::int`, 'distinctIpCount')

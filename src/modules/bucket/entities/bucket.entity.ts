@@ -44,10 +44,10 @@ export class CosBucket {
   RefererConfiguration: RefererConfiguration;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updateAt: Date;
+  updatedAt: Date;
 
   @JoinColumn()
   @ManyToOne(() => TencentCloudAccount, { nullable: false })

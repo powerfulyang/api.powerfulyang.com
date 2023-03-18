@@ -168,7 +168,7 @@ export class PostService extends BaseService {
       select: {
         id: true,
         title: true,
-        createAt: true,
+        createdAt: true,
         poster: {
           objectUrl: {
             thumbnail_300_: true,
@@ -249,11 +249,11 @@ export class PostService extends BaseService {
       id,
       title,
       take,
-      createAt,
+      createdAt,
       skip,
       content,
       public: _p,
-      updateAt,
+      updatedAt,
       poster,
       summary,
       createBy,
@@ -262,10 +262,10 @@ export class PostService extends BaseService {
       where: {
         id: super.ignoreFalsyValue(id),
         title: super.iLike(title),
-        createAt: super.convertDateRangeToBetween(createAt),
+        createdAt: super.convertDateRangeToBetween(createdAt),
         content: super.iLike(content),
         public: super.ignoreNilValue(_p),
-        updateAt: super.convertDateRangeToBetween(updateAt),
+        updatedAt: super.convertDateRangeToBetween(updatedAt),
         poster: {
           id: super.ignoreFalsyValue(poster?.id),
         },

@@ -26,8 +26,8 @@ export class PostLog {
   content: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updateAt: Date;
+  updatedAt: Date;
 }

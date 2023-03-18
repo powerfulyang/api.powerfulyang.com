@@ -34,8 +34,8 @@ export class MenuService extends BaseService {
         id: this.ignoreFalsyValue(pagination.id),
         name: this.iLike(pagination.name),
         path: this.iLike(pagination.path),
-        createAt: this.convertDateRangeToBetween(pagination.createAt),
-        updateAt: this.convertDateRangeToBetween(pagination.updateAt),
+        createdAt: this.convertDateRangeToBetween(pagination.createdAt),
+        updatedAt: this.convertDateRangeToBetween(pagination.updatedAt),
       },
     });
   }

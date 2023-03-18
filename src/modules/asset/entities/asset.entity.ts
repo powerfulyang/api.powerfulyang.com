@@ -79,10 +79,10 @@ export class Asset {
   uploadBy: Relation<User>;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updateAt: Date;
+  updatedAt: Date;
 
   @BeforeInsert()
   beforeInsert() {

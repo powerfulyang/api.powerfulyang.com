@@ -20,10 +20,10 @@ export class Family {
   description: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updateAt: Date;
+  updatedAt: Date;
 
   @ManyToMany(() => User, (user) => user.families)
   members: User[];

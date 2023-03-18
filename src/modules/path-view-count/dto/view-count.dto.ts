@@ -1,5 +1,5 @@
 export class ViewCountDto {
-  createAt: string;
+  createdAt: string;
 
   requestCount: number;
 

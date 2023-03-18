@@ -58,10 +58,10 @@ export class Post {
   logs: PostLog[];
 
   @CreateDateColumn({ type: 'timestamptz' })
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updateAt: Date;
+  updatedAt: Date;
 
   @BeforeInsert()
   protected beforeInsert() {

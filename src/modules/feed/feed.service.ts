@@ -72,7 +72,7 @@ export class FeedService extends BaseService {
       select: {
         id: true,
         content: true,
-        createAt: true,
+        createdAt: true,
         createBy: {
           avatar: true,
           nickname: true,
@@ -139,8 +139,8 @@ export class FeedService extends BaseService {
       select: {
         id: true,
         content: true,
-        createAt: true,
-        updateAt: true,
+        createdAt: true,
+        updatedAt: true,
         createBy: {
           nickname: true,
         },

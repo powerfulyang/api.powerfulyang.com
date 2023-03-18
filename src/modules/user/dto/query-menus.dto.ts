@@ -9,10 +9,10 @@ export class QueryMenusDto extends IntersectionType(
   @ApiProperty({
     type: [Date, Date],
   })
-  createAt?: [Date, Date];
+  createdAt?: [Date, Date];
 
   @ApiProperty({
     type: [Date, Date],
   })
-  updateAt?: [Date, Date];
+  updatedAt?: [Date, Date];
 }

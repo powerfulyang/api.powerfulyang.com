@@ -28,11 +28,11 @@ export class Role {
 
   @CreateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
   @ApiProperty()
-  updateAt: Date;
+  updatedAt: Date;
 
   @ManyToMany(() => Menu)
   @JoinTable()
