@@ -38,7 +38,7 @@ specifiers:
   '@types/sharp': 0.31.1
   '@types/uuid': 9.0.1
   '@types/xml2js': 0.4.11
-  '@waylaidwanderer/chatgpt-api': 1.32.1
+  '@waylaidwanderer/chatgpt-api': 1.32.2
   amqp-connection-manager: 4.1.11
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -97,7 +97,7 @@ dependencies:
   '@nestjs/typeorm': 9.0.1_tczrxjq6l4bicygw3hjjbo47ua
   '@powerfulyang/node-utils': 1.3.1_amyddrbyg4ody5pqfxs46uhsce
   '@powerfulyang/utils': 1.9.2
-  '@waylaidwanderer/chatgpt-api': 1.32.1
+  '@waylaidwanderer/chatgpt-api': 1.32.2
   amqp-connection-manager: 4.1.11_amqplib@0.10.3
   amqplib: 0.10.3
   bindings: 1.5.0
@@ -990,14 +990,14 @@ packages:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
 
-  /@commitlint/cli/17.4.4_@swc+core@1.3.42:
-    resolution: {integrity: sha512-HwKlD7CPVMVGTAeFZylVNy14Vm5POVY0WxPkZr7EXLC/os0LH/obs6z4HRvJtH/nHCMYBvUBQhGwnufKfTjd5g==}
+  /@commitlint/cli/17.5.0_@swc+core@1.3.42:
+    resolution: {integrity: sha512-yNW3+M7UM1ioK28LKTrryIVB5qGpXlEv8+rJQiWPMZNayy9/1XR5+lL8qBTNlgopYtZWWnIm5RETcAN29ZTL/A==}
     engines: {node: '>=v14'}
     hasBin: true
     dependencies:
       '@commitlint/format': 17.4.4
       '@commitlint/lint': 17.4.4
-      '@commitlint/load': 17.4.4_@swc+core@1.3.42
+      '@commitlint/load': 17.5.0_@swc+core@1.3.42
       '@commitlint/read': 17.4.4
       '@commitlint/types': 17.4.4
       execa: 5.1.1
@@ -1068,8 +1068,8 @@ packages:
       '@commitlint/types': 17.4.4
     dev: true
 
-  /@commitlint/load/17.4.4_@swc+core@1.3.42:
-    resolution: {integrity: sha512-z6uFIQ7wfKX5FGBe1AkOF4l/ShOQsaa1ml/nLMkbW7R/xF8galGS7Zh0yHvzVp/srtfS0brC+0bUfQfmpMPFVQ==}
+  /@commitlint/load/17.5.0_@swc+core@1.3.42:
+    resolution: {integrity: sha512-l+4W8Sx4CD5rYFsrhHH8HP01/8jEP7kKf33Xlx2Uk2out/UKoKPYMOIRcDH5ppT8UXLMV+x6Wm5osdRKKgaD1Q==}
     engines: {node: '>=v14'}
     dependencies:
       '@commitlint/config-validator': 17.4.4
@@ -2733,7 +2733,7 @@ packages:
   /@powerfulyang/lint/3.1.3_typescript@4.9.5:
     resolution: {integrity: sha512-dA6oO0Yy359fcZY/t6A4vL3a4RhbfmfJSbCQQ0vPPy/BmLdhGKOZ6oNgK0rm7cPVyxFvY950BopBILnvJm9RTA==}
     dependencies:
-      '@commitlint/cli': 17.4.4_@swc+core@1.3.42
+      '@commitlint/cli': 17.5.0_@swc+core@1.3.42
       '@commitlint/config-conventional': 17.4.4
       '@swc/core': 1.3.42
       '@swc/jest': 0.2.24_@swc+core@1.3.42
@@ -2766,7 +2766,7 @@ packages:
       postcss-scss: 4.0.6_postcss@8.4.21
       prettier: 2.8.6
       prettier-plugin-tailwindcss: 0.2.5_prettier@2.8.6
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       rollup: 3.20.0
       sass: 1.59.3
       stylelint: 14.15.0
@@ -3591,18 +3591,18 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api/1.32.1:
-    resolution: {integrity: sha512-0ElaF5qDTXp1bEjulolCuIQAm7MgYElQUmvofP2f9fBKmfuMAvJTYYQmJEWk/T68odKuBJdmRa29RO+6KB4kzg==}
+  /@waylaidwanderer/chatgpt-api/1.32.2:
+    resolution: {integrity: sha512-4PVW+xuthkLiUw1Peb7+yyWF3Sdt6kV67e+Lqebn6ScVLK49RwvuivEY8ksEGBqpbMm0UnQD9gZoOPEGSUTgDA==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 1.0.2
       '@fastify/cors': 8.2.1
-      '@waylaidwanderer/fastify-sse-v2': 3.1.0_fastify@4.14.1
+      '@waylaidwanderer/fastify-sse-v2': 3.1.0_fastify@4.15.0
       '@waylaidwanderer/fetch-event-source': 3.0.1
       boxen: 7.0.1
       clipboardy: 3.0.0
       dotenv: 16.0.3
-      fastify: 4.14.1
+      fastify: 4.15.0
       fetch-undici: 3.0.1
       https-proxy-agent: 5.0.1
       inquirer: 9.1.4
@@ -3618,12 +3618,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@waylaidwanderer/fastify-sse-v2/3.1.0_fastify@4.14.1:
+  /@waylaidwanderer/fastify-sse-v2/3.1.0_fastify@4.15.0:
     resolution: {integrity: sha512-R6/VT14+iGZmyp7Jih7FYZuWr0B0gJ9uym1xoVPlKjZBngzFS2bL8yvZyEIPbMrTjrC8syZY2z2WuMHsipRfpw==}
     peerDependencies:
       fastify: '>=4'
     dependencies:
-      fastify: 4.14.1
+      fastify: 4.15.0
       fastify-plugin: 4.4.0
       it-pushable: 1.4.2
       it-to-stream: 1.0.0
@@ -6285,28 +6285,6 @@ packages:
 
   /fastify-plugin/4.4.0:
     resolution: {integrity: sha512-ovwFQG2qNy3jcCROiWpr94Hs0le+c7N/3t7m9aVwbFhkxcR/esp2xu25dP8e617HpQdmeDv+gFX4zagdUhDByw==}
-    dev: false
-
-  /fastify/4.14.1:
-    resolution: {integrity: sha512-yjrDeXe77j9gRlSV2UJry8mcFWbD0NQ5JYjnPi4tkFjHZVaG3/BD5wxOmRzGnHPC0YvaBJ0XWrIfFPl2IHRa1w==}
-    dependencies:
-      '@fastify/ajv-compiler': 3.5.0
-      '@fastify/error': 3.2.0
-      '@fastify/fast-json-stringify-compiler': 4.2.0
-      abstract-logging: 2.0.1
-      avvio: 8.2.0
-      fast-content-type-parse: 1.0.0
-      find-my-way: 7.6.0
-      light-my-request: 5.9.1
-      pino: 8.8.0
-      process-warning: 2.1.0
-      proxy-addr: 2.0.7
-      rfdc: 1.3.0
-      secure-json-parse: 2.6.0
-      semver: 7.3.8
-      tiny-lru: 10.0.1
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /fastify/4.15.0:
@@ -11076,6 +11054,14 @@ packages:
 
   /rimraf/4.4.0:
     resolution: {integrity: sha512-X36S+qpCUR0HjXlkDe4NAOhS//aHH0Z+h8Ckf2auGJk3PTnx5rLmrHkwNdbVQuCSUhOyFrlRvFEllZOYE+yZGQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      glob: 9.2.1
+    dev: true
+
+  /rimraf/4.4.1:
+    resolution: {integrity: sha512-Gk8NlF062+T9CqNGn6h4tls3k6T1+/nXdOcSZVikNVtlRdYpA7wRJJMoXmuvOnLW844rPjdQ7JgXCYM6PPC/og==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
