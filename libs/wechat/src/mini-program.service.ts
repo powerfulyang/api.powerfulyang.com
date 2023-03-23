@@ -164,7 +164,7 @@ export class MiniProgramService extends WechatService {
               touser: json.FromUserName,
               msgtype: 'text',
               text: {
-                content: res.content,
+                content: res.message,
               },
             });
             this.cacheService.hSetJSON(MiniProgramService.conversationsKey, json.FromUserName, {

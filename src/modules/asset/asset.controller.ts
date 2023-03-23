@@ -42,6 +42,10 @@ export class AssetController {
   @ApiBody({
     type: UploadAssetsDto,
   })
+  @ApiOperation({
+    summary: '上传资源',
+    operationId: 'saveAssetToBucket',
+  })
   saveAssetToBucket(
     @Body('assets') files: UploadFile[],
     @Body('files') files_compatible: UploadFile[],

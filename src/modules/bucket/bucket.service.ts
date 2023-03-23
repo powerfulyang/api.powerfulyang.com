@@ -5,7 +5,7 @@ import { isNull } from '@powerfulyang/utils';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CosBucket } from '@/modules/bucket/entities/bucket.entity';
 import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
-import type { CreateBucketDto } from '@/modules/bucket/entities/create-bucket.dto';
+import type { CreateBucketDto } from '@/modules/bucket/dto/create-bucket.dto';
 
 @Injectable()
 export class BucketService {

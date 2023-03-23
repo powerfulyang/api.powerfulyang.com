@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { BucketService } from '@/modules/bucket/bucket.service';
-import { CreateBucketDto } from '@/modules/bucket/entities/create-bucket.dto';
+import { CreateBucketDto } from '@/modules/bucket/dto/create-bucket.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('bucket')

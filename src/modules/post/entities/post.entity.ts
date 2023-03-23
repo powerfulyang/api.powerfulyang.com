@@ -13,7 +13,7 @@ import {
 import { User } from '@/modules/user/entities/user.entity';
 import { Asset } from '@/modules/asset/entities/asset.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { PostLog } from '@/modules/post/entities/post.log.entity';
+import { PostLog } from '@/modules/post/entities/post-log.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })

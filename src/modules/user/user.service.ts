@@ -95,7 +95,7 @@ export class UserService extends BaseService {
     // 初始化用户缓存
     const keyCount = await this.cacheService.del(REDIS_KEYS.USERS);
     this.logger.debug(`初始化用户缓存，删除缓存${keyCount ? '成功' : '失败'}`);
-    const users = await this.queryUserCascadeFamilyInfo();
+    const users = await this.queryUserCascadeInfo();
     const userMap = users.reduce((acc, user) => {
       Reflect.set(acc, user.id, JSON.stringify(user));
       return acc;
@@ -191,9 +191,12 @@ export class UserService extends BaseService {
     if (isFalsy(bool)) {
       throw new UnauthorizedException('email or password is wrong');
     }
+    // refresh cache
+    const _user = await this.queryUserCascadeInfo(userInfo.id);
+    const cached = await this.saveUserAndCached(_user);
     return {
       token: await this.generateAuthorization(userInfo),
-      user: await this.getCachedUser(userInfo.id),
+      user: cached,
     };
   }
 
@@ -218,27 +221,27 @@ export class UserService extends BaseService {
     return this.userDao.save(user);
   }
 
-  queryUserCascadeFamilyInfo(): Promise<User[]>;
+  queryUserCascadeInfo(): Promise<User[]>;
 
-  queryUserCascadeFamilyInfo(id: User['id']): Promise<User>;
+  queryUserCascadeInfo(id: User['id']): Promise<User>;
 
-  queryUserCascadeFamilyInfo(ids: User['id'][]): Promise<User[]>;
+  queryUserCascadeInfo(ids: User['id'][]): Promise<User[]>;
 
-  queryUserCascadeFamilyInfo(id?: User['id'] | User['id'][]): Promise<any> {
+  queryUserCascadeInfo(id?: User['id'] | User['id'][]): Promise<any> {
     if (isDefined(id)) {
       if (isArray(id)) {
         return this.userDao.find({
           where: { id: In(id) },
-          relations: ['families', 'families.members', 'roles'],
+          relations: ['families', 'families.members', 'roles', 'timelineBackground'],
         });
       }
       return this.userDao.findOneOrFail({
         where: { id },
-        relations: ['families', 'families.members', 'roles'],
+        relations: ['families', 'families.members', 'roles', 'timelineBackground'],
       });
     }
     return this.userDao.find({
-      relations: ['families', 'families.members', 'roles'],
+      relations: ['families', 'families.members', 'roles', 'timelineBackground'],
     });
   }
 
@@ -257,7 +260,7 @@ export class UserService extends BaseService {
     family: Family['id'] | Family['id'][],
     operation: 'add' | 'remove' | 'replace' = 'replace',
   ) {
-    const user = await this.queryUserCascadeFamilyInfo(userId);
+    const user = await this.queryUserCascadeInfo(userId);
     let { families } = user;
     if (isArray(family)) {
       const result = await this.familyDao.find({ where: { id: In(family) } });
@@ -348,7 +351,7 @@ export class UserService extends BaseService {
 
   private async saveUserAndCached<T extends User>(user: T) {
     const updatedUser = await this.userDao.save(user);
-    const cache = await this.queryUserCascadeFamilyInfo(updatedUser.id);
+    const cache = await this.queryUserCascadeInfo(updatedUser.id);
     // update to cache
     await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, cache);
     return cache;

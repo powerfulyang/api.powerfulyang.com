@@ -4,7 +4,7 @@ import { Post } from '@/modules/post/entities/post.entity';
 import { AssetModule } from '@/modules/asset/asset.module';
 import { OrmModule } from '@/common/service/orm/orm.module';
 import { LoggerModule } from '@/common/logger/logger.module';
-import { PostLog } from '@/modules/post/entities/post.log.entity';
+import { PostLog } from '@/modules/post/entities/post-log.entity';
 import { PostManageController } from '@/modules/post/post-manage.controller';
 import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
 import { PostService } from './post.service';
