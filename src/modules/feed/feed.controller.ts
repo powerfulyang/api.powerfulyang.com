@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
-import type { UploadFile } from '@/type/UploadFile';
 import { AccessAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { SpecificFeedDto } from '@/modules/feed/dto/specific-feed.dto';
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -37,12 +36,8 @@ export class FeedController {
     operationId: 'updateFeed',
   })
   @ApiConsumes('multipart/form-data')
-  update(
-    @Body() updateFeedDto: UpdateFeedDto,
-    @AuthUser(['id']) user: User,
-    @Body('assets') assets: UploadFile[],
-  ) {
-    const { id, content, public: isPublic } = updateFeedDto;
+  update(@Body() updateFeedDto: UpdateFeedDto, @AuthUser(['id']) user: User) {
+    const { id, content, public: isPublic, assets } = updateFeedDto;
     return this.feedService.modifyFeed({
       id,
       content,

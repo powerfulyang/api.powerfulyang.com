@@ -22,7 +22,7 @@ export class PostLog {
   @Column()
   title: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', unique: true })
   content: string;
 
   @CreateDateColumn({ type: 'timestamptz' })

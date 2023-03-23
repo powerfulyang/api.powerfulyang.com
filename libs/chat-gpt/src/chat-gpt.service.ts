@@ -5,6 +5,8 @@ import fetch from 'node-fetch';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { CacheService } from '@/common/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import type { BingAIPayload } from '@/payload/BingAIPayload';
+import type { ChatGPTPayload } from '@/payload/ChatGPTPayload';
 
 /**
  * Service for chat.openai.com
@@ -86,7 +88,7 @@ export class ChatGptService {
       parentMessageId?: string;
       conversationId?: string;
     } = {},
-  ) {
+  ): Promise<ChatGPTPayload> {
     let response;
     try {
       const instance = await this.getApiInstance('chat-gpt');
@@ -95,10 +97,10 @@ export class ChatGptService {
       const instance = await this.getApiInstance('gpt-3');
       response = await instance.sendMessage(msg, opt);
     }
-    const { response: content, conversationId, messageId } = response;
+    const { response: message, conversationId, messageId } = response;
     return {
       parentMessageId: messageId,
-      content,
+      message,
       conversationId,
     };
   }
@@ -111,11 +113,11 @@ export class ChatGptService {
       clientId?: string;
       invocationId?: string;
     } = {},
-  ) {
+  ): Promise<BingAIPayload> {
     const instance = await this.getApiInstance('bing-ai');
     const response = await instance.sendMessage(msg, opt);
     const {
-      response: content,
+      response: message,
       conversationSignature,
       conversationId,
       clientId,
@@ -124,11 +126,11 @@ export class ChatGptService {
     this.logger.debug(`sendMessageWithBingAI response: ${JSON.stringify(response, null, 2)}`);
     if (response?.details?.contentOrigin === 'TurnLimiter') {
       return {
-        content: '达到 BingAI 的对话上限，接下来将开始新的对话，请重新输入',
+        message: '达到 BingAI 的对话上限，接下来将开始新的对话，请重新输入',
       };
     }
     return {
-      content,
+      message,
       conversationSignature,
       conversationId,
       clientId,

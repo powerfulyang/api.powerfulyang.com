@@ -10,10 +10,10 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
   }
 
   catch(exception: T, host: ArgumentsHost) {
-    this.logger.error(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const statusCode = exception.getStatus();
+    this.logger.error(exception);
     response
       .status(statusCode)
       .headers({
