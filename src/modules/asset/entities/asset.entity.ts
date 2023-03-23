@@ -11,7 +11,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Metadata } from 'sharp';
-import { pick } from 'ramda';
 import { User } from '@/modules/user/entities/user.entity';
 import { CosBucket } from '../../bucket/entities/bucket.entity';
 import { Exif } from '../../../../addon-api/types/Exif';
@@ -72,7 +71,10 @@ export class Asset {
   metadata: Metadata;
 
   @Column({ type: 'json' })
-  size: Pick<Metadata, 'width' | 'height'>;
+  size: {
+    width: number;
+    height: number;
+  };
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
@@ -87,7 +89,11 @@ export class Asset {
   @BeforeInsert()
   beforeInsert() {
     if (this.metadata) {
-      this.size = pick(['width', 'height'])(this.metadata);
+      const { width = 0, height = 0 } = this.metadata;
+      this.size = {
+        width,
+        height,
+      };
     }
     if (!this.tags) {
       this.tags = [];
@@ -97,7 +103,11 @@ export class Asset {
   @BeforeUpdate()
   beforeUpdate() {
     if (this.metadata) {
-      this.size = pick(['width', 'height'])(this.metadata);
+      const { width = 0, height = 0 } = this.metadata;
+      this.size = {
+        width,
+        height,
+      };
     }
   }
 }

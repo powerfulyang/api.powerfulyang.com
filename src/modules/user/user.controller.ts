@@ -18,7 +18,7 @@ import type { CookieClear } from '@/common/interceptor/cookie.interceptor';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 @ApiTags('user')
@@ -133,8 +133,9 @@ export class UserController {
     summary: '获取当前登录用户信息',
     operationId: 'getCurrentUser',
   })
-  @ApiResponse({
+  @ApiOkResponse({
     type: User,
+    description: '当前登录用户信息',
   })
   current(@AuthUser() user: User) {
     if (user.email) {
