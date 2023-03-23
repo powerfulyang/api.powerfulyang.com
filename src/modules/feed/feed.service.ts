@@ -32,7 +32,7 @@ export class FeedService extends BaseService {
       BuiltinBucket.timeline,
       createFeedDto.createBy,
     );
-    const feed = await this.feedDao.save({ ...createFeedDto, assets });
+    const feed: Feed = await this.feedDao.save({ ...createFeedDto, assets });
     this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
       this.logger.error(e);
     });

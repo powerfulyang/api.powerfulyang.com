@@ -1,9 +1,10 @@
-import { PartialType } from '@nestjs/swagger';
+import { ApiHideProperty, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, Length } from 'class-validator';
-import { Post } from '@/modules/post/entities/post.entity';
-import type { User } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
+import { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 
-export class PatchPostDto extends PartialType(Post) {
+export class PatchPostDto extends PartialType(CreatePostDto) {
+  @ApiHideProperty()
   declare id: number;
 
   @Length(1, 100)
@@ -15,5 +16,6 @@ export class PatchPostDto extends PartialType(Post) {
 
   declare posterId?: number;
 
+  @ApiHideProperty()
   declare updateBy: User;
 }

@@ -18,12 +18,20 @@ export class PostController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: '创建文章',
+    operationId: 'createPost',
+  })
   createPost(@Body() draft: CreatePostDto, @AuthUser(['id']) user: User) {
     draft.createBy = user;
     return this.postService.createPost(draft);
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: '更新文章',
+    operationId: 'updatePost',
+  })
   updatePost(
     @Param() { id }: SpecificPostDto,
     @Body() draft: PatchPostDto,

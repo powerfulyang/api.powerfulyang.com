@@ -11,6 +11,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChatGptService } from '@app/chat-gpt';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import { ClientTimezone } from '@/common/decorator/client-timezone';
+import { BingAIPayload } from '@/payload/BingAIPayload';
+import { ChatGPTPayload } from '@/payload/ChatGPTPayload';
+import { ApiOkInfiniteQueryResponse } from '@/common/swagger/ApiOkInfiniteQueryResponse';
+import { Feed } from '@/modules/feed/entities/feed.entity';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -66,12 +70,12 @@ export class PublicController {
   @Get('post/:id')
   @ApiOperation({
     summary: '获取单个文章详细信息',
-    operationId: 'getPublicPostById',
+    operationId: 'queryPublicPostById',
   })
-  getPublicPostById(
+  queryPublicPostById(
     @Param('id') id: number,
     @AuthFamilyMembersId() userIds: User['id'][],
-    @Query('versions') versions: string[],
+    @Query('versions') versions: string[] = [],
   ) {
     return this.postService.readPost(id, userIds, versions);
   }
@@ -79,9 +83,12 @@ export class PublicController {
   @Get('feed')
   @ApiOperation({
     summary: '获取所有的公开时间线',
-    operationId: 'queryPublicTimeline',
+    operationId: 'infiniteQueryPublicTimeline',
   })
-  queryPublicTimeline(
+  @ApiOkInfiniteQueryResponse({
+    model: Feed,
+  })
+  infiniteQueryPublicTimeline(
     @Query('prevCursor') prevCursor: string,
     @Query('nextCursor') nextCursor: string,
     @Query('take') take: string,
@@ -125,9 +132,11 @@ export class PublicController {
 
   @Post('/chat-gpt/chat')
   @JwtAuthGuard()
-  chatWithChatGPT(
-    @Body() body: { message: string; parentMessageId?: string; conversationId?: string },
-  ) {
+  @ApiOperation({
+    summary: '与chat gpt聊天',
+    operationId: 'chatWithChatGPT',
+  })
+  chatWithChatGPT(@Body() body: ChatGPTPayload) {
     return this.chatGptService.sendMessage(body.message, {
       parentMessageId: body.parentMessageId,
       conversationId: body.conversationId,
@@ -136,15 +145,13 @@ export class PublicController {
 
   @Post('/bing-ai/chat')
   @JwtAuthGuard()
+  @ApiOperation({
+    summary: '与bing ai聊天',
+    operationId: 'chatWithBingAI',
+  })
   chatWithBingAI(
     @Body()
-    body: {
-      message: string;
-      conversationSignature?: string;
-      conversationId?: string;
-      clientId?: string;
-      invocationId?: string;
-    },
+    body: BingAIPayload,
   ) {
     return this.chatGptService.sendMessageWithBingAI(body.message, {
       conversationSignature: body.conversationSignature,
