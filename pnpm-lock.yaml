@@ -56,8 +56,8 @@ dependencies:
     specifier: 1.9.2
     version: 1.9.2
   '@waylaidwanderer/chatgpt-api':
-    specifier: 1.33.0
-    version: 1.33.0
+    specifier: 1.33.1
+    version: 1.33.1
   amqp-connection-manager:
     specifier: 4.1.11
     version: 4.1.11(amqplib@0.10.3)
@@ -3171,7 +3171,7 @@ packages:
   /@types/jsonwebtoken@8.5.9:
     resolution: {integrity: sha512-272FMnFGzAVMGtu9tkr29hRL6bZj4Zs1KZNeHLnKqAvp06tAIcarTMwOh8/8bz4FmKRcMxZhZNeUAQsNLoiPhg==}
     dependencies:
-      '@types/node': 18.15.10
+      '@types/node': 18.15.11
     dev: false
 
   /@types/jsonwebtoken@9.0.0:
@@ -3234,6 +3234,7 @@ packages:
 
   /@types/node@18.15.10:
     resolution: {integrity: sha512-9avDaQJczATcXgfmMAW3MIWArOO7A+m90vuCFLr8AotWf8igO/mRoYukrk2cqZVtv38tHs33retzHEilM7FpeQ==}
+    dev: true
 
   /@types/node@18.15.11:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
@@ -3398,7 +3399,7 @@ packages:
   /@types/ws@8.5.4:
     resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
     dependencies:
-      '@types/node': 18.15.10
+      '@types/node': 18.15.11
     dev: false
 
   /@types/xml2js@0.4.11:
@@ -3615,8 +3616,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api@1.33.0:
-    resolution: {integrity: sha512-QzdJWFtu2mLNfpBRu8uthSIzJJKGkdk6jdkwfzj+xnIKIbC9yJDT8j9aouAytDNxYC8MiOnkeosLZxP9xPjRcQ==}
+  /@waylaidwanderer/chatgpt-api@1.33.1:
+    resolution: {integrity: sha512-RUWrwOcm22mV1j0bQUoY1TB3UzmpuQxV7jQurUMsIy/pfSQwS5n8nsJ0erU76t9H5eSiXoRL6/cmMBWbUd+J9w==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 1.0.2
