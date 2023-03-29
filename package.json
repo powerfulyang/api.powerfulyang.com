@@ -38,7 +38,7 @@
     "@nestjs/common": "9.3.12",
     "@nestjs/core": "9.3.12",
     "@nestjs/elasticsearch": "9.0.0",
-    "@nestjs/jwt": "10.0.2",
+    "@nestjs/jwt": "10.0.3",
     "@nestjs/microservices": "9.3.12",
     "@nestjs/passport": "9.0.3",
     "@nestjs/platform-fastify": "9.3.12",
