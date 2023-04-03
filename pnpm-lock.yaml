@@ -56,8 +56,8 @@ dependencies:
     specifier: 1.9.2
     version: 1.9.2
   '@waylaidwanderer/chatgpt-api':
-    specifier: 1.33.2
-    version: 1.33.2
+    specifier: 1.33.3
+    version: 1.33.3
   amqp-connection-manager:
     specifier: 4.1.11
     version: 4.1.11(amqplib@0.10.3)
@@ -3579,8 +3579,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api@1.33.2:
-    resolution: {integrity: sha512-8CJLln0yaxLGWs21C31OADdAUnSGEDrIqnuPmzRF30/NQGjOWPeHdh00slVqqSNWSGWx5zhCwc9Gt7TSQJYB5Q==}
+  /@waylaidwanderer/chatgpt-api@1.33.3:
+    resolution: {integrity: sha512-XQYuf8gCJYmzLB/PlDeD/+7XT+TmViI1bMinvLQU8DdrxOwTOWSr7ud5Pa5Ucl0GCfg7GHzmW8VgO8l76Wbktw==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 1.0.2
