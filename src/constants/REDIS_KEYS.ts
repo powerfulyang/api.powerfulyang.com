@@ -7,8 +7,6 @@ export class REDIS_KEYS {
 
   static CHAT_GPT_CONVERSATIONS = 'chat-gpt:conversations';
 
-  static CHAT_GPT_ACCESS_TOKEN = 'chat-gpt:access-token';
-
   static BING_AI_COOKIES = 'bing-ai:cookies';
 
   static WECHAT_OFFICIAL_ACCOUNT_ACCESS_TOKEN = 'wechat:official-account:access-token';

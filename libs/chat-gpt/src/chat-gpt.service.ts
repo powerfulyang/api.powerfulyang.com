@@ -16,11 +16,9 @@ import type { ChatGPTPayload } from '@/payload/ChatGPTPayload';
 export class ChatGptService {
   private chatGPTApi;
 
-  private gpt3Api;
+  private ChatGPTClient;
 
   private bingAIApi;
-
-  private ChatGPTBrowserClient;
 
   private BingAIClient;
 
@@ -32,54 +30,39 @@ export class ChatGptService {
     this.logger.setContext(ChatGptService.name);
   }
 
-  async getApiInstance(type: 'chat-gpt' | 'bing-ai' | 'gpt-3') {
-    const chat_gpt_access_token = await this.cacheService.get(REDIS_KEYS.CHAT_GPT_ACCESS_TOKEN);
+  async getApiInstance(type: 'chat-gpt' | 'bing-ai') {
+    const openai_api_key = process.env.OPENAI_API_KEY;
     const bing_ai_cookies = await this.cacheService.get(REDIS_KEYS.BING_AI_COOKIES);
-    if (this.chatGPTApi && type === 'chat-gpt') {
-      this.chatGPTApi = new this.ChatGPTBrowserClient({
-        reverseProxyUrl: 'https://chatgpt.duti.tech/api/conversation',
-        accessToken: chat_gpt_access_token,
-        debug: false,
-      });
-      return this.chatGPTApi;
-    }
     if (this.bingAIApi && type === 'bing-ai') {
       this.bingAIApi = new this.BingAIClient({
         cookies: bing_ai_cookies,
-        debug: false,
       });
       return this.bingAIApi;
     }
-    if (this.gpt3Api && type === 'gpt-3') {
-      return this.gpt3Api;
+    if (this.chatGPTApi && type === 'chat-gpt') {
+      return this.chatGPTApi;
     }
-    return import('@waylaidwanderer/chatgpt-api').then(
-      ({ ChatGPTClient, BingAIClient, ChatGPTBrowserClient }) => {
-        this.gpt3Api = new ChatGPTClient(process.env.OPENAI_API_KEY);
-        this.BingAIClient = BingAIClient;
-        this.bingAIApi = new this.BingAIClient({
-          cookies: bing_ai_cookies,
-        });
-        this.ChatGPTBrowserClient = ChatGPTBrowserClient;
-        this.chatGPTApi = new this.ChatGPTBrowserClient({
-          reverseProxyUrl: 'https://chatgpt.duti.tech/api/conversation',
-          accessToken: chat_gpt_access_token,
-        });
-        // @ts-ignore rewrite fetch
-        globalThis.fetch = (input: RequestInfo, init: RequestInit = {}) => {
-          // eslint-disable-next-line no-param-reassign
-          init.agent = this.proxyFetchService.getAgent();
-          return fetch(input, init);
-        };
-        if (type === 'bing-ai') {
-          return this.bingAIApi;
-        }
-        if (type === 'gpt-3') {
-          return this.gpt3Api;
-        }
+    return import('@waylaidwanderer/chatgpt-api').then(({ ChatGPTClient, BingAIClient }) => {
+      this.BingAIClient = BingAIClient;
+      this.bingAIApi = new this.BingAIClient({
+        cookies: bing_ai_cookies,
+      });
+      this.ChatGPTClient = ChatGPTClient;
+      this.chatGPTApi = new this.ChatGPTClient(openai_api_key);
+      // @ts-ignore rewrite fetch
+      globalThis.fetch = (input: RequestInfo, init: RequestInit = {}) => {
+        // eslint-disable-next-line no-param-reassign
+        init.agent = this.proxyFetchService.getAgent();
+        return fetch(input, init);
+      };
+      if (type === 'bing-ai') {
+        return this.bingAIApi;
+      }
+      if (type === 'chat-gpt') {
         return this.chatGPTApi;
-      },
-    );
+      }
+      return this.chatGPTApi;
+    });
   }
 
   async sendMessage(
@@ -89,14 +72,8 @@ export class ChatGptService {
       conversationId?: string;
     } = {},
   ): Promise<ChatGPTPayload> {
-    let response;
-    try {
-      const instance = await this.getApiInstance('chat-gpt');
-      response = await instance.sendMessage(msg, opt);
-    } catch (e) {
-      const instance = await this.getApiInstance('gpt-3');
-      response = await instance.sendMessage(msg, opt);
-    }
+    const instance = await this.getApiInstance('chat-gpt');
+    const response = await instance.sendMessage(msg, opt);
     const { response: message, conversationId, messageId } = response;
     return {
       parentMessageId: messageId,
