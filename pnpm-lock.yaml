@@ -149,8 +149,8 @@ dependencies:
     specifier: 0.5.21
     version: 0.5.21
   tencentcloud-sdk-nodejs:
-    specifier: 4.0.572
-    version: 4.0.572
+    specifier: 4.0.573
+    version: 4.0.573
   typeorm:
     specifier: 0.3.12
     version: 0.3.12(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
@@ -11916,8 +11916,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /tencentcloud-sdk-nodejs@4.0.572:
-    resolution: {integrity: sha512-P0ngaBYtPaRUnByiMj4BXnb6VD16+IJeirRIiT9xqlktlXjLhq4ZptwK2I/L2JMuRNNhVoLH7YcjUCFKse0gGA==}
+  /tencentcloud-sdk-nodejs@4.0.573:
+    resolution: {integrity: sha512-yGr9oYldijRIkPJ/gOasWZaPR2CTPiSSKNo8PkT9KHDyvR+dsxIsF95hscyb8ObQ00fUfZ9+r54GHqlIiMUsSw==}
     engines: {node: '>=10'}
     dependencies:
       form-data: 3.0.1
