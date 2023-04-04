@@ -70,8 +70,8 @@ export class LoggerService {
 
   private context: string;
 
-  constructor(@Optional() readonly ctx?: string) {
-    this.context = ctx || 'LoggerService';
+  constructor(@Optional() private readonly ctx?: string) {
+    this.context = this.ctx || 'LoggerService';
   }
 
   setContext(context: string) {

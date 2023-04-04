@@ -122,6 +122,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/chat-gpt/tsconfig.lib.json"
       }
+    },
+    "word-book": {
+      "type": "library",
+      "root": "libs/word-book",
+      "entryFile": "index",
+      "sourceRoot": "libs/word-book/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/word-book/tsconfig.lib.json"
+      }
     }
   }
 }

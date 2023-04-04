@@ -47,7 +47,9 @@
       "@app/weather": ["libs/weather/src"],
       "@app/weather/*": ["libs/weather/src/*"],
       "@app/chat-gpt": ["libs/chat-gpt/src"],
-      "@app/chat-gpt/*": ["libs/chat-gpt/src/*"]
+      "@app/chat-gpt/*": ["libs/chat-gpt/src/*"],
+      "@app/word-book": ["libs/word-book/src"],
+      "@app/word-book/*": ["libs/word-book/src/*"]
     },
     "resolveJsonModule": true
   },

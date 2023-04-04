@@ -34,6 +34,13 @@ export class TencentCloudAccountService {
     return account.AppId;
   }
 
+  getTMTAccount() {
+    return this.accountDao.findOneOrFail({
+      select: ['id', 'SecretId', 'SecretKey', 'AppId'],
+      where: { name: 'tmt' },
+    });
+  }
+
   private getCosUtilByAccount(account: TencentCloudAccount) {
     let util = this.cosUtilMap.get(account.id);
     if (!util) {
