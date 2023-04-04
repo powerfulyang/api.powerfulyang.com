@@ -86,10 +86,10 @@
   },
   "devDependencies": {
     "@graphql-codegen/add": "4.0.1",
-    "@graphql-codegen/cli": "3.2.2",
-    "@graphql-codegen/typescript": "3.0.2",
+    "@graphql-codegen/cli": "3.3.0",
+    "@graphql-codegen/typescript": "3.0.3",
     "@graphql-codegen/typescript-graphql-request": "4.5.9",
-    "@graphql-codegen/typescript-operations": "3.0.2",
+    "@graphql-codegen/typescript-operations": "3.0.3",
     "@nestjs/cli": "9.3.0",
     "@nestjs/schematics": "9.1.0",
     "@nestjs/testing": "9.3.12",
