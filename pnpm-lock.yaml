@@ -128,8 +128,8 @@ dependencies:
     specifier: 8.10.0
     version: 8.10.0
   qqwry.ipdb:
-    specifier: 2023.3.22
-    version: 2023.3.22
+    specifier: 2023.4.5
+    version: 2023.4.5
   ramda:
     specifier: 0.28.0
     version: 0.28.0
@@ -10606,8 +10606,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb@2023.3.22:
-    resolution: {integrity: sha512-WO2KrvSEfZQjtAWVNPi5QRNUso43uVC4utkFe0AFy4LB/YBpyW8otx7YpExXrQxbbhTEzlSvNvaChBLwbccFAw==}
+  /qqwry.ipdb@2023.4.5:
+    resolution: {integrity: sha512-zHBQGUEyo/jdp/AMDU997O1St5NODHZYqEdrQ3zHAGa3GrhUQDKY7+q1BGqNpY8fzu4D4q1w6huYGXWs2nBBIQ==}
     dev: false
 
   /qrcode-generator@1.4.4:
