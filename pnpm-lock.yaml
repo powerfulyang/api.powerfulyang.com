@@ -48,7 +48,7 @@ dependencies:
     version: 6.3.0(@fastify/static@6.10.0)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/typeorm':
     specifier: 9.0.1
-    version: 9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.12)
+    version: 9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.13)
   '@powerfulyang/node-utils':
     specifier: 1.3.1
     version: 1.3.1(@powerfulyang/utils@1.9.2)(sharp@0.31.3)
@@ -152,8 +152,8 @@ dependencies:
     specifier: 4.0.575
     version: 4.0.575
   typeorm:
-    specifier: 0.3.12
-    version: 0.3.12(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
+    specifier: 0.3.13
+    version: 0.3.13(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
   uuid:
     specifier: latest
     version: 9.0.0
@@ -2637,7 +2637,7 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@nestjs/typeorm@9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.12):
+  /@nestjs/typeorm@9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.13):
     resolution: {integrity: sha512-A2BgLIPsMtmMI0bPKEf4bmzgFPsnvHqNBx3KkvaJ7hJrBQy0OqYOb+Rr06ifblKWDWS2tUPNrAFQbZjtk3PI+g==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0
@@ -2650,7 +2650,7 @@ packages:
       '@nestjs/core': 9.4.0(@nestjs/common@9.4.0)(@nestjs/microservices@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
-      typeorm: 0.3.12(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
+      typeorm: 0.3.13(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
       uuid: 8.3.2
     dev: false
 
@@ -5246,11 +5246,6 @@ packages:
 
   /dataloader@2.1.0:
     resolution: {integrity: sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==}
-    dev: false
-
-  /date-fns@2.29.3:
-    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
-    engines: {node: '>=0.11'}
     dev: false
 
   /dayjs@1.11.7:
@@ -12320,8 +12315,8 @@ packages:
       for-each: 0.3.3
       is-typed-array: 1.1.10
 
-  /typeorm@0.3.12(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1):
-    resolution: {integrity: sha512-sYSxBmCf1nJLLTcYtwqZ+lQIRtLPyUoO93rHTOKk9vJCyT4UfRtU7oRsJvfvKP3nnZTD1hzz2SEy2zwPEN6OyA==}
+  /typeorm@0.3.13(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1):
+    resolution: {integrity: sha512-AqyKG4xtYST2zpgX/LdAleP8WAjwyO7EemRtG67EmmbFpWsPBk9BVr87wkN59huBned3qPEehVOSUQ81pNuH8A==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
     peerDependencies:
@@ -12331,7 +12326,7 @@ packages:
       hdb-pool: ^0.1.6
       ioredis: ^5.0.4
       mongodb: ^3.6.0
-      mssql: ^7.3.0
+      mssql: ^9.1.1
       mysql2: ^2.2.5 || ^3.0.1
       oracledb: ^5.1.0
       pg: ^8.5.1
@@ -12383,7 +12378,6 @@ packages:
       buffer: 6.0.3
       chalk: 4.1.2
       cli-highlight: 2.1.11
-      date-fns: 2.29.3
       debug: 4.3.4
       dotenv: 16.0.3
       glob: 8.1.0
