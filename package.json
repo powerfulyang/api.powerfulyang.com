@@ -78,7 +78,7 @@
     "sharp": "0.31.3",
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
-    "tencentcloud-sdk-nodejs": "4.0.574",
+    "tencentcloud-sdk-nodejs": "4.0.575",
     "typeorm": "0.3.12",
     "uuid": "latest",
     "winston": "3.8.2",

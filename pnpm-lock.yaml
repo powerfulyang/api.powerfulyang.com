@@ -18,7 +18,7 @@ dependencies:
     version: 6.10.0
   '@graphql-codegen/cli':
     specifier: latest
-    version: 3.2.2(@babel/core@7.20.12)(@types/node@18.15.11)(graphql@16.6.0)
+    version: 3.3.0(@babel/core@7.20.12)(@types/node@18.15.11)(graphql@16.6.0)
   '@nestjs/common':
     specifier: 9.4.0
     version: 9.4.0(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
@@ -149,8 +149,8 @@ dependencies:
     specifier: 0.5.21
     version: 0.5.21
   tencentcloud-sdk-nodejs:
-    specifier: 4.0.574
-    version: 4.0.574
+    specifier: 4.0.575
+    version: 4.0.575
   typeorm:
     specifier: 0.3.12
     version: 0.3.12(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
@@ -1378,8 +1378,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@graphql-codegen/cli@3.2.2(@babel/core@7.20.12)(@types/node@18.15.11)(graphql@16.6.0):
-    resolution: {integrity: sha512-u+dm/SW1heLnUL4Tyf5Uv0AxOFhTCmUPHKwRLq2yE8MPhv7+Ti4vxxUP/XGoaMNRuHlN37wLI7tpFLV1Hhm22Q==}
+  /@graphql-codegen/cli@3.3.0(@babel/core@7.20.12)(@types/node@18.15.11)(graphql@16.6.0):
+    resolution: {integrity: sha512-KRQoAG0stor/ztMsBxHqxnwQzcM1DEZigwzah1LFej8bh6TT1WpUt37zt6PH0EdlMpelmeN3keY4Pq6GMd4ADw==}
     hasBin: true
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -2787,7 +2787,7 @@ packages:
       prettier-plugin-tailwindcss: 0.2.7(prettier@2.8.7)
       rimraf: 4.4.1
       rollup: 3.20.2
-      sass: 1.60.0
+      sass: 1.61.0
       stylelint: 14.15.0
       stylelint-config-css-modules: 4.1.0(stylelint@14.15.0)
       stylelint-config-prettier: 9.0.4(stylelint@14.15.0)
@@ -11126,9 +11126,9 @@ packages:
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sass@1.60.0:
-    resolution: {integrity: sha512-updbwW6fNb5gGm8qMXzVO7V4sWf7LMXnMly/JEyfbfERbVH46Fn6q02BX7/eHTdKpE7d+oTkMMQpFWNUMfFbgQ==}
-    engines: {node: '>=12.0.0'}
+  /sass@1.61.0:
+    resolution: {integrity: sha512-PDsN7BrVkNZK2+dj/dpKQAWZavbAQ87IXqVvw2+oEYI+GwlTWkvbQtL7F2cCNbMqJEYKPh1EcjSxsnqIb/kyaQ==}
+    engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
       chokidar: 3.5.3
@@ -11913,8 +11913,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /tencentcloud-sdk-nodejs@4.0.574:
-    resolution: {integrity: sha512-WkPnfZt4dRczHfU0QxQlWMRGLoAps83mRNvuTm63zWuEDUtKOjkhCgrphUb8eIz/D4gdsm2ENu/7XT56WBKomg==}
+  /tencentcloud-sdk-nodejs@4.0.575:
+    resolution: {integrity: sha512-NteWvTBrCB/AhwtV0vuELIic3TCwGbOzZg9ImpPCs6CkcWxCtS5/72fEJYooEQ6KCn93V39LBS2AipvSZ6z4rQ==}
     engines: {node: '>=10'}
     dependencies:
       form-data: 3.0.1
