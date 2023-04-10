@@ -79,7 +79,7 @@
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
     "tencentcloud-sdk-nodejs": "4.0.575",
-    "typeorm": "0.3.13",
+    "typeorm": "0.3.14",
     "uuid": "latest",
     "winston": "3.8.2",
     "xml2js": "0.5.0"

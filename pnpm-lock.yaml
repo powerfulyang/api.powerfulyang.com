@@ -48,7 +48,7 @@ dependencies:
     version: 6.3.0(@fastify/static@6.10.0)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/typeorm':
     specifier: 9.0.1
-    version: 9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.13)
+    version: 9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.14)
   '@powerfulyang/node-utils':
     specifier: 1.3.1
     version: 1.3.1(@powerfulyang/utils@1.9.2)(sharp@0.31.3)
@@ -152,8 +152,8 @@ dependencies:
     specifier: 4.0.575
     version: 4.0.575
   typeorm:
-    specifier: 0.3.13
-    version: 0.3.13(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
+    specifier: 0.3.14
+    version: 0.3.14(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
   uuid:
     specifier: latest
     version: 9.0.0
@@ -2637,7 +2637,7 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@nestjs/typeorm@9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.13):
+  /@nestjs/typeorm@9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.14):
     resolution: {integrity: sha512-A2BgLIPsMtmMI0bPKEf4bmzgFPsnvHqNBx3KkvaJ7hJrBQy0OqYOb+Rr06ifblKWDWS2tUPNrAFQbZjtk3PI+g==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0
@@ -2650,7 +2650,7 @@ packages:
       '@nestjs/core': 9.4.0(@nestjs/common@9.4.0)(@nestjs/microservices@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
-      typeorm: 0.3.13(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
+      typeorm: 0.3.14(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
       uuid: 8.3.2
     dev: false
 
@@ -12315,8 +12315,8 @@ packages:
       for-each: 0.3.3
       is-typed-array: 1.1.10
 
-  /typeorm@0.3.13(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1):
-    resolution: {integrity: sha512-AqyKG4xtYST2zpgX/LdAleP8WAjwyO7EemRtG67EmmbFpWsPBk9BVr87wkN59huBned3qPEehVOSUQ81pNuH8A==}
+  /typeorm@0.3.14(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1):
+    resolution: {integrity: sha512-tEPEN8qmA2a2wmjkaDcWBZ6LsECHofJW2vaCQMklYs+4JRJMAJ5FfbPIWMbhJ3ANJGMtLAmU1GfC8rLFIpbWsg==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
     peerDependencies:
@@ -12382,7 +12382,6 @@ packages:
       dotenv: 16.0.3
       glob: 8.1.0
       ioredis: 5.3.1
-      js-yaml: 4.1.0
       mkdirp: 2.1.3
       pg: 8.10.0
       reflect-metadata: 0.1.13
@@ -12390,7 +12389,6 @@ packages:
       ts-node: 10.9.1(@swc/core@1.3.46)(@types/node@18.15.11)(typescript@5.0.4)
       tslib: 2.5.0
       uuid: 9.0.0
-      xml2js: 0.4.23
       yargs: 17.6.2
     transitivePeerDependencies:
       - supports-color
