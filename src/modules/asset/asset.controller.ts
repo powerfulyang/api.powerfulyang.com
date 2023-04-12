@@ -6,7 +6,7 @@ import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { User } from '@/modules/user/entities/user.entity';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryAssetsDto } from '@/modules/asset/dto/query-assets.dto';
 import { LoggerService } from '@/common/logger/logger.service';
 
@@ -23,7 +23,7 @@ export class AssetController {
     summary: '分页查询资源',
     operationId: 'queryAssets',
   })
-  queryAssets(@Pagination() pagination: QueryAssetsDto) {
+  queryAssets(@QueryPagination() pagination: QueryAssetsDto) {
     return this.assetService.queryAssets(pagination);
   }
 

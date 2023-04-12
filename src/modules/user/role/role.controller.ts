@@ -13,7 +13,7 @@ import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RoleService } from '@/modules/user/role/role.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
 import { CreateRoleDto } from '@/modules/user/dto/create-role.dto';
 import { Permission } from '@/common/decorator/permissions.decorator';
@@ -32,7 +32,7 @@ export class RoleController {
     summary: '分页查询角色',
     operationId: 'queryRoles',
   })
-  async queryRoles(@Pagination() pagination: QueryRolesDto) {
+  async queryRoles(@QueryPagination() pagination: QueryRolesDto) {
     return this.roleService.queryRoles(pagination);
   }
 

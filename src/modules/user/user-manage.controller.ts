@@ -2,7 +2,7 @@ import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryUsersDto } from '@/modules/user/dto/query-users.dto';
 import { EditUserDto } from '@/modules/user/dto/edit-user.dto';
 import { UserService } from './user.service';
@@ -20,7 +20,7 @@ export class UserManageController {
     summary: '分页查询用户',
     operationId: 'queryUsers',
   })
-  queryUsers(@Pagination() pagination: QueryUsersDto) {
+  queryUsers(@QueryPagination() pagination: QueryUsersDto) {
     return this.userService.queryUsers(pagination);
   }
 

@@ -4,7 +4,7 @@ import { Post } from '../entities/post.entity';
 
 export class QueryPostsDto extends IntersectionType(
   PaginatedBaseQuery,
-  PickType(Post, ['id', 'title', 'content', 'public', 'content', 'summary', 'poster', 'createBy']),
+  PickType(Post, ['id', 'title', 'content', 'public', 'summary', 'poster', 'createBy']),
 ) {
   @ApiProperty({
     description: '创建时间',

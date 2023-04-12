@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PermissionAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { FeedService } from '@/modules/feed/feed.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Pagination } from '@/common/decorator/pagination/pagination.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { QueryFeedsDto } from '@/modules/feed/dto/query-feeds.dto';
 import { Permission, Permissions } from '@/common/decorator/permissions.decorator';
 
@@ -21,7 +21,7 @@ export class FeedManageController {
     operationId: 'queryFeeds',
   })
   @Permissions(Permission.FeedManageQuery)
-  queryFeeds(@Pagination() pagination: QueryFeedsDto) {
+  queryFeeds(@QueryPagination() pagination: QueryFeedsDto) {
     return this.feedService.queryFeeds(pagination);
   }
 
