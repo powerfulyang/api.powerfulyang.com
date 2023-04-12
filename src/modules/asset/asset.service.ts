@@ -73,34 +73,36 @@ export class AssetService extends BaseService {
       select: ['id', 'pHash'],
     });
     const distanceMap = new Map();
-    for (;;) {
-      const next = assets.pop();
-      if (next) {
-        assets.forEach((asset) => {
-          const distance = binaryHammingDistance(asset.pHash, next.pHash);
-          if (distance <= 10) {
-            const arr = distanceMap.get(asset.id) || [];
-            if (arr[distance]) {
-              arr[distance].push(next.id);
-            } else {
-              arr[distance] = [next.id];
+    while (assets.length) {
+      // yield
+      await new Promise<void>((resolve) => {
+        const next = assets.pop();
+        if (next) {
+          assets.forEach((asset) => {
+            const distance = binaryHammingDistance(asset.pHash, next.pHash);
+            if (distance <= 10) {
+              const arr = distanceMap.get(asset.id) || [];
+              if (arr[distance]) {
+                arr[distance].push(next.id);
+              } else {
+                arr[distance] = [next.id];
+              }
+              distanceMap.set(asset.id, arr);
+              const arr2 = distanceMap.get(next.id) || [];
+              if (arr2[distance]) {
+                arr2[distance].push(asset.id);
+              } else {
+                arr2[distance] = [asset.id];
+              }
+              distanceMap.set(asset.id, arr);
+              distanceMap.set(next.id, arr2);
             }
-            distanceMap.set(asset.id, arr);
-            const arr2 = distanceMap.get(next.id) || [];
-            if (arr2[distance]) {
-              arr2[distance].push(asset.id);
-            } else {
-              arr2[distance] = [asset.id];
-            }
-            distanceMap.set(asset.id, arr);
-            distanceMap.set(next.id, arr2);
-          }
-        });
-      } else {
-        break;
-      }
+          });
+        }
+        resolve();
+      });
     }
-    const obj = {} as any;
+    const obj = Object.create(null);
     distanceMap.forEach((val, key) => {
       obj[key] = val;
     });
