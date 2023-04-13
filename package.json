@@ -75,7 +75,7 @@
     "ramda": "0.29.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.0",
-    "sharp": "0.31.3",
+    "sharp": "0.32.0",
     "socks-proxy-agent": "7.0.0",
     "source-map-support": "0.5.21",
     "tencentcloud-sdk-nodejs": "4.0.578",
@@ -86,7 +86,6 @@
   },
   "devDependencies": {
     "@graphql-codegen/add": "4.0.1",
-    "@graphql-codegen/cli": "3.3.0",
     "@graphql-codegen/typescript": "3.0.3",
     "@graphql-codegen/typescript-graphql-request": "4.5.9",
     "@graphql-codegen/typescript-operations": "3.0.3",
