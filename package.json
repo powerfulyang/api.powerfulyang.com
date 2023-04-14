@@ -33,7 +33,7 @@
     "@fastify/cookie": "8.3.0",
     "@fastify/multipart": "7.6.0",
     "@fastify/passport": "2.2.0",
-    "@fastify/static": "6.10.0",
+    "@fastify/static": "6.10.1",
     "@graphql-codegen/cli": "3.3.0",
     "@nestjs/common": "9.4.0",
     "@nestjs/core": "9.4.0",
