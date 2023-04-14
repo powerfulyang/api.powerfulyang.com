@@ -29,7 +29,7 @@
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "8.6.0",
+    "@elastic/elasticsearch": "8.7.0",
     "@fastify/cookie": "8.3.0",
     "@fastify/multipart": "7.6.0",
     "@fastify/passport": "2.2.0",
