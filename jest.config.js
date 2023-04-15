@@ -5,8 +5,6 @@ const moduleNameMapper = pathsToModuleNameMapper(tsconfig.compilerOptions.paths,
   prefix: '<rootDir>/',
 });
 
-const esModules = [''];
-
 /** @type {import('jest').Config} */
 module.exports = {
   moduleNameMapper,
@@ -15,6 +13,13 @@ module.exports = {
   },
   setupFiles: ['./.jest/loadTestEnv.ts'],
   setupFilesAfterEnv: ['./.jest/jest.setup.ts'],
-  forceExit: true,
-  transformIgnorePatterns: [`node_modules/.pnpm/(?!${esModules})`],
+  reporters: process.env.CI && [
+    [
+      'github-actions',
+      {
+        silent: false,
+      },
+    ],
+    'summary',
+  ],
 };
