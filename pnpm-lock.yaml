@@ -33,7 +33,7 @@ dependencies:
     version: 10.0.3(@nestjs/common@9.4.0)
   '@nestjs/microservices':
     specifier: 9.4.0
-    version: 9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.1)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+    version: 9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.2)(reflect-metadata@0.1.13)(rxjs@7.8.0)
   '@nestjs/passport':
     specifier: 9.0.3
     version: 9.0.3(@nestjs/common@9.4.0)(passport@0.6.0)
@@ -95,8 +95,8 @@ dependencies:
     specifier: 1.45.3
     version: 1.45.3
   ioredis:
-    specifier: 5.3.1
-    version: 5.3.1
+    specifier: 5.3.2
+    version: 5.3.2
   ipdb:
     specifier: 0.3.3
     version: 0.3.3
@@ -153,7 +153,7 @@ dependencies:
     version: 4.0.580
   typeorm:
     specifier: 0.3.14
-    version: 0.3.14(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
+    version: 0.3.14(ioredis@5.3.2)(pg@8.10.0)(ts-node@10.9.1)
   uuid:
     specifier: 9.0.0
     version: 9.0.0
@@ -2463,7 +2463,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.4.0(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
-      '@nestjs/microservices': 9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.1)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      '@nestjs/microservices': 9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.2)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
@@ -2515,7 +2515,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/microservices@9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.1)(reflect-metadata@0.1.13)(rxjs@7.8.0):
+  /@nestjs/microservices@9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.2)(reflect-metadata@0.1.13)(rxjs@7.8.0):
     resolution: {integrity: sha512-3IlURTijN2whedrfnLbJ3QQ4giDU1SxXcepXxtUL1MMkZAJgw2gN7sTquOXVgy/Ci5OMPO+vOjVyadjFejrgKA==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -2555,7 +2555,7 @@ packages:
       '@nestjs/core': 9.4.0(@nestjs/common@9.4.0)(@nestjs/microservices@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       amqp-connection-manager: 4.1.12(amqplib@0.10.3)
       amqplib: 0.10.3
-      ioredis: 5.3.1
+      ioredis: 5.3.2
       iterare: 1.2.1
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
@@ -2670,7 +2670,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.4.0(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       '@nestjs/core': 9.4.0(@nestjs/common@9.4.0)(@nestjs/microservices@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
-      '@nestjs/microservices': 9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.1)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      '@nestjs/microservices': 9.4.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(amqp-connection-manager@4.1.12)(amqplib@0.10.3)(ioredis@5.3.2)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       tslib: 2.5.0
     dev: true
 
@@ -2687,7 +2687,7 @@ packages:
       '@nestjs/core': 9.4.0(@nestjs/common@9.4.0)(@nestjs/microservices@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
-      typeorm: 0.3.14(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1)
+      typeorm: 0.3.14(ioredis@5.3.2)(pg@8.10.0)(ts-node@10.9.1)
       uuid: 8.3.2
     dev: false
 
@@ -3206,7 +3206,7 @@ packages:
   /@types/jsonwebtoken@9.0.0:
     resolution: {integrity: sha512-mM4TkDpA9oixqg1Fv2vVpOFyIVLJjm5x4k0V+K/rEsizfjD7Tk7LKk3GTtbB7KCfP0FEHQtsZqFxYA0+sijNVg==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 18.15.11
     dev: true
 
   /@types/jsonwebtoken@9.0.1:
@@ -3251,14 +3251,6 @@ packages:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
     dev: true
 
-  /@types/node@18.13.0:
-    resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==}
-    dev: true
-
-  /@types/node@18.15.0:
-    resolution: {integrity: sha512-z6nr0TTEOBGkzLGmbypWOGnpSpSIBorEhC4L+4HeQ2iezKCi4f77kyslRwvHeNitymGQ+oFyIWGP96l/DPSV9w==}
-    dev: true
-
   /@types/node@18.15.10:
     resolution: {integrity: sha512-9avDaQJczATcXgfmMAW3MIWArOO7A+m90vuCFLr8AotWf8igO/mRoYukrk2cqZVtv38tHs33retzHEilM7FpeQ==}
     dev: true
@@ -3279,7 +3271,7 @@ packages:
   /@types/oauth@0.9.1:
     resolution: {integrity: sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==}
     dependencies:
-      '@types/node': 18.15.0
+      '@types/node': 18.15.11
     dev: true
 
   /@types/parse-json@4.0.0:
@@ -7430,8 +7422,8 @@ packages:
       loose-envify: 1.4.0
     dev: true
 
-  /ioredis@5.3.1:
-    resolution: {integrity: sha512-C+IBcMysM6v52pTLItYMeV4Hz7uriGtoJdz7SSBDX6u+zwSYGirLdQh3L7t/OItWITcw3gTFMjJReYUwS4zihg==}
+  /ioredis@5.3.2:
+    resolution: {integrity: sha512-1DKMMzlIHM02eBBVOFQ1+AolGjs6+xEcM4PDL7NqOS6szq7H9jSaEkIUH6/a5Hl241LzW6JLSiAbNvTQjUupUA==}
     engines: {node: '>=12.22.0'}
     dependencies:
       '@ioredis/commands': 1.2.0
@@ -12375,7 +12367,7 @@ packages:
       for-each: 0.3.3
       is-typed-array: 1.1.10
 
-  /typeorm@0.3.14(ioredis@5.3.1)(pg@8.10.0)(ts-node@10.9.1):
+  /typeorm@0.3.14(ioredis@5.3.2)(pg@8.10.0)(ts-node@10.9.1):
     resolution: {integrity: sha512-tEPEN8qmA2a2wmjkaDcWBZ6LsECHofJW2vaCQMklYs+4JRJMAJ5FfbPIWMbhJ3ANJGMtLAmU1GfC8rLFIpbWsg==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
@@ -12441,7 +12433,7 @@ packages:
       debug: 4.3.4
       dotenv: 16.0.3
       glob: 8.1.0
-      ioredis: 5.3.1
+      ioredis: 5.3.2
       mkdirp: 2.1.3
       pg: 8.10.0
       reflect-metadata: 0.1.13
