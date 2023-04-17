@@ -1,3 +1,6 @@
+import { User } from '@/modules/user/entities/user.entity';
+import { Exif } from '@addon/types/Exif';
+import { Metadata } from 'sharp';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -10,10 +13,7 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Metadata } from 'sharp';
-import { User } from '@/modules/user/entities/user.entity';
 import { CosBucket } from '../../bucket/entities/bucket.entity';
-import { Exif } from '../../../../addon-api/types/Exif';
 
 export const AssetStyles = {
   thumbnail_700_: `/thumbnail_700_`,

@@ -1,3 +1,18 @@
+import { LoggerService } from '@/common/logger/logger.service';
+import { BaseService } from '@/common/service/base/BaseService';
+import { MqService } from '@/common/service/mq/mq.service';
+import { ScheduleType } from '@/enum/ScheduleType';
+import type { QueryAssetsDto } from '@/modules/asset/dto/query-assets.dto';
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { BucketService } from '@/modules/bucket/bucket.service';
+import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
+import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
+import type { User } from '@/modules/user/entities/user.entity';
+import { UserService } from '@/modules/user/user.service';
+import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
+import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
+import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
+import { getEXIF } from '@addon/index';
 import {
   HttpStatus,
   Injectable,
@@ -6,33 +21,18 @@ import {
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, Not, Repository } from 'typeorm';
-import { binaryHammingDistance, pHash, sha1 } from '@powerfulyang/node-utils';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { basename, extname, join } from 'path';
-import fetch from 'node-fetch';
-import sharp from 'sharp';
-import { PixivBotService } from 'api/pixiv-bot';
+import { asyncCalculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
+import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { InstagramBotService } from 'api/instagram-bot';
 import { PinterestBotService } from 'api/pinterest-bot';
-import { ProxyFetchService } from 'api/proxy-fetch';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
-import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
-import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import type { User } from '@/modules/user/entities/user.entity';
-import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
-import { LoggerService } from '@/common/logger/logger.service';
-import { ScheduleType } from '@/enum/ScheduleType';
-import { TencentCloudAccountService } from '@/modules/tencent-cloud-account/tencent-cloud-account.service';
-import { UserService } from '@/modules/user/user.service';
-import { BucketService } from '@/modules/bucket/bucket.service';
-import { MqService } from '@/common/service/mq/mq.service';
-import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
-import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
-import { BaseService } from '@/common/service/base/BaseService';
-import type { QueryAssetsDto } from '@/modules/asset/dto/query-assets.dto';
-import { getEXIF } from '../../../addon-api';
+import { PixivBotService } from 'api/pixiv-bot';
+import { ProxyFetchService } from 'api/proxy-fetch';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import fetch from 'node-fetch';
+import { basename, extname, join } from 'path';
+import sharp from 'sharp';
+import { DataSource, In, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class AssetService extends BaseService {
@@ -72,36 +72,14 @@ export class AssetService extends BaseService {
     const assets = await this.assetDao.find({
       select: ['id', 'pHash'],
     });
-    const distanceMap = new Map();
-    while (assets.length) {
-      // yield
-      await new Promise<void>((resolve) => {
-        const next = assets.pop();
-        if (next) {
-          assets.forEach((asset) => {
-            const distance = binaryHammingDistance(asset.pHash, next.pHash);
-            if (distance <= 10) {
-              const arr = distanceMap.get(asset.id) || [];
-              if (arr[distance]) {
-                arr[distance].push(next.id);
-              } else {
-                arr[distance] = [next.id];
-              }
-              distanceMap.set(asset.id, arr);
-              const arr2 = distanceMap.get(next.id) || [];
-              if (arr2[distance]) {
-                arr2[distance].push(asset.id);
-              } else {
-                arr2[distance] = [asset.id];
-              }
-              distanceMap.set(asset.id, arr);
-              distanceMap.set(next.id, arr2);
-            }
-          });
-        }
-        resolve();
-      });
-    }
+    const distanceMap = await asyncCalculateHammingDistances(
+      assets.map((asset) => {
+        return {
+          id: asset.id,
+          p_hash: asset.pHash,
+        };
+      }),
+    );
     const obj = Object.create(null);
     distanceMap.forEach((val, key) => {
       obj[key] = val;
