@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import type { SavedFeedResponseMedia } from 'instagram-private-api';
 import { IgApiClient } from 'instagram-private-api';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { instagramCookieFilePath } from '@/constants/cookie-path';
+import process from 'node:process';
 
 @Injectable()
 export class InstagramBotService {

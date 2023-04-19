@@ -28,9 +28,9 @@ import { PinterestBotService } from 'api/pinterest-bot';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import fetch from 'node-fetch';
-import { basename, extname, join } from 'path';
+import { basename, extname, join } from 'node:path';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
 

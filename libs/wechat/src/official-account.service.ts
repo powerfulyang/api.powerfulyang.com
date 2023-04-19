@@ -6,6 +6,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { CacheService } from '@/common/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import type { WechatMessageOriginalRequest } from '@/type/wechat';
+import process from 'node:process';
 
 @Injectable()
 export class OfficialAccountService extends WechatService {

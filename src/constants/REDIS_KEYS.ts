@@ -5,6 +5,8 @@ export class REDIS_KEYS {
 
   static SCHEDULE_NODE = 'schedule:node';
 
+  static SCHEDULE_NODE_NX = 'schedule:node:nx';
+
   static CHAT_GPT_CONVERSATIONS = 'chat-gpt:conversations';
 
   static BING_AI_COOKIES = 'bing-ai:cookies';

@@ -1,9 +1,10 @@
 import { Injectable, Optional, Scope } from '@nestjs/common';
 import type { Logger } from 'winston';
 import winston, { format } from 'winston';
-import { isProdProcess, isString } from '@powerfulyang/utils';
+import { isProdProcess, isString, isTestProcess } from '@powerfulyang/utils';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
+import process from 'node:process';
 
 const { combine, timestamp, printf } = format;
 const transport = new winston.transports.Console();
@@ -12,6 +13,7 @@ const packageName = process.env.npm_package_name || '';
 const logger = winston.createLogger({
   level: (isProdProcess && 'info') || 'debug',
   transports: [transport],
+  silent: isTestProcess,
   format: combine(
     timestamp({
       format: () => {

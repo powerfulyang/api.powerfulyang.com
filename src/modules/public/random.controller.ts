@@ -1,11 +1,11 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
 import { FastifyReply } from 'fastify';
-import { join } from 'path';
+import { join } from 'node:path';
 import { CWD } from '@/constants/cookie-path';
 import sharp from 'sharp';
 import { convertUuidToNumber } from '@/utils/uuid';
-import { existsSync, readdirSync } from 'fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { randomItem } from '@powerfulyang/utils';
 import { ApiTags } from '@nestjs/swagger';
 

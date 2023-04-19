@@ -33,12 +33,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (!cachedUser) {
       throw new UnauthorizedException('User cache not found');
     }
-    process.nextTick(() => {
-      this.userService.updateUserWithoutCache(user.id, {
-        lastIp: extend.xRealIp,
-        lastAddress: extend.address,
+    if (extend.xRealIp) {
+      process.nextTick(() => {
+        this.userService.updateUserWithoutCache(user.id, {
+          lastIp: extend.xRealIp,
+          lastAddress: extend.address,
+        });
       });
-    });
+    }
     return Object.assign(cachedUser, { exp: user.exp });
   }
 }

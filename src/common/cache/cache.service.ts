@@ -1,19 +1,24 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { ConfigService } from '@/common/config/config.service';
+import { LoggerService } from '@/common/logger/logger.service';
+import { REDIS_CONFIG } from '@/constants/PROVIDER_TOKEN';
+import type { OnModuleDestroy } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { isNumber } from '@powerfulyang/utils';
 import type { RedisKey } from 'ioredis';
 import Redis from 'ioredis';
-import { REDIS_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import { isNumber } from '@powerfulyang/utils';
 
 @Injectable()
-export class CacheService extends Redis {
+export class CacheService extends Redis implements OnModuleDestroy {
   constructor(
     private readonly logger: LoggerService,
     @Inject(REDIS_CONFIG) config: ReturnType<ConfigService['getRedisConfig']>,
   ) {
     super(config);
     this.logger.setContext(CacheService.name);
+  }
+
+  onModuleDestroy() {
+    this.disconnect();
   }
 
   async hGetJSON<T>(key: RedisKey, field: string | Buffer | number): Promise<T> {

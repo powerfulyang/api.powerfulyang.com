@@ -1,3 +1,6 @@
+import { CacheService } from '@/common/cache/cache.service';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { HOSTNAME } from '@/utils/hostname';
 import { Injectable } from '@nestjs/common';
 import { isProdProcess } from '@powerfulyang/utils';
 import { UserService } from '@/modules/user/user.service';
@@ -18,40 +21,30 @@ export class BootstrapService {
     private readonly bucketService: BucketService,
     private readonly roleService: RoleService,
     private readonly menuService: MenuService,
+    private readonly cacheService: CacheService,
   ) {
     this.logger.setContext(BootstrapService.name);
   }
 
-  bootstrap() {
+  async bootstrap() {
+    let result = 1;
     if (isProdProcess) {
-      // 因为这里是异步的，所以 bootstrap 的主任务延迟一下
-      this.coreService
-        .leadScheduleNode()
-        .then((hostname) => {
-          this.logger.info(
-            `NODE_ENV ====> ${process.env.NODE_ENV || 'UNSET'}, HOSTNAME ====> ${hostname}`,
-          );
-        })
-        .catch((err) => {
-          this.logger.error(err);
-        });
+      result = await this.cacheService.setnx(REDIS_KEYS.SCHEDULE_NODE_NX, HOSTNAME);
+      if (result) {
+        this.cacheService.set(REDIS_KEYS.SCHEDULE_NODE, HOSTNAME);
+        await this.cacheService.expire(REDIS_KEYS.SCHEDULE_NODE_NX, 10);
+      }
     }
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        Promise.all([
-          this.cacheUsers(),
-          this.cachePathViewCount(),
-          this.initBucket(),
-          this.initIntendedData(),
-        ])
-          .then(() => {
-            resolve();
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      }, (isProdProcess && 1000 * 10) || 0);
-    });
+    if (result) {
+      // 10s 后过期
+      await Promise.all([
+        this.cacheUsers(),
+        this.cachePathViewCount(),
+        this.initBucket(),
+        this.initIntendedData(),
+      ]);
+    }
+    return true;
   }
 
   async cacheUsers() {

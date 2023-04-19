@@ -14,6 +14,7 @@ import { WeatherService } from '@app/weather';
 import { WechatService } from '@app/wechat/wechat.service';
 import { ChatGptService } from '@app/chat-gpt';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import process from 'node:process';
 
 @Injectable()
 export class MiniProgramService extends WechatService {

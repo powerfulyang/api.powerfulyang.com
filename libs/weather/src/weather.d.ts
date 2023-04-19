@@ -1,5 +1,5 @@
 interface _ProcessEnv {
-  OPENAI_API_KEY: string;
+  AMAP_KEY: string;
 }
 
 declare module 'node:process' {
