@@ -45,7 +45,7 @@
     "@nestjs/swagger": "6.3.0",
     "@nestjs/typeorm": "9.0.1",
     "@powerfulyang/node-utils": "1.5.0",
-    "@powerfulyang/utils": "1.9.2",
+    "@powerfulyang/utils": "1.10.0",
     "@waylaidwanderer/chatgpt-api": "1.35.0",
     "amqp-connection-manager": "4.1.12",
     "amqplib": "0.10.3",

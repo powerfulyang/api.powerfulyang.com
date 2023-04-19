@@ -50,8 +50,8 @@ dependencies:
     specifier: 1.5.0
     version: 1.5.0(sharp@0.31.3)
   '@powerfulyang/utils':
-    specifier: 1.9.2
-    version: 1.9.2
+    specifier: 1.10.0
+    version: 1.10.0
   '@waylaidwanderer/chatgpt-api':
     specifier: 1.35.0
     version: 1.35.0
@@ -2925,24 +2925,6 @@ packages:
 
   /@powerfulyang/utils@1.10.0:
     resolution: {integrity: sha512-YxRhdU/NUJqBrbk7Y69YBee1G/vXLQfZGOKnr0QYCJH1pA4wje2FuGqZW3lWg7MX/jXepW42OmIvOXwv0rs7xg==}
-    dependencies:
-      mdast-util-to-markdown: 1.5.0
-      qrcode-generator: 1.4.4
-      reflect-metadata: 0.1.13
-      rehype-parse: 8.0.4
-      rehype-remark: 9.1.2
-      rehype-remove-comments: 5.0.0
-      remark-gfm: 3.0.1
-      remark-stringify: 10.0.2
-      rxjs: 7.8.0
-      string-width: 5.1.2
-      unified: 10.1.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@powerfulyang/utils@1.9.2:
-    resolution: {integrity: sha512-mkMTat6mZRyWWZhmfu8Z4ekQpLud5JErtAI2gJ5I5CW3kX8+7aNIlQtpiEsQZrKN1NqeGvzuhuufHrLepxjEFA==}
     dependencies:
       mdast-util-to-markdown: 1.5.0
       qrcode-generator: 1.4.4
