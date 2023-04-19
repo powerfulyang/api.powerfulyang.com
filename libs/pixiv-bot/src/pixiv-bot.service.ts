@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import type { PixivBotApiQuery, RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
 import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
+import process from 'node:process';
 
 @Injectable()
 export class PixivBotService {

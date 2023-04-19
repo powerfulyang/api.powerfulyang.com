@@ -8,6 +8,7 @@ import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Authorization } from '@/constants/constants';
 import { DateTimeFormat } from '@/utils/dayjs';
+import process from 'node:process';
 import { AppModule } from './app.module';
 import fastifyInstance from './fastify/hook';
 

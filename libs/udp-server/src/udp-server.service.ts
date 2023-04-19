@@ -1,16 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { createSocket } from 'dgram';
-import type { VoidFunction } from '@powerfulyang/utils';
-import { Subject } from 'rxjs';
 import { LoggerService } from '@/common/logger/logger.service';
+import type { OnModuleDestroy } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import type { VoidFunction } from '@powerfulyang/utils';
+import { createSocket } from 'dgram';
+import { Subject } from 'rxjs';
 
 @Injectable()
-export class UdpServerService {
+export class UdpServerService implements OnModuleDestroy {
   private observable = new Subject();
 
   private udpServer;
 
   private udpSocket;
+
+  onModuleDestroy() {
+    this.close();
+  }
 
   constructor(private readonly logger: LoggerService) {
     this.logger.setContext(UdpServerService.name);

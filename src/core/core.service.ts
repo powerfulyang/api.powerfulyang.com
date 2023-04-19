@@ -4,18 +4,11 @@ import { CacheService } from '@/common/cache/cache.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { LoggerService } from '@/common/logger/logger.service';
-import { checkRedisResult } from '@/constants/constants';
 
 @Injectable()
 export class CoreService {
   constructor(private readonly logger: LoggerService, private readonly cacheService: CacheService) {
     this.logger.setContext(CoreService.name);
-  }
-
-  async leadScheduleNode() {
-    const result = await this.cacheService.set(REDIS_KEYS.SCHEDULE_NODE, HOSTNAME);
-    checkRedisResult(result);
-    return HOSTNAME;
   }
 
   async isScheduleNode() {

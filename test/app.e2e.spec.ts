@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
@@ -8,9 +9,10 @@ import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Authorization } from '@/constants/constants';
 import type { Cookie } from '@/common/interceptor/cookie.interceptor';
 import fastifyInstance from '@/fastify/hook';
+import { threadPool } from '@powerfulyang/node-utils';
 import FormData from 'form-data';
-import { join } from 'path';
-import * as fs from 'fs';
+import { join } from 'node:path';
+import { createReadStream } from 'node:fs';
 
 describe('AppController (e2e)', () => {
   let app: NestFastifyApplication;
@@ -24,14 +26,16 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(fastifyInstance),
     );
+
     userService = moduleFixture.get<UserService>(UserService);
+
     await app.init();
-    await app.getHttpAdapter().getInstance().ready();
     await userService.cacheUsers();
   });
 
   afterAll(async () => {
     await app.close();
+    await threadPool.destroy();
   });
 
   it('/public/hello (GET)', () => {
@@ -164,7 +168,7 @@ describe('AppController (e2e)', () => {
     const hasAttachmentFormData = new FormData();
     hasAttachmentFormData.append('content', 'test-non-public-publish');
     const testImagePath = join(process.cwd(), 'assets', 'test.jpg');
-    hasAttachmentFormData.append('assets', fs.createReadStream(testImagePath));
+    hasAttachmentFormData.append('assets', createReadStream(testImagePath));
     const hasAttachmentRes = await app.inject({
       method: 'POST',
       url: '/feed',
@@ -207,7 +211,7 @@ describe('AppController (e2e)', () => {
     formData.append('content', 'test-public-publish');
     formData.append('public', 'true');
     const testImagePath = join(process.cwd(), 'assets', 'test.jpg');
-    formData.append('assets', fs.createReadStream(testImagePath));
+    formData.append('assets', createReadStream(testImagePath));
     const publishPublicFeedRes = await app.inject({
       method: 'POST',
       url: '/feed',

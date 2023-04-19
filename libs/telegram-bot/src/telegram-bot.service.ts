@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import TelegramBot from 'node-telegram-bot-api';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { interval, map } from 'rxjs';
+import process from 'node:process';
 
 /**
  * @deprecated

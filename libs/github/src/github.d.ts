@@ -1,5 +1,5 @@
 interface _ProcessEnv {
-  OPENAI_API_KEY: string;
+  GITHUB_TOKEN: string;
 }
 
 declare module 'node:process' {

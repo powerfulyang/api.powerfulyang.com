@@ -7,6 +7,7 @@ import { CacheService } from '@/common/cache/cache.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import type { BingAIPayload } from '@/payload/BingAIPayload';
 import type { ChatGPTPayload } from '@/payload/ChatGPTPayload';
+import process from 'node:process';
 
 /**
  * Service for chat.openai.com

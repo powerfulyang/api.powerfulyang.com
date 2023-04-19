@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 export const jwtSecretConfig = () => {
   return {
     secret: process.env.JWT_SECRET,

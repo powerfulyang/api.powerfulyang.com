@@ -1,7 +1,10 @@
+import { LoggerService } from '@/common/logger/logger.service';
+import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import type { Provider } from '@nestjs/common';
 import { TMT_ACCOUNT } from '@/constants/PROVIDER_TOKEN';
+import process from 'node:process';
 import { WordBookService } from './word-book.service';
 
 describe('WordBookService', () => {
@@ -17,7 +20,7 @@ describe('WordBookService', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [WordBookService, TencentCloudAccountProvider],
+      providers: [WordBookService, TencentCloudAccountProvider, LoggerService],
     }).compile();
 
     service = module.get<WordBookService>(WordBookService);

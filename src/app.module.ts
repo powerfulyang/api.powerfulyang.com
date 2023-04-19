@@ -1,5 +1,5 @@
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Inject, Module, ValidationPipe } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { GithubModule } from 'app/github';
 import { UdpServerModule } from 'api/udp-server';
@@ -74,19 +74,22 @@ import { OauthApplicationModule } from './modules/oauth-application/oauth-applic
       // default forbidUnknownValues: true, is too strict
       useClass: ValidationPipe,
     },
+    {
+      provide: 'APP_BOOTSTRAP',
+      inject: [BootstrapService],
+      useFactory: async (bootstrapService: BootstrapService) => {
+        return bootstrapService.bootstrap();
+      },
+    },
   ],
 })
 export class AppModule implements NestModule {
-  constructor(private logger: LoggerService, private bootstrapService: BootstrapService) {
+  constructor(
+    private readonly logger: LoggerService,
+    @Inject('APP_BOOTSTRAP') private readonly bootState: boolean,
+  ) {
     this.logger.setContext(AppModule.name);
-    this.bootstrapService
-      .bootstrap()
-      .then(() => {
-        this.logger.info('loaded bootstrap scripts!');
-      })
-      .catch((err) => {
-        this.logger.error(err);
-      });
+    this.logger.info(`APP_BOOTSTRAP: ${this.bootState ? 'success' : 'failed'}`);
   }
 
   configure(consumer: MiddlewareConsumer) {

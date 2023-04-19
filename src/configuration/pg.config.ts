@@ -1,6 +1,7 @@
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isDevProcess } from '@powerfulyang/utils';
 import { getMetadataArgsStorage } from 'typeorm';
+import process from 'node:process';
 
 export const pgConfig = (): TypeOrmModuleOptions => ({
   type: 'postgres',

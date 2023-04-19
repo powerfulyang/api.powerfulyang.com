@@ -1,1 +1,3 @@
-export const { HOSTNAME = 'dev' } = process.env;
+import process from 'node:process';
+
+export const HOSTNAME = process.env.HOSTNAME || 'dev';
