@@ -1,4 +1,4 @@
 {
   "upgrade": true,
-  "reject": ["node-fetch", "chalk"]
+  "reject": ["node-fetch", "chalk", "graphql-request", "sharp"]
 }

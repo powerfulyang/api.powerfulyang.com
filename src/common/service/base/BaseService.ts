@@ -1,9 +1,9 @@
-import { Between, ILike, In, LessThan, MoreThan } from 'typeorm';
 import { isDefined, isNotNil } from '@powerfulyang/utils';
 import dayjs from 'dayjs';
+import { Between, ILike, In, LessThan, MoreThan } from 'typeorm';
 
 export class BaseService {
-  generateInfiniteCursor({
+  protected generateInfiniteCursor({
     nextCursor,
     prevCursor,
   }: {
@@ -22,11 +22,11 @@ export class BaseService {
     return undefined;
   }
 
-  formatInfiniteTake(take?: string | number) {
+  protected formatInfiniteTake(take?: string | number) {
     return isDefined(take) ? Number(take) : undefined;
   }
 
-  convertDateRangeToBetween(dateRange?: [Date | undefined, Date | undefined]) {
+  protected convertDateRangeToBetween(dateRange?: [Date | undefined, Date | undefined]) {
     if (!dateRange) {
       return undefined;
     }
@@ -49,19 +49,19 @@ export class BaseService {
     return undefined;
   }
 
-  iLike(value?: string) {
+  protected iLike(value?: string) {
     return value ? ILike(`%${value}%`) : undefined;
   }
 
-  ignoreFalsyValue<T>(value: T) {
+  protected ignoreFalsyValue<T>(value: T) {
     return value || undefined;
   }
 
-  ignoreNilValue<T>(value: T) {
+  protected ignoreNilValue<T>(value: T) {
     return isNotNil(value) ? value : undefined;
   }
 
-  ignoreEmptyArray<T>(value?: T[]) {
+  protected ignoreEmptyArray<T>(value?: T[]) {
     return value?.length ? In(value) : undefined;
   }
 }

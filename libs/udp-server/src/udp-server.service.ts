@@ -13,10 +13,6 @@ export class UdpServerService implements OnModuleDestroy {
 
   private udpSocket;
 
-  onModuleDestroy() {
-    this.close();
-  }
-
   constructor(private readonly logger: LoggerService) {
     this.logger.setContext(UdpServerService.name);
     this.udpServer = createSocket({ type: 'udp4' });
@@ -31,6 +27,10 @@ export class UdpServerService implements OnModuleDestroy {
       this.logger.error(error);
     });
     this.udpSocket = createSocket('udp4');
+  }
+
+  onModuleDestroy() {
+    this.close();
   }
 
   on(callback: VoidFunction) {

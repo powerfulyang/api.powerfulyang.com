@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { WechatService } from '@app/wechat/wechat.service';
-import { generateUuid } from '@/utils/uuid';
-import fetch from 'node-fetch';
-import { LoggerService } from '@/common/logger/logger.service';
 import { CacheService } from '@/common/cache/cache.service';
+import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import type { WechatMessageOriginalRequest } from '@/type/wechat';
+import { generateUuid } from '@/utils/uuid';
+import { WechatService } from '@app/wechat/wechat.service';
+import { Injectable } from '@nestjs/common';
+import fetch from 'node-fetch';
 import process from 'node:process';
 
 @Injectable()

@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { ProxyFetchModule } from 'api/proxy-fetch';
 import { CacheModule } from '@/common/cache/cache.module';
 import { LoggerModule } from '@/common/logger/logger.module';
+import { Module } from '@nestjs/common';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 import { ChatGptService } from './chat-gpt.service';
 
 @Module({

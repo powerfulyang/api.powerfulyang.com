@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { LoggerService } from '@/common/logger/logger.service';
-import type { RequestInfo, RequestInit } from 'node-fetch';
-import fetch from 'node-fetch';
-import { ProxyFetchService } from 'api/proxy-fetch';
 import { CacheService } from '@/common/cache/cache.service';
+import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import type { BingAIPayload } from '@/payload/BingAIPayload';
 import type { ChatGPTPayload } from '@/payload/ChatGPTPayload';
+import { Injectable } from '@nestjs/common';
+import { ProxyFetchService } from 'api/proxy-fetch';
+import type { RequestInfo, RequestInit } from 'node-fetch';
+import fetch from 'node-fetch';
 import process from 'node:process';
 
 /**

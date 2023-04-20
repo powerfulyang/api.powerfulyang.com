@@ -1,9 +1,9 @@
+import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
+import { LoggerService } from '@/common/logger/logger.service';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import { map } from 'rxjs';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { FastifyReply } from 'fastify';
+import { map } from 'rxjs';
 
 @Injectable()
 export class RedirectInterceptor implements NestInterceptor {
@@ -11,7 +11,11 @@ export class RedirectInterceptor implements NestInterceptor {
     this.logger.setContext(RedirectInterceptor.name);
   }
 
-  intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(_context: ExecutionContext, next: CallHandler) {
+    if (isGraphQLContext(_context)) {
+      return next.handle();
+    }
+
     return next.handle().pipe(
       map((data) => {
         const ctx = _context.switchToHttp();

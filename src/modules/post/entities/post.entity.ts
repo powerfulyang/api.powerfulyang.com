@@ -1,3 +1,8 @@
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { PostLog } from '@/modules/post/entities/post-log.entity';
+import { User } from '@/modules/user/entities/user.entity';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BeforeInsert,
   Column,
@@ -10,40 +15,43 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '@/modules/user/entities/user.entity';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { ApiProperty } from '@nestjs/swagger';
-import { PostLog } from '@/modules/post/entities/post-log.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })
+@ObjectType()
 export class Post {
   @PrimaryGeneratedColumn()
-  @ApiProperty({
-    description: 'post id',
-  })
+  @ApiProperty()
+  @Field(() => ID)
   id: number;
 
   @Column()
+  @Field()
   title: string;
 
   @Column({ type: 'text' })
+  @Field()
   content: string;
 
   @Column({ default: '' })
+  @Field()
   summary: string;
 
   @Column({ type: 'json' })
+  @Field(() => [String])
   tags: string[];
 
   @Column({ default: false })
+  @Field()
   public: boolean;
 
   @Column()
+  @Field()
   publishYear: number;
 
   @JoinColumn()
   @ManyToOne(() => User, { nullable: false })
+  @Field(() => User)
   createBy: User;
 
   @JoinColumn()

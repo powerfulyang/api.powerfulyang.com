@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import type { TreeRepository } from 'typeorm';
-import { DataSource } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { Menu } from '@/modules/user/entities/menu.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { BaseService } from '@/common/service/base/BaseService';
 import type { QueryMenusDto } from '@/modules/user/dto/query-menus.dto';
+import { Menu } from '@/modules/user/entities/menu.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { pick } from 'ramda';
+import type { TreeRepository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class MenuService extends BaseService {

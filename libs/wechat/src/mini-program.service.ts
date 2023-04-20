@@ -1,6 +1,6 @@
+import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import fetch from 'node-fetch';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import type {
   ReplySubscribeMessageRequest,
   WechatBaseResponse,
@@ -8,12 +8,12 @@ import type {
   WechatMessageOriginalRequest,
   WechatMiniProgramSendCustomMessageRequest,
 } from '@/type/wechat';
-import { CacheService } from '@/common/cache/cache.service';
-import dayjs from 'dayjs';
+import { ChatGptService } from '@app/chat-gpt';
 import { WeatherService } from '@app/weather';
 import { WechatService } from '@app/wechat/wechat.service';
-import { ChatGptService } from '@app/chat-gpt';
-import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import dayjs from 'dayjs';
+import fetch from 'node-fetch';
 import process from 'node:process';
 
 @Injectable()

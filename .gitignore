@@ -27,3 +27,5 @@ assets/*
 package-lock.json
 
 .turbo
+
+__generated__

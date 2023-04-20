@@ -1,8 +1,3 @@
-import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
-import type { Profile as GoogleProfile } from 'passport-google-oauth20';
-import type { Profile as GithubProfile } from 'passport-github';
-import type { FastifyRequest } from 'fastify';
-import { User } from '@/modules/user/entities/user.entity';
 import {
   GithubAuthGuard,
   GoogleAuthGuard,
@@ -10,15 +5,20 @@ import {
   PublicAuthGuard,
 } from '@/common/decorator/auth-guard.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
-import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
-import { LoggerService } from '@/common/logger/logger.service';
-import { UserService } from '@/modules/user/user.service';
-import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import type { CookieClear } from '@/common/interceptor/cookie.interceptor';
 import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
+import { LoggerService } from '@/common/logger/logger.service';
+import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { UserLoginDto } from '@/modules/user/dto/user-login.dto';
+import { User } from '@/modules/user/entities/user.entity';
+import { UserService } from '@/modules/user/user.service';
+import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import type { FastifyRequest } from 'fastify';
+import type { Profile as GithubProfile } from 'passport-github';
+import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 
 @Controller('user')
 @ApiTags('user')

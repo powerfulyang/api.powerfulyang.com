@@ -1,16 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import type { PixivBotApiQuery, RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
 import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
+import type { PixivBotApiQuery, RESPixivInterface, Work } from 'api/pixiv-bot/pixiv.interface';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import process from 'node:process';
 
 @Injectable()
 export class PixivBotService {
-  constructor(private proxyFetchService: ProxyFetchService) {}
-
   private readonly pixivApiUrl = 'https://www.pixiv.net/ajax/user/31359863/illusts/bookmarks';
 
   private readonly defaultLimit = 48;
+
+  constructor(private proxyFetchService: ProxyFetchService) {}
+
+  private static getPixivCatUrl(item: Work) {
+    return new Array(item.pageCount)
+      .fill(undefined)
+      .map((_x, i) => `https://pixiv.cat/${item.id}${item.pageCount === 1 ? '' : `-${i + 1}`}.jpg`);
+  }
+
+  private static transform(work: Work): InstagramInterface {
+    return {
+      id: work.id,
+      tags: work.tags,
+      imgList: PixivBotService.getPixivCatUrl(work),
+      originUrl: `https://www.pixiv.net/artworks/${work.id}`,
+    };
+  }
+
+  async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {
+    const undoes: InstagramInterface[] = [];
+    let offset = 0;
+
+    let signal = true;
+    do {
+      const favorites = await this.fetch(offset);
+      const { works } = favorites.body;
+      if (favorites.error || works.length !== this.defaultLimit) {
+        signal = false;
+      }
+      for (let i = 0; i < works.length; i++) {
+        if (lastId === works[i].id) {
+          signal = false;
+          break;
+        }
+        undoes.push(PixivBotService.transform(works[i]));
+      }
+      offset += this.defaultLimit;
+    } while (signal);
+
+    return undoes;
+  }
 
   private parseQueryUrl({
     offset = 0,
@@ -39,44 +78,5 @@ export class PixivBotService {
         },
       },
     );
-  }
-
-  async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {
-    const undoes: InstagramInterface[] = [];
-    let offset = 0;
-
-    let signal = true;
-    do {
-      const favorites = await this.fetch(offset);
-      const { works } = favorites.body;
-      if (favorites.error || works.length !== this.defaultLimit) {
-        signal = false;
-      }
-      for (let i = 0; i < works.length; i++) {
-        if (lastId === works[i].id) {
-          signal = false;
-          break;
-        }
-        undoes.push(PixivBotService.transform(works[i]));
-      }
-      offset += this.defaultLimit;
-    } while (signal);
-
-    return undoes;
-  }
-
-  private static getPixivCatUrl(item: Work) {
-    return new Array(item.pageCount)
-      .fill(undefined)
-      .map((_x, i) => `https://pixiv.cat/${item.id}${item.pageCount === 1 ? '' : `-${i + 1}`}.jpg`);
-  }
-
-  private static transform(work: Work): InstagramInterface {
-    return {
-      id: work.id,
-      tags: work.tags,
-      imgList: PixivBotService.getPixivCatUrl(work),
-      originUrl: `https://www.pixiv.net/artworks/${work.id}`,
-    };
   }
 }

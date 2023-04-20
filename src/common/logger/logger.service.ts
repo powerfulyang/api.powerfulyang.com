@@ -1,10 +1,10 @@
 import { Injectable, Optional, Scope } from '@nestjs/common';
-import type { Logger } from 'winston';
-import winston, { format } from 'winston';
-import { isProdProcess, isString, isTestProcess } from '@powerfulyang/utils';
+import { isProdProcess, isTestProcess } from '@powerfulyang/utils';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
 import process from 'node:process';
+import type { Logger } from 'winston';
+import winston, { format } from 'winston';
 
 const { combine, timestamp, printf } = format;
 const transport = new winston.transports.Console();
@@ -82,6 +82,9 @@ export class LoggerService {
 
   error(message: string, stack?: Error, context?: string): void;
   error(error: Error): void;
+  error(error: any): void;
+  error(error: Object, stack?: Error, context?: string): void;
+
   error(error: Error | string | Object, stack?: Error, context?: string) {
     if (error instanceof Error) {
       this.logger.error({
@@ -90,15 +93,18 @@ export class LoggerService {
         stack: error.stack,
         message: error.message,
       });
-    } else if (isString(error)) {
+    } else if (typeof error === 'object') {
+      this.logger.error({
+        ...error,
+        stack,
+        context: context || this.context,
+      });
+    } else {
       this.logger.error({
         context: context || this.context,
         message: error,
         stack,
       });
-    } else {
-      // eslint-disable-next-line no-console
-      console.log({ ...error });
     }
   }
 

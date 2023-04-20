@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import TelegramBot from 'node-telegram-bot-api';
 import { ProxyFetchService } from 'api/proxy-fetch';
-import { interval, map } from 'rxjs';
+import TelegramBot from 'node-telegram-bot-api';
 import process from 'node:process';
+import { interval, map } from 'rxjs';
 
 /**
  * @deprecated
@@ -16,12 +16,12 @@ export class TelegramBotService {
 
   private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 
+  private messages: [number, string][] = [];
+
   constructor(private proxyFetchService: ProxyFetchService) {
     this.initBot();
     // this.loop();
   }
-
-  private messages: [number, string][] = [];
 
   initBot() {
     /**

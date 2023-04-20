@@ -1,10 +1,21 @@
+import { CacheService } from '@/common/cache/cache.service';
+import { LoggerService } from '@/common/logger/logger.service';
+import { BaseService } from '@/common/service/base/BaseService';
+import { MailService } from '@/common/service/mail/mail.service';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
+import type { EditUserDto } from '@/modules/user/dto/edit-user.dto';
+import type { QueryUsersDto } from '@/modules/user/dto/query-users.dto';
+import type { UserLoginDto } from '@/modules/user/dto/user-login.dto';
+import { Family } from '@/modules/user/entities/family.entity';
+import type { Menu } from '@/modules/user/entities/menu.entity';
+import { User } from '@/modules/user/entities/user.entity';
+import { RoleService } from '@/modules/user/role/role.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { In, Not, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import { generateRandomString, sha1 } from '@powerfulyang/node-utils';
-import { flatten, pick, uniqBy } from 'ramda';
-import type { Profile } from 'passport';
 import {
   firstItem,
   isArray,
@@ -14,20 +25,9 @@ import {
   isNull,
   isUndefined,
 } from '@powerfulyang/utils';
-import type { UserLoginDto } from '@/modules/user/dto/user-login.dto';
-import { User } from '@/modules/user/entities/user.entity';
-import { LoggerService } from '@/common/logger/logger.service';
-import type { Menu } from '@/modules/user/entities/menu.entity';
-import { RoleService } from '@/modules/user/role/role.service';
-import { CacheService } from '@/common/cache/cache.service';
-import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { Family } from '@/modules/user/entities/family.entity';
-import { OauthOpenidService } from '@/modules/oauth-openid/oauth-openid.service';
-import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { MailService } from '@/common/service/mail/mail.service';
-import type { QueryUsersDto } from '@/modules/user/dto/query-users.dto';
-import { BaseService } from '@/common/service/base/BaseService';
-import type { EditUserDto } from '@/modules/user/dto/edit-user.dto';
+import type { Profile } from 'passport';
+import { flatten, pick, uniqBy } from 'ramda';
+import { In, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -322,6 +322,32 @@ export class UserService extends BaseService {
     });
   }
 
+  queryUsers(pagination: QueryUsersDto) {
+    return this.userDao.findAndCount({
+      skip: pagination.skip,
+      take: pagination.take,
+      where: {
+        id: this.ignoreFalsyValue(pagination.id),
+        email: this.iLike(pagination.email),
+        bio: this.iLike(pagination.bio),
+        nickname: this.iLike(pagination.nickname),
+        createdAt: this.convertDateRangeToBetween(pagination.createdAt),
+        updatedAt: this.convertDateRangeToBetween(pagination.updatedAt),
+      },
+      order: {
+        id: 'DESC',
+      },
+    });
+  }
+
+  queryUserById(id: string) {
+    return this.userDao.findOneByOrFail({ id: Number(id) });
+  }
+
+  editUserById(id: string, body: EditUserDto) {
+    return this.userDao.update(Number(id), body);
+  }
+
   private generateSaltedPassword(salt: string, password: string) {
     this.logger.debug(`generateSaltedPassword => ${salt}, ${password}`);
     return sha1(password, salt);
@@ -355,31 +381,5 @@ export class UserService extends BaseService {
     // update to cache
     await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, cache);
     return cache;
-  }
-
-  queryUsers(pagination: QueryUsersDto) {
-    return this.userDao.findAndCount({
-      skip: pagination.skip,
-      take: pagination.take,
-      where: {
-        id: this.ignoreFalsyValue(pagination.id),
-        email: this.iLike(pagination.email),
-        bio: this.iLike(pagination.bio),
-        nickname: this.iLike(pagination.nickname),
-        createdAt: this.convertDateRangeToBetween(pagination.createdAt),
-        updatedAt: this.convertDateRangeToBetween(pagination.updatedAt),
-      },
-      order: {
-        id: 'DESC',
-      },
-    });
-  }
-
-  queryUserById(id: string) {
-    return this.userDao.findOneByOrFail({ id: Number(id) });
-  }
-
-  editUserById(id: string, body: EditUserDto) {
-    return this.userDao.update(Number(id), body);
   }
 }

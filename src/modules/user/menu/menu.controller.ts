@@ -1,3 +1,9 @@
+import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import { QueryMenusDto } from '@/modules/user/dto/query-menus.dto';
+import { Menu } from '@/modules/user/entities/menu.entity';
+import { MenuService } from '@/modules/user/menu/menu.service';
 import {
   Body,
   Controller,
@@ -9,13 +15,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { MenuService } from '@/modules/user/menu/menu.service';
-import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { LoggerService } from '@/common/logger/logger.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
-import { QueryMenusDto } from '@/modules/user/dto/query-menus.dto';
-import { Menu } from '@/modules/user/entities/menu.entity';
 
 @Controller('menu-manage')
 @ApiTags('menu-manage')

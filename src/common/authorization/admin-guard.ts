@@ -1,9 +1,9 @@
+import { LoggerService } from '@/common/logger/logger.service';
+import { Role } from '@/modules/user/entities/role.entity';
+import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
-import { LoggerService } from '@/common/logger/logger.service';
-import type { ExtendRequest } from '@/type/ExtendRequest';
-import { Role } from '@/modules/user/entities/role.entity';
 
 /**
  * @description 需要搭配 @UseGuards(AdminGuard) 使用

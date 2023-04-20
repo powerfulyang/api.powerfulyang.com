@@ -1,7 +1,7 @@
+import { convertUuidToNumber } from '@/utils/uuid';
 import { afterAll, describe, expect, it } from '@jest/globals';
 import { sha1, threadPool } from '@powerfulyang/node-utils';
 import { basename, extname } from 'node:path';
-import { convertUuidToNumber } from '@/utils/uuid';
 
 describe('utils test', () => {
   afterAll(() => {

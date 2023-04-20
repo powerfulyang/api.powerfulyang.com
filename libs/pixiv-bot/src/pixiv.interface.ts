@@ -5,6 +5,7 @@ export interface PixivBotApiQuery {
   rest: 'show';
   lang: 'zh';
 }
+
 export interface RESPixivInterface {
   body: Body;
   error: boolean;

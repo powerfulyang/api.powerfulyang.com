@@ -1,3 +1,10 @@
+import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
+import { Permission } from '@/common/decorator/permissions.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import { CreateRoleDto } from '@/modules/user/dto/create-role.dto';
+import { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
+import { RoleService } from '@/modules/user/role/role.service';
 import {
   Body,
   Controller,
@@ -9,14 +16,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { RoleService } from '@/modules/user/role/role.service';
-import { LoggerService } from '@/common/logger/logger.service';
-import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
-import { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
-import { CreateRoleDto } from '@/modules/user/dto/create-role.dto';
-import { Permission } from '@/common/decorator/permissions.decorator';
 import { getEnumValues } from '@powerfulyang/utils';
 
 @Controller('role-manage')

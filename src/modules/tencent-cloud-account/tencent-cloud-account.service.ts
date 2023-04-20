@@ -1,9 +1,9 @@
+import type { CreateTencentCloudAccountDto } from '@/modules/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
+import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { TencentCloudCosService } from 'api/tencent-cloud-cos';
-import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
-import type { CreateTencentCloudAccountDto } from '@/modules/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TencentCloudAccountService {
@@ -41,6 +41,10 @@ export class TencentCloudAccountService {
     });
   }
 
+  async create(account: CreateTencentCloudAccountDto) {
+    return this.accountDao.insert(account);
+  }
+
   private getCosUtilByAccount(account: TencentCloudAccount) {
     let util = this.cosUtilMap.get(account.id);
     if (!util) {
@@ -52,9 +56,5 @@ export class TencentCloudAccountService {
       this.cosUtilMap.set(account.id, util);
     }
     return util;
-  }
-
-  async create(account: CreateTencentCloudAccountDto) {
-    return this.accountDao.insert(account);
   }
 }

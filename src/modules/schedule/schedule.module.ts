@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { SchedulesModule } from '@/schedules/schedules.module';
 import { LoggerModule } from '@/common/logger/logger.module';
+import { SchedulesModule } from '@/schedules/schedules.module';
+import { Module } from '@nestjs/common';
 import { ScheduleController } from './schedule.controller';
 
 @Module({

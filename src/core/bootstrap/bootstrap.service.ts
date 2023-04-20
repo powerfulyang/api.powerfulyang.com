@@ -1,15 +1,15 @@
 import { CacheService } from '@/common/cache/cache.service';
+import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { CoreService } from '@/core/core.service';
+import { BucketService } from '@/modules/bucket/bucket.service';
+import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
+import { MenuService } from '@/modules/user/menu/menu.service';
+import { RoleService } from '@/modules/user/role/role.service';
+import { UserService } from '@/modules/user/user.service';
 import { HOSTNAME } from '@/utils/hostname';
 import { Injectable } from '@nestjs/common';
 import { isProdProcess } from '@powerfulyang/utils';
-import { UserService } from '@/modules/user/user.service';
-import { LoggerService } from '@/common/logger/logger.service';
-import { CoreService } from '@/core/core.service';
-import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
-import { BucketService } from '@/modules/bucket/bucket.service';
-import { RoleService } from '@/modules/user/role/role.service';
-import { MenuService } from '@/modules/user/menu/menu.service';
 
 @Injectable()
 export class BootstrapService {

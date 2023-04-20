@@ -1,6 +1,6 @@
 import { PaginatedBaseQuery } from '@/common/decorator/pagination/PaginationQuery';
-import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 import { User } from '@/modules/user/entities/user.entity';
+import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 
 export class QueryUsersDto extends IntersectionType(
   PaginatedBaseQuery,

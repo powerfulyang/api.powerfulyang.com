@@ -1,9 +1,9 @@
+import { Permission } from '@/common/decorator/permissions.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import { LoggerService } from '@/common/logger/logger.service';
 import { Reflector } from '@nestjs/core';
-import { Permission } from '@/common/decorator/permissions.decorator';
-import type { ExtendRequest } from '@/type/ExtendRequest';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

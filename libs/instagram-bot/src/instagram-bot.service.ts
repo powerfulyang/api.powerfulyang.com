@@ -1,10 +1,10 @@
+import { instagramCookieFilePath } from '@/constants/cookie-path';
 import { Injectable } from '@nestjs/common';
+import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
+import { ProxyFetchService } from 'api/proxy-fetch';
 import type { SavedFeedResponseMedia } from 'instagram-private-api';
 import { IgApiClient } from 'instagram-private-api';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import type { InstagramInterface } from 'api/instagram-bot/instagram.interface';
-import { ProxyFetchService } from 'api/proxy-fetch';
-import { instagramCookieFilePath } from '@/constants/cookie-path';
 import process from 'node:process';
 
 @Injectable()
@@ -30,21 +30,20 @@ export class InstagramBotService {
     }
   }
 
-  private async checkLogin() {
-    let shouldLogin = true;
-    if (existsSync(this.cookiePath)) {
-      try {
-        const serialized = readFileSync(this.cookiePath);
-        await this.bot.state.deserialize(serialized.toString());
-        await this.bot.user.info(this.bot.state.cookieUserId);
-        shouldLogin = false;
-      } catch (e) {
-        shouldLogin = true;
-      }
-    }
-    if (shouldLogin) {
-      await this.bot.account.login(process.env.IG_USERNAME, process.env.IG_PASSWORD);
-    }
+  private static getTags(text?: string) {
+    const tagsText = text?.replace(/[\n\r]/, '').match(/#[^#]*/gi);
+    return (tagsText || []).map((x) => x.trim().replace(/^#/, ''));
+  }
+
+  private static getDetailFromSavedMedia(savedItem: SavedFeedResponseMedia): InstagramInterface {
+    return {
+      id: savedItem.code,
+      tags: InstagramBotService.getTags(savedItem.caption?.text),
+      imgList: savedItem.carousel_media?.map((x) => x.image_versions2.candidates[0].url) || [
+        savedItem.image_versions2!.candidates[0].url,
+      ],
+      originUrl: `https://www.instagram.com/p/${savedItem.code}`,
+    };
   }
 
   async fetchUndo(lastId?: string): Promise<InstagramInterface[]> {
@@ -65,19 +64,20 @@ export class InstagramBotService {
     return saved;
   }
 
-  private static getTags(text?: string) {
-    const tagsText = text?.replace(/[\n\r]/, '').match(/#[^#]*/gi);
-    return (tagsText || []).map((x) => x.trim().replace(/^#/, ''));
-  }
-
-  private static getDetailFromSavedMedia(savedItem: SavedFeedResponseMedia): InstagramInterface {
-    return {
-      id: savedItem.code,
-      tags: InstagramBotService.getTags(savedItem.caption?.text),
-      imgList: savedItem.carousel_media?.map((x) => x.image_versions2.candidates[0].url) || [
-        savedItem.image_versions2!.candidates[0].url,
-      ],
-      originUrl: `https://www.instagram.com/p/${savedItem.code}`,
-    };
+  private async checkLogin() {
+    let shouldLogin = true;
+    if (existsSync(this.cookiePath)) {
+      try {
+        const serialized = readFileSync(this.cookiePath);
+        await this.bot.state.deserialize(serialized.toString());
+        await this.bot.user.info(this.bot.state.cookieUserId);
+        shouldLogin = false;
+      } catch (e) {
+        shouldLogin = true;
+      }
+    }
+    if (shouldLogin) {
+      await this.bot.account.login(process.env.IG_USERNAME, process.env.IG_PASSWORD);
+    }
   }
 }

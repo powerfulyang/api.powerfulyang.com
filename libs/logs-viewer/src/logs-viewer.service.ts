@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { EsService } from '@/common/service/es/es.service';
-import type { ElasticsearchService } from '@nestjs/elasticsearch';
-import type { LogstashSource } from '@/common/service/es/types/LogstashSource';
 import { LoggerService } from '@/common/logger/logger.service';
+import { EsService } from '@/common/service/es/es.service';
+import type { LogstashSource } from '@/common/service/es/types/LogstashSource';
+import { Injectable } from '@nestjs/common';
+import type { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class LogsViewerService {

@@ -1,36 +1,45 @@
-import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { Inject, Module, ValidationPipe } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
-import { GithubModule } from 'app/github';
-import { UdpServerModule } from 'api/udp-server';
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { RequestMiddleware } from '@/common/middleware/request.middleware';
-import { LoggerService } from '@/common/logger/logger.service';
-import { LoggerModule } from '@/common/logger/logger.module';
 import { StrategyModule } from '@/common/authorization/strategy.module';
-import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
-import { PathViewCountModule } from '@/modules/path-view-count/path-view-count.module';
-import { ScheduleModule } from '@/modules/schedule/schedule.module';
-import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
-import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
+import { CatchFilter } from '@/common/filter/catch.filter';
 import { ErrorFilter } from '@/common/filter/error.filter';
 import { HttpExceptionFilter } from '@/common/filter/http.exception.filter';
-import { LogsViewerModule } from 'api/logs-viewer';
+import { ResponseInterceptor } from '@/common/interceptor/response.interceptor';
+import { LoggerModule } from '@/common/logger/logger.module';
+import { LoggerService } from '@/common/logger/logger.service';
+import { RequestMiddleware } from '@/common/middleware/request.middleware';
+import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
+import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
+import { PathViewCountModule } from '@/modules/path-view-count/path-view-count.module';
+import { ScheduleModule } from '@/modules/schedule/schedule.module';
 import { WechatModule } from '@app/wechat';
-import { CatchFilter } from '@/common/filter/catch.filter';
+import type { ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { Inject, Module, ValidationPipe } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
+import { PassportModule } from '@nestjs/passport';
+import { LogsViewerModule } from 'api/logs-viewer';
+import { UdpServerModule } from 'api/udp-server';
+import { GithubModule } from 'app/github';
+import { join } from 'node:path';
+import process from 'node:process';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
-import { UserModule } from './modules/user/user.module';
-import { BucketModule } from './modules/bucket/bucket.module';
 import { AssetModule } from './modules/asset/asset.module';
+import { BucketModule } from './modules/bucket/bucket.module';
+import { FeedModule } from './modules/feed/feed.module';
+import { OauthApplicationModule } from './modules/oauth-application/oauth-application.module';
+import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
 import { PostModule } from './modules/post/post.module';
 import { PublicModule } from './modules/public/public.module';
-import { FeedModule } from './modules/feed/feed.module';
-import { OauthOpenidModule } from './modules/oauth-openid/oauth-openid.module';
 import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';
-import { OauthApplicationModule } from './modules/oauth-application/oauth-application.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), '__generated__/graphql/schema.graphql'),
+    }),
     LoggerModule,
     StrategyModule,
     PassportModule,

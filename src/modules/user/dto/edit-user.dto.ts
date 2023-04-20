@@ -1,5 +1,5 @@
-import { PickType } from '@nestjs/swagger';
 import { User } from '@/modules/user/entities/user.entity';
+import { PickType } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class EditUserDto extends PickType(User, ['email', 'nickname', 'bio', 'avatar']) {

@@ -1,9 +1,9 @@
-import { AuthGuard } from '@nestjs/passport';
-import { applyDecorators, UseGuards } from '@nestjs/common';
-import { AdminGuard } from '@/common/authorization/admin-guard';
 import { AccessGuard } from '@/common/authorization/access-guard';
-import { ApiCookieAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
+import { AdminGuard } from '@/common/authorization/admin-guard';
 import { PermissionGuard } from '@/common/authorization/permission-guard';
+import { applyDecorators, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiCookieAuth, ApiExcludeEndpoint } from '@nestjs/swagger';
 
 export const JwtAuthGuard = () => {
   return applyDecorators(UseGuards(AuthGuard('jwt')), ApiCookieAuth());

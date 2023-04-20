@@ -1,13 +1,13 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
-import { MiniProgramService } from '@app/wechat/mini-program.service';
 import {
   WechatCheckSignatureRequest,
   WechatGetUnlimitedQRCodeRequest,
   WechatMessageOriginalRequest,
 } from '@/type/wechat';
-import { FastifyReply } from 'fastify';
+import { MiniProgramService } from '@app/wechat/mini-program.service';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { FastifyReply } from 'fastify';
 
 @Controller('mini-program')
 @ApiTags('mini-program')

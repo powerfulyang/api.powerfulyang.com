@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@/common/config/config.module';
 import { CacheService } from '@/common/cache/cache.service';
+import { ConfigModule } from '@/common/config/config.module';
+import { ConfigService } from '@/common/config/config.service';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { REDIS_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import { ConfigService } from '@/common/config/config.service';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [ConfigModule, LoggerModule],

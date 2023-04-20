@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { ClientsModule } from '@nestjs/microservices';
-import { MICROSERVICE_NAME } from '@/constants/constants';
 import { ConfigModule } from '@/common/config/config.module';
 import { ConfigService } from '@/common/config/config.service';
 import { MqService } from '@/common/service/mq/mq.service';
+import { MICROSERVICE_NAME } from '@/constants/constants';
+import { Module } from '@nestjs/common';
+import { ClientsModule } from '@nestjs/microservices';
 
 @Module({
   imports: [

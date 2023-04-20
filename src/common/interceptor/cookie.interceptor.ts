@@ -1,13 +1,13 @@
-import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import type { CookieSerializeOptions } from '@fastify/cookie';
-import { map, tap } from 'rxjs/operators';
-import { omit } from 'ramda';
-import { isArray, isDevProcess } from '@powerfulyang/utils';
+import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
 import { LoggerService } from '@/common/logger/logger.service';
 import { DefaultCookieOptions } from '@/constants/constants';
+import type { CookieSerializeOptions } from '@fastify/cookie';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { isArray, isDevProcess } from '@powerfulyang/utils';
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { omit } from 'ramda';
+import { map, tap } from 'rxjs/operators';
 
 export type Cookie = {
   name: string;
@@ -37,7 +37,11 @@ export class CookieInterceptor implements NestInterceptor {
     this.logger.setContext(CookieInterceptor.name);
   }
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler) {
+    if (isGraphQLContext(context)) {
+      return next.handle();
+    }
+
     return next.handle().pipe(
       tap((data) => {
         const cookies = data?.cookies as Cookie[];

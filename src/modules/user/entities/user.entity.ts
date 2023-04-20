@@ -1,3 +1,9 @@
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
+import { Family } from '@/modules/user/entities/family.entity';
+import { Role } from '@/modules/user/entities/role.entity';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -11,13 +17,9 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '@/modules/user/entities/role.entity';
-import { Family } from '@/modules/user/entities/family.entity';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('user')
+@ObjectType()
 export class User {
   static IntendedUsers = {
     AdminUser: 'powerfulyang',
@@ -26,6 +28,7 @@ export class User {
 
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'User id', example: 1 })
+  @Field(() => ID)
   id: number;
 
   @Column({ unique: true })

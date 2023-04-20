@@ -1,7 +1,7 @@
-import fastify from 'fastify';
 import fastifyCookie from '@fastify/cookie';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
+import fastify from 'fastify';
 import { join } from 'node:path';
 import { parseString } from 'xml2js';
 

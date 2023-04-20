@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
-import { AssetService } from '@/modules/asset/asset.service';
 import { ScheduleType } from '@/enum/ScheduleType';
+import { AssetService } from '@/modules/asset/asset.service';
+import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class PinterestScheduleService {

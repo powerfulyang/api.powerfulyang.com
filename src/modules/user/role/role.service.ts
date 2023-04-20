@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Role } from '@/modules/user/entities/role.entity';
-import { Menu } from '@/modules/user/entities/menu.entity';
-import type { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
-import { BaseService } from '@/common/service/base/BaseService';
 import { LoggerService } from '@/common/logger/logger.service';
+import { BaseService } from '@/common/service/base/BaseService';
 import type { CreateRoleDto } from '@/modules/user/dto/create-role.dto';
+import type { QueryRolesDto } from '@/modules/user/dto/query-roles.dto';
+import { Menu } from '@/modules/user/entities/menu.entity';
+import { Role } from '@/modules/user/entities/role.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RoleService extends BaseService {

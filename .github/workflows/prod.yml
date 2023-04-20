@@ -7,10 +7,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build and Deploy to Prod
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         docker-repository: [powerfulyang/api.powerfulyang.com]
+        os: [ubuntu-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
