@@ -1,8 +1,8 @@
+import { LoggerService } from '@/common/logger/logger.service';
+import { WechatCheckSignatureRequest, WechatMessageOriginalRequest } from '@/type/wechat';
+import { OfficialAccountService } from '@app/wechat/official-account.service';
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
-import { LoggerService } from '@/common/logger/logger.service';
-import { OfficialAccountService } from '@app/wechat/official-account.service';
-import { WechatCheckSignatureRequest, WechatMessageOriginalRequest } from '@/type/wechat';
 import { FastifyReply } from 'fastify';
 
 @Controller('official-account')

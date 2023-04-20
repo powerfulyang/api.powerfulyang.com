@@ -1,13 +1,13 @@
-import { PassportStrategy } from '@nestjs/passport';
+import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
+import { LoggerService } from '@/common/logger/logger.service';
+import { SERVER_ORIGIN } from '@/constants/constants';
+import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
+import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { Inject, Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ProxyFetchService } from 'api/proxy-fetch';
 import type { Profile } from 'passport-google-oauth20';
 import { Strategy } from 'passport-google-oauth20';
-import { ProxyFetchService } from 'api/proxy-fetch';
-import { LoggerService } from '@/common/logger/logger.service';
-import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
-import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import { SERVER_ORIGIN } from '@/constants/constants';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, SupportOauthApplication.google) {

@@ -1,23 +1,23 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
-import { User } from '@/modules/user/entities/user.entity';
-import { UserService } from '@/modules/user/user.service';
-import { Family } from '@/modules/user/entities/family.entity';
-import { OauthOpenidModule } from '@/modules/oauth-openid/oauth-openid.module';
-import { MailModule } from '@/common/service/mail/mail.module';
 import { CacheModule } from '@/common/cache/cache.module';
 import { ConfigModule } from '@/common/config/config.module';
 import { ConfigService } from '@/common/config/config.service';
 import { LoggerModule } from '@/common/logger/logger.module';
+import { MailModule } from '@/common/service/mail/mail.module';
+import { OrmModule } from '@/common/service/orm/orm.module';
+import { OauthOpenidModule } from '@/modules/oauth-openid/oauth-openid.module';
+import { Family } from '@/modules/user/entities/family.entity';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { Role } from '@/modules/user/entities/role.entity';
-import { OrmModule } from '@/common/service/orm/orm.module';
+import { User } from '@/modules/user/entities/user.entity';
 import { UserManageController } from '@/modules/user/user-manage.controller';
-import { RoleController } from './role/role.controller';
-import { RoleService } from './role/role.service';
+import { UserService } from '@/modules/user/user.service';
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuController } from './menu/menu.controller';
 import { MenuService } from './menu/menu.service';
+import { RoleController } from './role/role.controller';
+import { RoleService } from './role/role.service';
 import { UserController } from './user.controller';
 
 @Module({

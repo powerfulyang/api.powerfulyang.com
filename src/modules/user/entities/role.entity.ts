@@ -1,3 +1,6 @@
+import type { Permission } from '@/common/decorator/permissions.decorator';
+import { Menu } from '@/modules/user/entities/menu.entity';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -7,9 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Menu } from '@/modules/user/entities/menu.entity';
-import { ApiProperty } from '@nestjs/swagger';
-import type { Permission } from '@/common/decorator/permissions.decorator';
 
 @Entity('role')
 export class Role {

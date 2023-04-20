@@ -1,3 +1,4 @@
+import { Post } from '@/modules/post/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,6 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Post } from '@/modules/post/entities/post.entity';
 
 @Entity()
 export class PostLog {

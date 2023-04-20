@@ -1,16 +1,16 @@
-import './loadEnv';
+import { LoggerService } from '@/common/logger/logger.service';
+import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
+import { Authorization } from '@/constants/constants';
+import { DateTimeFormat } from '@/utils/dayjs';
 import { NestFactory } from '@nestjs/core';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
-import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Authorization } from '@/constants/constants';
-import { DateTimeFormat } from '@/utils/dayjs';
 import process from 'node:process';
 import { AppModule } from './app.module';
 import fastifyInstance from './fastify/hook';
+import './loadEnv';
 
 require('source-map-support').install();
 

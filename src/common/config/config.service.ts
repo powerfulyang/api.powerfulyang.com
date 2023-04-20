@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
-import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
-import { redisConfig } from '@/configuration/redis.config';
 import { elasticsearchConfig } from '@/configuration/elasticsearch.config';
-import { pgConfig } from '@/configuration/pg.config';
 import { jwtSecretConfig } from '@/configuration/jwt.config';
 import { mailConfig } from '@/configuration/mail.config';
+import { pgConfig } from '@/configuration/pg.config';
+import { rabbitmqClientConfig } from '@/configuration/rabbitmq.config';
+import { redisConfig } from '@/configuration/redis.config';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ConfigService {

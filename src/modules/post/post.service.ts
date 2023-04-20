@@ -1,19 +1,19 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, Repository } from 'typeorm';
-import { countBy, flatten, pick, pluck, trim } from 'ramda';
+import { LoggerService } from '@/common/logger/logger.service';
+import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
+import { BaseService } from '@/common/service/base/BaseService';
+import { AssetService } from '@/modules/asset/asset.service';
+import type { CreatePostDto } from '@/modules/post/dto/create-post.dto';
+import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
+import type { QueryPostsDto } from '@/modules/post/dto/query-posts.dto';
+import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
+import { PostLog } from '@/modules/post/entities/post-log.entity';
 import { Post } from '@/modules/post/entities/post.entity';
 import type { User } from '@/modules/user/entities/user.entity';
-import type { CreatePostDto } from '@/modules/post/dto/create-post.dto';
-import { AssetService } from '@/modules/asset/asset.service';
-import type { SearchPostDto } from '@/modules/post/dto/search-post.dto';
-import { LoggerService } from '@/common/logger/logger.service';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { isDefined } from '@powerfulyang/utils';
-import type { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
-import { PostLog } from '@/modules/post/entities/post-log.entity';
-import { BaseService } from '@/common/service/base/BaseService';
-import type { QueryPostsDto } from '@/modules/post/dto/query-posts.dto';
-import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
+import { countBy, flatten, pick, pluck, trim } from 'ramda';
+import { DataSource, In, Repository } from 'typeorm';
 
 @Injectable()
 export class PostService extends BaseService {
@@ -244,7 +244,7 @@ export class PostService extends BaseService {
     return pluck('publishYear')(res);
   }
 
-  queryPosts(paginateQueryPostDto: QueryPostsDto) {
+  queryPosts(paginateQueryPostDto: Partial<QueryPostsDto> = {}) {
     const {
       id,
       title,

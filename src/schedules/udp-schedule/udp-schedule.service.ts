@@ -1,7 +1,7 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import { Injectable } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { UdpServerService } from 'api/udp-server';
-import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class UdpScheduleService {

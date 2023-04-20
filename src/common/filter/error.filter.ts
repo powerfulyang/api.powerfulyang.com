@@ -1,6 +1,6 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Catch } from '@nestjs/common';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { FastifyReply } from 'fastify';
 
 @Catch(Error)
@@ -14,6 +14,7 @@ export class ErrorFilter<T extends Error> implements ExceptionFilter {
     const response = ctx.getResponse<FastifyReply>();
     const statusCode = 500;
     const { name } = exception;
+    this.logger.error(exception);
     response
       .status(statusCode)
       .headers({

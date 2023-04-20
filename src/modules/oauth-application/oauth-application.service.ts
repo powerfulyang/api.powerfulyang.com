@@ -1,9 +1,9 @@
+import type { CreateOauthApplicationDto } from '@/modules/oauth-application/dto/create-oauth-application.dto';
+import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { OauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import type { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import { OauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
-import type { CreateOauthApplicationDto } from '@/modules/oauth-application/dto/create-oauth-application.dto';
 
 @Injectable()
 export class OauthApplicationService {

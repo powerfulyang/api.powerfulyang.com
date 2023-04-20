@@ -8,12 +8,6 @@ export class AlgoliaService {
     this.logger.setContext(AlgoliaService.name);
   }
 
-  private getAuthHeader(userString: string) {
-    return {
-      Authorization: `Basic ${Buffer.from(userString).toString('base64')}`,
-    };
-  }
-
   // trigger algolia sync
   async reindexAlgoliaCrawler() {
     const crawlerId = process.env.ALGOLIA_CRAWLER_ID;
@@ -37,5 +31,11 @@ export class AlgoliaService {
       return json.taskId;
     }
     throw new Error('run algolia crawler failed');
+  }
+
+  private getAuthHeader(userString: string) {
+    return {
+      Authorization: `Basic ${Buffer.from(userString).toString('base64')}`,
+    };
   }
 }

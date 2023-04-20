@@ -1,8 +1,8 @@
+import type { User } from '@/modules/user/entities/user.entity';
+import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';
 import { flatten, pick } from 'ramda';
-import type { User } from '@/modules/user/entities/user.entity';
-import type { ExtendRequest } from '@/type/ExtendRequest';
 
 export const AuthUser = createParamDecorator((keys: Array<keyof User>, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<ExtendRequest>();

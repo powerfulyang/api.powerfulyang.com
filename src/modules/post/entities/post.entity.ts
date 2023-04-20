@@ -1,3 +1,8 @@
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { PostLog } from '@/modules/post/entities/post-log.entity';
+import { User } from '@/modules/user/entities/user.entity';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BeforeInsert,
   Column,
@@ -10,18 +15,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '@/modules/user/entities/user.entity';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { ApiProperty } from '@nestjs/swagger';
-import { PostLog } from '@/modules/post/entities/post-log.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })
+@ObjectType()
 export class Post {
   @PrimaryGeneratedColumn()
-  @ApiProperty({
-    description: 'post id',
-  })
+  @ApiProperty()
+  @Field(() => ID)
   id: number;
 
   @Column()

@@ -1,9 +1,9 @@
+import { CacheService } from '@/common/cache/cache.service';
+import { LoggerService } from '@/common/logger/logger.service';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+import { HOSTNAME } from '@/utils/hostname';
 import { Injectable } from '@nestjs/common';
 import { isDevProcess, isProdProcess } from '@powerfulyang/utils';
-import { CacheService } from '@/common/cache/cache.service';
-import { HOSTNAME } from '@/utils/hostname';
-import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class CoreService {

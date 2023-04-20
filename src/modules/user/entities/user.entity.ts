@@ -1,3 +1,8 @@
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
+import { Family } from '@/modules/user/entities/family.entity';
+import { Role } from '@/modules/user/entities/role.entity';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -11,11 +16,6 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '@/modules/user/entities/role.entity';
-import { Family } from '@/modules/user/entities/family.entity';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { OauthOpenid } from '@/modules/oauth-openid/entities/oauth-openid.entity';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('user')
 export class User {

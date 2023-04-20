@@ -1,9 +1,9 @@
 import { LoggerService } from '@/common/logger/logger.service';
+import type { NonNullableElement } from '@/type/NonNullableElement';
 import { Injectable } from '@nestjs/common';
 import type { QueryReposQuery } from 'app/github/__generated__/github-graphql';
 import { getSdk } from 'app/github/__generated__/github-graphql';
 import { GraphQLClient } from 'graphql-request';
-import type { NonNullableElement } from '@/type/NonNullableElement';
 import process from 'node:process';
 
 @Injectable()

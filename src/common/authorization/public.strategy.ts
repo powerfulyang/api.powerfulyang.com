@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from '@fastify/passport';
-import { UserService } from '@/modules/user/user.service';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
+import { UserService } from '@/modules/user/user.service';
+import { Strategy } from '@fastify/passport';
+import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
 
 @Injectable()
 export class PublicStrategy extends PassportStrategy(Strategy, 'public') {

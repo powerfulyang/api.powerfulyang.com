@@ -1,8 +1,5 @@
-import type { LoggerService } from '@/common/logger/logger.service';
-import { InternalServerErrorException } from '@nestjs/common';
-import fetch from 'node-fetch';
-import dayjs from 'dayjs';
 import type { CacheService } from '@/common/cache/cache.service';
+import type { LoggerService } from '@/common/logger/logger.service';
 import { checkRedisResult } from '@/constants/constants';
 import type {
   WechatCheckSignatureRequest,
@@ -11,8 +8,11 @@ import type {
   WechatMessageOriginalRequest,
   WechatMessageRequest,
 } from '@/type/wechat';
+import { InternalServerErrorException } from '@nestjs/common';
 import { sha1 } from '@powerfulyang/node-utils';
 import crypto from 'crypto';
+import dayjs from 'dayjs';
+import fetch from 'node-fetch';
 import { parseStringPromise } from 'xml2js';
 
 export class WechatService {

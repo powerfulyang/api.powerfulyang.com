@@ -1,3 +1,9 @@
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
+import { TEST_BUCKET_ONLY } from '@/utils/env';
+import { ApiProperty } from '@nestjs/swagger';
+import type { CORSRule } from 'cos-nodejs-sdk-v5';
+import { BucketACL, RefererConfiguration } from 'cos-nodejs-sdk-v5';
 import {
   Column,
   CreateDateColumn,
@@ -8,12 +14,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import type { CORSRule } from 'cos-nodejs-sdk-v5';
-import { BucketACL, RefererConfiguration } from 'cos-nodejs-sdk-v5';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { TencentCloudAccount } from '@/modules/tencent-cloud-account/entities/tencent-cloud-account.entity';
-import { ApiProperty } from '@nestjs/swagger';
-import { TEST_BUCKET_ONLY } from '@/utils/env';
 
 export enum BuiltinBucket {
   timeline = 'timeline',

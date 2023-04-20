@@ -1,9 +1,9 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import type { FastifyReply } from 'fastify';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs';
-import { LoggerService } from '@/common/logger/logger.service';
-import type { FastifyReply } from 'fastify';
 
 @Injectable()
 export class RedirectInterceptor implements NestInterceptor {

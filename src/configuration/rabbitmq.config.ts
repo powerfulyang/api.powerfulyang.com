@@ -1,7 +1,7 @@
+import { RMQ_COS_UPLOAD_QUEUE } from '@/constants/constants';
 import type { RmqOptions } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices';
 import type { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
-import { RMQ_COS_UPLOAD_QUEUE } from '@/constants/constants';
 import process from 'node:process';
 
 const getRmqHost = (): RmqUrl => {

@@ -1,6 +1,6 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class EsService {

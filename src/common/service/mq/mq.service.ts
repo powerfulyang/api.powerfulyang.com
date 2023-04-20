@@ -1,8 +1,8 @@
+import { MICROSERVICE_NAME } from '@/constants/constants';
+import { MessagePatterns } from '@/constants/MessagePatterns';
+import type { UploadFileMsg } from '@/type/UploadFile';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { MICROSERVICE_NAME } from '@/constants/constants';
-import type { UploadFileMsg } from '@/type/UploadFile';
-import { MessagePatterns } from '@/constants/MessagePatterns';
 
 @Injectable()
 export class MqService {

@@ -28,8 +28,8 @@ import { PinterestBotService } from 'api/pinterest-bot';
 import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
 import { PixivBotService } from 'api/pixiv-bot';
 import { ProxyFetchService } from 'api/proxy-fetch';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import fetch from 'node-fetch';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, extname, join } from 'node:path';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
@@ -402,6 +402,30 @@ export class AssetService extends BaseService {
     };
   }
 
+  updateAssetObjectUrl(id: number, objectUrl: Asset['objectUrl']) {
+    return this.assetDao.update(id, {
+      objectUrl,
+    });
+  }
+
+  queryAssets(pagination: QueryAssetsDto) {
+    const { take, skip, updatedAt, createdAt, sha1: _sha1, id, originUrl } = pagination;
+    return this.assetDao.findAndCount({
+      where: {
+        id: super.ignoreFalsyValue(id),
+        sha1: super.ignoreFalsyValue(_sha1),
+        createdAt: super.convertDateRangeToBetween(createdAt),
+        updatedAt: super.convertDateRangeToBetween(updatedAt),
+        originUrl: super.ignoreFalsyValue(originUrl),
+      },
+      skip,
+      take,
+      order: {
+        id: 'DESC',
+      },
+    });
+  }
+
   private getAssetByHash(hash: string) {
     return this.assetDao.findOne({
       where: { sha1: hash },
@@ -474,29 +498,5 @@ export class AssetService extends BaseService {
       },
       asset,
     );
-  }
-
-  updateAssetObjectUrl(id: number, objectUrl: Asset['objectUrl']) {
-    return this.assetDao.update(id, {
-      objectUrl,
-    });
-  }
-
-  queryAssets(pagination: QueryAssetsDto) {
-    const { take, skip, updatedAt, createdAt, sha1: _sha1, id, originUrl } = pagination;
-    return this.assetDao.findAndCount({
-      where: {
-        id: super.ignoreFalsyValue(id),
-        sha1: super.ignoreFalsyValue(_sha1),
-        createdAt: super.convertDateRangeToBetween(createdAt),
-        updatedAt: super.convertDateRangeToBetween(updatedAt),
-        originUrl: super.ignoreFalsyValue(originUrl),
-      },
-      skip,
-      take,
-      order: {
-        id: 'DESC',
-      },
-    });
   }
 }

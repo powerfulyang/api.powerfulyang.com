@@ -1,5 +1,5 @@
-import { Body, createParamDecorator, Query, ValidationPipe } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
+import { Body, createParamDecorator, Query, ValidationPipe } from '@nestjs/common';
 
 export const QueryPagination = createParamDecorator(() => {
   return new ValidationPipe({ validateCustomDecorators: true });

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import type { RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
-import { SocksProxyAgent } from 'socks-proxy-agent';
 import process from 'node:process';
+import { SocksProxyAgent } from 'socks-proxy-agent';
 
 @Injectable()
 export class ProxyFetchService {

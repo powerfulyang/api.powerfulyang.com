@@ -1,28 +1,31 @@
-import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import { map } from 'rxjs';
+import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 import { LoggerService } from '@/common/logger/logger.service';
-import { UserService } from '@/modules/user/user.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
+import { UserService } from '@/modules/user/user.service';
 import type { ExtendRequest } from '@/type/ExtendRequest';
-import type { FastifyReply } from 'fastify';
-import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
-import { HOSTNAME } from '@/utils/hostname';
 import { DateTimeFormat } from '@/utils/dayjs';
+import { HOSTNAME } from '@/utils/hostname';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import type { FastifyReply } from 'fastify';
+import { map } from 'rxjs';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   constructor(
-    private logger: LoggerService,
-    private userService: UserService,
-    private pathViewCountService: PathViewCountService,
+    private readonly logger: LoggerService,
+    private readonly userService: UserService,
+    private readonly pathViewCountService: PathViewCountService,
   ) {
     this.logger.setContext(ResponseInterceptor.name);
   }
 
-  intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(_context: ExecutionContext, next: CallHandler) {
+    const contextType = _context.getType();
+    if (contextType !== 'http') {
+      return next.handle();
+    }
     const ctx = _context.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<ExtendRequest>();

@@ -1,3 +1,6 @@
+import { Asset } from '@/modules/asset/entities/asset.entity';
+import { User } from '@/modules/user/entities/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   CreateDateColumn,
@@ -9,9 +12,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Asset } from '@/modules/asset/entities/asset.entity';
-import { User } from '@/modules/user/entities/user.entity';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Feed {

@@ -1,6 +1,6 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Catch } from '@nestjs/common';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { FastifyReply } from 'fastify';
 
 @Catch()

@@ -1,7 +1,7 @@
+import type { CookieSerializeOptions } from '@fastify/cookie';
 import { InternalServerErrorException } from '@nestjs/common';
 import type { Nullable } from '@powerfulyang/utils';
 import { isDevProcess } from '@powerfulyang/utils';
-import type { CookieSerializeOptions } from '@fastify/cookie';
 import process from 'node:process';
 
 export const MICROSERVICE_NAME = Symbol('RABBIT_MQ_MICROSERVICE');

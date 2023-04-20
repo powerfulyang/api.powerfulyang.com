@@ -1,10 +1,10 @@
 import { Injectable, Optional, Scope } from '@nestjs/common';
-import type { Logger } from 'winston';
-import winston, { format } from 'winston';
 import { isProdProcess, isString, isTestProcess } from '@powerfulyang/utils';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
 import process from 'node:process';
+import type { Logger } from 'winston';
+import winston, { format } from 'winston';
 
 const { combine, timestamp, printf } = format;
 const transport = new winston.transports.Console();
