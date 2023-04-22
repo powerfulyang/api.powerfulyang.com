@@ -17,8 +17,8 @@ dependencies:
     specifier: 7.6.0
     version: 7.6.0
   '@fastify/passport':
-    specifier: 2.2.0
-    version: 2.2.0
+    specifier: 2.3.0
+    version: 2.3.0
   '@fastify/static':
     specifier: 6.10.1
     version: 6.10.1
@@ -1663,8 +1663,8 @@ packages:
       stream-wormhole: 1.1.0
     dev: false
 
-  /@fastify/passport@2.2.0:
-    resolution: {integrity: sha512-JbrtmJUotEgPf9FPpCpbMcVDghLbjziAkj7EnufEaRpMOZE3wkeVg0CzgnD+nrIGoHo6D31RCJMIZMvvLxb+ew==}
+  /@fastify/passport@2.3.0:
+    resolution: {integrity: sha512-OVTUXyAm7Tx194RJiJrzSvM8m5O8TR0CIc9ewKDZWjQcFs+MNiVURdjpIm28l7oY2o19TV9XANutfSH/ngEd+A==}
     dependencies:
       '@fastify/flash': 5.1.0
       fastify-plugin: 4.5.0
