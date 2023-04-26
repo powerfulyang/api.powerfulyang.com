@@ -15,8 +15,8 @@ RUN apk add --no-cache tzdata \
     # requires the use of a globally-installed libvips  \
     # compiled with support for libheif, libde265 and x265.
     && apk add --no-cache  \
-    # sharp Changelog: v0.31.2 -> Requires libvips v8.13.3 which is in Alpine v3.17 \
-         --repository https://dl-3.alpinelinux.org/alpine/v3.17/community \
+    # sharp Changelog: https://sharp.pixelplumbing.com/changelog
+         --repository https://dl-3.alpinelinux.org/alpine/v3.18/community \
          vips-dev \
 #    && npm ci --quiet \
 #    && npm run build \
