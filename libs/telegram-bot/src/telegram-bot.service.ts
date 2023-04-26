@@ -12,7 +12,7 @@ import { interval, map } from 'rxjs';
 export class TelegramBotService {
   private bot?: TelegramBot;
 
-  private readonly token = process.env.TELEGRAM_BOT_TOKEN!;
+  private readonly token = process.env.TELEGRAM_BOT_TOKEN;
 
   private readonly MY_CHAT_ID = Number(process.env.MY_CHAT_ID);
 

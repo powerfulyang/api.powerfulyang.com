@@ -3,6 +3,7 @@ FROM powerfulyang/api.powerfulyang.com-base
 COPY . .
 
 RUN pnpm run bootstrap \
-    && pnpm run build
+    && pnpm run build \
+    && pnpm store prune
 
-CMD npm run start:prod
+CMD pnpm run start:prod

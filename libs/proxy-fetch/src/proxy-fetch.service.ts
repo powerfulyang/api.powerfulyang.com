@@ -15,11 +15,9 @@ export class ProxyFetchService {
      * 如果没有代理设置 则不使用代理
      */
     if (process.env.BOT_SOCKS5_PROXY_HOST && process.env.BOT_SOCKS5_PROXY_PORT) {
-      this.opt.agent = new SocksProxyAgent({
-        hostname: process.env.BOT_SOCKS5_PROXY_HOST,
-        port: process.env.BOT_SOCKS5_PROXY_PORT,
-        type: 5,
-      });
+      this.opt.agent = new SocksProxyAgent(
+        `socks5://${process.env.BOT_SOCKS5_PROXY_HOST}:${process.env.BOT_SOCKS5_PROXY_PORT}`,
+      );
     }
   }
 

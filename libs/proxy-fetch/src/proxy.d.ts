@@ -1,6 +1,6 @@
 interface _ProcessEnv {
-  TELEGRAM_BOT_TOKEN: string;
-  MY_CHAT_ID: string;
+  BOT_SOCKS5_PROXY_HOST: string;
+  BOT_SOCKS5_PROXY_PORT: string;
 }
 
 declare module 'node:process' {

@@ -1,7 +1,5 @@
 name: base-image
 
-# branch: master
-# files: `base.Dockerfile`, `package.json`, `pnpm-lock.yaml`, `.npmrc`, `.github/workflows/base-image.yml`
 on:
   push:
     branches:
@@ -39,5 +37,3 @@ jobs:
           file: base.Dockerfile
           push: true
           tags: ${{ matrix.docker-repository }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
