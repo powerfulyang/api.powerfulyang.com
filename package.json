@@ -51,7 +51,7 @@
     "@powerfulyang/node-utils": "1.5.0",
     "@powerfulyang/utils": "1.10.0",
     "@waylaidwanderer/chatgpt-api": "1.35.0",
-    "amqp-connection-manager": "4.1.12",
+    "amqp-connection-manager": "4.1.13",
     "amqplib": "0.10.3",
     "bindings": "1.5.0",
     "chalk": "4.1.2",
