@@ -60,7 +60,7 @@ dependencies:
     version: 9.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)(typeorm@0.3.15)
   '@powerfulyang/node-utils':
     specifier: 1.5.0
-    version: 1.5.0(sharp@0.32.0)
+    version: 1.5.0(sharp@0.32.1)
   '@powerfulyang/utils':
     specifier: 1.10.2
     version: 1.10.2
@@ -149,8 +149,8 @@ dependencies:
     specifier: 7.8.1
     version: 7.8.1
   sharp:
-    specifier: 0.32.0
-    version: 0.32.0
+    specifier: 0.32.1
+    version: 0.32.1
   socks-proxy-agent:
     specifier: 7.0.0
     version: 7.0.0
@@ -3196,14 +3196,14 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@powerfulyang/node-utils@1.5.0(sharp@0.32.0):
+  /@powerfulyang/node-utils@1.5.0(sharp@0.32.1):
     resolution: {integrity: sha512-iJkkWpurnNp3fIUtWHqzL0F/AWmMQoZRVXqTOnOKZBV1wOO3gKbRERg07sUPsV2616XeGna5RpcREItl2tkLZw==}
     peerDependencies:
       sharp: ~0.31.3 || ~0.32.0
     dependencies:
       '@powerfulyang/utils': 1.10.0
       piscina: 3.2.0
-      sharp: 0.32.0
+      sharp: 0.32.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -11942,8 +11942,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /sharp@0.32.0:
-    resolution: {integrity: sha512-yLAypVcqj1toSAqRSwbs86nEzfyZVDYqjuUX8grhFpeij0DDNagKJXELS/auegDBRDg1XBtELdOGfo2X1cCpeA==}
+  /sharp@0.32.1:
+    resolution: {integrity: sha512-kQTFtj7ldpUqSe8kDxoGLZc1rnMFU0AO2pqbX6pLy3b7Oj8ivJIdoKNwxHVQG2HN6XpHPJqCSM2nsma2gOXvOg==}
     engines: {node: '>=14.15.0'}
     requiresBuild: true
     dependencies:
