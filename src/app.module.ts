@@ -33,6 +33,7 @@ import { PostModule } from './modules/post/post.module';
 import { PublicModule } from './modules/public/public.module';
 import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';
 import { UserModule } from './modules/user/user.module';
+import { ToolsModule } from './tools/tools.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { UserModule } from './modules/user/user.module';
     OauthApplicationModule,
     LogsViewerModule,
     WechatModule,
+    ToolsModule,
   ],
   providers: [
     {

@@ -17,7 +17,7 @@ export class InstagramBotService {
     const username = process.env.IG_USERNAME;
     if (username) {
       this.bot.state.generateDevice(username);
-      const agent = this.proxyFetchService.getAgent();
+      const { agent } = this.proxyFetchService;
       if (agent) {
         this.bot.request.defaults.agent = agent;
       }

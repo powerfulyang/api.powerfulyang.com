@@ -53,7 +53,7 @@ export class ChatGptService {
       // @ts-ignore rewrite fetch
       globalThis.fetch = (input: RequestInfo, init: RequestInit = {}) => {
         // eslint-disable-next-line no-param-reassign
-        init.agent = this.proxyFetchService.getAgent();
+        init.agent = this.proxyFetchService.agent;
         return fetch(input, init);
       };
       if (type === 'bing-ai') {
