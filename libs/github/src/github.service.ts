@@ -63,7 +63,7 @@ export class GithubService {
     > =
       userContributes?.contributionsCollection.commitContributionsByRepository
         .filter((repo) => repo.repository.primaryLanguage)
-        .reduce((acc, repo) => {
+        .reduce((acc: Record<string, any>, repo) => {
           const language = repo.repository.primaryLanguage?.name || '';
           const color = repo.repository.primaryLanguage?.color || 'OTHER_COLOR';
           const contributions = repo.contributions.totalCount;

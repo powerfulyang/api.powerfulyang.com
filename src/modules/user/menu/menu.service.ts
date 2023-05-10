@@ -4,7 +4,7 @@ import type { QueryMenusDto } from '@/modules/user/dto/query-menus.dto';
 import { Menu } from '@/modules/user/entities/menu.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { pick } from 'ramda';
+import { pick } from 'lodash';
 import type { TreeRepository } from 'typeorm';
 import { DataSource } from 'typeorm';
 
@@ -92,7 +92,7 @@ export class MenuService extends BaseService {
   }
 
   async createOrEditMenu(menu: Menu) {
-    const _m = pick(['id', 'name', 'path', 'parent'], menu);
+    const _m = pick(menu, ['id', 'name', 'path', 'parent']);
     return this.menuDao.save(_m);
   }
 

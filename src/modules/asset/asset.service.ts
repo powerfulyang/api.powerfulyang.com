@@ -81,7 +81,7 @@ export class AssetService extends BaseService {
       }),
     );
     const obj = Object.create(null);
-    distanceMap.forEach((val, key) => {
+    distanceMap.forEach((val: any, key: any) => {
       obj[key] = val;
     });
     return obj;

@@ -30,7 +30,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthAppli
     }
   }
 
-  authenticate(req) {
+  authenticate(req: any) {
     const { redirect = SERVER_ORIGIN } = req.query;
     super.authenticate(req, {
       state: Buffer.from(redirect).toString('base64'),

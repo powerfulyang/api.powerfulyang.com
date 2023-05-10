@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "Node16",
+    "moduleResolution": "NodeNext",
     "declaration": true,
     "rootDirs": ["src", "libs"],
     "removeComments": true,
@@ -16,12 +16,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
     "strict": true,
     "skipLibCheck": true,
-    "useUnknownInCatchVariables": false,
+    "useUnknownInCatchVariables": true,
     "paths": {
       "api/telegram-bot": ["libs/telegram-bot/src"],
       "api/telegram-bot/*": ["libs/telegram-bot/src/*"],
@@ -55,5 +55,5 @@
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "__test__", "libs/**/*.ts", "test", "addon-api/**/*.ts", "codegen.ts"]
+  "include": ["src/**/*.ts", "libs/**/*.ts", "test", "addon-api/**/*.ts", "codegen.ts"]
 }

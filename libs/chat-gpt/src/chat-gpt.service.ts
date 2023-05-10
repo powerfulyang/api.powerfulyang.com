@@ -15,13 +15,13 @@ import process from 'node:process';
  */
 @Injectable()
 export class ChatGptService {
-  private chatGPTApi;
+  private chatGPTApi: any;
 
-  private ChatGPTClient;
+  private ChatGPTClient: any;
 
-  private bingAIApi;
+  private bingAIApi: any;
 
-  private BingAIClient;
+  private BingAIClient: any;
 
   constructor(
     private readonly logger: LoggerService,

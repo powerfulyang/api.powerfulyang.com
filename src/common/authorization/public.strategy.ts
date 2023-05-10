@@ -12,7 +12,7 @@ export class PublicStrategy extends PassportStrategy(Strategy, 'public') {
     this.logger.setContext(PublicStrategy.name);
   }
 
-  async authenticate(req) {
+  async authenticate(req: any) {
     try {
       // 解析 token 成功 获取到用户信息
       const user = await this.userService.verifyAuthorization(getTokenFromRequest(req));

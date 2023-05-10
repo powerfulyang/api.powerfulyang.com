@@ -26,7 +26,7 @@ import {
   isUndefined,
 } from '@powerfulyang/utils';
 import type { Profile } from 'passport';
-import { flatten, pick, uniqBy } from 'ramda';
+import { flatten, pick, uniqBy } from 'lodash';
 import { In, Not, Repository } from 'typeorm';
 
 @Injectable()
@@ -68,7 +68,7 @@ export class UserService extends BaseService {
   }
 
   private static pickUserId(user: Partial<User>) {
-    return pick(['id'], user);
+    return pick(user, ['id']);
   }
 
   private static verifyPassword(password: string, salt: string, saltedPassword: string) {
@@ -172,7 +172,7 @@ export class UserService extends BaseService {
     });
     // 根据 menu id 去重
     const menus = flatten(user.roles.map((role) => role.menus));
-    const uniqueMenus = uniqBy((x) => x.id, menus);
+    const uniqueMenus = uniqBy(menus, (x) => x.id);
     return UserService.buildMenuTree(uniqueMenus);
   }
 

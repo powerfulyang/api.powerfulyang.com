@@ -6,7 +6,7 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/com
 import { Injectable } from '@nestjs/common';
 import { isArray, isDevProcess } from '@powerfulyang/utils';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { omit } from 'ramda';
+import { omit } from 'lodash';
 import { map, tap } from 'rxjs/operators';
 
 export type Cookie = {
@@ -69,7 +69,7 @@ export class CookieInterceptor implements NestInterceptor {
           this.logger.warn('CookieInterceptor: No cookies to set.');
         }
       }),
-      map((data) => omit(['cookies'])(data)),
+      map((data) => omit(data, ['cookies'])),
     );
   }
 }

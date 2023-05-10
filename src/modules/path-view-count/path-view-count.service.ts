@@ -6,7 +6,7 @@ import { PathViewCount } from '@/modules/path-view-count/entities/path-view-coun
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ip2long } from '@powerfulyang/node-utils';
-import { groupBy } from 'ramda';
+import { groupBy } from 'lodash';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class PathViewCountService {
     const results = await this.pathViewCountDao.find({
       select: ['path', 'ip'],
     });
-    const mapSet = groupBy<PathViewCount>((a) => a.path)(results);
+    const mapSet = groupBy(results, (a) => a.path);
     Object.entries(mapSet).forEach(([path, set]) => {
       // 先清理再缓存
       const handleKey = REDIS_KEYS.PATH_VIEW_COUNT_PREFIX(path);

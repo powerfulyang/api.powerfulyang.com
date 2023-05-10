@@ -1,0 +1,264 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model asset {
+  id                                    Int                 @id(map: "PK_1209d107fe21482beaea51b745e") @default(autoincrement())
+  originUrl                             String              @default("") @db.VarChar
+  sn                                    String              @default("") @db.VarChar
+  /// [Tags]
+  tags                                  Json                @db.Json
+  comment                               String              @default("") @db.VarChar
+  fileSuffix                            String              @db.VarChar
+  sha1                                  String              @unique(map: "UQ_ce2fd76cad2fa4e5e9051df309a") @db.VarChar
+  pHash                                 String              @db.VarChar
+  exif                                  Json
+  metadata                              Json
+  /// [Size]
+  size                                  Json                @db.Json
+  bucketId                              Int
+  uploadById                            Int
+  createdAt                             DateTime            @default(now()) @db.Timestamptz(6)
+  updatedAt                             DateTime            @default(now()) @db.Timestamptz(6)
+  objectUrl                             Json                @default("{}") @db.Json
+  cos_bucket                            cos_bucket          @relation(fields: [bucketId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_3df68956fee26c7e06f6f407e9e")
+  user_asset_uploadByIdTouser           user                @relation("asset_uploadByIdTouser", fields: [uploadById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_792de37ab3c707e8e8affb10f0f")
+  feed_assets_asset                     feed_assets_asset[]
+  post                                  post[]
+  user_user_timelineBackgroundIdToasset user[]              @relation("user_timelineBackgroundIdToasset")
+}
+
+model cos_bucket {
+  id                    Int                   @id(map: "PK_7d762a83f2e92bad91772f4b7cc") @default(autoincrement())
+  name                  String                @unique(map: "UQ_ff7cb350f6c3f7be4893d399dcf") @db.VarChar
+  Bucket                String                @unique(map: "UQ_523d7b3f4020e483eb9a3c56343") @db.VarChar
+  Region                String                @db.VarChar
+  ACL                   String                @db.VarChar
+  CORSRules             Json                  @db.Json
+  RefererConfiguration  Json                  @db.Json
+  tencentCloudAccountId Int
+  public                Boolean               @default(false)
+  createdAt             DateTime              @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime              @default(now()) @db.Timestamptz(6)
+  asset                 asset[]
+  tencent_cloud_account tencent_cloud_account @relation(fields: [tencentCloudAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_2327841dc92f727e661b1c44d84")
+}
+
+model family {
+  id                   Int                    @id(map: "PK_ba386a5a59c3de8593cda4e5626") @default(autoincrement())
+  name                 String                 @unique(map: "UQ_cb945a3561693907692670cdb4e") @db.VarChar
+  description          String                 @default("") @db.VarChar
+  createdAt            DateTime               @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime               @default(now()) @db.Timestamptz(6)
+  user_families_family user_families_family[]
+}
+
+model feed {
+  id                         Int                 @id(map: "PK_8a8dfd1ff306ccdf65f0b5d04b2") @default(autoincrement())
+  content                    String              @db.VarChar
+  public                     Boolean             @default(false)
+  createById                 Int
+  updateById                 Int?
+  updatedAt                  DateTime            @default(now()) @db.Timestamptz(6)
+  createdAt                  DateTime            @default(now()) @db.Timestamptz(6)
+  user_feed_createByIdTouser user                @relation("feed_createByIdTouser", fields: [createById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_06e81566f97ddc4a644e0069b3c")
+  user_feed_updateByIdTouser user?               @relation("feed_updateByIdTouser", fields: [updateById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_bab3ec30f4daf39a663896681f7")
+  feed_assets_asset          feed_assets_asset[]
+}
+
+model feed_assets_asset {
+  feedId  Int
+  assetId Int
+  asset   asset @relation(fields: [assetId], references: [id], onDelete: Cascade, map: "FK_49086029d25a5db1925af986c5c")
+  feed    feed  @relation(fields: [feedId], references: [id], onDelete: Cascade, map: "FK_627a3b41b8ee98e413305a06645")
+
+  @@id([feedId, assetId], map: "PK_ddd93f637b6708d3b65ad952c21")
+  @@index([assetId], map: "IDX_49086029d25a5db1925af986c5")
+  @@index([feedId], map: "IDX_627a3b41b8ee98e413305a0664")
+}
+
+model menu {
+  id                                            Int               @id(map: "PK_35b2a8f47d153ff7a41860cceeb") @default(autoincrement())
+  name                                          String            @unique(map: "UQ_51b63874cdce0d6898a0b2150f2") @db.VarChar
+  path                                          String            @db.VarChar
+  parentId                                      Int?
+  createdAt                                     DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt                                     DateTime          @default(now()) @db.Timestamptz(6)
+  menu                                          menu?             @relation("menuTomenu", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_23ac1b81a7bfb85b14e86bd23a5")
+  other_menu                                    menu[]            @relation("menuTomenu")
+  menu_closure_menu_closure_id_ancestorTomenu   menu_closure[]    @relation("menu_closure_id_ancestorTomenu")
+  menu_closure_menu_closure_id_descendantTomenu menu_closure[]    @relation("menu_closure_id_descendantTomenu")
+  role_menus_menu                               role_menus_menu[]
+}
+
+model menu_closure {
+  id_ancestor                           Int
+  id_descendant                         Int
+  menu_menu_closure_id_ancestorTomenu   menu @relation("menu_closure_id_ancestorTomenu", fields: [id_ancestor], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_2547be0cdfeccb9221c68976fd7")
+  menu_menu_closure_id_descendantTomenu menu @relation("menu_closure_id_descendantTomenu", fields: [id_descendant], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_6a0038e7e00bb09a06ba3b11319")
+
+  @@id([id_ancestor, id_descendant], map: "PK_c81ac541666ce5929a897b1bae5")
+  @@index([id_ancestor], map: "IDX_2547be0cdfeccb9221c68976fd")
+  @@index([id_descendant], map: "IDX_6a0038e7e00bb09a06ba3b1131")
+}
+
+model oauth_application {
+  id           Int            @id(map: "PK_b72ba27dc9068990e04ce44e5fa") @default(autoincrement())
+  platformName String         @unique(map: "UQ_a694c968eb12c65ea099281149c") @db.VarChar
+  clientId     String         @db.VarChar
+  clientSecret String         @db.VarChar
+  callbackUrl  String         @db.VarChar
+  createdAt    DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime       @default(now()) @db.Timestamptz(6)
+  oauth_openid oauth_openid[]
+}
+
+model oauth_openid {
+  id                Int               @id(map: "PK_b2d27d6ebb7cb26982fd2375a49") @default(autoincrement())
+  openid            String            @db.VarChar
+  applicationId     Int
+  userId            Int
+  createdAt         DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime          @default(now()) @db.Timestamptz(6)
+  user              user              @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_22e8e0b876a560f153a89852124")
+  oauth_application oauth_application @relation(fields: [applicationId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_96dd1817b2fa3ced85e3ec1bdf4")
+
+  @@unique([applicationId, openid], map: "IDX_783105cac265c9ebc13511e418")
+}
+
+model path_view_count {
+  id        Int      @id(map: "PK_bcf66d7174f19d4485589ad3518") @default(autoincrement())
+  path      String
+  ip        BigInt
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model post {
+  id                         Int        @id(map: "PK_be5fda3aac270b134ff9c21cdee") @default(autoincrement())
+  title                      String     @db.VarChar
+  content                    String
+  /// [Tags]
+  tags                       Json       @db.Json
+  public                     Boolean    @default(false)
+  createById                 Int
+  posterId                   Int?
+  publishYear                Int
+  updateById                 Int?
+  summary                    String     @default("") @db.VarChar
+  createdAt                  DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt                  DateTime   @default(now()) @db.Timestamptz(6)
+  user_post_createByIdTouser user       @relation("post_createByIdTouser", fields: [createById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_2e195abd8aa06c0b28ddeb91276")
+  user_post_updateByIdTouser user?      @relation("post_updateByIdTouser", fields: [updateById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_a65e97b5548e94a74e6a572195b")
+  asset                      asset?     @relation(fields: [posterId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_fd91f9bffb081d0f822ea655985")
+  post_log                   post_log[]
+
+  @@unique([title, createById], map: "IDX_455eb41aa5e19ac6ed89e89e45")
+}
+
+model post_log {
+  id        Int      @id(map: "PK_5452ff6e4a60854634bee961b00") @default(autoincrement())
+  title     String   @db.VarChar
+  content   String
+  postId    Int
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  post      post     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_8b935c5ebf8750e3b30ff41c3e3")
+}
+
+model role {
+  id              Int               @id(map: "PK_b36bcfe02fc8de3c57a8b2391c2") @default(autoincrement())
+  name            String            @unique(map: "UQ_ae4578dcaed5adff96595e61660") @db.VarChar
+  createdAt       DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime          @default(now()) @db.Timestamptz(6)
+  permissions     Json              @default("[]")
+  role_menus_menu role_menus_menu[]
+  user_roles_role user_roles_role[]
+}
+
+model role_menus_menu {
+  roleId Int
+  menuId Int
+  role   role @relation(fields: [roleId], references: [id], onDelete: Cascade, map: "FK_eec9c5cb17157b2294fd9f0edbf")
+  menu   menu @relation(fields: [menuId], references: [id], onDelete: Cascade, map: "FK_f1adc6be166630ee2476d7bbf09")
+
+  @@id([roleId, menuId], map: "PK_9513afcd070d9dda92b7616b228")
+  @@index([roleId], map: "IDX_eec9c5cb17157b2294fd9f0edb")
+  @@index([menuId], map: "IDX_f1adc6be166630ee2476d7bbf0")
+}
+
+model tencent_cloud_account {
+  id         Int          @id(map: "PK_170e23d6527df5a98cd65ca2036") @default(autoincrement())
+  name       String       @db.VarChar
+  SecretId   String       @db.VarChar
+  SecretKey  String       @db.VarChar
+  AppId      String       @unique(map: "UQ_484d9beee808e0d08097b705213") @db.VarChar
+  cos_bucket cos_bucket[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model typeorm_metadata {
+  type     String  @db.VarChar
+  database String? @db.VarChar
+  schema   String? @db.VarChar
+  table    String? @db.VarChar
+  name     String? @db.VarChar
+  value    String?
+
+  @@ignore
+}
+
+model user {
+  id                                     Int                    @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  email                                  String                 @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
+  saltedPassword                         String                 @default("") @db.VarChar
+  salt                                   String                 @default("") @db.VarChar
+  nickname                               String                 @db.VarChar
+  bio                                    String                 @default("") @db.VarChar
+  avatar                                 String                 @default("") @db.VarChar
+  lastIp                                 String                 @default("") @db.VarChar
+  lastAddress                            String                 @default("") @db.VarChar
+  timelineBackgroundId                   Int?
+  createdAt                              DateTime               @default(now()) @db.Timestamptz(6)
+  updatedAt                              DateTime               @default(now()) @db.Timestamptz(6)
+  asset_asset_uploadByIdTouser           asset[]                @relation("asset_uploadByIdTouser")
+  feed_feed_createByIdTouser             feed[]                 @relation("feed_createByIdTouser")
+  feed_feed_updateByIdTouser             feed[]                 @relation("feed_updateByIdTouser")
+  oauth_openid                           oauth_openid[]
+  post_post_createByIdTouser             post[]                 @relation("post_createByIdTouser")
+  post_post_updateByIdTouser             post[]                 @relation("post_updateByIdTouser")
+  asset_user_timelineBackgroundIdToasset asset?                 @relation("user_timelineBackgroundIdToasset", fields: [timelineBackgroundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_a80a526e85d3ae828a8932c8d77")
+  user_families_family                   user_families_family[]
+  user_roles_role                        user_roles_role[]
+}
+
+model user_families_family {
+  userId   Int
+  familyId Int
+  user     user   @relation(fields: [userId], references: [id], onDelete: Cascade, map: "FK_085564260e18cf4efd3e61bd160")
+  family   family @relation(fields: [familyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_87a31fc8d043bc9508647c82d89")
+
+  @@id([userId, familyId], map: "PK_c39482b47dae3f11757e7bf0242")
+  @@index([userId], map: "IDX_085564260e18cf4efd3e61bd16")
+  @@index([familyId], map: "IDX_87a31fc8d043bc9508647c82d8")
+}
+
+model user_roles_role {
+  userId Int
+  roleId Int
+  role   role @relation(fields: [roleId], references: [id], onDelete: Cascade, map: "FK_4be2f7adf862634f5f803d246b8")
+  user   user @relation(fields: [userId], references: [id], onDelete: Cascade, map: "FK_5f9286e6c25594c6b88c108db77")
+
+  @@id([userId, roleId], map: "PK_b47cd6c84ee205ac5a713718292")
+  @@index([roleId], map: "IDX_4be2f7adf862634f5f803d246b")
+  @@index([userId], map: "IDX_5f9286e6c25594c6b88c108db7")
+}

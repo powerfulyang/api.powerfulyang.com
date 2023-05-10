@@ -2,12 +2,12 @@ import type { User } from '@/modules/user/entities/user.entity';
 import type { ExtendRequest } from '@/type/ExtendRequest';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';
-import { flatten, pick } from 'ramda';
+import { flatten, pick } from 'lodash';
 
 export const AuthUser = createParamDecorator((keys: Array<keyof User>, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<ExtendRequest>();
   if (keys?.length > 0) {
-    return pick(keys)(request.user || {});
+    return pick(request.user || {}, keys);
   }
   return request.user || {};
 });

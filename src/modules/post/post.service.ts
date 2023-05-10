@@ -12,7 +12,7 @@ import type { User } from '@/modules/user/entities/user.entity';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { isDefined } from '@powerfulyang/utils';
-import { countBy, flatten, pick, pluck, trim } from 'ramda';
+import { countBy, flatten, map, pick, trim } from 'lodash';
 import { DataSource, In, Repository } from 'typeorm';
 
 @Injectable()
@@ -78,10 +78,15 @@ export class PostService extends BaseService {
    * @param post
    */
   async createPost(post: CreatePostDto) {
-    const draft = pick(
-      ['title', 'content', 'summary', 'tags', 'posterId', 'public', 'createBy'],
-      post,
-    );
+    const draft = pick(post, [
+      'title',
+      'content',
+      'summary',
+      'tags',
+      'posterId',
+      'public',
+      'createBy',
+    ]);
     if (!draft.posterId) {
       const poster = await this.assetService.randomPoster();
       Reflect.set(draft, 'poster', poster);
@@ -219,7 +224,7 @@ export class PostService extends BaseService {
       ],
     });
     const tags = flatten(tagsArr.map((item) => item.tags));
-    return countBy(trim)(tags);
+    return countBy(tags, trim);
   }
 
   /**
@@ -241,7 +246,7 @@ export class PostService extends BaseService {
       .orderBy('"publishYear"', 'DESC')
       .distinct(true)
       .getRawMany();
-    return pluck('publishYear')(res);
+    return map(res, 'publishYear');
   }
 
   queryPosts(paginateQueryPostDto: Partial<QueryPostsDto> = {}) {
