@@ -86,8 +86,8 @@ dependencies:
     specifier: 0.14.0
     version: 0.14.0
   cos-nodejs-sdk-v5:
-    specifier: 2.12.0
-    version: 2.12.0
+    specifier: 2.12.1
+    version: 2.12.1
   dayjs:
     specifier: 1.11.7
     version: 1.11.7
@@ -5504,8 +5504,8 @@ packages:
       vary: 1.1.2
     dev: false
 
-  /cos-nodejs-sdk-v5@2.12.0:
-    resolution: {integrity: sha512-1EIBYN7MGRqsw23RxgwpzNgYk1Nt6wq5DxYUWzi1QWpY6/2rj6taS2EjpuxA0HTcnb4xsL+SXadYJnAjOo3VhA==}
+  /cos-nodejs-sdk-v5@2.12.1:
+    resolution: {integrity: sha512-eN7rzsN2dvKDhAXmtzAmks/2NGWGp/DW0dKsbu/5XGgSzDE6nc5dX90w1NXnBoJvV19gPPbRKMbq72zNwWhmjg==}
     engines: {node: '>= 6'}
     dependencies:
       conf: 9.0.2
