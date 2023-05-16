@@ -49,7 +49,7 @@
     "@powerfulyang/node-utils": "1.5.0",
     "@powerfulyang/utils": "1.10.2",
     "@prisma/client": "4.14.0",
-    "@waylaidwanderer/chatgpt-api": "1.35.0",
+    "@waylaidwanderer/chatgpt-api": "1.36.0",
     "amqp-connection-manager": "4.1.13",
     "amqplib": "0.10.3",
     "bindings": "1.5.0",
