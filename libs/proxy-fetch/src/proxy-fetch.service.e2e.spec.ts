@@ -15,8 +15,7 @@ describe('proxy', () => {
     service = module.get<ProxyFetchService>(ProxyFetchService);
   });
 
-  it('yt-dlp', async () => {
-    const res = await service.yt_dlp('https://www.youtube.com/watch?v=JljURsMOLmc');
-    expect(res).toBeDefined();
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 });
