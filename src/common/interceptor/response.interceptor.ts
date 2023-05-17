@@ -1,3 +1,4 @@
+import { ExcludeResponseInterceptorSymbol } from '@/common/decorator/exclude-response-interceptor.decorator';
 import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
 import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -9,6 +10,7 @@ import { DateTimeFormat } from '@/utils/dayjs';
 import { HOSTNAME } from '@/utils/hostname';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import type { FastifyReply } from 'fastify';
 import { map } from 'rxjs';
 
@@ -18,16 +20,22 @@ export class ResponseInterceptor implements NestInterceptor {
     private readonly logger: LoggerService,
     private readonly userService: UserService,
     private readonly pathViewCountService: PathViewCountService,
+    private readonly reflector: Reflector,
   ) {
     this.logger.setContext(ResponseInterceptor.name);
   }
 
-  intercept(_context: ExecutionContext, next: CallHandler) {
-    if (isGraphQLContext(_context)) {
+  intercept(context: ExecutionContext, next: CallHandler) {
+    if (isGraphQLContext(context)) {
       return next.handle();
     }
 
-    const ctx = _context.switchToHttp();
+    const exclude = this.reflector.get(ExcludeResponseInterceptorSymbol, context.getHandler());
+    if (exclude) {
+      return next.handle();
+    }
+
+    const ctx = context.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<ExtendRequest>();
     const path = request.url;

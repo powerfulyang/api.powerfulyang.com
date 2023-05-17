@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { sha1 } from '@powerfulyang/node-utils';
 import type { RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
-import { exec } from 'node:child_process';
-import { basename, join } from 'node:path';
 import process from 'node:process';
-import { promisify } from 'node:util';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 
 @Injectable()
@@ -40,16 +36,5 @@ export class ProxyFetchService {
   async proxyFetchJson<T = any>(url: string, draft: RequestInit = this.opt): Promise<T> {
     const res = await this.proxyFetch(url, draft);
     return (await res.json()) as Promise<T>;
-  }
-
-  async yt_dlp(url: string) {
-    const hash = sha1(url);
-    const asyncExec = promisify(exec);
-    const downloadPath = join(process.cwd(), `assets/yt-dlp/${hash}.%(ext)s`);
-    const executed = await asyncExec(
-      `yt-dlp ${url} --proxy '${this.proxyUri}' --output '${downloadPath}' --get-filename`,
-    );
-    await asyncExec(`yt-dlp ${url} --proxy '${this.proxyUri}' --output '${downloadPath}'`);
-    return basename(executed.stdout.trim());
   }
 }
