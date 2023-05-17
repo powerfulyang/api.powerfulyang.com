@@ -93,7 +93,7 @@
     "@graphql-codegen/typescript-graphql-request": "4.5.9",
     "@graphql-codegen/typescript-operations": "3.0.4",
     "@jest/globals": "29.5.0",
-    "@nestjs/cli": "9.4.2",
+    "@nestjs/cli": "9.5.0",
     "@nestjs/schematics": "9.1.0",
     "@nestjs/testing": "9.4.1",
     "@powerfulyang/lint": "3.2.1",
