@@ -101,7 +101,7 @@
     "@types/node": "20.1.7",
     "@types/node-fetch": "2.6.4",
     "@types/node-telegram-bot-api": "0.61.6",
-    "@types/nodemailer": "6.4.7",
+    "@types/nodemailer": "6.4.8",
     "@types/passport": "1.0.12",
     "@types/passport-github": "1.1.7",
     "@types/passport-google-oauth20": "2.0.11",
