@@ -1,8 +1,7 @@
 import "graphql";
 import { GraphQLClient } from 'graphql-request';
-import * as Dom from 'graphql-request/dist/types.dom';
+import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
 import gql from 'graphql-tag';
-
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -2373,16 +2372,7 @@ export type CommitAuthor = {
 };
 
 /** Represents a comment on a given Commit. */
-export type CommitComment =
-  Comment
-  & Deletable
-  & Minimizable
-  & Node
-  & Reactable
-  & RepositoryNode
-  & Updatable
-  & UpdatableComment
-  & {
+export type CommitComment = Comment & Deletable & Minimizable & Node & Reactable & RepositoryNode & Updatable & UpdatableComment & {
   __typename?: 'CommitComment';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -4865,18 +4855,7 @@ export type DisconnectedEvent = Node & {
 };
 
 /** A discussion in a repository. */
-export type Discussion =
-  Comment
-  & Deletable
-  & Labelable
-  & Lockable
-  & Node
-  & Reactable
-  & RepositoryNode
-  & Subscribable
-  & Updatable
-  & Votable
-  & {
+export type Discussion = Comment & Deletable & Labelable & Lockable & Node & Reactable & RepositoryNode & Subscribable & Updatable & Votable & {
   __typename?: 'Discussion';
   /** Reason that the conversation was locked. */
   activeLockReason: Maybe<LockReason>;
@@ -5045,16 +5024,7 @@ export type DiscussionCategoryEdge = {
 };
 
 /** A comment on a discussion. */
-export type DiscussionComment =
-  Comment
-  & Deletable
-  & Minimizable
-  & Node
-  & Reactable
-  & Updatable
-  & UpdatableComment
-  & Votable
-  & {
+export type DiscussionComment = Comment & Deletable & Minimizable & Node & Reactable & Updatable & UpdatableComment & Votable & {
   __typename?: 'DiscussionComment';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -7600,22 +7570,7 @@ export enum IpAllowListForInstalledAppsEnabledSettingValue {
 export type IpAllowListOwner = App | Enterprise | Organization;
 
 /** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
-export type Issue =
-  Assignable
-  & Closable
-  & Comment
-  & Labelable
-  & Lockable
-  & Node
-  & ProjectNextOwner
-  & ProjectV2Owner
-  & Reactable
-  & RepositoryNode
-  & Subscribable
-  & UniformResourceLocatable
-  & Updatable
-  & UpdatableComment
-  & {
+export type Issue = Assignable & Closable & Comment & Labelable & Lockable & Node & ProjectNextOwner & ProjectV2Owner & Reactable & RepositoryNode & Subscribable & UniformResourceLocatable & Updatable & UpdatableComment & {
   __typename?: 'Issue';
   /** Reason that the conversation was locked. */
   activeLockReason: Maybe<LockReason>;
@@ -7935,16 +7890,7 @@ export enum IssueClosedStateReason {
 }
 
 /** Represents a comment on an Issue. */
-export type IssueComment =
-  Comment
-  & Deletable
-  & Minimizable
-  & Node
-  & Reactable
-  & RepositoryNode
-  & Updatable
-  & UpdatableComment
-  & {
+export type IssueComment = Comment & Deletable & Minimizable & Node & Reactable & RepositoryNode & Updatable & UpdatableComment & {
   __typename?: 'IssueComment';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -8197,26 +8143,7 @@ export type IssueTimelineConnection = {
 };
 
 /** An item in an issue timeline */
-export type IssueTimelineItem =
-  AssignedEvent
-  | ClosedEvent
-  | Commit
-  | CrossReferencedEvent
-  | DemilestonedEvent
-  | IssueComment
-  | LabeledEvent
-  | LockedEvent
-  | MilestonedEvent
-  | ReferencedEvent
-  | RenamedTitleEvent
-  | ReopenedEvent
-  | SubscribedEvent
-  | TransferredEvent
-  | UnassignedEvent
-  | UnlabeledEvent
-  | UnlockedEvent
-  | UnsubscribedEvent
-  | UserBlockedEvent;
+export type IssueTimelineItem = AssignedEvent | ClosedEvent | Commit | CrossReferencedEvent | DemilestonedEvent | IssueComment | LabeledEvent | LockedEvent | MilestonedEvent | ReferencedEvent | RenamedTitleEvent | ReopenedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnsubscribedEvent | UserBlockedEvent;
 
 /** An edge in a connection. */
 export type IssueTimelineItemEdge = {
@@ -8228,38 +8155,7 @@ export type IssueTimelineItemEdge = {
 };
 
 /** An item in an issue timeline */
-export type IssueTimelineItems =
-  AddedToProjectEvent
-  | AssignedEvent
-  | ClosedEvent
-  | CommentDeletedEvent
-  | ConnectedEvent
-  | ConvertedNoteToIssueEvent
-  | ConvertedToDiscussionEvent
-  | CrossReferencedEvent
-  | DemilestonedEvent
-  | DisconnectedEvent
-  | IssueComment
-  | LabeledEvent
-  | LockedEvent
-  | MarkedAsDuplicateEvent
-  | MentionedEvent
-  | MilestonedEvent
-  | MovedColumnsInProjectEvent
-  | PinnedEvent
-  | ReferencedEvent
-  | RemovedFromProjectEvent
-  | RenamedTitleEvent
-  | ReopenedEvent
-  | SubscribedEvent
-  | TransferredEvent
-  | UnassignedEvent
-  | UnlabeledEvent
-  | UnlockedEvent
-  | UnmarkedAsDuplicateEvent
-  | UnpinnedEvent
-  | UnsubscribedEvent
-  | UserBlockedEvent;
+export type IssueTimelineItems = AddedToProjectEvent | AssignedEvent | ClosedEvent | CommentDeletedEvent | ConnectedEvent | ConvertedNoteToIssueEvent | ConvertedToDiscussionEvent | CrossReferencedEvent | DemilestonedEvent | DisconnectedEvent | IssueComment | LabeledEvent | LockedEvent | MarkedAsDuplicateEvent | MentionedEvent | MilestonedEvent | MovedColumnsInProjectEvent | PinnedEvent | ReferencedEvent | RemovedFromProjectEvent | RenamedTitleEvent | ReopenedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnmarkedAsDuplicateEvent | UnpinnedEvent | UnsubscribedEvent | UserBlockedEvent;
 
 /** The connection type for IssueTimelineItems. */
 export type IssueTimelineItemsConnection = {
@@ -9069,12 +8965,7 @@ export type MemberStatusableMemberStatusesArgs = {
 };
 
 /** Audit log entry for a members_can_delete_repos.clear event. */
-export type MembersCanDeleteReposClearAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & {
+export type MembersCanDeleteReposClearAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & {
   __typename?: 'MembersCanDeleteReposClearAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -9120,12 +9011,7 @@ export type MembersCanDeleteReposClearAuditEntry =
 };
 
 /** Audit log entry for a members_can_delete_repos.disable event. */
-export type MembersCanDeleteReposDisableAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & {
+export type MembersCanDeleteReposDisableAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & {
   __typename?: 'MembersCanDeleteReposDisableAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -9171,12 +9057,7 @@ export type MembersCanDeleteReposDisableAuditEntry =
 };
 
 /** Audit log entry for a members_can_delete_repos.enable event. */
-export type MembersCanDeleteReposEnableAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & {
+export type MembersCanDeleteReposEnableAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & {
   __typename?: 'MembersCanDeleteReposEnableAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -11344,12 +11225,7 @@ export type OauthApplicationAuditEntryData = {
 };
 
 /** Audit log entry for a oauth_application.create event. */
-export type OauthApplicationCreateAuditEntry =
-  AuditEntry
-  & Node
-  & OauthApplicationAuditEntryData
-  & OrganizationAuditEntryData
-  & {
+export type OauthApplicationCreateAuditEntry = AuditEntry & Node & OauthApplicationAuditEntryData & OrganizationAuditEntryData & {
   __typename?: 'OauthApplicationCreateAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -12029,12 +11905,7 @@ export type OrgInviteMemberAuditEntry = AuditEntry & Node & OrganizationAuditEnt
 };
 
 /** Audit log entry for a org.invite_to_business event. */
-export type OrgInviteToBusinessAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & {
+export type OrgInviteToBusinessAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & {
   __typename?: 'OrgInviteToBusinessAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -12080,12 +11951,7 @@ export type OrgInviteToBusinessAuditEntry =
 };
 
 /** Audit log entry for a org.oauth_app_access_approved event. */
-export type OrgOauthAppAccessApprovedAuditEntry =
-  AuditEntry
-  & Node
-  & OauthApplicationAuditEntryData
-  & OrganizationAuditEntryData
-  & {
+export type OrgOauthAppAccessApprovedAuditEntry = AuditEntry & Node & OauthApplicationAuditEntryData & OrganizationAuditEntryData & {
   __typename?: 'OrgOauthAppAccessApprovedAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -12131,12 +11997,7 @@ export type OrgOauthAppAccessApprovedAuditEntry =
 };
 
 /** Audit log entry for a org.oauth_app_access_denied event. */
-export type OrgOauthAppAccessDeniedAuditEntry =
-  AuditEntry
-  & Node
-  & OauthApplicationAuditEntryData
-  & OrganizationAuditEntryData
-  & {
+export type OrgOauthAppAccessDeniedAuditEntry = AuditEntry & Node & OauthApplicationAuditEntryData & OrganizationAuditEntryData & {
   __typename?: 'OrgOauthAppAccessDeniedAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -12182,12 +12043,7 @@ export type OrgOauthAppAccessDeniedAuditEntry =
 };
 
 /** Audit log entry for a org.oauth_app_access_requested event. */
-export type OrgOauthAppAccessRequestedAuditEntry =
-  AuditEntry
-  & Node
-  & OauthApplicationAuditEntryData
-  & OrganizationAuditEntryData
-  & {
+export type OrgOauthAppAccessRequestedAuditEntry = AuditEntry & Node & OauthApplicationAuditEntryData & OrganizationAuditEntryData & {
   __typename?: 'OrgOauthAppAccessRequestedAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -12475,10 +12331,7 @@ export type OrgRestoreMemberAuditEntry = AuditEntry & Node & OrganizationAuditEn
 };
 
 /** Types of memberships that can be restored for an Organization member. */
-export type OrgRestoreMemberAuditEntryMembership =
-  OrgRestoreMemberMembershipOrganizationAuditEntryData
-  | OrgRestoreMemberMembershipRepositoryAuditEntryData
-  | OrgRestoreMemberMembershipTeamAuditEntryData;
+export type OrgRestoreMemberAuditEntryMembership = OrgRestoreMemberMembershipOrganizationAuditEntryData | OrgRestoreMemberMembershipRepositoryAuditEntryData | OrgRestoreMemberMembershipTeamAuditEntryData;
 
 /** Metadata for an organization membership for org.restore_member actions */
 export type OrgRestoreMemberMembershipOrganizationAuditEntryData = OrganizationAuditEntryData & {
@@ -12782,22 +12635,7 @@ export type OrgUpdateMemberRepositoryInvitationPermissionAuditEntry = AuditEntry
 };
 
 /** An account on GitHub, with one or more owners, that has repositories, members and teams. */
-export type Organization =
-  Actor
-  & MemberStatusable
-  & Node
-  & PackageOwner
-  & ProfileOwner
-  & ProjectNextOwner
-  & ProjectOwner
-  & ProjectV2Owner
-  & ProjectV2Recent
-  & RepositoryDiscussionAuthor
-  & RepositoryDiscussionCommentAuthor
-  & RepositoryOwner
-  & Sponsorable
-  & UniformResourceLocatable
-  & {
+export type Organization = Actor & MemberStatusable & Node & PackageOwner & ProfileOwner & ProjectNextOwner & ProjectOwner & ProjectV2Owner & ProjectV2Recent & RepositoryDiscussionAuthor & RepositoryDiscussionCommentAuthor & RepositoryOwner & Sponsorable & UniformResourceLocatable & {
   __typename?: 'Organization';
   /** Determine if this repository owner has any items that can be pinned to their profile. */
   anyPinnableItems: Scalars['Boolean'];
@@ -13313,65 +13151,7 @@ export type OrganizationTeamsArgs = {
 };
 
 /** An audit entry in an organization audit log. */
-export type OrganizationAuditEntry =
-  MembersCanDeleteReposClearAuditEntry
-  | MembersCanDeleteReposDisableAuditEntry
-  | MembersCanDeleteReposEnableAuditEntry
-  | OauthApplicationCreateAuditEntry
-  | OrgAddBillingManagerAuditEntry
-  | OrgAddMemberAuditEntry
-  | OrgBlockUserAuditEntry
-  | OrgConfigDisableCollaboratorsOnlyAuditEntry
-  | OrgConfigEnableCollaboratorsOnlyAuditEntry
-  | OrgCreateAuditEntry
-  | OrgDisableOauthAppRestrictionsAuditEntry
-  | OrgDisableSamlAuditEntry
-  | OrgDisableTwoFactorRequirementAuditEntry
-  | OrgEnableOauthAppRestrictionsAuditEntry
-  | OrgEnableSamlAuditEntry
-  | OrgEnableTwoFactorRequirementAuditEntry
-  | OrgInviteMemberAuditEntry
-  | OrgInviteToBusinessAuditEntry
-  | OrgOauthAppAccessApprovedAuditEntry
-  | OrgOauthAppAccessDeniedAuditEntry
-  | OrgOauthAppAccessRequestedAuditEntry
-  | OrgRemoveBillingManagerAuditEntry
-  | OrgRemoveMemberAuditEntry
-  | OrgRemoveOutsideCollaboratorAuditEntry
-  | OrgRestoreMemberAuditEntry
-  | OrgUnblockUserAuditEntry
-  | OrgUpdateDefaultRepositoryPermissionAuditEntry
-  | OrgUpdateMemberAuditEntry
-  | OrgUpdateMemberRepositoryCreationPermissionAuditEntry
-  | OrgUpdateMemberRepositoryInvitationPermissionAuditEntry
-  | PrivateRepositoryForkingDisableAuditEntry
-  | PrivateRepositoryForkingEnableAuditEntry
-  | RepoAccessAuditEntry
-  | RepoAddMemberAuditEntry
-  | RepoAddTopicAuditEntry
-  | RepoArchivedAuditEntry
-  | RepoChangeMergeSettingAuditEntry
-  | RepoConfigDisableAnonymousGitAccessAuditEntry
-  | RepoConfigDisableCollaboratorsOnlyAuditEntry
-  | RepoConfigDisableContributorsOnlyAuditEntry
-  | RepoConfigDisableSockpuppetDisallowedAuditEntry
-  | RepoConfigEnableAnonymousGitAccessAuditEntry
-  | RepoConfigEnableCollaboratorsOnlyAuditEntry
-  | RepoConfigEnableContributorsOnlyAuditEntry
-  | RepoConfigEnableSockpuppetDisallowedAuditEntry
-  | RepoConfigLockAnonymousGitAccessAuditEntry
-  | RepoConfigUnlockAnonymousGitAccessAuditEntry
-  | RepoCreateAuditEntry
-  | RepoDestroyAuditEntry
-  | RepoRemoveMemberAuditEntry
-  | RepoRemoveTopicAuditEntry
-  | RepositoryVisibilityChangeDisableAuditEntry
-  | RepositoryVisibilityChangeEnableAuditEntry
-  | TeamAddMemberAuditEntry
-  | TeamAddRepositoryAuditEntry
-  | TeamChangeParentTeamAuditEntry
-  | TeamRemoveMemberAuditEntry
-  | TeamRemoveRepositoryAuditEntry;
+export type OrganizationAuditEntry = MembersCanDeleteReposClearAuditEntry | MembersCanDeleteReposDisableAuditEntry | MembersCanDeleteReposEnableAuditEntry | OauthApplicationCreateAuditEntry | OrgAddBillingManagerAuditEntry | OrgAddMemberAuditEntry | OrgBlockUserAuditEntry | OrgConfigDisableCollaboratorsOnlyAuditEntry | OrgConfigEnableCollaboratorsOnlyAuditEntry | OrgCreateAuditEntry | OrgDisableOauthAppRestrictionsAuditEntry | OrgDisableSamlAuditEntry | OrgDisableTwoFactorRequirementAuditEntry | OrgEnableOauthAppRestrictionsAuditEntry | OrgEnableSamlAuditEntry | OrgEnableTwoFactorRequirementAuditEntry | OrgInviteMemberAuditEntry | OrgInviteToBusinessAuditEntry | OrgOauthAppAccessApprovedAuditEntry | OrgOauthAppAccessDeniedAuditEntry | OrgOauthAppAccessRequestedAuditEntry | OrgRemoveBillingManagerAuditEntry | OrgRemoveMemberAuditEntry | OrgRemoveOutsideCollaboratorAuditEntry | OrgRestoreMemberAuditEntry | OrgUnblockUserAuditEntry | OrgUpdateDefaultRepositoryPermissionAuditEntry | OrgUpdateMemberAuditEntry | OrgUpdateMemberRepositoryCreationPermissionAuditEntry | OrgUpdateMemberRepositoryInvitationPermissionAuditEntry | PrivateRepositoryForkingDisableAuditEntry | PrivateRepositoryForkingEnableAuditEntry | RepoAccessAuditEntry | RepoAddMemberAuditEntry | RepoAddTopicAuditEntry | RepoArchivedAuditEntry | RepoChangeMergeSettingAuditEntry | RepoConfigDisableAnonymousGitAccessAuditEntry | RepoConfigDisableCollaboratorsOnlyAuditEntry | RepoConfigDisableContributorsOnlyAuditEntry | RepoConfigDisableSockpuppetDisallowedAuditEntry | RepoConfigEnableAnonymousGitAccessAuditEntry | RepoConfigEnableCollaboratorsOnlyAuditEntry | RepoConfigEnableContributorsOnlyAuditEntry | RepoConfigEnableSockpuppetDisallowedAuditEntry | RepoConfigLockAnonymousGitAccessAuditEntry | RepoConfigUnlockAnonymousGitAccessAuditEntry | RepoCreateAuditEntry | RepoDestroyAuditEntry | RepoRemoveMemberAuditEntry | RepoRemoveTopicAuditEntry | RepositoryVisibilityChangeDisableAuditEntry | RepositoryVisibilityChangeEnableAuditEntry | TeamAddMemberAuditEntry | TeamAddRepositoryAuditEntry | TeamChangeParentTeamAuditEntry | TeamRemoveMemberAuditEntry | TeamRemoveRepositoryAuditEntry;
 
 /** The connection type for OrganizationAuditEntry. */
 export type OrganizationAuditEntryConnection = {
@@ -14167,13 +13947,7 @@ export type PinnedIssueEdge = {
 };
 
 /** Audit log entry for a private_repository_forking.disable event. */
-export type PrivateRepositoryForkingDisableAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type PrivateRepositoryForkingDisableAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'PrivateRepositoryForkingDisableAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -14227,13 +14001,7 @@ export type PrivateRepositoryForkingDisableAuditEntry =
 };
 
 /** Audit log entry for a private_repository_forking.enable event. */
-export type PrivateRepositoryForkingEnableAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type PrivateRepositoryForkingEnableAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'PrivateRepositoryForkingEnableAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -15783,18 +15551,7 @@ export type ProjectV2ItemFieldUserValueUsersArgs = {
 };
 
 /** Project field values */
-export type ProjectV2ItemFieldValue =
-  ProjectV2ItemFieldDateValue
-  | ProjectV2ItemFieldIterationValue
-  | ProjectV2ItemFieldLabelValue
-  | ProjectV2ItemFieldMilestoneValue
-  | ProjectV2ItemFieldNumberValue
-  | ProjectV2ItemFieldPullRequestValue
-  | ProjectV2ItemFieldRepositoryValue
-  | ProjectV2ItemFieldReviewerValue
-  | ProjectV2ItemFieldSingleSelectValue
-  | ProjectV2ItemFieldTextValue
-  | ProjectV2ItemFieldUserValue;
+export type ProjectV2ItemFieldValue = ProjectV2ItemFieldDateValue | ProjectV2ItemFieldIterationValue | ProjectV2ItemFieldLabelValue | ProjectV2ItemFieldMilestoneValue | ProjectV2ItemFieldNumberValue | ProjectV2ItemFieldPullRequestValue | ProjectV2ItemFieldRepositoryValue | ProjectV2ItemFieldReviewerValue | ProjectV2ItemFieldSingleSelectValue | ProjectV2ItemFieldTextValue | ProjectV2ItemFieldUserValue;
 
 /** Common fields across different project field value types */
 export type ProjectV2ItemFieldValueCommon = {
@@ -16415,22 +16172,7 @@ export type PublishSponsorsTierPayload = {
 };
 
 /** A repository pull request. */
-export type PullRequest =
-  Assignable
-  & Closable
-  & Comment
-  & Labelable
-  & Lockable
-  & Node
-  & ProjectNextOwner
-  & ProjectV2Owner
-  & Reactable
-  & RepositoryNode
-  & Subscribable
-  & UniformResourceLocatable
-  & Updatable
-  & UpdatableComment
-  & {
+export type PullRequest = Assignable & Closable & Comment & Labelable & Lockable & Node & ProjectNextOwner & ProjectV2Owner & Reactable & RepositoryNode & Subscribable & UniformResourceLocatable & Updatable & UpdatableComment & {
   __typename?: 'PullRequest';
   /** Reason that the conversation was locked. */
   activeLockReason: Maybe<LockReason>;
@@ -17048,15 +16790,7 @@ export enum PullRequestOrderField {
 }
 
 /** A review object for a given pull request. */
-export type PullRequestReview =
-  Comment
-  & Deletable
-  & Node
-  & Reactable
-  & RepositoryNode
-  & Updatable
-  & UpdatableComment
-  & {
+export type PullRequestReview = Comment & Deletable & Node & Reactable & RepositoryNode & Updatable & UpdatableComment & {
   __typename?: 'PullRequestReview';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -17162,16 +16896,7 @@ export type PullRequestReviewUserContentEditsArgs = {
 };
 
 /** A review comment associated with a given repository pull request. */
-export type PullRequestReviewComment =
-  Comment
-  & Deletable
-  & Minimizable
-  & Node
-  & Reactable
-  & RepositoryNode
-  & Updatable
-  & UpdatableComment
-  & {
+export type PullRequestReviewComment = Comment & Deletable & Minimizable & Node & Reactable & RepositoryNode & Updatable & UpdatableComment & {
   __typename?: 'PullRequestReviewComment';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -17543,40 +17268,7 @@ export type PullRequestTimelineConnection = {
 };
 
 /** An item in a pull request timeline */
-export type PullRequestTimelineItem =
-  AssignedEvent
-  | BaseRefDeletedEvent
-  | BaseRefForcePushedEvent
-  | ClosedEvent
-  | Commit
-  | CommitCommentThread
-  | CrossReferencedEvent
-  | DemilestonedEvent
-  | DeployedEvent
-  | DeploymentEnvironmentChangedEvent
-  | HeadRefDeletedEvent
-  | HeadRefForcePushedEvent
-  | HeadRefRestoredEvent
-  | IssueComment
-  | LabeledEvent
-  | LockedEvent
-  | MergedEvent
-  | MilestonedEvent
-  | PullRequestReview
-  | PullRequestReviewComment
-  | PullRequestReviewThread
-  | ReferencedEvent
-  | RenamedTitleEvent
-  | ReopenedEvent
-  | ReviewDismissedEvent
-  | ReviewRequestRemovedEvent
-  | ReviewRequestedEvent
-  | SubscribedEvent
-  | UnassignedEvent
-  | UnlabeledEvent
-  | UnlockedEvent
-  | UnsubscribedEvent
-  | UserBlockedEvent;
+export type PullRequestTimelineItem = AssignedEvent | BaseRefDeletedEvent | BaseRefForcePushedEvent | ClosedEvent | Commit | CommitCommentThread | CrossReferencedEvent | DemilestonedEvent | DeployedEvent | DeploymentEnvironmentChangedEvent | HeadRefDeletedEvent | HeadRefForcePushedEvent | HeadRefRestoredEvent | IssueComment | LabeledEvent | LockedEvent | MergedEvent | MilestonedEvent | PullRequestReview | PullRequestReviewComment | PullRequestReviewThread | ReferencedEvent | RenamedTitleEvent | ReopenedEvent | ReviewDismissedEvent | ReviewRequestRemovedEvent | ReviewRequestedEvent | SubscribedEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnsubscribedEvent | UserBlockedEvent;
 
 /** An edge in a connection. */
 export type PullRequestTimelineItemEdge = {
@@ -17588,63 +17280,7 @@ export type PullRequestTimelineItemEdge = {
 };
 
 /** An item in a pull request timeline */
-export type PullRequestTimelineItems =
-  AddedToProjectEvent
-  | AssignedEvent
-  | AutoMergeDisabledEvent
-  | AutoMergeEnabledEvent
-  | AutoRebaseEnabledEvent
-  | AutoSquashEnabledEvent
-  | AutomaticBaseChangeFailedEvent
-  | AutomaticBaseChangeSucceededEvent
-  | BaseRefChangedEvent
-  | BaseRefDeletedEvent
-  | BaseRefForcePushedEvent
-  | ClosedEvent
-  | CommentDeletedEvent
-  | ConnectedEvent
-  | ConvertToDraftEvent
-  | ConvertedNoteToIssueEvent
-  | ConvertedToDiscussionEvent
-  | CrossReferencedEvent
-  | DemilestonedEvent
-  | DeployedEvent
-  | DeploymentEnvironmentChangedEvent
-  | DisconnectedEvent
-  | HeadRefDeletedEvent
-  | HeadRefForcePushedEvent
-  | HeadRefRestoredEvent
-  | IssueComment
-  | LabeledEvent
-  | LockedEvent
-  | MarkedAsDuplicateEvent
-  | MentionedEvent
-  | MergedEvent
-  | MilestonedEvent
-  | MovedColumnsInProjectEvent
-  | PinnedEvent
-  | PullRequestCommit
-  | PullRequestCommitCommentThread
-  | PullRequestReview
-  | PullRequestReviewThread
-  | PullRequestRevisionMarker
-  | ReadyForReviewEvent
-  | ReferencedEvent
-  | RemovedFromProjectEvent
-  | RenamedTitleEvent
-  | ReopenedEvent
-  | ReviewDismissedEvent
-  | ReviewRequestRemovedEvent
-  | ReviewRequestedEvent
-  | SubscribedEvent
-  | TransferredEvent
-  | UnassignedEvent
-  | UnlabeledEvent
-  | UnlockedEvent
-  | UnmarkedAsDuplicateEvent
-  | UnpinnedEvent
-  | UnsubscribedEvent
-  | UserBlockedEvent;
+export type PullRequestTimelineItems = AddedToProjectEvent | AssignedEvent | AutoMergeDisabledEvent | AutoMergeEnabledEvent | AutoRebaseEnabledEvent | AutoSquashEnabledEvent | AutomaticBaseChangeFailedEvent | AutomaticBaseChangeSucceededEvent | BaseRefChangedEvent | BaseRefDeletedEvent | BaseRefForcePushedEvent | ClosedEvent | CommentDeletedEvent | ConnectedEvent | ConvertToDraftEvent | ConvertedNoteToIssueEvent | ConvertedToDiscussionEvent | CrossReferencedEvent | DemilestonedEvent | DeployedEvent | DeploymentEnvironmentChangedEvent | DisconnectedEvent | HeadRefDeletedEvent | HeadRefForcePushedEvent | HeadRefRestoredEvent | IssueComment | LabeledEvent | LockedEvent | MarkedAsDuplicateEvent | MentionedEvent | MergedEvent | MilestonedEvent | MovedColumnsInProjectEvent | PinnedEvent | PullRequestCommit | PullRequestCommitCommentThread | PullRequestReview | PullRequestReviewThread | PullRequestRevisionMarker | ReadyForReviewEvent | ReferencedEvent | RemovedFromProjectEvent | RenamedTitleEvent | ReopenedEvent | ReviewDismissedEvent | ReviewRequestRemovedEvent | ReviewRequestedEvent | SubscribedEvent | TransferredEvent | UnassignedEvent | UnlabeledEvent | UnlockedEvent | UnmarkedAsDuplicateEvent | UnpinnedEvent | UnsubscribedEvent | UserBlockedEvent;
 
 /** The connection type for PullRequestTimelineItems. */
 export type PullRequestTimelineItemsConnection = {
@@ -19079,13 +18715,7 @@ export enum RepoAddMemberAuditEntryVisibility {
 }
 
 /** Audit log entry for a repo.add_topic event. */
-export type RepoAddTopicAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & TopicAuditEntryData
-  & {
+export type RepoAddTopicAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & TopicAuditEntryData & {
   __typename?: 'RepoAddTopicAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19197,12 +18827,7 @@ export enum RepoArchivedAuditEntryVisibility {
 }
 
 /** Audit log entry for a repo.change_merge_setting event. */
-export type RepoChangeMergeSettingAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoChangeMergeSettingAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoChangeMergeSettingAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19264,12 +18889,7 @@ export enum RepoChangeMergeSettingAuditEntryMergeType {
 }
 
 /** Audit log entry for a repo.config.disable_anonymous_git_access event. */
-export type RepoConfigDisableAnonymousGitAccessAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigDisableAnonymousGitAccessAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigDisableAnonymousGitAccessAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19317,12 +18937,7 @@ export type RepoConfigDisableAnonymousGitAccessAuditEntry =
 };
 
 /** Audit log entry for a repo.config.disable_collaborators_only event. */
-export type RepoConfigDisableCollaboratorsOnlyAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigDisableCollaboratorsOnlyAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigDisableCollaboratorsOnlyAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19370,12 +18985,7 @@ export type RepoConfigDisableCollaboratorsOnlyAuditEntry =
 };
 
 /** Audit log entry for a repo.config.disable_contributors_only event. */
-export type RepoConfigDisableContributorsOnlyAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigDisableContributorsOnlyAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigDisableContributorsOnlyAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19423,12 +19033,7 @@ export type RepoConfigDisableContributorsOnlyAuditEntry =
 };
 
 /** Audit log entry for a repo.config.disable_sockpuppet_disallowed event. */
-export type RepoConfigDisableSockpuppetDisallowedAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigDisableSockpuppetDisallowedAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigDisableSockpuppetDisallowedAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19476,12 +19081,7 @@ export type RepoConfigDisableSockpuppetDisallowedAuditEntry =
 };
 
 /** Audit log entry for a repo.config.enable_anonymous_git_access event. */
-export type RepoConfigEnableAnonymousGitAccessAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigEnableAnonymousGitAccessAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigEnableAnonymousGitAccessAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19529,12 +19129,7 @@ export type RepoConfigEnableAnonymousGitAccessAuditEntry =
 };
 
 /** Audit log entry for a repo.config.enable_collaborators_only event. */
-export type RepoConfigEnableCollaboratorsOnlyAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigEnableCollaboratorsOnlyAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigEnableCollaboratorsOnlyAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19582,12 +19177,7 @@ export type RepoConfigEnableCollaboratorsOnlyAuditEntry =
 };
 
 /** Audit log entry for a repo.config.enable_contributors_only event. */
-export type RepoConfigEnableContributorsOnlyAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigEnableContributorsOnlyAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigEnableContributorsOnlyAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19635,12 +19225,7 @@ export type RepoConfigEnableContributorsOnlyAuditEntry =
 };
 
 /** Audit log entry for a repo.config.enable_sockpuppet_disallowed event. */
-export type RepoConfigEnableSockpuppetDisallowedAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigEnableSockpuppetDisallowedAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigEnableSockpuppetDisallowedAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19688,12 +19273,7 @@ export type RepoConfigEnableSockpuppetDisallowedAuditEntry =
 };
 
 /** Audit log entry for a repo.config.lock_anonymous_git_access event. */
-export type RepoConfigLockAnonymousGitAccessAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigLockAnonymousGitAccessAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigLockAnonymousGitAccessAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19741,12 +19321,7 @@ export type RepoConfigLockAnonymousGitAccessAuditEntry =
 };
 
 /** Audit log entry for a repo.config.unlock_anonymous_git_access event. */
-export type RepoConfigUnlockAnonymousGitAccessAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & {
+export type RepoConfigUnlockAnonymousGitAccessAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & {
   __typename?: 'RepoConfigUnlockAnonymousGitAccessAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -19978,13 +19553,7 @@ export enum RepoRemoveMemberAuditEntryVisibility {
 }
 
 /** Audit log entry for a repo.remove_topic event. */
-export type RepoRemoveTopicAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & TopicAuditEntryData
-  & {
+export type RepoRemoveTopicAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & TopicAuditEntryData & {
   __typename?: 'RepoRemoveTopicAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -20052,16 +19621,7 @@ export enum ReportedContentClassifiers {
 }
 
 /** A repository contains the content for a project. */
-export type Repository =
-  Node
-  & PackageOwner
-  & ProjectOwner
-  & ProjectV2Recent
-  & RepositoryInfo
-  & Starrable
-  & Subscribable
-  & UniformResourceLocatable
-  & {
+export type Repository = Node & PackageOwner & ProjectOwner & ProjectV2Recent & RepositoryInfo & Starrable & Subscribable & UniformResourceLocatable & {
   __typename?: 'Repository';
   /** Whether or not a pull request head branch that is behind its base branch can always be updated even if it is not required to be up to date before merging. */
   allowUpdateBranch: Scalars['Boolean'];
@@ -21286,12 +20846,7 @@ export enum RepositoryVisibility {
 }
 
 /** Audit log entry for a repository_visibility_change.disable event. */
-export type RepositoryVisibilityChangeDisableAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & {
+export type RepositoryVisibilityChangeDisableAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & {
   __typename?: 'RepositoryVisibilityChangeDisableAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -21337,12 +20892,7 @@ export type RepositoryVisibilityChangeDisableAuditEntry =
 };
 
 /** Audit log entry for a repository_visibility_change.enable event. */
-export type RepositoryVisibilityChangeEnableAuditEntry =
-  AuditEntry
-  & EnterpriseAuditEntryData
-  & Node
-  & OrganizationAuditEntryData
-  & {
+export type RepositoryVisibilityChangeEnableAuditEntry = AuditEntry & EnterpriseAuditEntryData & Node & OrganizationAuditEntryData & {
   __typename?: 'RepositoryVisibilityChangeEnableAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -21898,15 +21448,7 @@ export enum SavedReplyOrderField {
 }
 
 /** The results of a search. */
-export type SearchResultItem =
-  App
-  | Discussion
-  | Issue
-  | MarketplaceListing
-  | Organization
-  | PullRequest
-  | Repository
-  | User;
+export type SearchResultItem = App | Discussion | Issue | MarketplaceListing | Organization | PullRequest | Repository | User;
 
 /** A list of results that matched against a search query. Regardless of the number of matches, a maximum of 1,000 results will be available across all types, potentially split across many pages. */
 export type SearchResultItemConnection = {
@@ -24110,13 +23652,7 @@ export type TeamAddMemberAuditEntry = AuditEntry & Node & OrganizationAuditEntry
 };
 
 /** Audit log entry for a team.add_repository event. */
-export type TeamAddRepositoryAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & TeamAuditEntryData
-  & {
+export type TeamAddRepositoryAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & TeamAuditEntryData & {
   __typename?: 'TeamAddRepositoryAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -24265,16 +23801,7 @@ export type TeamConnection = {
 };
 
 /** A team discussion. */
-export type TeamDiscussion =
-  Comment
-  & Deletable
-  & Node
-  & Reactable
-  & Subscribable
-  & UniformResourceLocatable
-  & Updatable
-  & UpdatableComment
-  & {
+export type TeamDiscussion = Comment & Deletable & Node & Reactable & Subscribable & UniformResourceLocatable & Updatable & UpdatableComment & {
   __typename?: 'TeamDiscussion';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -24381,15 +23908,7 @@ export type TeamDiscussionUserContentEditsArgs = {
 };
 
 /** A comment on a team discussion. */
-export type TeamDiscussionComment =
-  Comment
-  & Deletable
-  & Node
-  & Reactable
-  & UniformResourceLocatable
-  & Updatable
-  & UpdatableComment
-  & {
+export type TeamDiscussionComment = Comment & Deletable & Node & Reactable & UniformResourceLocatable & Updatable & UpdatableComment & {
   __typename?: 'TeamDiscussionComment';
   /** The actor who authored the comment. */
   author: Maybe<Actor>;
@@ -24681,13 +24200,7 @@ export type TeamRemoveMemberAuditEntry = AuditEntry & Node & OrganizationAuditEn
 };
 
 /** Audit log entry for a team.remove_repository event. */
-export type TeamRemoveRepositoryAuditEntry =
-  AuditEntry
-  & Node
-  & OrganizationAuditEntryData
-  & RepositoryAuditEntryData
-  & TeamAuditEntryData
-  & {
+export type TeamRemoveRepositoryAuditEntry = AuditEntry & Node & OrganizationAuditEntryData & RepositoryAuditEntryData & TeamAuditEntryData & {
   __typename?: 'TeamRemoveRepositoryAuditEntry';
   /** The action name */
   action: Scalars['String'];
@@ -26727,21 +26240,7 @@ export type UpdateTopicsPayload = {
 };
 
 /** A user is an individual's account on GitHub that owns repositories and can make new content. */
-export type User =
-  Actor
-  & Node
-  & PackageOwner
-  & ProfileOwner
-  & ProjectNextOwner
-  & ProjectOwner
-  & ProjectV2Owner
-  & ProjectV2Recent
-  & RepositoryDiscussionAuthor
-  & RepositoryDiscussionCommentAuthor
-  & RepositoryOwner
-  & Sponsorable
-  & UniformResourceLocatable
-  & {
+export type User = Actor & Node & PackageOwner & ProfileOwner & ProjectNextOwner & ProjectOwner & ProjectV2Owner & ProjectV2Recent & RepositoryDiscussionAuthor & RepositoryDiscussionCommentAuthor & RepositoryOwner & Sponsorable & UniformResourceLocatable & {
   __typename?: 'User';
   /** Determine if this repository owner has any items that can be pinned to their profile. */
   anyPinnableItems: Scalars['Boolean'];
@@ -27738,42 +27237,7 @@ export type QueryContributionsQueryVariables = Exact<{
 }>;
 
 
-export type QueryContributionsQuery = {
-  __typename?: 'Query',
-  user: {
-    __typename?: 'User',
-    contributionsCollection: {
-      __typename?: 'ContributionsCollection',
-      totalCommitContributions: number,
-      totalIssueContributions: number,
-      totalPullRequestContributions: number,
-      totalPullRequestReviewContributions: number,
-      totalRepositoryContributions: number,
-      contributionCalendar: {
-        __typename?: 'ContributionCalendar',
-        isHalloween: boolean,
-        totalContributions: number,
-        weeks: Array<{
-          __typename?: 'ContributionCalendarWeek',
-          contributionDays: Array<{
-            __typename?: 'ContributionCalendarDay',
-            contributionCount: number,
-            contributionLevel: ContributionLevel,
-            date: any
-          }>
-        }>
-      },
-      commitContributionsByRepository: Array<{
-        __typename?: 'CommitContributionsByRepository',
-        repository: {
-          __typename?: 'Repository',
-          primaryLanguage: { __typename?: 'Language', name: string, color: string | null } | null
-        },
-        contributions: { __typename?: 'CreatedCommitContributionConnection', totalCount: number }
-      }>
-    }
-  } | null
-};
+export type QueryContributionsQuery = { __typename?: 'Query', user: { __typename?: 'User', contributionsCollection: { __typename?: 'ContributionsCollection', totalCommitContributions: number, totalIssueContributions: number, totalPullRequestContributions: number, totalPullRequestReviewContributions: number, totalRepositoryContributions: number, contributionCalendar: { __typename?: 'ContributionCalendar', isHalloween: boolean, totalContributions: number, weeks: Array<{ __typename?: 'ContributionCalendarWeek', contributionDays: Array<{ __typename?: 'ContributionCalendarDay', contributionCount: number, contributionLevel: ContributionLevel, date: any }> }> }, commitContributionsByRepository: Array<{ __typename?: 'CommitContributionsByRepository', repository: { __typename?: 'Repository', primaryLanguage: { __typename?: 'Language', name: string, color: string | null } | null }, contributions: { __typename?: 'CreatedCommitContributionConnection', totalCount: number } }> } } | null };
 
 export type QueryReposQueryVariables = Exact<{
   login?: InputMaybe<Scalars['String']>;
@@ -27781,100 +27245,82 @@ export type QueryReposQueryVariables = Exact<{
 }>;
 
 
-export type QueryReposQuery = {
-  __typename?: 'Query',
-  user: {
-    __typename?: 'User',
-    repositories: {
-      __typename?: 'RepositoryConnection',
-      pageInfo: { __typename?: 'PageInfo', endCursor: string | null, hasNextPage: boolean },
-      nodes: Array<{
-        __typename?: 'Repository',
-        name: string,
-        description: string | null,
-        url: any,
-        stargazerCount: number,
-        forkCount: number
-      } | null> | null
-    }
-  } | null
-};
+export type QueryReposQuery = { __typename?: 'Query', user: { __typename?: 'User', repositories: { __typename?: 'RepositoryConnection', pageInfo: { __typename?: 'PageInfo', endCursor: string | null, hasNextPage: boolean }, nodes: Array<{ __typename?: 'Repository', name: string, description: string | null, url: any, stargazerCount: number, forkCount: number } | null> | null } } | null };
 
 
 export const QueryContributionsDocument = gql`
-  query queryContributions($login: String = "powerfulyang") {
-    user(login: $login) {
-      contributionsCollection {
-        contributionCalendar {
-          isHalloween
-          totalContributions
-          weeks {
-            contributionDays {
-              contributionCount
-              contributionLevel
-              date
-            }
+    query queryContributions($login: String = "powerfulyang") {
+  user(login: $login) {
+    contributionsCollection {
+      contributionCalendar {
+        isHalloween
+        totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+            contributionLevel
+            date
           }
         }
-        commitContributionsByRepository(maxRepositories: 100) {
-          repository {
-            primaryLanguage {
-              name
-              color
-            }
-          }
-          contributions {
-            totalCount
-          }
-        }
-        totalCommitContributions
-        totalIssueContributions
-        totalPullRequestContributions
-        totalPullRequestReviewContributions
-        totalRepositoryContributions
       }
+      commitContributionsByRepository(maxRepositories: 100) {
+        repository {
+          primaryLanguage {
+            name
+            color
+          }
+        }
+        contributions {
+          totalCount
+        }
+      }
+      totalCommitContributions
+      totalIssueContributions
+      totalPullRequestContributions
+      totalPullRequestReviewContributions
+      totalRepositoryContributions
     }
   }
-`;
+}
+    `;
 export const QueryReposDocument = gql`
-  query queryRepos($login: String = "powerfulyang", $cursor: String = null) {
-    user(login: $login) {
-      repositories(
-        first: 100
-        after: $cursor
-        orderBy: {field: UPDATED_AT, direction: DESC}
-        ownerAffiliations: OWNER
-      ) {
-        pageInfo {
-          endCursor
-          hasNextPage
-        }
-        nodes {
-          name
-          description
-          url
-          stargazerCount
-          forkCount
-        }
+    query queryRepos($login: String = "powerfulyang", $cursor: String = null) {
+  user(login: $login) {
+    repositories(
+      first: 100
+      after: $cursor
+      orderBy: {field: UPDATED_AT, direction: DESC}
+      ownerAffiliations: OWNER
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      nodes {
+        name
+        description
+        url
+        stargazerCount
+        forkCount
       }
     }
   }
-`;
+}
+    `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    queryContributions(variables?: QueryContributionsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<QueryContributionsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<QueryContributionsQuery>(QueryContributionsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'queryContributions', 'query');
+    queryContributions(variables?: QueryContributionsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<QueryContributionsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<QueryContributionsQuery>(QueryContributionsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'queryContributions', 'query');
     },
-    queryRepos(variables?: QueryReposQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<QueryReposQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<QueryReposQuery>(QueryReposDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'queryRepos', 'query');
+    queryRepos(variables?: QueryReposQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<QueryReposQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<QueryReposQuery>(QueryReposDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'queryRepos', 'query');
     }
   };
 }
-
 export type Sdk = ReturnType<typeof getSdk>;
