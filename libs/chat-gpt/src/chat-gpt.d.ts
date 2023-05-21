@@ -1,6 +1,4 @@
-interface _ProcessEnv {
-  OPENAI_API_KEY: string;
-}
+interface _ProcessEnv {}
 
 declare module 'node:process' {
   global {

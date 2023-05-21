@@ -1,13 +1,10 @@
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import type { BingAIPayload } from '@/payload/BingAIPayload';
 import type { ChatGPTPayload } from '@/payload/ChatGPTPayload';
 import { Injectable } from '@nestjs/common';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import type { RequestInfo, RequestInit } from 'node-fetch';
 import fetch from 'node-fetch';
-import process from 'node:process';
 
 /**
  * Service for chat.openai.com
@@ -19,46 +16,28 @@ export class ChatGptService {
 
   private ChatGPTClient: any;
 
-  private bingAIApi: any;
-
-  private BingAIClient: any;
-
   constructor(
     private readonly logger: LoggerService,
     private readonly proxyFetchService: ProxyFetchService,
     private readonly cacheService: CacheService,
   ) {
     this.logger.setContext(ChatGptService.name);
+    this.logger.debug(this.cacheService.mode);
   }
 
   async getApiInstance(type: 'chat-gpt' | 'bing-ai') {
-    const openai_api_key = process.env.OPENAI_API_KEY;
-    const bing_ai_cookies = await this.cacheService.get(REDIS_KEYS.BING_AI_COOKIES);
-    if (this.bingAIApi && type === 'bing-ai') {
-      this.bingAIApi = new this.BingAIClient({
-        cookies: bing_ai_cookies,
-      });
-      return this.bingAIApi;
-    }
     if (this.chatGPTApi && type === 'chat-gpt') {
       return this.chatGPTApi;
     }
-    return import('@waylaidwanderer/chatgpt-api').then(({ ChatGPTClient, BingAIClient }) => {
-      this.BingAIClient = BingAIClient;
-      this.bingAIApi = new this.BingAIClient({
-        cookies: bing_ai_cookies,
-      });
+    return import('@waylaidwanderer/chatgpt-api').then(({ ChatGPTClient }) => {
       this.ChatGPTClient = ChatGPTClient;
-      this.chatGPTApi = new this.ChatGPTClient(openai_api_key);
+      this.chatGPTApi = new this.ChatGPTClient();
       // @ts-ignore rewrite fetch
       globalThis.fetch = (input: RequestInfo, init: RequestInit = {}) => {
         // eslint-disable-next-line no-param-reassign
         init.agent = this.proxyFetchService.agent;
         return fetch(input, init);
       };
-      if (type === 'bing-ai') {
-        return this.bingAIApi;
-      }
       if (type === 'chat-gpt') {
         return this.chatGPTApi;
       }
@@ -80,39 +59,6 @@ export class ChatGptService {
       parentMessageId: messageId,
       message,
       conversationId,
-    };
-  }
-
-  async sendMessageWithBingAI(
-    msg: string,
-    opt: {
-      conversationSignature?: string;
-      conversationId?: string;
-      clientId?: string;
-      invocationId?: string;
-    } = {},
-  ): Promise<BingAIPayload> {
-    const instance = await this.getApiInstance('bing-ai');
-    const response = await instance.sendMessage(msg, opt);
-    const {
-      response: message,
-      conversationSignature,
-      conversationId,
-      clientId,
-      invocationId,
-    } = response;
-    this.logger.debug(`sendMessageWithBingAI response: ${JSON.stringify(response, null, 2)}`);
-    if (response?.details?.contentOrigin === 'TurnLimiter') {
-      return {
-        message: '达到 BingAI 的对话上限，接下来将开始新的对话，请重新输入',
-      };
-    }
-    return {
-      message,
-      conversationSignature,
-      conversationId,
-      clientId,
-      invocationId,
     };
   }
 }

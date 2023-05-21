@@ -12,7 +12,6 @@ import { PathViewCountService } from '@/modules/path-view-count/path-view-count.
 import { SearchPostDto } from '@/modules/post/dto/search-post.dto';
 import { PostService } from '@/modules/post/post.service';
 import { User } from '@/modules/user/entities/user.entity';
-import { BingAIPayload } from '@/payload/BingAIPayload';
 import { ChatGPTPayload } from '@/payload/ChatGPTPayload';
 import { ChatGptService } from '@app/chat-gpt';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
@@ -137,24 +136,6 @@ export class PublicController {
     return this.chatGptService.sendMessage(body.message, {
       parentMessageId: body.parentMessageId,
       conversationId: body.conversationId,
-    });
-  }
-
-  @Post('/bing-ai/chat')
-  @JwtAuthGuard()
-  @ApiOperation({
-    summary: '与bing ai聊天',
-    operationId: 'chatWithBingAI',
-  })
-  chatWithBingAI(
-    @Body()
-    body: BingAIPayload,
-  ): Promise<BingAIPayload> {
-    return this.chatGptService.sendMessageWithBingAI(body.message, {
-      conversationSignature: body.conversationSignature,
-      conversationId: body.conversationId,
-      clientId: body.clientId,
-      invocationId: body.invocationId,
     });
   }
 
