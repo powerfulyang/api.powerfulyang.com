@@ -34,6 +34,8 @@ import { PublicModule } from './modules/public/public.module';
 import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';
 import { UserModule } from './modules/user/user.module';
 import { ToolsModule } from './tools/tools.module';
+import { FcmModule } from './fcm/fcm.module';
+import { WebPushModule } from './web-push/web-push.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { ToolsModule } from './tools/tools.module';
     LogsViewerModule,
     WechatModule,
     ToolsModule,
+    FcmModule,
+    WebPushModule,
   ],
   providers: [
     {

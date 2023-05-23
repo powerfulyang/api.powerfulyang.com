@@ -48,6 +48,8 @@ declare module 'node:process' {
         ALGOLIA_CRAWLER_ID: string;
         ALGOLIA_CRAWLER_USER_ID: string;
         ALGOLIA_CRAWLER_API_KEY: string;
+
+        VAPID_PRIVATE_KEY: string;
       }
     }
   }

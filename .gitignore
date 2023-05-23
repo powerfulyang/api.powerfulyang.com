@@ -29,3 +29,8 @@ package-lock.json
 .turbo
 
 __generated__
+
+.credentials
+
+__test__/*
+!__test__/.gitkeep
