@@ -9,7 +9,7 @@ import { WordBookService } from './word-book.service';
 const TencentCloudAccountProvider: Provider = {
   provide: TMT_ACCOUNT,
   inject: [TencentCloudAccountService],
-  useFactory: async (tencentCloudAccountService: TencentCloudAccountService) => {
+  useFactory: (tencentCloudAccountService: TencentCloudAccountService) => {
     return tencentCloudAccountService.getTMTAccount();
   },
 };

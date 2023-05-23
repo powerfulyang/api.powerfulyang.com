@@ -59,7 +59,7 @@ export class ResponseInterceptor implements NestInterceptor {
               `Token valid within ${ValidPeriodHour}hour, refresh token [user=>${user.email}]`,
             );
           } else {
-            this.logger.debug(
+            this.logger.verbose(
               `Token valid within ${ValidPeriodHour}hour, it's unnecessary to refresh token [user=>${user.email}]`,
             );
           }

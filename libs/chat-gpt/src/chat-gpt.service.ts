@@ -1,4 +1,3 @@
-import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { ChatGPTPayload } from '@/payload/ChatGPTPayload';
 import { Injectable } from '@nestjs/common';
@@ -19,10 +18,8 @@ export class ChatGptService {
   constructor(
     private readonly logger: LoggerService,
     private readonly proxyFetchService: ProxyFetchService,
-    private readonly cacheService: CacheService,
   ) {
     this.logger.setContext(ChatGptService.name);
-    this.logger.debug(this.cacheService.mode);
   }
 
   async getApiInstance(type: 'chat-gpt' | 'bing-ai') {

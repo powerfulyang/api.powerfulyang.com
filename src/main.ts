@@ -1,3 +1,4 @@
+import '@/loadEnv';
 import { LoggerService } from '@/common/logger/logger.service';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { Authorization } from '@/constants/constants';
@@ -10,7 +11,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import process from 'node:process';
 import { AppModule } from './app.module';
 import fastifyInstance from './fastify/hook';
-import './loadEnv';
 
 require('source-map-support').install();
 

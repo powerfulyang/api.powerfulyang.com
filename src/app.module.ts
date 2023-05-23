@@ -23,6 +23,7 @@ import { UdpServerModule } from 'api/udp-server';
 import { GithubModule } from 'app/github';
 import { join } from 'node:path';
 import process from 'node:process';
+import { FcmModule } from './fcm/fcm.module';
 import { UploadAssetModule } from './microservice/handleAsset/upload-asset.module';
 import { AssetModule } from './modules/asset/asset.module';
 import { BucketModule } from './modules/bucket/bucket.module';
@@ -34,6 +35,7 @@ import { PublicModule } from './modules/public/public.module';
 import { TencentCloudAccountModule } from './modules/tencent-cloud-account/tencent-cloud-account.module';
 import { UserModule } from './modules/user/user.module';
 import { ToolsModule } from './tools/tools.module';
+import { WebPushModule } from './web-push/web-push.module';
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { ToolsModule } from './tools/tools.module';
     LogsViewerModule,
     WechatModule,
     ToolsModule,
+    FcmModule,
+    WebPushModule,
   ],
   providers: [
     {
@@ -88,7 +92,7 @@ import { ToolsModule } from './tools/tools.module';
     {
       provide: 'APP_BOOTSTRAP',
       inject: [BootstrapService],
-      useFactory: async (bootstrapService: BootstrapService) => {
+      useFactory: (bootstrapService: BootstrapService) => {
         return bootstrapService.bootstrap();
       },
     },

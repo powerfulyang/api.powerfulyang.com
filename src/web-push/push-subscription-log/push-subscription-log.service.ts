@@ -1,0 +1,44 @@
+import { LoggerService } from '@/common/logger/logger.service';
+import type { User } from '@/modules/user/entities/user.entity';
+import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+@Injectable()
+export class PushSubscriptionLogService {
+  constructor(
+    private readonly logger: LoggerService,
+    @InjectRepository(PushSubscriptionLog)
+    private readonly pushSubscriptionLogDao: Repository<PushSubscriptionLog>,
+  ) {
+    this.logger.setContext(PushSubscriptionLogService.name);
+  }
+
+  async subscribe(user: User, subscription: PushSubscriptionJSON) {
+    const p = await this.pushSubscriptionLogDao.findOne({
+      where: {
+        endpoint: subscription.endpoint,
+      },
+      relations: ['user'],
+      select: {
+        user: {
+          id: true,
+        },
+      },
+    });
+    if (p) {
+      if (p.user.id !== user.id) {
+        // update user
+        p.user = user;
+        return this.pushSubscriptionLogDao.save(p);
+      }
+      // ignore
+      return p;
+    }
+    return this.pushSubscriptionLogDao.save({
+      user,
+      pushSubscriptionJSON: subscription,
+    });
+  }
+}
