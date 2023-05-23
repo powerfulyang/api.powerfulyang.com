@@ -60,7 +60,7 @@
     "dotenv": "16.0.3",
     "firebase-admin": "11.8.0",
     "graphql": "16.6.0",
-    "graphql-request": "6.0.0",
+    "graphql-request": "6.1.0",
     "graphql-tag": "2.12.6",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.3.2",
