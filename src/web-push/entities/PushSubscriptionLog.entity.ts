@@ -34,7 +34,7 @@ export class PushSubscriptionLog {
   @ManyToOne(() => User, {
     nullable: true,
   })
-  user: User;
+  user?: User;
 
   @CreateDateColumn({
     type: 'timestamptz',

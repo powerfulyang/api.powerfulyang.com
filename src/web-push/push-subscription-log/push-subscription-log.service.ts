@@ -15,7 +15,7 @@ export class PushSubscriptionLogService {
     this.logger.setContext(PushSubscriptionLogService.name);
   }
 
-  async subscribe(user: User, subscription: PushSubscriptionJSON) {
+  async subscribe(user: User | undefined, subscription: PushSubscriptionJSON) {
     const p = await this.pushSubscriptionLogDao.findOne({
       where: {
         endpoint: subscription.endpoint,
@@ -28,7 +28,7 @@ export class PushSubscriptionLogService {
       },
     });
     if (p) {
-      if (p.user.id !== user.id) {
+      if (user && p.user?.id !== user?.id) {
         // update user
         p.user = user;
         return this.pushSubscriptionLogDao.save(p);

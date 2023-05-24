@@ -23,7 +23,7 @@ export class WebPushController {
     summary: '订阅推送',
     operationId: 'webPushSubscribe',
   })
-  subscribe(@Body() subscription: PushSubscriptionJSON, @AuthUser() user: User) {
+  subscribe(@Body() subscription: PushSubscriptionJSON, @AuthUser() user?: User) {
     return this.pushSubscriptionLogService.subscribe(user, subscription);
   }
 }
