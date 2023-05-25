@@ -214,8 +214,8 @@ devDependencies:
     specifier: 3.2.1
     version: 3.2.1(@types/node@20.2.3)(ts-node@10.9.1)(typescript@5.0.4)
   '@types/lodash':
-    specifier: 4.14.194
-    version: 4.14.194
+    specifier: 4.14.195
+    version: 4.14.195
   '@types/node':
     specifier: 20.2.3
     version: 20.2.3
@@ -3787,8 +3787,8 @@ packages:
     dev: false
     optional: true
 
-  /@types/lodash@4.14.194:
-    resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
+  /@types/lodash@4.14.195:
+    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==}
     dev: true
 
   /@types/long@4.0.2:

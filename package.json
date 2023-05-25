@@ -99,7 +99,7 @@
     "@nestjs/schematics": "9.2.0",
     "@nestjs/testing": "9.4.2",
     "@powerfulyang/lint": "3.2.1",
-    "@types/lodash": "4.14.194",
+    "@types/lodash": "4.14.195",
     "@types/node": "20.2.3",
     "@types/node-fetch": "2.6.4",
     "@types/node-telegram-bot-api": "0.61.6",
