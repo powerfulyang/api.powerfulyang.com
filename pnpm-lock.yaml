@@ -146,8 +146,8 @@ dependencies:
     specifier: 8.11.0
     version: 8.11.0
   qqwry.ipdb:
-    specifier: 2023.5.17
-    version: 2023.5.17
+    specifier: 2023.5.24
+    version: 2023.5.24
   reflect-metadata:
     specifier: 0.1.13
     version: 0.1.13
@@ -11923,8 +11923,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb@2023.5.17:
-    resolution: {integrity: sha512-mMlpF9TUVoBtHFxn5vacfFu4Q2OLZLl6y+4fTe4VNNm1a0SKvT03oNj7J8ffKqjZbEMe6nRQomplLi5YqHnM7g==}
+  /qqwry.ipdb@2023.5.24:
+    resolution: {integrity: sha512-2oBsF8j0KubYouJi64tKR3egWpFHGeP3jok5GRHq4oad8YToEbXwDLuv71yQbE4t6NFySX59Hrv2zmZh3r/GKw==}
     dev: false
 
   /qrcode-generator@1.4.4:
