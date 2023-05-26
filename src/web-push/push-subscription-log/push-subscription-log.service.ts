@@ -1,6 +1,8 @@
+import type { PaginatedBaseQuery } from '@/common/decorator/pagination/PaginationQuery';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { User } from '@/modules/user/entities/user.entity';
 import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.entity';
+import type { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -40,5 +42,16 @@ export class PushSubscriptionLogService {
       user,
       pushSubscriptionJSON: subscription,
     });
+  }
+
+  list(pagination: PaginatedBaseQuery) {
+    return this.pushSubscriptionLogDao.findAndCount({
+      ...pagination,
+      relations: ['user'],
+    });
+  }
+
+  findOne(id: number) {
+    return this.pushSubscriptionLogDao.findOneByOrFail({ id });
   }
 }

@@ -109,10 +109,12 @@ export class AssetService extends BaseService {
       for (const id of ids) {
         const asset = await transactionalEntityManager.findOneOrFail(Asset, {
           where: { id },
+          relations: ['bucket', 'bucket.tencentCloudAccount'],
         });
         const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
           asset.bucket.tencentCloudAccount.id,
         );
+        await transactionalEntityManager.remove(asset);
         const res = await util.deleteObject({
           Key: `${asset.sha1}.${asset.fileSuffix}`,
           Bucket: asset.bucket.Bucket,
@@ -121,7 +123,6 @@ export class AssetService extends BaseService {
         if (res.statusCode !== HttpStatus.NO_CONTENT) {
           throw new ServiceUnavailableException(`delete asset ${id} failed, rollback`);
         }
-        await transactionalEntityManager.remove(asset);
       }
     });
   }

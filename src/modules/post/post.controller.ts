@@ -3,7 +3,6 @@ import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 import { PatchPostDto } from '@/modules/post/dto/patch-post.dto';
-import { SpecificPostDto } from '@/modules/post/dto/specific-post.dto';
 import { PostService } from '@/modules/post/post.service';
 import { User } from '@/modules/user/entities/user.entity';
 import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
@@ -27,18 +26,13 @@ export class PostController {
     return this.postService.createPost(draft);
   }
 
-  @Patch(':id')
+  @Patch()
   @ApiOperation({
     summary: '更新文章',
     operationId: 'updatePost',
   })
-  updatePost(
-    @Param() { id }: SpecificPostDto,
-    @Body() draft: PatchPostDto,
-    @AuthUser(['id']) user: User,
-  ) {
+  updatePost(@Body() draft: PatchPostDto, @AuthUser(['id']) user: User) {
     draft.updateBy = user;
-    draft.id = id;
     return this.postService.updatePost(draft);
   }
 
@@ -48,7 +42,7 @@ export class PostController {
     summary: '删除文章',
     operationId: 'deletePost',
   })
-  deletePost(@Param() { id }: SpecificPostDto, @AuthUser(['id']) user: User) {
+  deletePost(@Param('id') id: number, @AuthUser(['id']) user: User) {
     return this.postService.deletePost({
       id,
       createBy: user,

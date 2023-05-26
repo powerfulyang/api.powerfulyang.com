@@ -38,6 +38,10 @@ describe('PushSubscriptionLogService', () => {
     const endpoint = 'https://example.com';
     const pushSubscriptionJSON = {
       endpoint,
+      keys: {
+        p256dh: 'p256dh',
+        auth: 'auth',
+      },
     };
     const user = {
       id: 1,
