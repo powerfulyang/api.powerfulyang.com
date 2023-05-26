@@ -29,7 +29,7 @@
   "dependencies": {
     "@apollo/server": "4.7.1",
     "@as-integrations/fastify": "2.0.0",
-    "@elastic/elasticsearch": "8.7.0",
+    "@elastic/elasticsearch": "8.8.0",
     "@fastify/cookie": "8.3.0",
     "@fastify/multipart": "7.6.0",
     "@fastify/passport": "2.3.0",

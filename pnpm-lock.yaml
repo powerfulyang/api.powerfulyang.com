@@ -8,8 +8,8 @@ dependencies:
     specifier: 2.0.0
     version: 2.0.0(@apollo/server@4.7.1)(fastify@4.17.0)
   '@elastic/elasticsearch':
-    specifier: 8.7.0
-    version: 8.7.0
+    specifier: 8.8.0
+    version: 8.8.0
   '@fastify/cookie':
     specifier: 8.3.0
     version: 8.3.0
@@ -33,7 +33,7 @@ dependencies:
     version: 9.4.2(@nestjs/common@9.4.2)(@nestjs/microservices@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@nestjs/elasticsearch':
     specifier: 9.0.0
-    version: 9.0.0(@elastic/elasticsearch@8.7.0)(@nestjs/common@9.4.2)(rxjs@7.8.1)
+    version: 9.0.0(@elastic/elasticsearch@8.8.0)(@nestjs/common@9.4.2)(rxjs@7.8.1)
   '@nestjs/graphql':
     specifier: 11.0.6
     version: 11.0.6(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)
@@ -1479,12 +1479,12 @@ packages:
     resolution: {integrity: sha512-umSdeZTy/SbPPKVuZKV/XKyFPmXSN145CcM3iHjBbmhlohBJg7vaDp4cPCW+xNlWL6L2U1sp7T2BD+di2sUKdA==}
     dev: false
 
-  /@elastic/elasticsearch@8.7.0:
-    resolution: {integrity: sha512-0u12N7gvSpv99XiiYE7OlOtVy4oFx7KNYd+/SSt0GqIcpj4X8bcILjpkQqK3HZcvkvwc8bFL9J11EMmUlg6FYw==}
+  /@elastic/elasticsearch@8.8.0:
+    resolution: {integrity: sha512-IOydHcLpg9tDcLpikDrN5hx7LADEmkgHswgqTcCYXKS3FVIrfs3Rc6ALu7WU45Qe/JH0xhmwJkWVjsAk6C/nBg==}
     engines: {node: '>=14'}
     dependencies:
       '@elastic/transport': 8.3.1
-      tslib: 2.5.0
+      tslib: 2.5.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -2923,14 +2923,14 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@nestjs/elasticsearch@9.0.0(@elastic/elasticsearch@8.7.0)(@nestjs/common@9.4.2)(rxjs@7.8.1):
+  /@nestjs/elasticsearch@9.0.0(@elastic/elasticsearch@8.8.0)(@nestjs/common@9.4.2)(rxjs@7.8.1):
     resolution: {integrity: sha512-+NhXg0od/luNuObrCoouO8IGJ5d8esd2LbqOyX4wqM3PtzoVgQC5uDoxHu0ZyWkp/Coj7OiT0osYN9rgctEPbg==}
     peerDependencies:
       '@elastic/elasticsearch': ^7.4.0 || ^8.0.0
       '@nestjs/common': ^8.0.0 || ^9.0.0
       rxjs: ^7.2.0
     dependencies:
-      '@elastic/elasticsearch': 8.7.0
+      '@elastic/elasticsearch': 8.8.0
       '@nestjs/common': 9.4.2(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       rxjs: 7.8.1
     dev: false
