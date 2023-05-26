@@ -1,10 +1,11 @@
 import { CreatePostDto } from '@/modules/post/dto/create-post.dto';
 import { User } from '@/modules/user/entities/user.entity';
 import { ApiHideProperty, PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsNotEmpty, IsNumber, Length } from 'class-validator';
 
 export class PatchPostDto extends PartialType(CreatePostDto) {
-  @ApiHideProperty()
+  @IsNotEmpty()
+  @IsNumber()
   declare id: number;
 
   @Length(1, 100)

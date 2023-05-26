@@ -41,7 +41,7 @@ export class RoleController {
     summary: '查询角色详情',
     operationId: 'queryRoleById',
   })
-  async queryRoleById(@Param('id') id: string) {
+  async queryRoleById(@Param('id') id: number) {
     return this.roleService.queryRoleById(id);
   }
 

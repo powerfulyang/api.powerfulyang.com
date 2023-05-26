@@ -1,4 +1,5 @@
 import { User } from '@/modules/user/entities/user.entity';
+import { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';
 import {
   Column,
   CreateDateColumn,

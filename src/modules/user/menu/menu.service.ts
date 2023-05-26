@@ -83,7 +83,7 @@ export class MenuService extends BaseService {
   }
 
   queryMenuById(id: string) {
-    return this.menuDao.findOne({
+    return this.menuDao.findOneOrFail({
       where: {
         id: Number(id),
       },

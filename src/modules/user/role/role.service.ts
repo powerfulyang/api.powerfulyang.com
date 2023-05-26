@@ -60,10 +60,10 @@ export class RoleService extends BaseService {
     });
   }
 
-  queryRoleById(id: string) {
+  queryRoleById(id: number) {
     return this.roleDao.findOneOrFail({
       where: {
-        id: Number(id),
+        id,
       },
       loadRelationIds: true,
     });
