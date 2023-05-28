@@ -4,11 +4,17 @@ import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.ent
 import { PushSubscriptionLogService } from '@/web-push/push-subscription-log/push-subscription-log.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProxyFetchModule } from 'api/proxy-fetch';
 import { WebPushService } from './web-push.service';
 import { WebPushController } from './web-push.controller';
 
 @Module({
-  imports: [OrmModule, LoggerModule, TypeOrmModule.forFeature([PushSubscriptionLog])],
+  imports: [
+    OrmModule,
+    LoggerModule,
+    TypeOrmModule.forFeature([PushSubscriptionLog]),
+    ProxyFetchModule.forRoot(),
+  ],
   controllers: [WebPushController],
   providers: [WebPushService, PushSubscriptionLogService],
 })

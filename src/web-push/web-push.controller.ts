@@ -10,6 +10,7 @@ import { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';
 import { WebPushService } from '@/web-push/web-push.service';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ProxyFetchService } from 'api/proxy-fetch';
 
 @Controller('web-push')
 @PublicAuthGuard()
@@ -19,6 +20,7 @@ export class WebPushController {
     private readonly logger: LoggerService,
     private readonly pushSubscriptionLogService: PushSubscriptionLogService,
     private readonly webPushService: WebPushService,
+    private readonly proxyFetchService: ProxyFetchService,
   ) {
     this.logger.setContext(WebPushController.name);
   }
@@ -54,6 +56,9 @@ export class WebPushController {
     return this.webPushService.sendNotification(
       subscription.pushSubscriptionJSON,
       JSON.stringify(rest),
+      {
+        agent: this.proxyFetchService.agent,
+      },
     );
   }
 }

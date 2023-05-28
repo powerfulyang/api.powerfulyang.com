@@ -31,7 +31,7 @@ export class BootstrapService {
     if (isProdProcess) {
       result = await this.cacheService.setnx(REDIS_KEYS.SCHEDULE_NODE_NX, HOSTNAME);
       if (result) {
-        this.cacheService.set(REDIS_KEYS.SCHEDULE_NODE, HOSTNAME);
+        await this.cacheService.set(REDIS_KEYS.SCHEDULE_NODE, HOSTNAME);
         await this.cacheService.expire(REDIS_KEYS.SCHEDULE_NODE_NX, 10);
       }
     }
@@ -47,37 +47,33 @@ export class BootstrapService {
     return true;
   }
 
-  async cacheUsers() {
+  private async cacheUsers() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      return this.userService.cacheUsers();
+      await this.userService.cacheUsers();
     }
-    return Promise.resolve();
   }
 
-  async cachePathViewCount() {
+  private async cachePathViewCount() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
-      return this.pathViewCountService.initPathViewCountCache();
+      await this.pathViewCountService.initPathViewCountCache();
     }
-    return Promise.resolve();
   }
 
-  async initBucket() {
+  private async initBucket() {
     const bool = await this.coreService.isProdScheduleNode();
     if (bool) {
-      return this.bucketService.initBucket();
+      await this.bucketService.initBucket();
     }
-    return Promise.resolve();
   }
 
-  async initIntendedData() {
+  private async initIntendedData() {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
       await this.menuService.initBuiltinMenus();
       await this.roleService.initIntendedRoles();
       await this.userService.initIntendedUsers();
     }
-    return Promise.resolve();
   }
 }

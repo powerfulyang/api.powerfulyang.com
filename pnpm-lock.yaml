@@ -68,8 +68,8 @@ dependencies:
     specifier: 4.14.1
     version: 4.14.1(prisma@4.14.1)
   '@waylaidwanderer/chatgpt-api':
-    specifier: 1.36.2
-    version: 1.36.2
+    specifier: 1.36.3
+    version: 1.36.3
   amqp-connection-manager:
     specifier: 4.1.13
     version: 4.1.13(amqplib@0.10.3)
@@ -4176,8 +4176,8 @@ packages:
       eslint-visitor-keys: 3.4.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api@1.36.2:
-    resolution: {integrity: sha512-aCOA6PZ0/ms9DHloulELJoXCbR4OENC3KJME0aysxlPA9y6ixYawXfeLrK4eXgguMxjdA6KTeblfDoHPDHJwRQ==}
+  /@waylaidwanderer/chatgpt-api@1.36.3:
+    resolution: {integrity: sha512-98tHhxbX3p3TM9i+zHi3d1sjwwujRiCg5+cEUpBHeosQMLIe9nvkKL4lE7U5YSCuLOrwB8IlSP+dAxRQi0H1qg==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 1.0.6
@@ -4471,7 +4471,6 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /agentkeepalive@4.3.0:
     resolution: {integrity: sha512-7Epl1Blf4Sy37j4v9f9FjICCh4+KAQOyXgHEwlyBiAQLbhKdq/i2QQU3amQalS/wPhdPzDXPL5DMR5bkn+YeWg==}
@@ -8129,7 +8128,7 @@ packages:
     resolution: {integrity: sha512-rvGRAlc3y+iS7AC9Os2joN91mX8wHpJ4TEklmHHxr7Gz2Juqa7fJmJ8wWxXNpTaRt56MQTwojxV5d82UW/+jwg==}
     engines: {node: '>= 14'}
     dependencies:
-      agent-base: 7.0.1
+      agent-base: 7.1.0
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color

@@ -14,7 +14,7 @@ import { WechatModule } from '@app/wechat';
 import type { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { Inject, Module, ValidationPipe } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PassportModule } from '@nestjs/passport';
@@ -89,22 +89,17 @@ import { WebPushModule } from './web-push/web-push.module';
       // default forbidUnknownValues: true, is too strict
       useClass: ValidationPipe,
     },
-    {
-      provide: 'APP_BOOTSTRAP',
-      inject: [BootstrapService],
-      useFactory: (bootstrapService: BootstrapService) => {
-        return bootstrapService.bootstrap();
-      },
-    },
   ],
 })
 export class AppModule implements NestModule {
   constructor(
     private readonly logger: LoggerService,
-    @Inject('APP_BOOTSTRAP') private readonly bootState: boolean,
+    private readonly bootstrapService: BootstrapService,
   ) {
     this.logger.setContext(AppModule.name);
-    this.logger.info(`APP_BOOTSTRAP: ${this.bootState ? 'success' : 'failed'}`);
+    this.bootstrapService.bootstrap().then(() => {
+      this.logger.info('bootstrap done');
+    });
   }
 
   configure(consumer: MiddlewareConsumer) {
