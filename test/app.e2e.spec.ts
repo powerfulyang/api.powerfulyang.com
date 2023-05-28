@@ -8,7 +8,7 @@ import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Authorization } from '@/constants/constants';
 import type { Cookie } from '@/common/interceptor/cookie.interceptor';
-import fastifyInstance from '@/fastify/hook';
+import { createFastifyInstance } from '@/fastify/hook';
 import { threadPool } from '@powerfulyang/node-utils';
 import FormData from 'form-data';
 import { join } from 'node:path';
@@ -23,6 +23,7 @@ describe('AppController (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
+    const fastifyInstance = createFastifyInstance();
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(fastifyInstance),
     );

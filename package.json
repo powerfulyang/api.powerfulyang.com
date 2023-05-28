@@ -13,15 +13,15 @@
   "author": "powerfulyang",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build -p tsconfig.build.json",
+    "build": "nest build --webpackPath webpack-build.config.js -p tsconfig.build.json",
     "codegen": "graphql-codegen --config codegen.ts",
     "postinstall": "npx husky install && node-gyp rebuild && prisma generate",
     "lint:js": "eslint src --ext .ts libs --ext .ts --fix",
     "precommit": "lint-staged",
     "prettier": "prettier --write \"src/**/*.ts\" \"libs/**/*.ts\"",
-    "prod:dev": "cross-env PORT=3001 APP_ENV=prod nest start --watch",
-    "qa:dev": "cross-env PORT=3001 APP_ENV=qa nest start --watch",
-    "start": "node dist/src/main.js",
+    "prod:dev": "cross-env PORT=3001 APP_ENV=prod nest build --webpackPath webpack-hmr.config.js --watch",
+    "qa:dev": "cross-env PORT=3001 APP_ENV=qa nest build --webpackPath webpack-hmr.config.js --watch",
+    "start": "node dist/main.js",
     "test:e2e": "jest --testRegex \"e2e\"",
     "test:unit": "jest --testPathIgnorePatterns \"e2e\"",
     "tsc-check": "tsc --noEmit"
@@ -117,7 +117,11 @@
     "node-gyp": "9.3.1",
     "prisma": "4.14.1",
     "prisma-json-types-generator": "2.4.0",
-    "typescript": "5.0.4"
+    "run-script-webpack-plugin": "0.2.0",
+    "swc-loader": "0.2.3",
+    "typescript": "5.0.4",
+    "webpack": "5.84.1",
+    "webpack-node-externals": "3.0.0"
   },
   "bundledDependencies": [
     "fastify"

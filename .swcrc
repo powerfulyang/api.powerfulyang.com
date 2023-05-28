@@ -1,11 +1,12 @@
 {
+  "$schema": "https://json.schemastore.org/swcrc",
   "sourceMaps": true,
   "module": {
     "type": "commonjs",
     "strict": true
   },
   "jsc": {
-    "target": "es2020",
+    "target": "esnext",
     "parser": {
       "syntax": "typescript",
       "tsx": false,
@@ -15,6 +16,8 @@
     "transform": {
       "legacyDecorator": true,
       "decoratorMetadata": true
-    }
-  }
+    },
+    "keepClassNames": true
+  },
+  "minify": true
 }
