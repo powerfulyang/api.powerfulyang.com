@@ -1,6 +1,6 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { Role } from '@/modules/user/entities/role.entity';
-import type { ExtendRequest } from '@/type/ExtendRequest';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const req = context.switchToHttp().getRequest<ExtendRequest>();
+    const req = context.switchToHttp().getRequest<FastifyExtendRequest>();
     const { user } = req;
     this.logger.debug(`User [id=${user.id}] is trying to access admin area`);
     const result = user.roles.some((role) => role.name === Role.IntendedRoles.admin);

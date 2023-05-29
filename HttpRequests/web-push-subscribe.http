@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/web-push/subscribe
+Content-Type: application/json
+
+{
+  "endpoint": "https://fcm.googleapis.com/fcm/send/.../.../..."
+}

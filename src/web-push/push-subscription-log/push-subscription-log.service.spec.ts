@@ -1,5 +1,5 @@
 import { LoggerModule } from '@/common/logger/logger.module';
-import type { User } from '@/modules/user/entities/user.entity';
+import { User } from '@/modules/user/entities/user.entity';
 import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.entity';
 import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
@@ -43,9 +43,7 @@ describe('PushSubscriptionLogService', () => {
         auth: 'auth',
       },
     };
-    const user = {
-      id: 1,
-    } as User;
+    const user = new User();
     findOne.mockReturnValueOnce(null);
     save.mockReturnValueOnce({
       id: 1,

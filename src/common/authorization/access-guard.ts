@@ -1,11 +1,11 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { Role } from '@/modules/user/entities/role.entity';
-import type { ExtendRequest } from '@/type/ExtendRequest';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { UploadFile } from '@/type/UploadFile';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 
-type AccessRequest = ExtendRequest & {
+type AccessRequest = FastifyExtendRequest & {
   body: {
     public?: boolean | string;
     assets?: UploadFile[];

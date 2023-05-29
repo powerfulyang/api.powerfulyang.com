@@ -9,3 +9,9 @@ export type InfiniteQueryParams<T> = {
 export type AuthorizationParams = {
   userIds?: User['id'][];
 };
+
+export const InfiniteQueryParamsSchema = () => {
+  const _Class = new (class {})();
+  Reflect.set(_Class, 'name', 'InfiniteQueryParamsSchema');
+  return _Class;
+};

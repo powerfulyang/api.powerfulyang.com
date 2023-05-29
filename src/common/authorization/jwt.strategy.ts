@@ -4,7 +4,7 @@ import type { jwtSecretConfig } from '@/configuration/jwt.config';
 import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import type { User } from '@/modules/user/entities/user.entity';
 import { UserService } from '@/modules/user/user.service';
-import type { ExtendRequest } from '@/type/ExtendRequest';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import type { FastifyRequest } from 'fastify';
@@ -27,7 +27,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate({ raw: { extend } }: ExtendRequest, user: User & { iat: number; exp: number }) {
+  async validate(
+    { raw: { extend } }: FastifyExtendRequest,
+    user: User & { iat: number; exp: number },
+  ) {
     // to check user status;
     const cachedUser = await this.userService.getCachedUser(user.id);
     if (!cachedUser) {

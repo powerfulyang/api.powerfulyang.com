@@ -1,11 +1,11 @@
 import type { User } from '@/modules/user/entities/user.entity';
-import type { ExtendRequest } from '@/type/ExtendRequest';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';
 import { flatten, pick } from 'lodash';
 
 export const AuthUser = createParamDecorator((keys: Array<keyof User>, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest<ExtendRequest>();
+  const request = ctx.switchToHttp().getRequest<FastifyExtendRequest>();
   if (keys?.length > 0) {
     return pick(request.user || {}, keys);
   }
@@ -21,6 +21,6 @@ export const getUserFamiliesMembers = (user?: User) => {
 };
 
 export const AuthFamilyMembersId = createParamDecorator((_: never, ctx: ExecutionContext) => {
-  const { user } = ctx.switchToHttp().getRequest<ExtendRequest>();
+  const { user } = ctx.switchToHttp().getRequest<FastifyExtendRequest>();
   return getUserFamiliesMembers(user).map(({ id }) => id);
 });

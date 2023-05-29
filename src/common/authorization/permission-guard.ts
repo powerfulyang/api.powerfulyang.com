@@ -1,6 +1,6 @@
 import { Permission } from '@/common/decorator/permissions.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
-import type { ExtendRequest } from '@/type/ExtendRequest';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -13,7 +13,7 @@ export class PermissionGuard implements CanActivate {
 
   canActivate(context: ExecutionContext) {
     const permissions = this.reflector.get<Permission[]>(Permission, context.getHandler()) || [];
-    const req = context.switchToHttp().getRequest<ExtendRequest>();
+    const req = context.switchToHttp().getRequest<FastifyExtendRequest>();
     const { user } = req;
     this.logger.debug(`Action needs permissions: ${permissions.join(', ')}`);
     const hasPermission = user.roles.some((role) => {

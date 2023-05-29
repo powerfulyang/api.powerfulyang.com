@@ -5,7 +5,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
 import { UserService } from '@/modules/user/user.service';
-import type { ExtendRequest } from '@/type/ExtendRequest';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import { DateTimeFormat } from '@/utils/dayjs';
 import { HOSTNAME } from '@/utils/hostname';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
@@ -37,7 +37,7 @@ export class ResponseInterceptor implements NestInterceptor {
 
     const ctx = context.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
-    const request = ctx.getRequest<ExtendRequest>();
+    const request = ctx.getRequest<FastifyExtendRequest>();
     const path = request.url;
     const { xRealIp } = request.raw.extend;
 

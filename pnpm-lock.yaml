@@ -125,8 +125,8 @@ dependencies:
     specifier: 0.61.0
     version: 0.61.0
   nodemailer:
-    specifier: 6.9.2
-    version: 6.9.2
+    specifier: 6.9.3
+    version: 6.9.3
   passport:
     specifier: 0.6.0
     version: 0.6.0
@@ -164,8 +164,8 @@ dependencies:
     specifier: 0.5.21
     version: 0.5.21
   tencentcloud-sdk-nodejs:
-    specifier: 4.0.607
-    version: 4.0.607
+    specifier: 4.0.608
+    version: 4.0.608
   typeorm:
     specifier: 0.3.16
     version: 0.3.16(ioredis@5.3.2)(pg@8.11.0)(ts-node@10.9.1)
@@ -10920,8 +10920,8 @@ packages:
       - supports-color
     dev: false
 
-  /nodemailer@6.9.2:
-    resolution: {integrity: sha512-4+TYaa/e1nIxQfyw/WzNPYTEZ5OvHIDEnmjs4LPmIfccPQN+2CYKmGHjWixn/chzD3bmUTu5FMfpltizMxqzdg==}
+  /nodemailer@6.9.3:
+    resolution: {integrity: sha512-fy9v3NgTzBngrMFkDsKEj0r02U7jm6XfC3b52eoNV+GCrGj+s8pt5OqhiJdWKuw51zCTdiNR/IUD1z33LIIGpg==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -13484,8 +13484,8 @@ packages:
     dev: false
     optional: true
 
-  /tencentcloud-sdk-nodejs@4.0.607:
-    resolution: {integrity: sha512-xRKNUmqfP0A3jnO90t+M9/IU6tV4FKK4wEoZVlReS2d1fiH/jRisqJLHhrinQt3dJ03HKG5vvb6SsSGldEFZ1A==}
+  /tencentcloud-sdk-nodejs@4.0.608:
+    resolution: {integrity: sha512-YOZtIcTzAHeZmJX2qotJH1DLyvoQdeEoizLU1iVEEtIy5zbyuNvpmFGWMHdMLsCuh2SY/L07MIIkGl3waXLQLg==}
     engines: {node: '>=10'}
     dependencies:
       form-data: 3.0.1
