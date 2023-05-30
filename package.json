@@ -58,7 +58,7 @@
     "cos-nodejs-sdk-v5": "2.12.1",
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
-    "firebase-admin": "11.8.0",
+    "firebase-admin": "11.9.0",
     "graphql": "16.6.0",
     "graphql-request": "6.1.0",
     "graphql-tag": "2.12.6",
