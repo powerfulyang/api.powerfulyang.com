@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@apollo/server':
@@ -68,8 +72,8 @@ dependencies:
     specifier: 4.14.1
     version: 4.14.1(prisma@4.14.1)
   '@waylaidwanderer/chatgpt-api':
-    specifier: 1.36.3
-    version: 1.36.3
+    specifier: 1.37.0
+    version: 1.37.0
   amqp-connection-manager:
     specifier: 4.1.13
     version: 4.1.13(amqplib@0.10.3)
@@ -3645,6 +3649,13 @@ packages:
       jsonc-parser: 3.2.0
     dev: true
 
+  /@timefox/bic-sydney@1.1.3:
+    resolution: {integrity: sha512-A50xHH4ucOttShpEGhejJRGqXwPH5cjPjrFSuFyDu0Y7p6XcQ0GaXDfjnNDIDrzDptr+dRgElK0akINsZse8sg==}
+    dependencies:
+      fetch-undici: 3.0.1
+      undici: 5.22.1
+    dev: false
+
   /@tootallnate/once@2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
@@ -4188,12 +4199,13 @@ packages:
       eslint-visitor-keys: 3.4.0
     dev: true
 
-  /@waylaidwanderer/chatgpt-api@1.36.3:
-    resolution: {integrity: sha512-98tHhxbX3p3TM9i+zHi3d1sjwwujRiCg5+cEUpBHeosQMLIe9nvkKL4lE7U5YSCuLOrwB8IlSP+dAxRQi0H1qg==}
+  /@waylaidwanderer/chatgpt-api@1.37.0:
+    resolution: {integrity: sha512-fJfNvfZliuzRlTEY2kb3u6psfAaFI88YSU1RJ6J865BRk90Km3k62br/npCGLCtbREklTR18bMYhNXVM/BuFow==}
     hasBin: true
     dependencies:
       '@dqbd/tiktoken': 1.0.6
       '@fastify/cors': 8.2.1
+      '@timefox/bic-sydney': 1.1.3
       '@waylaidwanderer/fastify-sse-v2': 3.1.0(fastify@4.17.0)
       '@waylaidwanderer/fetch-event-source': 3.0.1
       boxen: 7.0.2
@@ -4201,7 +4213,7 @@ packages:
       dotenv: 16.0.3
       fastify: 4.17.0
       fetch-undici: 3.0.1
-      https-proxy-agent: 6.1.0
+      https-proxy-agent: 7.0.0
       inquirer: 9.1.5
       inquirer-autocomplete-prompt: 3.0.0(inquirer@9.1.5)
       keyv: 4.5.2
@@ -7160,7 +7172,7 @@ packages:
     resolution: {integrity: sha512-UHHu1HqW22ZhK6C/1Zmjf7mQpOwPwLYZ+xcsOgpzistONU8QqvCop6Od29p/kw1GUVoq2Ihu6ItpKLtlojx4FQ==}
     engines: {node: '>=16'}
     dependencies:
-      undici: 5.22.0
+      undici: 5.22.1
     dev: false
 
   /figures@3.2.0:
@@ -8152,16 +8164,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /https-proxy-agent@6.1.0:
-    resolution: {integrity: sha512-rvGRAlc3y+iS7AC9Os2joN91mX8wHpJ4TEklmHHxr7Gz2Juqa7fJmJ8wWxXNpTaRt56MQTwojxV5d82UW/+jwg==}
-    engines: {node: '>= 14'}
-    dependencies:
-      agent-base: 7.1.0
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /https-proxy-agent@7.0.0:
     resolution: {integrity: sha512-0euwPCRyAPSgGdzD1IVN9nJYHtBhJwb6XPfbpQcYbPCwrBidX6GzxmchnaF4sfF/jPb74Ojx5g4yTg3sixlyPw==}
     engines: {node: '>= 14'}
@@ -8170,7 +8172,6 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /human-signals@1.1.1:
     resolution: {integrity: sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==}
@@ -14066,6 +14067,13 @@ packages:
 
   /undici@5.22.0:
     resolution: {integrity: sha512-fR9RXCc+6Dxav4P9VV/sp5w3eFiSdOjJYsbtWfd4s5L5C4ogyuVpdKIVHeW0vV1MloM65/f7W45nR9ZxwVdyiA==}
+    engines: {node: '>=14.0'}
+    dependencies:
+      busboy: 1.6.0
+    dev: false
+
+  /undici@5.22.1:
+    resolution: {integrity: sha512-Ji2IJhFXZY0x/0tVBXeQwgPlLWw13GVzpsWPQ3rV50IFMMof2I55PZZxtm4P6iNq+L5znYN9nSTAq0ZyE6lSJw==}
     engines: {node: '>=14.0'}
     dependencies:
       busboy: 1.6.0
