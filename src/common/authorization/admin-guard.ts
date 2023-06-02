@@ -1,5 +1,5 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { Role } from '@/modules/user/entities/role.entity';
+import { Role } from '@/user/entities/role.entity';
 import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';

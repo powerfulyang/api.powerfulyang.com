@@ -1,8 +1,8 @@
 import { LoggerModule } from '@/common/logger/logger.module';
 import { CoreModule } from '@/core/core.module';
-import { AssetModule } from '@/modules/asset/asset.module';
-import { TencentCloudAccountModule } from '@/modules/tencent-cloud-account/tencent-cloud-account.module';
-import { UserModule } from '@/modules/user/user.module';
+import { AssetModule } from '@/asset/asset.module';
+import { TencentCloudAccountModule } from '@/tencent-cloud-account/tencent-cloud-account.module';
+import { UserModule } from '@/user/user.module';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UdpServerModule } from 'api/udp-server';

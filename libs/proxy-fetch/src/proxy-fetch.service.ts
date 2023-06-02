@@ -34,7 +34,11 @@ export class ProxyFetchService {
   }
 
   async proxyFetchJson<T = any>(url: string, draft: RequestInit = this.opt): Promise<T> {
-    const res = await this.proxyFetch(url, draft);
-    return (await res.json()) as Promise<T>;
+    const res = await this.proxyFetch(url, {
+      ...this.opt,
+      ...draft,
+    });
+    const json = await res.json();
+    return json as T;
   }
 }

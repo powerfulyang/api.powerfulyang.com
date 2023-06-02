@@ -1,4 +1,4 @@
-import type { User } from '@/modules/user/entities/user.entity';
+import type { User } from '@/user/entities/user.entity';
 import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';

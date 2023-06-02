@@ -3,7 +3,7 @@ import { BodyPagination } from '@/common/decorator/pagination/pagination.decorat
 import { PaginatedBaseQuery } from '@/common/decorator/pagination/PaginationQuery';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
-import { User } from '@/modules/user/entities/user.entity';
+import { User } from '@/user/entities/user.entity';
 import { NotificationDto } from '@/web-push/dto/Notification.dto';
 import { PushSubscriptionLogService } from '@/web-push/push-subscription-log/push-subscription-log.service';
 import { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';

@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/tools/image2ascii
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: {{authorization}}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="E5GnI91UUAAtxqQ.jpeg"
+Content-Type: image/jpeg
+
+< ../assets-for-test/images/E5GnI91UUAAtxqQ.jpeg

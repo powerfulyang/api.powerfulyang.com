@@ -1,6 +1,6 @@
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
-import { UserService } from '@/modules/user/user.service';
+import { UserService } from '@/user/user.service';
 import { Strategy } from '@fastify/passport';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';

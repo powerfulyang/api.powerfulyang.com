@@ -27,7 +27,7 @@ describe('WebPushService', () => {
 
   it('send notification', async () => {
     const test_str = readFileSync(
-      join(process.cwd(), '__test__', 'test-push-subscription.json'),
+      join(process.cwd(), 'assets-for-test', 'test-push-subscription.json'),
       'utf-8',
     );
     const pushSubscription: PushSubscription = JSON.parse(test_str);

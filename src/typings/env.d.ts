@@ -33,8 +33,6 @@ declare module 'node:process' {
         PG_PASSWORD: string;
         PG_DATABASE: string;
 
-        SERVER_ORIGIN: string;
-
         WECHAT_OFFICIAL_ACCOUNT_APP_ID: string;
         WECHAT_OFFICIAL_ACCOUNT_APP_SECRET: string;
         WECHAT_OFFICIAL_ACCOUNT_TOKEN: string;

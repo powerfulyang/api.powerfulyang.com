@@ -1,5 +1,5 @@
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { ExcludeResponseInterceptorDecorator } from '@/common/decorator/exclude-response-interceptor.decorator';
+import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response-interceptor.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Controller, Query, Sse } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -19,7 +19,7 @@ export class ToolsController {
 
   @Sse('video-downloader')
   @ApiExcludeEndpoint()
-  @ExcludeResponseInterceptorDecorator()
+  @ExcludeResponseInterceptor()
   download(@Query('videoUrl') videoUrl: string) {
     const { downloadCommand, getFilenameCommand } = this.toolsService.yt_dlp(videoUrl);
     const download = spawn(downloadCommand, {
@@ -41,7 +41,7 @@ export class ToolsController {
     const downloadUrl$ = from(asyncExec(getFilenameCommand)).pipe(
       map((value) => {
         const filename = basename(value.stdout.trim());
-        const downloadUrl = `https://api.powerfulyang.com/yt-dlp/${filename}`;
+        const downloadUrl = `https://powerfulyang.com/yt-dlp/${filename}`;
         return {
           type: 'done',
           data: { downloadUrl },

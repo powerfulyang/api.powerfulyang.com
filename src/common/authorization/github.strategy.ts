@@ -1,8 +1,8 @@
 import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
 import { LoggerService } from '@/common/logger/logger.service';
-import { SERVER_ORIGIN } from '@/constants/constants';
+import { Default_Auth_Success_Target_Url } from '@/constants/constants';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import { SupportOauthApplication } from '@/modules/oauth-application/entities/oauth-application.entity';
+import { SupportOauthApplication } from '@/oauth-application/entities/oauth-application.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ProxyFetchService } from 'api/proxy-fetch';
@@ -31,7 +31,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthAppli
   }
 
   authenticate(req: any) {
-    const { redirect = SERVER_ORIGIN } = req.query;
+    const { redirect = Default_Auth_Success_Target_Url } = req.query;
     super.authenticate(req, {
       state: Buffer.from(redirect).toString('base64'),
     });

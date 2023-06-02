@@ -1,4 +1,4 @@
-import type { User } from '@/modules/user/entities/user.entity';
+import type { User } from '@/user/entities/user.entity';
 import type { FastifyRequest } from 'fastify';
 
 export interface FastifyExtendRequest extends FastifyRequest {
