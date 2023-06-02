@@ -2,6 +2,11 @@ const nodeExternals = require('webpack-node-externals');
 const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
 
 module.exports = (options, webpack) => {
+  // remove ForkTsCheckerWebpackPlugin
+  const plugins = options.plugins.filter((plugin) => {
+    return plugin.constructor.name !== 'ForkTsCheckerWebpackPlugin';
+  });
+
   return {
     ...options,
     entry: ['webpack/hot/poll?100', options.entry],
@@ -16,11 +21,17 @@ module.exports = (options, webpack) => {
           test: /.tsx?$/,
           use: 'swc-loader',
           exclude: /node_modules/,
+          // todo: fix swc-loader compatible
+          // options: {
+          //   getCustomTransformers: (program) => ({
+          //     before: [require('@nestjs/swagger/plugin').before({}, program)],
+          //   }),
+          // },
         },
       ],
     },
     plugins: [
-      ...options.plugins,
+      ...plugins,
       new webpack.HotModuleReplacementPlugin(),
       new webpack.WatchIgnorePlugin({
         paths: [/\.js$/, /\.d\.ts$/],

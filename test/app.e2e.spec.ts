@@ -3,7 +3,7 @@ import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
 import { AppModule } from '@/app.module';
-import { UserService } from '@/modules/user/user.service';
+import { UserService } from '@/user/user.service';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Authorization } from '@/constants/constants';
