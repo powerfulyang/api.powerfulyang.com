@@ -1,5 +1,5 @@
 import { LoggerModule } from '@/common/logger/logger.module';
-import { User } from '@/modules/user/entities/user.entity';
+import { User } from '@/user/entities/user.entity';
 import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.entity';
 import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';

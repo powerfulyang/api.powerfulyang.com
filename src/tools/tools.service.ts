@@ -27,4 +27,13 @@ export class ToolsService {
       downloadCommand,
     };
   }
+
+  image2ascii(url: string) {
+    const hash = sha1(url);
+    const downloadPath = join(process.cwd(), `assets/image2ascii/${hash}.txt`);
+    const downloadCommand = `image2ascii ${url} --proxy '${this.proxyUri}' --output '${downloadPath}'`;
+    return {
+      downloadCommand,
+    };
+  }
 }

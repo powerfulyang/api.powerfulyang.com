@@ -3,8 +3,8 @@ import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
 import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
-import { PathViewCountService } from '@/modules/path-view-count/path-view-count.service';
-import { UserService } from '@/modules/user/user.service';
+import { PathViewCountService } from '@/path-view-count/path-view-count.service';
+import { UserService } from '@/user/user.service';
 import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import { DateTimeFormat } from '@/utils/dayjs';
 import { HOSTNAME } from '@/utils/hostname';
@@ -75,7 +75,7 @@ export class ResponseInterceptor implements NestInterceptor {
         reply.header('x-server-path', path);
         const execTime = Date.now() - request.raw.extend.start;
         reply.header('x-server-exec-time', execTime);
-        this.logger.verbose(`exec time: ${execTime}ms`);
+        this.logger.verbose(`exec time: ${execTime}ms, response data: ${JSON.stringify(data)}`);
         // 不再做统一格式处理，直接返回原始数据
         return data;
       }),

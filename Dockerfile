@@ -12,7 +12,7 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/main" > /etc/apk/repositor
     && apk add --no-cache tzdata \
     && echo "Asia/Shanghai" > /etc/timezone \
     # node-gyp
-    && apk add --no-cache --virtual native-deps g++ gcc libgcc libstdc++ linux-headers make \
+    && apk add --no-cache --virtual native-deps g++ gcc libgcc libstdc++ linux-headers make graphicsmagick \
     # Support for patent-encumbered HEIC images  \
     # requires the use of a globally-installed libvips  \
     # compiled with support for libheif, libde265 and x265.

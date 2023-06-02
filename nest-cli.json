@@ -3,16 +3,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "webpack": true,
-    "deleteOutDir": true,
-    "plugins": [
-      {
-        "name": "@nestjs/swagger",
-        "options": {
-          "classValidatorShim": false,
-          "introspectComments": true
-        }
-      }
-    ]
+    "deleteOutDir": true
   },
   "projects": {
     "telegram-bot": {

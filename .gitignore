@@ -32,5 +32,8 @@ __generated__
 
 .credentials
 
-__test__/*
-!__test__/.gitkeep
+assets-for-test/*
+!assets-for-test/.gitkeep
+!assets-for-test/images
+
+http-client.private.env.json
