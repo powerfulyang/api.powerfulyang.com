@@ -1,4 +1,4 @@
-import type { CosBucket } from '@/modules/bucket/entities/bucket.entity';
+import type { CosBucket } from '@/bucket/entities/bucket.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type UploadFileMsg = { sha1: string; suffix: string } & Pick<CosBucket, 'name'>;

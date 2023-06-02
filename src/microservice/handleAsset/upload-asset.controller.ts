@@ -1,6 +1,6 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { MessagePatterns } from '@/constants/MessagePatterns';
-import { AssetService } from '@/modules/asset/asset.service';
+import { AssetService } from '@/asset/asset.service';
 import { UploadFileMsg } from '@/type/UploadFile';
 import { Controller } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';

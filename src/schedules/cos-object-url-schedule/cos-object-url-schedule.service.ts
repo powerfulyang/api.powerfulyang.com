@@ -1,7 +1,7 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
-import { AssetService } from '@/modules/asset/asset.service';
-import { UserService } from '@/modules/user/user.service';
+import { AssetService } from '@/asset/asset.service';
+import { UserService } from '@/user/user.service';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 

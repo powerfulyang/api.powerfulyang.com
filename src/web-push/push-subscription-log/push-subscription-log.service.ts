@@ -1,6 +1,6 @@
 import type { PaginatedBaseQuery } from '@/common/decorator/pagination/PaginationQuery';
 import { LoggerService } from '@/common/logger/logger.service';
-import type { User } from '@/modules/user/entities/user.entity';
+import type { User } from '@/user/entities/user.entity';
 import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.entity';
 import type { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';
 import { Injectable } from '@nestjs/common';
