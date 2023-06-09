@@ -150,8 +150,8 @@ dependencies:
     specifier: 8.11.0
     version: 8.11.0
   qqwry.ipdb:
-    specifier: 2023.5.24
-    version: 2023.5.24
+    specifier: 2023.6.7
+    version: 2023.6.7
   reflect-metadata:
     specifier: 0.1.13
     version: 0.1.13
@@ -210,7 +210,7 @@ devDependencies:
     version: 9.5.0(@swc/core@1.3.61)
   '@nestjs/schematics':
     specifier: 9.2.0
-    version: 9.2.0(chokidar@3.5.3)(typescript@4.9.5)
+    version: 9.2.0(typescript@5.1.3)
   '@nestjs/testing':
     specifier: 9.4.2
     version: 9.4.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/microservices@9.4.2)
@@ -3131,6 +3131,20 @@ packages:
       jsonc-parser: 3.2.0
       pluralize: 8.0.0
       typescript: 4.9.5
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
+  /@nestjs/schematics@9.2.0(typescript@5.1.3):
+    resolution: {integrity: sha512-wHpNJDPzM6XtZUOB3gW0J6mkFCSJilzCM3XrHI1o0C8vZmFE1snbmkIXNyoi1eV0Nxh1BMymcgz5vIMJgQtTqw==}
+    peerDependencies:
+      typescript: '>=4.3.5'
+    dependencies:
+      '@angular-devkit/core': 16.0.1(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.0.1(chokidar@3.5.3)
+      jsonc-parser: 3.2.0
+      pluralize: 8.0.0
+      typescript: 5.1.3
     transitivePeerDependencies:
       - chokidar
     dev: true
@@ -12002,8 +12016,8 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: true
 
-  /qqwry.ipdb@2023.5.24:
-    resolution: {integrity: sha512-2oBsF8j0KubYouJi64tKR3egWpFHGeP3jok5GRHq4oad8YToEbXwDLuv71yQbE4t6NFySX59Hrv2zmZh3r/GKw==}
+  /qqwry.ipdb@2023.6.7:
+    resolution: {integrity: sha512-NbZBm23Q0Nw8//vDl3OnobG5RVoQdIVr+MVSeMMJaadi5a9eZfUPhYZvJiwgfv2B9fDUjrYb3jrD0FykvY9vew==}
     dev: false
 
   /qrcode-generator@1.4.4:
