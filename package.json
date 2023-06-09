@@ -27,7 +27,7 @@
     "tsc-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@apollo/server": "4.7.2",
+    "@apollo/server": "4.7.3",
     "@as-integrations/fastify": "2.0.0",
     "@elastic/elasticsearch": "8.8.0",
     "@fastify/cookie": "8.3.0",
