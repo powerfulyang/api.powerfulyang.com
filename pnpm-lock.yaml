@@ -210,7 +210,7 @@ devDependencies:
     version: 9.5.0(@swc/core@1.3.61)
   '@nestjs/schematics':
     specifier: 9.2.0
-    version: 9.2.0(chokidar@3.5.3)(typescript@4.9.5)
+    version: 9.2.0(typescript@5.1.3)
   '@nestjs/testing':
     specifier: 9.4.2
     version: 9.4.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/microservices@9.4.2)
@@ -248,8 +248,8 @@ devDependencies:
     specifier: 0.31.1
     version: 0.31.1
   '@types/uuid':
-    specifier: 9.0.1
-    version: 9.0.1
+    specifier: 9.0.2
+    version: 9.0.2
   '@types/web-push':
     specifier: 3.3.2
     version: 3.3.2
@@ -3135,6 +3135,20 @@ packages:
       - chokidar
     dev: true
 
+  /@nestjs/schematics@9.2.0(typescript@5.1.3):
+    resolution: {integrity: sha512-wHpNJDPzM6XtZUOB3gW0J6mkFCSJilzCM3XrHI1o0C8vZmFE1snbmkIXNyoi1eV0Nxh1BMymcgz5vIMJgQtTqw==}
+    peerDependencies:
+      typescript: '>=4.3.5'
+    dependencies:
+      '@angular-devkit/core': 16.0.1(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.0.1(chokidar@3.5.3)
+      jsonc-parser: 3.2.0
+      pluralize: 8.0.0
+      typescript: 5.1.3
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
   /@nestjs/swagger@6.3.0(@fastify/static@6.10.2)(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(class-validator@0.14.0)(reflect-metadata@0.1.13):
     resolution: {integrity: sha512-Gnig189oa1tD+h0BYIfUwhp/wvvmTn6iO3csR2E4rQrDTgCxSxZDlNdfZo3AC+Rmf8u0KX4ZAX1RZN1qXTtC7A==}
     peerDependencies:
@@ -4028,8 +4042,8 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: false
 
-  /@types/uuid@9.0.1:
-    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
+  /@types/uuid@9.0.2:
+    resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
     dev: true
 
   /@types/validator@13.7.15:
