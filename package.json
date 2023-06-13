@@ -31,7 +31,7 @@
     "@as-integrations/fastify": "2.0.0",
     "@elastic/elasticsearch": "8.8.1",
     "@fastify/cookie": "8.3.0",
-    "@fastify/multipart": "7.6.0",
+    "@fastify/multipart": "7.6.1",
     "@fastify/passport": "2.3.0",
     "@fastify/static": "6.10.2",
     "@nestjs/apollo": "11.0.6",
