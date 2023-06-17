@@ -1,5 +1,5 @@
 import { User } from '@/user/entities/user.entity';
-import { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';
+import { PushSubscriptionJSONDto } from '@/web-push/dto/PushSubscriptionJSON.dto';
 import {
   Column,
   CreateDateColumn,
@@ -19,7 +19,7 @@ export class PushSubscriptionLog {
   @Column({
     type: 'jsonb',
   })
-  pushSubscriptionJSON: PushSubscriptionJSON;
+  pushSubscriptionJSON: PushSubscriptionJSONDto;
 
   @Index({
     unique: true,

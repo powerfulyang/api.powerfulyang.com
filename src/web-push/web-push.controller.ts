@@ -6,7 +6,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { User } from '@/user/entities/user.entity';
 import { NotificationDto } from '@/web-push/dto/Notification.dto';
 import { PushSubscriptionLogService } from '@/web-push/push-subscription-log/push-subscription-log.service';
-import { PushSubscriptionJSON } from '@/web-push/PushSubscriptionJSON';
+import { PushSubscriptionJSONDto } from '@/web-push/dto/PushSubscriptionJSON.dto';
 import { WebPushService } from '@/web-push/web-push.service';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -28,7 +28,7 @@ export class WebPushController {
     summary: '订阅推送',
     operationId: 'webPushSubscribe',
   })
-  subscribe(@Body() subscription: PushSubscriptionJSON, @AuthUser() user?: User) {
+  subscribe(@Body() subscription: PushSubscriptionJSONDto, @AuthUser() user?: User) {
     return this.pushSubscriptionLogService.subscribe(user, subscription);
   }
 

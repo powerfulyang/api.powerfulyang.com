@@ -1,7 +1,8 @@
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response-interceptor.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
-import { Controller, Query, Sse } from '@nestjs/common';
+import { OCRDto } from '@/tools/dto/OCR.dto';
+import { Body, Controller, Post, Query, Sse } from '@nestjs/common';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { exec, spawn } from 'node:child_process';
 import { basename } from 'node:path';
@@ -11,7 +12,6 @@ import { ToolsService } from './tools.service';
 
 @Controller('tools')
 @ApiTags('tools')
-@AdminAuthGuard()
 export class ToolsController {
   constructor(private readonly toolsService: ToolsService, private readonly logger: LoggerService) {
     this.logger.setContext(ToolsController.name);
@@ -20,6 +20,7 @@ export class ToolsController {
   @Sse('video-downloader')
   @ApiExcludeEndpoint()
   @ExcludeResponseInterceptor()
+  @AdminAuthGuard()
   download(@Query('videoUrl') videoUrl: string) {
     const { downloadCommand, getFilenameCommand } = this.toolsService.yt_dlp(videoUrl);
     const download = spawn(downloadCommand, {
@@ -50,5 +51,10 @@ export class ToolsController {
     );
 
     return concat(merge(data$, error$).pipe(takeUntil(close$)), downloadUrl$);
+  }
+
+  @Post('ocr')
+  ocr(@Body() { images, language }: OCRDto) {
+    return this.toolsService.ocr(images[0].data, language);
   }
 }

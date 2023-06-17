@@ -23,7 +23,7 @@ function IsValidKeys(validationOptions?: ValidationOptions) {
   };
 }
 
-export class PushSubscriptionJSON {
+export class PushSubscriptionJSONDto {
   @ApiProperty({
     required: false,
   })

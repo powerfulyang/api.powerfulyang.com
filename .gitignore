@@ -37,3 +37,5 @@ assets-for-test/*
 !assets-for-test/images
 
 http-client.private.env.json
+
+*.traineddata

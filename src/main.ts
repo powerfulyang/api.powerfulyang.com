@@ -1,5 +1,6 @@
 /* eslint-disable import/no-import-module-exports */
 import '@/loadEnv';
+import '@/metadata';
 import { LoggerService } from '@/common/logger/logger.service';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { Authorization } from '@/constants/constants';

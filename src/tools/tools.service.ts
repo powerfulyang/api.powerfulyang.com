@@ -1,13 +1,21 @@
 import { LoggerService } from '@/common/logger/logger.service';
+import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { sha1 } from '@powerfulyang/node-utils';
 import { ProxyFetchService } from 'api/proxy-fetch';
 import { join } from 'node:path';
 import process from 'node:process';
+import type Tesseract from 'tesseract.js';
+import type { ImageLike } from 'tesseract.js';
+import { createWorker } from 'tesseract.js';
 
 @Injectable()
-export class ToolsService {
+export class ToolsService implements OnModuleInit, OnModuleDestroy {
   private readonly proxyUri: string = '';
+
+  private engWorker: Tesseract.Worker;
+
+  private chsWorker: Tesseract.Worker;
 
   constructor(
     private readonly logger: LoggerService,
@@ -15,6 +23,20 @@ export class ToolsService {
   ) {
     this.logger.setContext(ToolsService.name);
     this.proxyUri = this.proxyFetchService.proxyUri;
+  }
+
+  async onModuleInit() {
+    this.engWorker = await createWorker();
+    await this.engWorker.loadLanguage('eng');
+    await this.engWorker.initialize('eng');
+    this.chsWorker = await createWorker();
+    await this.chsWorker.loadLanguage('chi_sim');
+    await this.chsWorker.initialize('chi_sim');
+  }
+
+  async onModuleDestroy() {
+    await this.engWorker.terminate();
+    await this.chsWorker.terminate();
   }
 
   yt_dlp(url: string) {
@@ -35,5 +57,17 @@ export class ToolsService {
     return {
       downloadCommand,
     };
+  }
+
+  async ocr(url: ImageLike, language: string = 'eng') {
+    if (language === 'eng') {
+      const res = await this.engWorker.recognize(url);
+      return res.data.text;
+    }
+    if (language === 'chi_sim') {
+      const res = await this.chsWorker.recognize(url);
+      return res.data.text;
+    }
+    throw new Error('Not Support Language');
   }
 }
