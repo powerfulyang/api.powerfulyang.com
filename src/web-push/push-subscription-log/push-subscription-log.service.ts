@@ -2,7 +2,7 @@ import type { PaginatedBaseQuery } from '@/common/decorator/pagination/Paginatio
 import { LoggerService } from '@/common/logger/logger.service';
 import type { User } from '@/user/entities/user.entity';
 import type { PushSubscriptionJSONDto } from '@/web-push/dto/PushSubscriptionJSON.dto';
-import { PushSubscriptionLog } from '@/web-push/entities/PushSubscriptionLog.entity';
+import { PushSubscriptionLog } from '@/web-push/entities/push-subscription-log.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

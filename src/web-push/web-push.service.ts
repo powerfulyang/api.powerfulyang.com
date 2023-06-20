@@ -1,6 +1,6 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { Injectable } from '@nestjs/common';
-import { ProxyFetchService } from 'api/proxy-fetch';
+import { ProxyFetchService } from '@/libs/proxy-fetch';
 import process from 'node:process';
 import type { PushSubscription } from 'web-push';
 import webPush from 'web-push';

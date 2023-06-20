@@ -2,14 +2,17 @@ import { PluginMetadataGenerator } from '@nestjs/cli/lib/compiler/plugins';
 import { ReadonlyVisitor } from '@nestjs/swagger/dist/plugin';
 
 const generator = new PluginMetadataGenerator();
-
 generator.generate({
-  filename: 'metadata.ts',
   visitors: [
     new ReadonlyVisitor({
-      introspectComments: false,
       pathToSource: __dirname,
       classValidatorShim: false,
+      dtoFileNameSuffix: ['.dto.ts', '.entity.ts'],
+      controllerFileNameSuffix: ['.controller.ts'],
+      dtoKeyOfComment: 'description',
+      controllerKeyOfComment: 'description',
+      introspectComments: false,
+      readonly: false,
     }),
   ],
   outputDir: __dirname,

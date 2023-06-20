@@ -1,6 +1,6 @@
 import { LoggerModule } from '@/common/logger/logger.module';
+import { ProxyFetchModule } from '@/libs/proxy-fetch';
 import { Module } from '@nestjs/common';
-import { ProxyFetchModule } from 'api/proxy-fetch';
 import { ToolsController } from './tools.controller';
 import { ToolsService } from './tools.service';
 

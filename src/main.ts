@@ -1,6 +1,6 @@
 /* eslint-disable import/no-import-module-exports */
 import '@/loadEnv';
-import '@/metadata';
+import metadata from '@/metadata';
 import { LoggerService } from '@/common/logger/logger.service';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { Authorization } from '@/constants/constants';
@@ -63,6 +63,7 @@ async function bootstrap(): Promise<void> {
     .setVersion('1.0')
     .addCookieAuth(Authorization)
     .build();
+  await SwaggerModule.loadPluginMetadata(metadata);
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/swagger', app, document);
 

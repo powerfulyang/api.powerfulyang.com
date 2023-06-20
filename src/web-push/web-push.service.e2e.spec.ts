@@ -1,8 +1,8 @@
 import { LoggerModule } from '@/common/logger/logger.module';
+import { ProxyFetchModule } from '@/libs/proxy-fetch';
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { ProxyFetchModule } from 'api/proxy-fetch';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';

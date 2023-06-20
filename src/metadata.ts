@@ -1,10 +1,6 @@
 /* eslint-disable */
-// @ts-nocheck
 export default async () => {
   const t = {
-    ['./oauth-application/entities/oauth-application.entity']: await import(
-      './oauth-application/entities/oauth-application.entity'
-    ).then((f) => f.SupportOauthApplication),
     ['./bucket/entities/bucket.entity']: await import('./bucket/entities/bucket.entity').then(
       (f) => f.CosBucket,
     ),
@@ -14,6 +10,12 @@ export default async () => {
     ['./user/entities/user.entity']: await import('./user/entities/user.entity').then(
       (f) => f.User,
     ),
+    ['./oauth-application/entities/support-oauth.application']: await import(
+      './oauth-application/entities/support-oauth.application'
+    ).then((f) => f.SupportOauthApplication),
+    ['./oauth-application/entities/oauth-application.entity']: await import(
+      './oauth-application/entities/oauth-application.entity'
+    ).then((f) => f.OauthApplication),
     ['./user/entities/menu.entity']: await import('./user/entities/menu.entity').then(
       (f) => f.Menu,
     ),
@@ -38,27 +40,19 @@ export default async () => {
     ['./web-push/dto/PushSubscriptionJSON.dto']: await import(
       './web-push/dto/PushSubscriptionJSON.dto'
     ).then((f) => f.PushSubscriptionJSONDto),
+    ['./feed/entities/feed.entity']: await import('./feed/entities/feed.entity').then(
+      (f) => f.Feed,
+    ),
+    ['./path-view-count/dto/view-count.dto']: await import(
+      './path-view-count/dto/view-count.dto'
+    ).then((f) => f.ViewCountDto),
+    ['./web-push/entities/push-subscription-log.entity']: await import(
+      './web-push/entities/push-subscription-log.entity'
+    ).then((f) => f.PushSubscriptionLog),
   };
   return {
     '@nestjs/swagger': {
       models: [
-        [
-          import('./oauth-application/entities/oauth-application.entity'),
-          {
-            OauthApplication: {
-              id: { required: true, type: () => Number },
-              platformName: {
-                required: true,
-                enum: t['./oauth-application/entities/oauth-application.entity'],
-              },
-              clientId: { required: true, type: () => String },
-              clientSecret: { required: true, type: () => String },
-              callbackUrl: { required: true, type: () => String },
-              createdAt: { required: true, type: () => Date },
-              updatedAt: { required: true, type: () => Date },
-            },
-          },
-        ],
         [
           import('./tencent-cloud-account/entities/tencent-cloud-account.entity'),
           {
@@ -124,6 +118,23 @@ export default async () => {
                 }),
               },
               uploadBy: { required: true, type: () => t['./user/entities/user.entity'] },
+              createdAt: { required: true, type: () => Date },
+              updatedAt: { required: true, type: () => Date },
+            },
+          },
+        ],
+        [
+          import('./oauth-application/entities/oauth-application.entity'),
+          {
+            OauthApplication: {
+              id: { required: true, type: () => Number },
+              platformName: {
+                required: true,
+                enum: t['./oauth-application/entities/support-oauth.application'],
+              },
+              clientId: { required: true, type: () => String },
+              clientSecret: { required: true, type: () => String },
+              callbackUrl: { required: true, type: () => String },
               createdAt: { required: true, type: () => Date },
               updatedAt: { required: true, type: () => Date },
             },
@@ -224,7 +235,7 @@ export default async () => {
             CreateOauthApplicationDto: {
               platformName: {
                 required: true,
-                enum: t['./oauth-application/entities/oauth-application.entity'],
+                enum: t['./oauth-application/entities/support-oauth.application'],
               },
               clientId: { required: true, type: () => String },
               clientSecret: { required: true, type: () => String },
@@ -436,7 +447,7 @@ export default async () => {
           },
         ],
         [
-          import('./web-push/entities/PushSubscriptionLog.entity'),
+          import('./web-push/entities/push-subscription-log.entity'),
           {
             PushSubscriptionLog: {
               id: { required: true, type: () => Number },
@@ -464,17 +475,23 @@ export default async () => {
           },
         ],
         [
-          import('./oauth-application/dto/update-oauth-application.dto'),
-          { UpdateOauthApplicationDto: {} },
+          import('./fix-swagger-helper.entity'),
+          {
+            FixSwaggerHelperEntity: {
+              feed: { required: true, type: () => t['./feed/entities/feed.entity'] },
+              viewCountDto: {
+                required: true,
+                type: () => t['./path-view-count/dto/view-count.dto'],
+              },
+              pushSubscriptionLog: {
+                required: true,
+                type: () => t['./web-push/entities/push-subscription-log.entity'],
+              },
+            },
+          },
         ],
-        [import('./oauth-openid/dto/create-oauth-openid.dto'), { CreateOauthOpenidDto: {} }],
-        [import('./oauth-openid/dto/update-oauth-openid.dto'), { UpdateOauthOpenidDto: {} }],
         [
-          import('./tencent-cloud-account/dto/update-tencent-cloud-account.dto'),
-          { UpdateTencentCloudAccountDto: {} },
-        ],
-        [
-          import('../libs/word-book/src/entities/word-book.entity'),
+          import('./libs/word-book/entities/word-book.entity'),
           {
             WordBook: {
               id: { required: true, type: () => Number },
@@ -489,6 +506,16 @@ export default async () => {
               updatedAt: { required: true, type: () => Date },
             },
           },
+        ],
+        [
+          import('./oauth-application/dto/update-oauth-application.dto'),
+          { UpdateOauthApplicationDto: {} },
+        ],
+        [import('./oauth-openid/dto/create-oauth-openid.dto'), { CreateOauthOpenidDto: {} }],
+        [import('./oauth-openid/dto/update-oauth-openid.dto'), { UpdateOauthOpenidDto: {} }],
+        [
+          import('./tencent-cloud-account/dto/update-tencent-cloud-account.dto'),
+          { UpdateTencentCloudAccountDto: {} },
         ],
       ],
       controllers: [
@@ -556,6 +583,22 @@ export default async () => {
             },
           },
         ],
+        [import('./libs/github/github.controller'), { GithubController: { getUserInfo: {} } }],
+        [
+          import('./libs/wechat/mini-program.controller'),
+          {
+            MiniProgramController: {
+              checkSignature: {},
+              handleMessage: {},
+              code2Session: { type: Object },
+              getUnlimitedQRCode: {},
+            },
+          },
+        ],
+        [
+          import('./libs/wechat/official-account.controller'),
+          { OfficialAccountController: { checkSignature: {}, handleOfficialAccountMessage: {} } },
+        ],
         [
           import('./asset/asset.controller'),
           {
@@ -572,31 +615,6 @@ export default async () => {
           import('./schedule/schedule.controller'),
           { ScheduleController: { RunScheduleByRequest: { type: String } } },
         ],
-        [
-          import('../libs/wechat/src/mini-program.controller'),
-          {
-            MiniProgramController: {
-              checkSignature: {},
-              handleMessage: {},
-              code2Session: { type: Object },
-              getUnlimitedQRCode: {},
-            },
-          },
-        ],
-        [
-          import('../libs/wechat/src/official-account.controller'),
-          { OfficialAccountController: { checkSignature: {}, handleOfficialAccountMessage: {} } },
-        ],
-        [
-          import('../libs/logs-viewer/src/logs-viewer.controller'),
-          {
-            LogsViewerController: {
-              listContainers: { type: [String] },
-              listLogs: { type: [String] },
-            },
-          },
-        ],
-        [import('../libs/github/src/github.controller'), { GithubController: { getUserInfo: {} } }],
         [import('./fcm/fcm.controller'), { FcmController: { subscribe: {} } }],
         [
           import('./microservice/handleAsset/upload-asset.controller'),
@@ -641,7 +659,6 @@ export default async () => {
               infiniteQueryPublicTimeline: {},
               infiniteQueryPublicAsset: {},
               getPublicAssetById: { type: t['./asset/entities/asset.entity'] },
-              chatWithChatGPT: { type: t['./payload/ChatGPTPayload'] },
               viewCount: { type: [t['./path-view-count/dto/view-count.dto']] },
             },
           },
@@ -655,7 +672,7 @@ export default async () => {
           import('./web-push/web-push.controller'),
           {
             WebPushController: {
-              subscribe: { type: t['./web-push/entities/PushSubscriptionLog.entity'] },
+              subscribe: { type: t['./web-push/entities/push-subscription-log.entity'] },
               list: {},
               sendNotification: {},
             },

@@ -8,9 +8,10 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { RequestMiddleware } from '@/common/middleware/request.middleware';
 import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
 import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
+import { GithubModule } from '@/libs/github';
+import { WechatModule } from '@/libs/wechat';
 import { PathViewCountModule } from '@/path-view-count/path-view-count.module';
 import { ScheduleModule } from '@/schedule/schedule.module';
-import { WechatModule } from '@app/wechat';
 import type { ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloDriver } from '@nestjs/apollo';
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
@@ -18,9 +19,6 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PassportModule } from '@nestjs/passport';
-import { LogsViewerModule } from 'api/logs-viewer';
-import { UdpServerModule } from 'api/udp-server';
-import { GithubModule } from 'app/github';
 import { join } from 'node:path';
 import process from 'node:process';
 import { AssetModule } from '@/asset/asset.module';
@@ -51,7 +49,6 @@ import { WebPushModule } from './web-push/web-push.module';
     GithubModule,
     BucketModule,
     AssetModule,
-    UdpServerModule,
     PostModule,
     PublicModule,
     PathViewCountModule,
@@ -61,7 +58,6 @@ import { WebPushModule } from './web-push/web-push.module';
     OauthOpenidModule,
     TencentCloudAccountModule,
     OauthApplicationModule,
-    LogsViewerModule,
     WechatModule,
     ToolsModule,
     FcmModule,

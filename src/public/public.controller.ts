@@ -1,21 +1,19 @@
-import { JwtAuthGuard, PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { AssetService } from '@/asset/asset.service';
+import { Asset } from '@/asset/entities/asset.entity';
+import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ClientTimezone } from '@/common/decorator/client-timezone';
 import { AuthFamilyMembersId, AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { InfiniteQueryRequest } from '@/common/request/InfiniteQueryRequest';
 import { ApiOkInfiniteQueryResponse } from '@/common/swagger/ApiOkInfiniteQueryResponse';
-import { AssetService } from '@/asset/asset.service';
-import { Asset } from '@/asset/entities/asset.entity';
 import { Feed } from '@/feed/entities/feed.entity';
-import { Post as _Post } from '@/post/entities/post.entity';
 import { FeedService } from '@/feed/feed.service';
 import { PathViewCountService } from '@/path-view-count/path-view-count.service';
 import { SearchPostDto } from '@/post/dto/search-post.dto';
+import { Post as _Post } from '@/post/entities/post.entity';
 import { PostService } from '@/post/post.service';
 import { User } from '@/user/entities/user.entity';
-import { ChatGPTPayload } from '@/payload/ChatGPTPayload';
-import { ChatGptService } from '@app/chat-gpt';
-import { Body, Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('open')
@@ -27,7 +25,6 @@ export class PublicController {
     private readonly assetService: AssetService,
     private readonly postService: PostService,
     private readonly feedService: FeedService,
-    private readonly chatGptService: ChatGptService,
     private readonly pathViewCountService: PathViewCountService,
   ) {
     this.logger.setContext(PublicController.name);
@@ -152,23 +149,6 @@ export class PublicController {
   })
   getPublicAssetById(@Param('id') id: string, @AuthFamilyMembersId() userIds: User['id'][]) {
     return this.assetService.getAccessAssetById(+id, userIds);
-  }
-
-  @Post('/chat-gpt/chat')
-  @JwtAuthGuard()
-  @ApiOperation({
-    summary: '与chat gpt聊天',
-    operationId: 'chatWithChatGPT',
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: ChatGPTPayload,
-  })
-  chatWithChatGPT(@Body() body: ChatGPTPayload) {
-    return this.chatGptService.sendMessage(body.message, {
-      parentMessageId: body.parentMessageId,
-      conversationId: body.conversationId,
-    });
   }
 
   @Get('view-count')

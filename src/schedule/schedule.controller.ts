@@ -4,7 +4,6 @@ import { CosObjectUrlScheduleService } from '@/schedules/cos-object-url-schedule
 import { InstagramScheduleService } from '@/schedules/instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from '@/schedules/pinterest-schedule/pinterest-schedule.service';
 import { PixivScheduleService } from '@/schedules/pixiv-schedule/pixiv-schedule.service';
-import { UdpScheduleService } from '@/schedules/udp-schedule/udp-schedule.service';
 import { Controller, ForbiddenException, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -16,7 +15,6 @@ export class ScheduleController {
     private pixivScheduleService: PixivScheduleService,
     private instagramScheduleService: InstagramScheduleService,
     private pinterestScheduleService: PinterestScheduleService,
-    private udpScheduleService: UdpScheduleService,
     private cosObjectUrlScheduleService: CosObjectUrlScheduleService,
   ) {}
 
@@ -38,9 +36,6 @@ export class ScheduleController {
         break;
       case ScheduleType.pixiv:
         this.pixivScheduleService.main();
-        break;
-      case ScheduleType.udp:
-        this.udpScheduleService.healthCheck();
         break;
       case ScheduleType.cosObjectUrlRefresh:
         await this.cosObjectUrlScheduleService.main();

@@ -7,13 +7,14 @@ import { ConfigService } from '@/common/config/config.service';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { JWT_SECRET_CONFIG, OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import type { OauthApplication } from '@/oauth-application/entities/oauth-application.entity';
-import { SupportOauthApplication } from '@/oauth-application/entities/oauth-application.entity';
+
+import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import { OauthApplicationModule } from '@/oauth-application/oauth-application.module';
 import { OauthApplicationService } from '@/oauth-application/oauth-application.service';
 import { UserModule } from '@/user/user.module';
 import type { Provider } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { ProxyFetchModule } from 'api/proxy-fetch';
+import { ProxyFetchModule } from '@/libs/proxy-fetch';
 
 export declare type OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE = {
   [key in SupportOauthApplication]: OauthApplication;

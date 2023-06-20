@@ -1,5 +1,6 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import type { SupportOauthApplication } from '@/oauth-application/entities/oauth-application.entity';
+
+import type { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import { OauthApplicationService } from '@/oauth-application/oauth-application.service';
 import { OauthOpenid } from '@/oauth-openid/entities/oauth-openid.entity';
 import type { User } from '@/user/entities/user.entity';

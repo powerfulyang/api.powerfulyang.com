@@ -1,8 +1,8 @@
+import { TencentCloudCosService } from '@/libs/tencent-cloud-cos';
 import type { CreateTencentCloudAccountDto } from '@/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
 import { TencentCloudAccount } from '@/tencent-cloud-account/entities/tencent-cloud-account.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TencentCloudCosService } from 'api/tencent-cloud-cos';
 import { Repository } from 'typeorm';
 
 @Injectable()

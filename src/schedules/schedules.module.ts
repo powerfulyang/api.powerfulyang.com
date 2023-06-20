@@ -5,17 +5,14 @@ import { TencentCloudAccountModule } from '@/tencent-cloud-account/tencent-cloud
 import { UserModule } from '@/user/user.module';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { UdpServerModule } from 'api/udp-server';
 import { CosObjectUrlScheduleService } from './cos-object-url-schedule/cos-object-url-schedule.service';
 import { InstagramScheduleService } from './instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from './pinterest-schedule/pinterest-schedule.service';
 import { PixivScheduleService } from './pixiv-schedule/pixiv-schedule.service';
-import { UdpScheduleService } from './udp-schedule/udp-schedule.service';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(), // 其实可以选择禁用。
-    UdpServerModule,
     AssetModule,
     TencentCloudAccountModule,
     LoggerModule,
@@ -26,14 +23,12 @@ import { UdpScheduleService } from './udp-schedule/udp-schedule.service';
     PixivScheduleService,
     InstagramScheduleService,
     PinterestScheduleService,
-    UdpScheduleService,
     CosObjectUrlScheduleService,
   ],
   exports: [
     PixivScheduleService,
     InstagramScheduleService,
     PinterestScheduleService,
-    UdpScheduleService,
     CosObjectUrlScheduleService,
   ],
 })

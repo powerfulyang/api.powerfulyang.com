@@ -3,7 +3,8 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { BaseService } from '@/common/service/base/BaseService';
 import { MailService } from '@/common/service/mail/mail.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import type { SupportOauthApplication } from '@/oauth-application/entities/oauth-application.entity';
+
+import type { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import { OauthOpenidService } from '@/oauth-openid/oauth-openid.service';
 import type { EditUserDto } from '@/user/dto/edit-user.dto';
 import type { QueryUsersDto } from '@/user/dto/query-users.dto';

@@ -10,7 +10,8 @@ import { CookieInterceptor } from '@/common/interceptor/cookie.interceptor';
 import { RedirectInterceptor } from '@/common/interceptor/redirect.interceptor';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
-import { SupportOauthApplication } from '@/oauth-application/entities/oauth-application.entity';
+
+import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import { UserLoginDto } from '@/user/dto/user-login.dto';
 import { User } from '@/user/entities/user.entity';
 import { UserService } from '@/user/user.service';

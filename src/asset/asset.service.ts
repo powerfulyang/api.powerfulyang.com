@@ -1,3 +1,4 @@
+import { getEXIF } from '@/addon';
 import { LoggerService } from '@/common/logger/logger.service';
 import { BaseService } from '@/common/service/base/BaseService';
 import { MqService } from '@/common/service/mq/mq.service';
@@ -6,13 +7,16 @@ import type { QueryAssetsDto } from '@/asset/dto/query-assets.dto';
 import { Asset } from '@/asset/entities/asset.entity';
 import { BucketService } from '@/bucket/bucket.service';
 import type { CosBucket } from '@/bucket/entities/bucket.entity';
+import { InstagramBotService } from '@/libs/instagram-bot';
+import { PinterestBotService } from '@/libs/pinterest-bot';
+import type { PinterestInterface } from '@/libs/pinterest-bot/pinterest.interface';
+import { PixivBotService } from '@/libs/pixiv-bot';
 import { TencentCloudAccountService } from '@/tencent-cloud-account/tencent-cloud-account.service';
 import type { User } from '@/user/entities/user.entity';
 import { UserService } from '@/user/user.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
-import { getEXIF } from '@addon/index';
 import {
   HttpStatus,
   Injectable,
@@ -23,11 +27,7 @@ import {
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { asyncCalculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
-import { InstagramBotService } from 'api/instagram-bot';
-import { PinterestBotService } from 'api/pinterest-bot';
-import type { PinterestInterface } from 'api/pinterest-bot/pinterest.interface';
-import { PixivBotService } from 'api/pixiv-bot';
-import { ProxyFetchService } from 'api/proxy-fetch';
+import { ProxyFetchService } from '@/libs/proxy-fetch';
 import fetch from 'node-fetch';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, extname, join } from 'node:path';

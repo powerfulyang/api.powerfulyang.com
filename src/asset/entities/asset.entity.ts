@@ -1,5 +1,5 @@
+import { Exif } from '@/addon/types/Exif';
 import { User } from '@/user/entities/user.entity';
-import { Exif } from '@addon/types/Exif';
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata } from 'sharp';
 import {

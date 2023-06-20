@@ -4,14 +4,14 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: 'github-schema.graphql',
   generates: {
-    'libs/github/src/__generated__/github-graphql.ts': {
+    'src/libs/github/__generated__/github-graphql.ts': {
       plugins: [
         'typescript',
         'typescript-operations',
         'typescript-graphql-request',
         {
           add: {
-            content: 'import "graphql";',
+            content: `import 'graphql';`,
           },
         },
       ],
@@ -20,7 +20,7 @@ const config: CodegenConfig = {
       },
     },
   },
-  documents: 'libs/github/src/graphql/*.graphql',
+  documents: 'src/libs/github/graphql/*.graphql',
 };
 
 export default config;

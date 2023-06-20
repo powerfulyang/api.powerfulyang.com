@@ -5,6 +5,6 @@ export class OCRDto {
   @ApiProperty({ type: 'array', items: { type: 'file', format: 'binary' } })
   images: UploadFile[];
 
-  @ApiProperty()
+  // @ApiProperty()
   language?: string;
 }

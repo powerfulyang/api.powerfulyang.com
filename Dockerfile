@@ -4,7 +4,7 @@ FROM node:lts-alpine AS dependencies
 WORKDIR /usr/app
 
 COPY package.json pnpm-lock.yaml .npmrc binding.gyp ./
-COPY addon-api ./addon-api
+COPY addon ./addon
 
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/main" > /etc/apk/repositories \
     && echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/community" >> /etc/apk/repositories \

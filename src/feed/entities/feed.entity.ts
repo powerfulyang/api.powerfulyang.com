@@ -13,7 +13,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('feed')
 export class Feed {
   @PrimaryGeneratedColumn()
   @ApiProperty()

@@ -1,3 +1,4 @@
+import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import {
   Column,
   CreateDateColumn,
@@ -6,18 +7,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export enum SupportOauthApplication {
-  google = 'google',
-  github = 'github',
-  test = 'test',
-}
-
 @Entity()
 export class OauthApplication {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, type: 'varchar' })
   platformName: SupportOauthApplication;
 
   @Column({ select: false })
