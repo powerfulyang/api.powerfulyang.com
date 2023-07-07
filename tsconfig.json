@@ -3,15 +3,14 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "declaration": true,
-    "rootDir": "src",
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext"],
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": ".",
     "incremental": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -22,11 +21,12 @@
     "strict": true,
     "skipLibCheck": true,
     "useUnknownInCatchVariables": true,
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     },
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "libs/**/*.ts", "test", "addon-api/**/*.ts", "codegen.ts"]
+  "include": ["src/**/*.ts", "codegen.ts", "test"]
 }

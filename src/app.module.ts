@@ -34,6 +34,7 @@ import { TencentCloudAccountModule } from '@/tencent-cloud-account/tencent-cloud
 import { UserModule } from '@/user/user.module';
 import { ToolsModule } from './tools/tools.module';
 import { WebPushModule } from './web-push/web-push.module';
+import { ClickUpModule } from './click-up/click-up.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { WebPushModule } from './web-push/web-push.module';
     ToolsModule,
     FcmModule,
     WebPushModule,
+    ClickUpModule,
   ],
   providers: [
     {

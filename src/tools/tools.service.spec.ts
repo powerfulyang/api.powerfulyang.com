@@ -1,7 +1,7 @@
 import { TEST_ASSETS_IMAGES } from '@/constants/test_constants';
 import { ToolsModule } from '@/tools/tools.module';
 import { ToolsService } from '@/tools/tools.service';
-import { afterAll, beforeAll, describe, expect, it, jest } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { readFileSync } from 'node:fs';
@@ -12,7 +12,6 @@ describe('HelloService', () => {
   let module: TestingModule;
 
   beforeAll(async () => {
-    jest.setTimeout(1000 * 10);
     module = await Test.createTestingModule({
       imports: [ToolsModule],
     }).compile();

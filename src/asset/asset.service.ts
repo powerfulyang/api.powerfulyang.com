@@ -25,7 +25,7 @@ import {
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { asyncCalculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
+import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 import fetch from 'node-fetch';
@@ -72,7 +72,7 @@ export class AssetService extends BaseService {
     const assets = await this.assetDao.find({
       select: ['id', 'pHash'],
     });
-    const distanceMap = await asyncCalculateHammingDistances(
+    const distanceMap = await calculateHammingDistances(
       assets.map((asset) => {
         return {
           id: asset.id,

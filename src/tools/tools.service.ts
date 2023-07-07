@@ -1,7 +1,7 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
-import { sha1, threadPool } from '@powerfulyang/node-utils';
+import { sha1 } from '@powerfulyang/node-utils';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 import { join } from 'node:path';
 import process from 'node:process';
@@ -37,7 +37,6 @@ export class ToolsService implements OnModuleInit, OnModuleDestroy {
   async onModuleDestroy() {
     await this.engWorker.terminate();
     await this.chsWorker.terminate();
-    await threadPool.destroy();
   }
 
   yt_dlp(url: string) {
