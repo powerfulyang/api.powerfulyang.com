@@ -1,6 +1,6 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
-import { BaseService } from '@/common/service/base/BaseService';
+import { AlgoliaService } from '@/service/algolia/AlgoliaService';
+import { BaseService } from '@/service/base/BaseService';
 import { BuiltinBucket } from '@/bucket/entities/bucket.entity';
 import type { QueryFeedsDto } from '@/feed/dto/query-feeds.dto';
 import { Feed } from '@/feed/entities/feed.entity';

@@ -23,9 +23,6 @@ export const DefaultCookieOptions: CookieSerializeOptions = {
   sameSite: 'strict',
   secure: !isDevProcess,
   domain: 'powerfulyang.com',
-  /**
-   * If both Expires and Max-Age are set, Max-Age has precedence.
-   */
   maxAge: 24 * 60 * 60, // hours * minutes * seconds
   path: '/',
 };

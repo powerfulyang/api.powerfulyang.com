@@ -1,4 +1,4 @@
 {
   "upgrade": true,
-  "reject": ["node-fetch", "chalk", "sharp"]
+  "reject": ["node-fetch", "chalk"]
 }

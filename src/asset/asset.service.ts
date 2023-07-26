@@ -1,7 +1,7 @@
 import { getEXIF } from '@/addon';
 import { LoggerService } from '@/common/logger/logger.service';
-import { BaseService } from '@/common/service/base/BaseService';
-import { MqService } from '@/common/service/mq/mq.service';
+import { BaseService } from '@/service/base/BaseService';
+import { MqService } from '@/service/mq/mq.service';
 import { ScheduleType } from '@/enum/ScheduleType';
 import type { QueryAssetsDto } from '@/asset/dto/query-assets.dto';
 import { Asset } from '@/asset/entities/asset.entity';

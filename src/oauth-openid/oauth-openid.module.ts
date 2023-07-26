@@ -1,5 +1,5 @@
 import { LoggerModule } from '@/common/logger/logger.module';
-import { OrmModule } from '@/common/service/orm/orm.module';
+import { OrmModule } from '@/service/typeorm/orm.module';
 import { OauthApplicationModule } from '@/oauth-application/oauth-application.module';
 import { OauthOpenid } from '@/oauth-openid/entities/oauth-openid.entity';
 import { Module } from '@nestjs/common';

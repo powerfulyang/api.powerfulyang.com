@@ -1,5 +1,5 @@
 import { LoggerModule } from '@/common/logger/logger.module';
-import { OrmModule } from '@/common/service/orm/orm.module';
+import { OrmModule } from '@/service/typeorm/orm.module';
 import { PushSubscriptionLog } from '@/web-push/entities/push-subscription-log.entity';
 import { PushSubscriptionLogService } from '@/web-push/push-subscription-log/push-subscription-log.service';
 import { Module } from '@nestjs/common';

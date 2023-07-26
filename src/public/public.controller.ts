@@ -4,7 +4,7 @@ import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ClientTimezone } from '@/common/decorator/client-timezone';
 import { AuthFamilyMembersId, AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
-import { InfiniteQueryRequest } from '@/common/request/InfiniteQueryRequest';
+import { InfiniteQueryRequest } from '@/type/InfiniteQueryRequest';
 import { ApiOkInfiniteQueryResponse } from '@/common/swagger/ApiOkInfiniteQueryResponse';
 import { Feed } from '@/feed/entities/feed.entity';
 import { FeedService } from '@/feed/feed.service';

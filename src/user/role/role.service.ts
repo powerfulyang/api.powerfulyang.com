@@ -1,5 +1,5 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { BaseService } from '@/common/service/base/BaseService';
+import { BaseService } from '@/service/base/BaseService';
 import type { CreateRoleDto } from '@/user/dto/create-role.dto';
 import type { QueryRolesDto } from '@/user/dto/query-roles.dto';
 import { Menu } from '@/user/entities/menu.entity';

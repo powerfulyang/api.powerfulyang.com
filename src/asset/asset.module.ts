@@ -1,7 +1,7 @@
 import { LoggerModule } from '@/common/logger/logger.module';
-import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
-import { MqModule } from '@/common/service/mq/mq.module';
-import { OrmModule } from '@/common/service/orm/orm.module';
+import { AlgoliaService } from '@/service/algolia/AlgoliaService';
+import { MqModule } from '@/service/mq/mq.module';
+import { OrmModule } from '@/service/typeorm/orm.module';
 import { CoreModule } from '@/core/core.module';
 import { Asset } from '@/asset/entities/asset.entity';
 import { BucketModule } from '@/bucket/bucket.module';

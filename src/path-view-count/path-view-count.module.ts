@@ -1,6 +1,6 @@
 import { CacheModule } from '@/common/cache/cache.module';
 import { LoggerModule } from '@/common/logger/logger.module';
-import { OrmModule } from '@/common/service/orm/orm.module';
+import { OrmModule } from '@/service/typeorm/orm.module';
 import { PathViewCount } from '@/path-view-count/entities/path-view-count.entity';
 import { PathViewCountService } from '@/path-view-count/path-view-count.service';
 import { Module } from '@nestjs/common';

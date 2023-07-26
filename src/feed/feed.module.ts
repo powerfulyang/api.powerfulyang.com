@@ -1,6 +1,6 @@
 import { LoggerModule } from '@/common/logger/logger.module';
-import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
-import { OrmModule } from '@/common/service/orm/orm.module';
+import { AlgoliaService } from '@/service/algolia/AlgoliaService';
+import { OrmModule } from '@/service/typeorm/orm.module';
 import { AssetModule } from '@/asset/asset.module';
 import { Feed } from '@/feed/entities/feed.entity';
 import { FeedManageController } from '@/feed/feed-manage.controller';

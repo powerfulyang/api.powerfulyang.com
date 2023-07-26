@@ -1,7 +1,7 @@
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import { BaseService } from '@/common/service/base/BaseService';
-import { MailService } from '@/common/service/mail/mail.service';
+import { BaseService } from '@/service/base/BaseService';
+import { MailService } from '@/service/mail/mail.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 
 import type { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
@@ -97,10 +97,13 @@ export class UserService extends BaseService {
     const keyCount = await this.cacheService.del(REDIS_KEYS.USERS);
     this.logger.debug(`初始化用户缓存，删除缓存${keyCount ? '成功' : '失败'}`);
     const users = await this.queryUserCascadeInfo();
-    const userMap = users.reduce((acc, user) => {
-      Reflect.set(acc, user.id, JSON.stringify(user));
-      return acc;
-    }, {} as Record<string, User>);
+    const userMap = users.reduce(
+      (acc, user) => {
+        Reflect.set(acc, user.id, JSON.stringify(user));
+        return acc;
+      },
+      {} as Record<string, User>,
+    );
     if (users.length) {
       const num = await this.cacheService.hset(REDIS_KEYS.USERS, userMap);
       this.logger.debug(`缓存 ${num} 个用户`);

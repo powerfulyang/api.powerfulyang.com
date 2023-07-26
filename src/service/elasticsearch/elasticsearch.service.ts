@@ -1,14 +1,14 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { Injectable } from '@nestjs/common';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { ElasticsearchService as _ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
-export class EsService {
+export class ElasticsearchService {
   constructor(
-    private readonly elasticsearchService: ElasticsearchService,
+    private readonly elasticsearchService: _ElasticsearchService,
     private readonly logger: LoggerService,
   ) {
-    this.logger.setContext(EsService.name);
+    this.logger.setContext(ElasticsearchService.name);
   }
 
   getEsClient() {

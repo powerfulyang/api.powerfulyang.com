@@ -1,7 +1,7 @@
 import { AssetService } from '@/asset/asset.service';
 import { LoggerService } from '@/common/logger/logger.service';
-import { AlgoliaService } from '@/common/service/algolia/AlgoliaService';
-import { BaseService } from '@/common/service/base/BaseService';
+import { AlgoliaService } from '@/service/algolia/AlgoliaService';
+import { BaseService } from '@/service/base/BaseService';
 import type { CreatePostDto } from '@/post/dto/create-post.dto';
 import type { PatchPostDto } from '@/post/dto/patch-post.dto';
 import type { QueryPostsDto } from '@/post/dto/query-posts.dto';

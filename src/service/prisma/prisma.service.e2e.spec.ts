@@ -1,5 +1,5 @@
-import { PrismaModule } from '@/common/service/prisma/prisma.module';
-import { PrismaService } from '@/common/service/prisma/prisma.service';
+import { PrismaModule } from '@/service/prisma/prisma.module';
+import { PrismaService } from '@/service/prisma/prisma.service';
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';

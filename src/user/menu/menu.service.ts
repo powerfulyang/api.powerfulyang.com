@@ -1,5 +1,5 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { BaseService } from '@/common/service/base/BaseService';
+import { BaseService } from '@/service/base/BaseService';
 import type { QueryMenusDto } from '@/user/dto/query-menus.dto';
 import { Menu } from '@/user/entities/menu.entity';
 import { Injectable } from '@nestjs/common';
