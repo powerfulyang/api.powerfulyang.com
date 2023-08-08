@@ -1,17 +1,20 @@
+import { Controller, Delete, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PermissionAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { Permission, Permissions } from '@/common/decorator/permissions.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { QueryFeedsDto } from '@/feed/dto/query-feeds.dto';
 import { FeedService } from '@/feed/feed.service';
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('feed-manage')
 @ApiTags('feed-manage')
 @PermissionAuthGuard()
 export class FeedManageController {
-  constructor(private readonly logger: LoggerService, private readonly feedService: FeedService) {
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly feedService: FeedService,
+  ) {
     this.logger.setContext(FeedManageController.name);
   }
 

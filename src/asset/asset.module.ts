@@ -1,3 +1,5 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { AlgoliaService } from '@/service/algolia/AlgoliaService';
 import { MqModule } from '@/service/mq/mq.module';
@@ -10,8 +12,6 @@ import { PinterestBotModule } from '@/libs/pinterest-bot';
 import { PixivBotModule } from '@/libs/pixiv-bot';
 import { TencentCloudAccountModule } from '@/tencent-cloud-account/tencent-cloud-account.module';
 import { UserModule } from '@/user/user.module';
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProxyFetchModule } from '@/libs/proxy-fetch';
 import { AssetController } from './asset.controller';
 import { AssetService } from './asset.service';

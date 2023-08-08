@@ -1,3 +1,5 @@
+import type { Provider } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GithubStrategy } from '@/common/authorization/github.strategy';
 import { GoogleStrategy } from '@/common/authorization/google.strategy';
 import { JwtStrategy } from '@/common/authorization/jwt.strategy';
@@ -12,8 +14,6 @@ import { SupportOauthApplication } from '@/oauth-application/entities/support-oa
 import { OauthApplicationModule } from '@/oauth-application/oauth-application.module';
 import { OauthApplicationService } from '@/oauth-application/oauth-application.service';
 import { UserModule } from '@/user/user.module';
-import type { Provider } from '@nestjs/common';
-import { Module } from '@nestjs/common';
 import { ProxyFetchModule } from '@/libs/proxy-fetch';
 
 export declare type OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE = {

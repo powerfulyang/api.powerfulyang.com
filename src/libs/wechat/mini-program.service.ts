@@ -1,3 +1,7 @@
+import process from 'node:process';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import dayjs from 'dayjs';
+import fetch from 'node-fetch';
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
@@ -10,10 +14,6 @@ import type {
   WechatMessageOriginalRequest,
   WechatMiniProgramSendCustomMessageRequest,
 } from '@/type/wechat';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import dayjs from 'dayjs';
-import fetch from 'node-fetch';
-import process from 'node:process';
 
 @Injectable()
 export class MiniProgramService extends WechatService {

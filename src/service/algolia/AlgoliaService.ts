@@ -1,6 +1,6 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import { HttpStatus, Injectable } from '@nestjs/common';
 import process from 'node:process';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Injectable()
 export class AlgoliaService {

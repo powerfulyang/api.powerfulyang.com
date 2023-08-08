@@ -1,4 +1,3 @@
-import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 
 @Entity()
 export class OauthApplication {

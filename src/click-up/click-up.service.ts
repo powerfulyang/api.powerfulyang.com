@@ -1,5 +1,5 @@
-import { Inject, Injectable, Optional } from '@nestjs/common';
 import process from 'node:process';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import type { RequestInit } from 'node-fetch';
 import _fetch from 'node-fetch';
 

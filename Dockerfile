@@ -17,7 +17,7 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/main" > /etc/apk/repositor
     # requires the use of a globally-installed libvips  \
     # compiled with support for libheif, libde265 and x265.
     # sharp Changelog: https://sharp.pixelplumbing.com/changelog
-    && apk add --no-cache vips-dev \
+    && apk add --no-cache vips-cpp \
 #    && npm ci --quiet \
 #    && npm run build \
 #    && npm prune --omit=dev \
@@ -27,6 +27,8 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/main" > /etc/apk/repositor
 
 # 第二阶段
 FROM node:lts-alpine AS builder
+
+ENV BUILD=true
 
 WORKDIR /usr/app
 
@@ -61,5 +63,6 @@ COPY --chown=node:node --from=dependencies /usr/app/build ./build
 COPY --chown=node:node --from=builder /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=builder /usr/app/dist ./dist
 COPY --chown=node:node --from=builder /usr/app/package.json ./package.json
+COPY --chown=node:node --from=builder /usr/app/*.traineddata ./
 
 CMD ["npm", "run", "start"]

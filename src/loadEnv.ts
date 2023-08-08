@@ -1,7 +1,7 @@
-import { isProd, isQA, isTest } from '@/utils/env';
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import dotenv from 'dotenv';
+import { isProd, isQA, isTest } from '@/utils/env';
 
 dayjs.extend(quarterOfYear);
 

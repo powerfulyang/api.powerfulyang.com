@@ -1,13 +1,13 @@
-import { TEST_ASSETS_IMAGES } from '@/constants/test_constants';
-import { ToolsModule } from '@/tools/tools.module';
-import { ToolsService } from '@/tools/tools.service';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { TEST_ASSETS_IMAGES } from '@/constants/test_constants';
+import { ToolsModule } from '@/tools/tools.module';
+import { ToolsService } from '@/tools/tools.service';
 
-describe('HelloService', () => {
+describe('ToolsService', () => {
   let service: ToolsService;
   let module: TestingModule;
 
@@ -19,7 +19,7 @@ describe('HelloService', () => {
     await module.init();
 
     service = module.get<ToolsService>(ToolsService);
-  }, 1000 * 10);
+  }, 1000 * 100);
 
   afterAll(async () => {
     await module.close();

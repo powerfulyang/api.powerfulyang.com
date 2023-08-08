@@ -1,5 +1,5 @@
-import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 import process from 'node:process';
+import type { RedisOptions } from 'ioredis/built/redis/RedisOptions';
 
 export const redisConfig = (): RedisOptions => ({
   password: process.env.REDIS_PASS,

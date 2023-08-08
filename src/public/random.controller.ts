@@ -1,13 +1,13 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import { CWD } from '@/constants/cookie-path';
-import { convertUuidToNumber } from '@/utils/uuid';
+import { existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { randomItem } from '@powerfulyang/utils';
 import { FastifyReply } from 'fastify';
-import { existsSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
 import sharp from 'sharp';
+import { convertUuidToNumber } from '@/utils/uuid';
+import { CWD } from '@/constants/cookie-path';
+import { LoggerService } from '@/common/logger/logger.service';
 
 @Controller('random')
 @ApiTags('random')

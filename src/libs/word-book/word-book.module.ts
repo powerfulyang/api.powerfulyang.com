@@ -1,9 +1,9 @@
+import type { Provider } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { TMT_ACCOUNT } from '@/constants/PROVIDER_TOKEN';
 import { TencentCloudAccountModule } from '@/tencent-cloud-account/tencent-cloud-account.module';
 import { TencentCloudAccountService } from '@/tencent-cloud-account/tencent-cloud-account.service';
-import type { Provider } from '@nestjs/common';
-import { Module } from '@nestjs/common';
 import { WordBookService } from './word-book.service';
 
 const TencentCloudAccountProvider: Provider = {

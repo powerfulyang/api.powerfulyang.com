@@ -1,10 +1,10 @@
+import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { CoreModule } from '@/core/core.module';
 import { AssetModule } from '@/asset/asset.module';
 import { TencentCloudAccountModule } from '@/tencent-cloud-account/tencent-cloud-account.module';
 import { UserModule } from '@/user/user.module';
-import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { CosObjectUrlScheduleService } from './cos-object-url-schedule/cos-object-url-schedule.service';
 import { InstagramScheduleService } from './instagram-schedule/instagram-schedule.service';
 import { PinterestScheduleService } from './pinterest-schedule/pinterest-schedule.service';

@@ -1,8 +1,8 @@
-import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Catch, HttpException } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
+import { LoggerService } from '@/common/logger/logger.service';
+import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
 
 @Catch(HttpException)
 export class HttpExceptionFilter<T extends HttpException> implements ExceptionFilter {

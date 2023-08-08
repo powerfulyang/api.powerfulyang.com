@@ -1,10 +1,3 @@
-import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
-import { Permission } from '@/common/decorator/permissions.decorator';
-import { LoggerService } from '@/common/logger/logger.service';
-import { CreateRoleDto } from '@/user/dto/create-role.dto';
-import { QueryRolesDto } from '@/user/dto/query-roles.dto';
-import { RoleService } from '@/user/role/role.service';
 import {
   Body,
   Controller,
@@ -18,12 +11,22 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { getEnumValues } from '@powerfulyang/utils';
+import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
+import { Permission } from '@/common/decorator/permissions.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import { CreateRoleDto } from '@/user/dto/create-role.dto';
+import { QueryRolesDto } from '@/user/dto/query-roles.dto';
+import { RoleService } from '@/user/role/role.service';
 
 @Controller('role-manage')
 @AdminAuthGuard()
 @ApiTags('role-manage')
 export class RoleController {
-  constructor(private readonly roleService: RoleService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly roleService: RoleService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(RoleController.name);
   }
 

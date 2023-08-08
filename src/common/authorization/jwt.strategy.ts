@@ -1,3 +1,7 @@
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import type { FastifyRequest } from 'fastify';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { jwtSecretConfig } from '@/configuration/jwt.config';
@@ -5,10 +9,6 @@ import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import type { User } from '@/user/entities/user.entity';
 import { UserService } from '@/user/user.service';
 import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import type { FastifyRequest } from 'fastify';
-import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {

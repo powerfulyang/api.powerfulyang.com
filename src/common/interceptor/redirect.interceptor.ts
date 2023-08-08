@@ -1,9 +1,9 @@
-import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
-import { LoggerService } from '@/common/logger/logger.service';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
 import { map } from 'rxjs';
+import { LoggerService } from '@/common/logger/logger.service';
+import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
 
 @Injectable()
 export class RedirectInterceptor implements NestInterceptor {

@@ -1,6 +1,6 @@
+import process from 'node:process';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isDevProcess } from '@powerfulyang/utils';
-import process from 'node:process';
 import { getMetadataArgsStorage } from 'typeorm';
 
 export const pgConfig = (): TypeOrmModuleOptions => ({

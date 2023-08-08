@@ -1,12 +1,12 @@
+import process from 'node:process';
+import { Injectable } from '@nestjs/common';
+import fetch from 'node-fetch';
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { WechatService } from '@/libs/wechat/wechat.service';
 import type { WechatMessageOriginalRequest } from '@/type/wechat';
 import { generateUuid } from '@/utils/uuid';
-import { Injectable } from '@nestjs/common';
-import fetch from 'node-fetch';
-import process from 'node:process';
 
 @Injectable()
 export class OfficialAccountService extends WechatService {

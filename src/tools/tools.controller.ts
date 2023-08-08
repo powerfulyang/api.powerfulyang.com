@@ -1,19 +1,22 @@
+import { exec, spawn } from 'node:child_process';
+import { basename } from 'node:path';
+import { promisify } from 'node:util';
+import { Body, Controller, Post, Query, Sse } from '@nestjs/common';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { concat, from, fromEvent, map, merge, takeUntil } from 'rxjs';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response-interceptor.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OCRDto } from '@/tools/dto/OCR.dto';
-import { Body, Controller, Post, Query, Sse } from '@nestjs/common';
-import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
-import { exec, spawn } from 'node:child_process';
-import { basename } from 'node:path';
-import { promisify } from 'node:util';
-import { concat, from, fromEvent, map, merge, takeUntil } from 'rxjs';
 import { ToolsService } from './tools.service';
 
 @Controller('tools')
 @ApiTags('tools')
 export class ToolsController {
-  constructor(private readonly toolsService: ToolsService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly toolsService: ToolsService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(ToolsController.name);
   }
 

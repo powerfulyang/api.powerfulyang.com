@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+import { isProdProcess } from '@powerfulyang/utils';
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
@@ -8,8 +10,6 @@ import { MenuService } from '@/user/menu/menu.service';
 import { RoleService } from '@/user/role/role.service';
 import { UserService } from '@/user/user.service';
 import { HOSTNAME } from '@/utils/hostname';
-import { Injectable } from '@nestjs/common';
-import { isProdProcess } from '@powerfulyang/utils';
 
 @Injectable()
 export class BootstrapService {

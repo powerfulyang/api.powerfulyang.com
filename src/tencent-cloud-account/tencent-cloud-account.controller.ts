@@ -1,7 +1,7 @@
-import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { CreateTencentCloudAccountDto } from '@/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { CreateTencentCloudAccountDto } from '@/tencent-cloud-account/dto/create-tencent-cloud-account.dto';
 import { TencentCloudAccountService } from './tencent-cloud-account.service';
 
 @Controller('tencent-cloud-account')

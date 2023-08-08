@@ -1,3 +1,5 @@
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
@@ -7,14 +9,15 @@ import { QueryAssetsDto } from '@/asset/dto/query-assets.dto';
 import { User } from '@/user/entities/user.entity';
 import type { UploadFile } from '@/type/UploadFile';
 import { UploadAssetsDto } from '@/type/UploadFile';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('asset')
 @AdminAuthGuard()
 @ApiTags('asset')
 export class AssetController {
-  constructor(private readonly assetService: AssetService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly assetService: AssetService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(AssetController.name);
   }
 

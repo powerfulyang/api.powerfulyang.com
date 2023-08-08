@@ -1,9 +1,3 @@
-import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
-import { LoggerService } from '@/common/logger/logger.service';
-import { QueryMenusDto } from '@/user/dto/query-menus.dto';
-import { Menu } from '@/user/entities/menu.entity';
-import { MenuService } from '@/user/menu/menu.service';
 import {
   Body,
   Controller,
@@ -16,12 +10,21 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import { QueryMenusDto } from '@/user/dto/query-menus.dto';
+import { Menu } from '@/user/entities/menu.entity';
+import { MenuService } from '@/user/menu/menu.service';
 
 @Controller('menu-manage')
 @ApiTags('menu-manage')
 @AdminAuthGuard()
 export class MenuController {
-  constructor(private readonly menuService: MenuService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly menuService: MenuService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(MenuController.name);
   }
 

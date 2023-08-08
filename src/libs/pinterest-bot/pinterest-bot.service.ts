@@ -1,8 +1,8 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
 import type {
   PinterestInterface,
   PinterestResInterface,
 } from '@/libs/pinterest-bot/pinterest.interface';
-import { BadRequestException, Injectable } from '@nestjs/common';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 
 @Injectable()

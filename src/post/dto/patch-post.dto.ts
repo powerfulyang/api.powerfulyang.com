@@ -1,7 +1,7 @@
-import { CreatePostDto } from '@/post/dto/create-post.dto';
-import { User } from '@/user/entities/user.entity';
 import { ApiHideProperty, ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, Length } from 'class-validator';
+import { CreatePostDto } from '@/post/dto/create-post.dto';
+import { User } from '@/user/entities/user.entity';
 
 export class PatchPostDto extends PartialType(CreatePostDto) {
   @IsNotEmpty()

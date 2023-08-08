@@ -1,3 +1,8 @@
+import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import type { FastifyRequest } from 'fastify';
+import type { Profile as GithubProfile } from 'passport-github';
+import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import {
   GithubAuthGuard,
   GoogleAuthGuard,
@@ -15,16 +20,14 @@ import { SupportOauthApplication } from '@/oauth-application/entities/support-oa
 import { UserLoginDto } from '@/user/dto/user-login.dto';
 import { User } from '@/user/entities/user.entity';
 import { UserService } from '@/user/user.service';
-import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { FastifyRequest } from 'fastify';
-import type { Profile as GithubProfile } from 'passport-github';
-import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 
 @Controller('user')
 @ApiTags('user')
 export class UserController {
-  constructor(private userService: UserService, private logger: LoggerService) {
+  constructor(
+    private userService: UserService,
+    private logger: LoggerService,
+  ) {
     this.logger.setContext(UserController.name);
   }
 

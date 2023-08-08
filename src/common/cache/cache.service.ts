@@ -1,11 +1,11 @@
-import type { ConfigService } from '@/common/config/config.service';
-import { LoggerService } from '@/common/logger/logger.service';
-import { REDIS_CONFIG } from '@/constants/PROVIDER_TOKEN';
 import type { OnModuleDestroy } from '@nestjs/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { isNumber } from '@powerfulyang/utils';
 import type { RedisKey } from 'ioredis';
 import Redis from 'ioredis';
+import { REDIS_CONFIG } from '@/constants/PROVIDER_TOKEN';
+import { LoggerService } from '@/common/logger/logger.service';
+import type { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class CacheService extends Redis implements OnModuleDestroy {

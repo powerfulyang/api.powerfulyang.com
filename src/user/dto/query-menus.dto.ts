@@ -1,6 +1,6 @@
+import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 import { PaginatedBaseQuery } from '@/common/decorator/pagination/PaginationQuery';
 import { Menu } from '@/user/entities/menu.entity';
-import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 
 export class QueryMenusDto extends IntersectionType(
   PaginatedBaseQuery,

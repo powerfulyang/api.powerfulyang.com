@@ -1,5 +1,3 @@
-import { User } from '@/user/entities/user.entity';
-import { PushSubscriptionJSONDto } from '@/web-push/dto/PushSubscriptionJSON.dto';
 import {
   Column,
   CreateDateColumn,
@@ -10,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '@/user/entities/user.entity';
+import { PushSubscriptionJSONDto } from '@/web-push/dto/PushSubscriptionJSON.dto';
 
 @Entity()
 export class PushSubscriptionLog {

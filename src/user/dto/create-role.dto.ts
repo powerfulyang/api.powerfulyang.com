@@ -1,6 +1,6 @@
-import { Role } from '@/user/entities/role.entity';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
+import { Role } from '@/user/entities/role.entity';
 
 export class CreateRoleDto extends PickType(Role, ['name', 'permissions']) {
   @ApiProperty({

@@ -1,8 +1,8 @@
+import process from 'node:process';
+import { Injectable } from '@nestjs/common';
 import type { InstagramInterface } from '@/libs/instagram-bot/instagram.interface';
 import type { PixivBotApiQuery, RESPixivInterface, Work } from '@/libs/pixiv-bot/pixiv.interface';
-import { Injectable } from '@nestjs/common';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
-import process from 'node:process';
 
 @Injectable()
 export class PixivBotService {

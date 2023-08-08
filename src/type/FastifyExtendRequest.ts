@@ -1,5 +1,5 @@
-import type { User } from '@/user/entities/user.entity';
 import type { FastifyRequest } from 'fastify';
+import type { User } from '@/user/entities/user.entity';
 
 export interface FastifyExtendRequest extends FastifyRequest {
   raw: FastifyRequest['raw'] & {

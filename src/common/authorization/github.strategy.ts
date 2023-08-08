@@ -1,14 +1,14 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import type { Profile } from 'passport-github';
+import { Strategy } from 'passport-github';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG_TYPE } from '@/common/authorization/strategy.module';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Default_Auth_Success_Target_Url } from '@/constants/constants';
 import { OAUTH_APPLICATION_STRATEGY_CONFIG } from '@/constants/PROVIDER_TOKEN';
 
 import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
-import { Inject, Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
-import type { Profile } from 'passport-github';
-import { Strategy } from 'passport-github';
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthApplication.github) {

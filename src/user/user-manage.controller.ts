@@ -1,17 +1,20 @@
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { EditUserDto } from '@/user/dto/edit-user.dto';
 import { QueryUsersDto } from '@/user/dto/query-users.dto';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 
 @AdminAuthGuard()
 @Controller('user-manage')
 @ApiTags('user-manage')
 export class UserManageController {
-  constructor(private readonly logger: LoggerService, private readonly userService: UserService) {
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly userService: UserService,
+  ) {
     this.logger.setContext(UserManageController.name);
   }
 

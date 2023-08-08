@@ -1,13 +1,13 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
-import { sha1 } from '@powerfulyang/node-utils';
-import { ProxyFetchService } from '@/libs/proxy-fetch';
 import { join } from 'node:path';
 import process from 'node:process';
+import { sha1 } from '@powerfulyang/node-utils';
+import { Injectable } from '@nestjs/common';
+import type { OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import type Tesseract from 'tesseract.js';
 import type { ImageLike } from 'tesseract.js';
 import { createWorker } from 'tesseract.js';
+import { LoggerService } from '@/common/logger/logger.service';
+import { ProxyFetchService } from '@/libs/proxy-fetch';
 
 @Injectable()
 export class ToolsService implements OnModuleInit, OnModuleDestroy {

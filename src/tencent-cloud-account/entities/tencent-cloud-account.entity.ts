@@ -1,5 +1,5 @@
-import { CosBucket } from '@/bucket/entities/bucket.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CosBucket } from '@/bucket/entities/bucket.entity';
 
 @Entity()
 export class TencentCloudAccount {

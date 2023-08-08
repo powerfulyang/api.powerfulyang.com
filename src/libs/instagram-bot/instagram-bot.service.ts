@@ -1,11 +1,11 @@
-import { instagramCookieFilePath } from '@/constants/cookie-path';
-import type { InstagramInterface } from '@/libs/instagram-bot/instagram.interface';
-import { Injectable } from '@nestjs/common';
-import { ProxyFetchService } from '@/libs/proxy-fetch';
-import type { SavedFeedResponseMedia } from 'instagram-private-api';
-import { IgApiClient } from 'instagram-private-api';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import process from 'node:process';
+import { Injectable } from '@nestjs/common';
+import type { SavedFeedResponseMedia } from 'instagram-private-api';
+import { IgApiClient } from 'instagram-private-api';
+import { instagramCookieFilePath } from '@/constants/cookie-path';
+import type { InstagramInterface } from '@/libs/instagram-bot/instagram.interface';
+import { ProxyFetchService } from '@/libs/proxy-fetch';
 
 @Injectable()
 export class InstagramBotService {

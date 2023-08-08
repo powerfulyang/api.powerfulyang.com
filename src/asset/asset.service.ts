@@ -1,3 +1,18 @@
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, extname, join } from 'node:path';
+import {
+  HttpStatus,
+  Injectable,
+  ServiceUnavailableException,
+  UnprocessableEntityException,
+  UnsupportedMediaTypeException,
+} from '@nestjs/common';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
+import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
+import fetch from 'node-fetch';
+import sharp from 'sharp';
+import { DataSource, In, Not, Repository } from 'typeorm';
 import { getEXIF } from '@/addon';
 import { LoggerService } from '@/common/logger/logger.service';
 import { BaseService } from '@/service/base/BaseService';
@@ -17,22 +32,7 @@ import { UserService } from '@/user/user.service';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
-import {
-  HttpStatus,
-  Injectable,
-  ServiceUnavailableException,
-  UnprocessableEntityException,
-  UnsupportedMediaTypeException,
-} from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
-import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
-import fetch from 'node-fetch';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { basename, extname, join } from 'node:path';
-import sharp from 'sharp';
-import { DataSource, In, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class AssetService extends BaseService {

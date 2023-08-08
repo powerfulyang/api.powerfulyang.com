@@ -1,9 +1,9 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import { TMT_ACCOUNT } from '@/constants/PROVIDER_TOKEN';
-import { TencentCloudAccount } from '@/tencent-cloud-account/entities/tencent-cloud-account.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { tmt } from 'tencentcloud-sdk-nodejs';
 import type { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_client';
+import { LoggerService } from '@/common/logger/logger.service';
+import { TMT_ACCOUNT } from '@/constants/PROVIDER_TOKEN';
+import { TencentCloudAccount } from '@/tencent-cloud-account/entities/tencent-cloud-account.entity';
 
 @Injectable()
 export class WordBookService {

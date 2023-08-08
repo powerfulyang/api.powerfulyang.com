@@ -1,5 +1,3 @@
-import { Exif } from '@/addon/types/Exif';
-import { User } from '@/user/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Metadata } from 'sharp';
 import {
@@ -14,6 +12,8 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '@/user/entities/user.entity';
+import { Exif } from '@/addon/types/Exif';
 import { CosBucket } from '@/bucket/entities/bucket.entity';
 
 export const AssetStyles = {

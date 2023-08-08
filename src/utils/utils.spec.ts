@@ -1,6 +1,6 @@
-import { convertUuidToNumber } from '@/utils/uuid';
-import { describe, expect, it } from '@jest/globals';
 import { basename, extname } from 'node:path';
+import { describe, expect, it } from '@jest/globals';
+import { convertUuidToNumber } from '@/utils/uuid';
 
 describe('utils test', () => {
   it('extname', () => {

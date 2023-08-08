@@ -1,8 +1,8 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import type { AmapWeather } from '@/libs/weather/type';
+import process from 'node:process';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import fetch from 'node-fetch';
-import process from 'node:process';
+import { LoggerService } from '@/common/logger/logger.service';
+import type { AmapWeather } from '@/libs/weather/type';
 
 @Injectable()
 export class WeatherService {

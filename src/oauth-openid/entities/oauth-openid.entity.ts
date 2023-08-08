@@ -1,5 +1,3 @@
-import { OauthApplication } from '@/oauth-application/entities/oauth-application.entity';
-import { User } from '@/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -11,6 +9,8 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
+import { OauthApplication } from '@/oauth-application/entities/oauth-application.entity';
+import { User } from '@/user/entities/user.entity';
 
 @Entity()
 @Index(['application', 'openid'], { unique: true })

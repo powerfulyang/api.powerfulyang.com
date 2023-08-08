@@ -1,6 +1,6 @@
+import { Query, Resolver } from '@nestjs/graphql';
 import { Post } from '@/post/entities/post.entity';
 import { PostService } from '@/post/post.service';
-import { Query, Resolver } from '@nestjs/graphql';
 
 @Resolver(() => Post)
 export class PostResolver {

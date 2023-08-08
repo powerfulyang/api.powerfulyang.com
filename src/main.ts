@@ -1,18 +1,18 @@
 /* eslint-disable import/no-import-module-exports */
 import '@/loadEnv';
+import type http from 'node:http';
+import process from 'node:process';
+import { NestFactory } from '@nestjs/core';
+import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import metadata from '@/metadata';
 import { LoggerService } from '@/common/logger/logger.service';
 import { rabbitmqServerConfig } from '@/configuration/rabbitmq.config';
 import { Authorization } from '@/constants/constants';
 import { createFastifyInstance } from '@/fastify/hook';
 import { DateTimeFormat } from '@/utils/dayjs';
-import { NestFactory } from '@nestjs/core';
-import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
-import type { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import type http from 'node:http';
-import process from 'node:process';
 import { AppModule } from './app.module';
 
 require('source-map-support').install();

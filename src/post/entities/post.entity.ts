@@ -1,6 +1,3 @@
-import { Asset } from '@/asset/entities/asset.entity';
-import { PostLog } from '@/post/entities/post-log.entity';
-import { User } from '@/user/entities/user.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -15,6 +12,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Asset } from '@/asset/entities/asset.entity';
+import { PostLog } from '@/post/entities/post-log.entity';
+import { User } from '@/user/entities/user.entity';
 
 @Entity('post')
 @Index(['title', 'createBy'], { unique: true })

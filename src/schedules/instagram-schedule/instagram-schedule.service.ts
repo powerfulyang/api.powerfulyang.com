@@ -1,9 +1,9 @@
+import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { LoggerService } from '@/common/logger/logger.service';
 import { CoreService } from '@/core/core.service';
 import { ScheduleType } from '@/enum/ScheduleType';
 import { AssetService } from '@/asset/asset.service';
-import { Injectable } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class InstagramScheduleService {

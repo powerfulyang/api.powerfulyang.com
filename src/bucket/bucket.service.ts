@@ -1,11 +1,11 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import type { CreateBucketDto } from '@/bucket/dto/create-bucket.dto';
-import { CosBucket } from '@/bucket/entities/bucket.entity';
-import { TencentCloudAccountService } from '@/tencent-cloud-account/tencent-cloud-account.service';
 import { HttpStatus, Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isNull } from '@powerfulyang/utils';
 import { Repository } from 'typeorm';
+import { LoggerService } from '@/common/logger/logger.service';
+import type { CreateBucketDto } from '@/bucket/dto/create-bucket.dto';
+import { CosBucket } from '@/bucket/entities/bucket.entity';
+import { TencentCloudAccountService } from '@/tencent-cloud-account/tencent-cloud-account.service';
 
 @Injectable()
 export class BucketService {

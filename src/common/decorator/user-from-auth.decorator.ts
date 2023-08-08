@@ -1,8 +1,8 @@
-import type { User } from '@/user/entities/user.entity';
-import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { ExecutionContext } from '@nestjs/common';
 import { createParamDecorator } from '@nestjs/common';
 import { flatten, pick } from 'lodash';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
+import type { User } from '@/user/entities/user.entity';
 
 export const AuthUser = createParamDecorator((keys: Array<keyof User>, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest<FastifyExtendRequest>();

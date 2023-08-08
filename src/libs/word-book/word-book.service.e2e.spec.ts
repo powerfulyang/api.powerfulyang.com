@@ -1,10 +1,10 @@
-import { LoggerService } from '@/common/logger/logger.service';
-import { TMT_ACCOUNT } from '@/constants/PROVIDER_TOKEN';
+import process from 'node:process';
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { Provider } from '@nestjs/common';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import process from 'node:process';
+import { TMT_ACCOUNT } from '@/constants/PROVIDER_TOKEN';
+import { LoggerService } from '@/common/logger/logger.service';
 import { WordBookService } from './word-book.service';
 
 describe('WordBookService', () => {

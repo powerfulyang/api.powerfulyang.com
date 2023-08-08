@@ -1,8 +1,8 @@
-import { Post } from '@/post/entities/post.entity';
-import { User } from '@/user/entities/user.entity';
 import { Field, InputType } from '@nestjs/graphql';
 import { ApiHideProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, Length } from 'class-validator';
+import { User } from '@/user/entities/user.entity';
+import { Post } from '@/post/entities/post.entity';
 
 @InputType()
 export class CreatePostDto extends PartialType(OmitType(Post, ['id'])) {

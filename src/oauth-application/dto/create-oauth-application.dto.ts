@@ -1,7 +1,7 @@
-import { OauthApplication } from '@/oauth-application/entities/oauth-application.entity';
-import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 import { PartialType } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { OauthApplication } from '@/oauth-application/entities/oauth-application.entity';
+import { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
 
 export class CreateOauthApplicationDto extends PartialType(OauthApplication) {
   @IsNotEmpty()

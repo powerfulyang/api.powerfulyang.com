@@ -1,5 +1,5 @@
-import type { ClientOptions } from '@elastic/elasticsearch';
 import process from 'node:process';
+import type { ClientOptions } from '@elastic/elasticsearch';
 
 export const elasticsearchConfig = (): ClientOptions => {
   const host = process.env.ELASTICSEARCH_HOST as string;

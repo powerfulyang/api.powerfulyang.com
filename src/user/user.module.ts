@@ -1,3 +1,6 @@
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@/common/cache/cache.module';
 import { ConfigModule } from '@/common/config/config.module';
 import { ConfigService } from '@/common/config/config.service';
@@ -11,9 +14,6 @@ import { Role } from '@/user/entities/role.entity';
 import { User } from '@/user/entities/user.entity';
 import { UserManageController } from '@/user/user-manage.controller';
 import { UserService } from '@/user/user.service';
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuController } from './menu/menu.controller';
 import { MenuService } from './menu/menu.service';
 import { RoleController } from './role/role.controller';

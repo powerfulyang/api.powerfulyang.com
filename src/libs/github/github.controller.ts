@@ -1,6 +1,6 @@
-import { LoggerService } from '@/common/logger/logger.service';
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { LoggerService } from '@/common/logger/logger.service';
 import { GithubService } from './github.service';
 
 @Controller('github')

@@ -1,13 +1,16 @@
-import { Permission } from '@/common/decorator/permissions.decorator';
-import { LoggerService } from '@/common/logger/logger.service';
-import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Permission } from '@/common/decorator/permissions.decorator';
+import { LoggerService } from '@/common/logger/logger.service';
+import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
-  constructor(private readonly logger: LoggerService, private readonly reflector: Reflector) {
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly reflector: Reflector,
+  ) {
     this.logger.setContext(PermissionGuard.name);
   }
 

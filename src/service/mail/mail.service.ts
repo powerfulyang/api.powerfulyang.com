@@ -1,9 +1,9 @@
-import { ConfigService } from '@/common/config/config.service';
-import { LoggerService } from '@/common/logger/logger.service';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import type { Transporter } from 'nodemailer';
 import { createTransport } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { LoggerService } from '@/common/logger/logger.service';
+import { ConfigService } from '@/common/config/config.service';
 
 @Injectable()
 export class MailService {

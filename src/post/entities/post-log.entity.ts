@@ -1,4 +1,3 @@
-import { Post } from '@/post/entities/post.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
@@ -10,6 +9,7 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
+import { Post } from '@/post/entities/post.entity';
 
 @Entity()
 export class PostLog {

@@ -1,6 +1,6 @@
-import { CosBucket } from '@/bucket/entities/bucket.entity';
 import { PartialType } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { CosBucket } from '@/bucket/entities/bucket.entity';
 
 export class CreateBucketDto extends PartialType(CosBucket) {
   @IsNotEmpty()

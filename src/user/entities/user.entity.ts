@@ -1,7 +1,3 @@
-import { Asset } from '@/asset/entities/asset.entity';
-import { OauthOpenid } from '@/oauth-openid/entities/oauth-openid.entity';
-import { Family } from '@/user/entities/family.entity';
-import { Role } from '@/user/entities/role.entity';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import {
@@ -17,6 +13,10 @@ import {
   Relation,
   UpdateDateColumn,
 } from 'typeorm';
+import { Asset } from '@/asset/entities/asset.entity';
+import { OauthOpenid } from '@/oauth-openid/entities/oauth-openid.entity';
+import { Family } from '@/user/entities/family.entity';
+import { Role } from '@/user/entities/role.entity';
 
 @Entity('user')
 @ObjectType()

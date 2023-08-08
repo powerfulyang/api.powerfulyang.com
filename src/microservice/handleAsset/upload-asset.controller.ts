@@ -1,13 +1,16 @@
+import { Controller } from '@nestjs/common';
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { LoggerService } from '@/common/logger/logger.service';
 import { MessagePatterns } from '@/constants/MessagePatterns';
 import { AssetService } from '@/asset/asset.service';
 import { UploadFileMsg } from '@/type/UploadFile';
-import { Controller } from '@nestjs/common';
-import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller()
 export class UploadAssetController {
-  constructor(private readonly assetService: AssetService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly assetService: AssetService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(UploadAssetController.name);
   }
 

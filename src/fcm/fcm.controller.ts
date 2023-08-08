@@ -4,7 +4,10 @@ import { FcmService } from './fcm.service';
 
 @Controller('fcm')
 export class FcmController {
-  constructor(private readonly fcmService: FcmService, private readonly logger: LoggerService) {
+  constructor(
+    private readonly fcmService: FcmService,
+    private readonly logger: LoggerService,
+  ) {
     this.logger.setContext(FcmController.name);
   }
 

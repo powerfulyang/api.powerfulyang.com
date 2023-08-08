@@ -1,7 +1,7 @@
-import { FcmModule } from '@/fcm/fcm.module';
 import { beforeEach, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { FcmModule } from '@/fcm/fcm.module';
 import { FcmService } from './fcm.service';
 
 describe('FcmService', () => {

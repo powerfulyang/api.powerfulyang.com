@@ -1,18 +1,3 @@
-import { CacheService } from '@/common/cache/cache.service';
-import { LoggerService } from '@/common/logger/logger.service';
-import { BaseService } from '@/service/base/BaseService';
-import { MailService } from '@/service/mail/mail.service';
-import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-
-import type { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
-import { OauthOpenidService } from '@/oauth-openid/oauth-openid.service';
-import type { EditUserDto } from '@/user/dto/edit-user.dto';
-import type { QueryUsersDto } from '@/user/dto/query-users.dto';
-import type { UserLoginDto } from '@/user/dto/user-login.dto';
-import { Family } from '@/user/entities/family.entity';
-import type { Menu } from '@/user/entities/menu.entity';
-import { User } from '@/user/entities/user.entity';
-import { RoleService } from '@/user/role/role.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -29,6 +14,21 @@ import {
 import type { Profile } from 'passport';
 import { flatten, pick, uniqBy } from 'lodash';
 import { In, Not, Repository } from 'typeorm';
+import { CacheService } from '@/common/cache/cache.service';
+import { LoggerService } from '@/common/logger/logger.service';
+import { BaseService } from '@/service/base/BaseService';
+import { MailService } from '@/service/mail/mail.service';
+import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
+
+import type { SupportOauthApplication } from '@/oauth-application/entities/support-oauth.application';
+import { OauthOpenidService } from '@/oauth-openid/oauth-openid.service';
+import type { EditUserDto } from '@/user/dto/edit-user.dto';
+import type { QueryUsersDto } from '@/user/dto/query-users.dto';
+import type { UserLoginDto } from '@/user/dto/user-login.dto';
+import { Family } from '@/user/entities/family.entity';
+import type { Menu } from '@/user/entities/menu.entity';
+import { User } from '@/user/entities/user.entity';
+import { RoleService } from '@/user/role/role.service';
 
 @Injectable()
 export class UserService extends BaseService {

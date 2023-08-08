@@ -1,5 +1,4 @@
-import { AssetStyles } from '@/asset/entities/asset.entity';
-import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
+import { promisify } from 'util';
 import { Injectable } from '@nestjs/common';
 import type {
   CORSRule,
@@ -9,7 +8,8 @@ import type {
   GetServiceParams,
 } from 'cos-nodejs-sdk-v5';
 import COS from 'cos-nodejs-sdk-v5';
-import { promisify } from 'util';
+import { AssetStyles } from '@/asset/entities/asset.entity';
+import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
 
 @Injectable()
 export class TencentCloudCosService extends COS {

@@ -1,7 +1,7 @@
-import { WebPushModule } from '@/web-push/web-push.module';
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { WebPushModule } from '@/web-push/web-push.module';
 import { PushSubscriptionLogService } from './push-subscription-log.service';
 
 describe('PushSubscriptionLogService', () => {

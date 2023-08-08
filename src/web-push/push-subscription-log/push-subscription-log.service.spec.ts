@@ -1,10 +1,10 @@
-import { LoggerModule } from '@/common/logger/logger.module';
-import { User } from '@/user/entities/user.entity';
-import { PushSubscriptionLog } from '@/web-push/entities/push-subscription-log.entity';
 import { beforeAll, describe, expect, it, jest } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { PushSubscriptionLog } from '@/web-push/entities/push-subscription-log.entity';
+import { User } from '@/user/entities/user.entity';
+import { LoggerModule } from '@/common/logger/logger.module';
 import { PushSubscriptionLogService } from './push-subscription-log.service';
 
 describe('PushSubscriptionLogService', () => {

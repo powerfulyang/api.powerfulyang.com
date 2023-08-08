@@ -1,10 +1,10 @@
+import process from 'node:process';
+import { Injectable } from '@nestjs/common';
+import { GraphQLClient } from 'graphql-request';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { QueryReposQuery } from '@/libs/github/__generated__/github-graphql';
 import { getSdk } from '@/libs/github/__generated__/github-graphql';
 import type { NonNullableElement } from '@/type/NonNullableElement';
-import { Injectable } from '@nestjs/common';
-import { GraphQLClient } from 'graphql-request';
-import process from 'node:process';
 
 @Injectable()
 export class GithubService {

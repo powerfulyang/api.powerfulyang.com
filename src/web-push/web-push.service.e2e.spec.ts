@@ -1,12 +1,12 @@
-import { LoggerModule } from '@/common/logger/logger.module';
-import { ProxyFetchModule } from '@/libs/proxy-fetch';
-import { beforeAll, describe, expect, it } from '@jest/globals';
-import type { TestingModule } from '@nestjs/testing';
-import { Test } from '@nestjs/testing';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import process from 'node:process';
+import { beforeAll, describe, expect, it } from '@jest/globals';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import type { PushSubscription } from 'web-push';
+import { ProxyFetchModule } from '@/libs/proxy-fetch';
+import { LoggerModule } from '@/common/logger/logger.module';
 import { WebPushService } from './web-push.service';
 
 describe('WebPushService', () => {

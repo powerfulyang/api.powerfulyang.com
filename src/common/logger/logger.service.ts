@@ -1,8 +1,8 @@
+import process from 'node:process';
 import { Injectable, Optional, Scope } from '@nestjs/common';
 import { isProdProcess, isTestProcess } from '@powerfulyang/utils';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
-import process from 'node:process';
 import type { Logger } from 'winston';
 import winston, { format } from 'winston';
 

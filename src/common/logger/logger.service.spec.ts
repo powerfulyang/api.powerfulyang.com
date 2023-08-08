@@ -1,8 +1,8 @@
-import { LoggerModule } from '@/common/logger/logger.module';
-import { LoggerService } from '@/common/logger/logger.service';
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
+import { LoggerService } from '@/common/logger/logger.service';
+import { LoggerModule } from '@/common/logger/logger.module';
 
 describe('LoggerService', () => {
   let service: LoggerService;
