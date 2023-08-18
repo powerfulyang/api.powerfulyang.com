@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         node-version: ['lts/*']
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout
@@ -41,6 +41,8 @@ jobs:
         run: pnpm run test:unit --max-workers ${{ steps.cpu-cores.outputs.count }}
       - name: TSC check
         run: pnpm run tsc-check
+      - name: Build Test
+        run: pnpm run build
 
   Build:
     name: Docker build
