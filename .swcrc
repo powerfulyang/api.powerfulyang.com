@@ -16,7 +16,11 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "keepClassNames": true
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "minify": false
 }
