@@ -26,7 +26,7 @@ describe('ToolsService', () => {
   });
 
   it('ocr', async () => {
-    const image = join(TEST_ASSETS_IMAGES, 'img.png');
+    const image = join(TEST_ASSETS_IMAGES, 'eng.png');
     const imageBuffer = readFileSync(image);
     const res = await service.ocr(imageBuffer);
     expect(res).toContain('hello');

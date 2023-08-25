@@ -99,6 +99,11 @@ export class Asset {
   @ApiProperty()
   metadata: Metadata;
 
+  @Column({
+    comment: 'OCR 识别结果',
+  })
+  alt: string;
+
   @Column({ type: 'json' })
   @ApiProperty({
     anyOf: [

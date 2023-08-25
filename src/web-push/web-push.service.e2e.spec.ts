@@ -1,6 +1,6 @@
+import { TEST_ASSETS } from '@/constants/test_constants';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import process from 'node:process';
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
@@ -26,10 +26,7 @@ describe('WebPushService', () => {
   });
 
   it('send notification', async () => {
-    const test_str = readFileSync(
-      join(process.cwd(), 'assets-for-test', 'test-push-subscription.json'),
-      'utf-8',
-    );
+    const test_str = readFileSync(join(TEST_ASSETS, 'test-push-subscription.json'), 'utf-8');
     const pushSubscription: PushSubscription = JSON.parse(test_str);
     const res = await service.sendNotification(
       pushSubscription,

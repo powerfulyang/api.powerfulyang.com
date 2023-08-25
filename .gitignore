@@ -32,9 +32,9 @@ package-lock.json
 
 .credentials
 
-assets-for-test/*
-!assets-for-test/.gitkeep
-!assets-for-test/images
+__test_assets__/*
+!__test_assets__/.gitkeep
+!__test_assets__/images
 
 http-client.private.env.json
 
