@@ -19,7 +19,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        ((request: FastifyRequest) => getTokenFromRequest(request)) as any,
+        // @ts-ignore
+        (request: FastifyRequest) => getTokenFromRequest(request),
       ]),
       secretOrKey: config.secret,
       passReqToCallback: true,

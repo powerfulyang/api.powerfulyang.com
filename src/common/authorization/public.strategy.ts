@@ -24,10 +24,10 @@ export class PublicStrategy extends PassportStrategy(Strategy, 'public') {
       const res = await this.userService.getCachedUser(user.id);
       if (!res) {
         this.pass();
-        return;
+      } else {
+        setRequestUser(Object.assign(res, { exp: user.exp, iat: user.iat }));
+        this.success({ ...user, ...res });
       }
-      setRequestUser(Object.assign(res, { exp: user.exp, iat: user.iat }));
-      this.success({ ...user, ...res });
     } catch (e) {
       // 解析 token 失败 无法获取用户信息
       this.pass();
