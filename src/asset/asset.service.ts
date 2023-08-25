@@ -11,6 +11,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import fetch from 'node-fetch';
+import type { Metadata } from 'sharp';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
 import { getEXIF } from '@/addon';
@@ -33,9 +34,12 @@ import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQu
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import { is_TEST_BUCKET_ONLY, TEST_BUCKET_ONLY } from '@/utils/env';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
+import process from 'node:process';
 
 @Injectable()
 export class AssetService extends BaseService {
+  private readonly assetsPath = join(process.cwd(), 'assets');
+
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
     @InjectDataSource() private readonly dataSource: DataSource,
@@ -141,20 +145,24 @@ export class AssetService extends BaseService {
 
   async syncFromCos() {
     const buckets = await this.bucketService.all();
+
     for (const bucket of buckets) {
       const util = await this.tencentCloudAccountService.getCosUtilByAccountId(
         bucket.tencentCloudAccount.id,
       );
       const objects = await util.getBucket(bucket);
+
       for (const object of objects.Contents) {
         const fileExtname = extname(object.Key);
         const hash = basename(object.Key, fileExtname);
         const fileSuffix = fileExtname.substring(1);
         const asset = await this.getAssetByHash(hash);
+
         // asset 不存在
         if (isNull(asset)) {
           const objectUrl = await this.getObjectUrl(object.Key, bucket);
-          const path = join(process.cwd(), 'assets', `${hash}.${fileSuffix}`);
+          const path = join(this.assetsPath, `${hash}.${fileSuffix}`);
+
           const exist = existsSync(path);
           if (!exist) {
             // 需要下载下来
@@ -162,19 +170,23 @@ export class AssetService extends BaseService {
             const buffer = await res.buffer();
             // 校验 hash
             const tmp = sha1(buffer);
-            writeFileSync(path, buffer);
+
             if (tmp !== hash) {
               this.logger.error(new Error(`文件 ${object.Key} hash校验失败`));
               // eslint-disable-next-line no-continue
               continue;
             }
+
+            writeFileSync(path, buffer);
           }
+
           const buffer = readFileSync(path);
           // 读取元信息
           const exif = getEXIF(path);
           const metadata = await sharp(path).metadata();
           const phash = await pHash(buffer);
           const uploadBy = await this.userService.getAssetBotUser();
+
           const newAsset = this.assetDao.create({
             sha1: hash,
             objectUrl,
@@ -185,6 +197,7 @@ export class AssetService extends BaseService {
             bucket,
             uploadBy,
           });
+
           process.nextTick(() => {
             this.assetDao.save(newAsset);
           });
@@ -225,6 +238,56 @@ export class AssetService extends BaseService {
     });
   }
 
+  private async fetchUndoes(
+    bucketName: string,
+    maxSn: string | undefined,
+    headers: Record<string, string>,
+  ) {
+    switch (bucketName) {
+      case ScheduleType.instagram:
+        return this.instagramBotService.fetchUndo(maxSn);
+      case ScheduleType.pinterest:
+        // eslint-disable-next-line no-param-reassign
+        headers.refer = 'https://www.pinterest.com/';
+        return this.pinterestBotService.fetchUndo(maxSn);
+      case ScheduleType.pixiv:
+        return this.pixivBotService.fetchUndo(maxSn);
+      default:
+        throw new UnprocessableEntityException('bucketName is not support');
+    }
+  }
+
+  private async createAsset(undo: { id: any; originUrl: any; tags: any }, bucket: CosBucket) {
+    const asset = this.assetDao.create({
+      sn: undo.id,
+      originUrl: undo.originUrl,
+      tags: undo.tags,
+      uploadBy: await this.userService.getAssetBotUser(),
+    });
+    asset.bucket = bucket;
+    return asset;
+  }
+
+  private async processAsset(asset: Asset, buffer: Buffer, metadata: Metadata, bucket: CosBucket) {
+    if (!metadata.format) {
+      throw new Error('bot => unsupported media type!');
+    }
+    const _asset = asset;
+    _asset.fileSuffix = metadata.format;
+    _asset.pHash = await pHash(buffer);
+    const path = join(this.assetsPath, `${asset.sha1}.${asset.fileSuffix}`);
+    _asset.exif = getEXIF(path);
+    _asset.metadata = metadata;
+    await this.assetDao.save(asset);
+    writeFileSync(path, buffer);
+
+    this.mqService.notifyUploadToCos({
+      sha1: asset.sha1,
+      suffix: asset.fileSuffix,
+      name: bucket.name,
+    });
+  }
+
   /**
    * bot 定时 下载图片
    * @param bucketName
@@ -234,6 +297,7 @@ export class AssetService extends BaseService {
     if (isNull(bucket)) {
       return;
     }
+
     const max = await this.assetDao.findOne({
       order: { id: 'DESC' },
       where: {
@@ -241,54 +305,22 @@ export class AssetService extends BaseService {
         sn: Not(''),
       },
     });
-    let undoes: PinterestInterface[] = [];
+
     const headers = { refer: '' };
-    switch (bucketName) {
-      case ScheduleType.instagram:
-        undoes = await this.instagramBotService.fetchUndo(max?.sn);
-        break;
-      case ScheduleType.pinterest:
-        undoes = await this.pinterestBotService.fetchUndo(max?.sn);
-        headers.refer = 'https://www.pinterest.com/';
-        break;
-      case ScheduleType.pixiv:
-        undoes = await this.pixivBotService.fetchUndo(max?.sn);
-        break;
-      default:
-        throw new UnprocessableEntityException('bucketName is not support');
-    }
-    this.logger.info(`undoes count -> ${undoes.length}`);
+    const undoes: PinterestInterface[] = await this.fetchUndoes(bucketName, max?.sn, headers);
+
+    this.logger.info(`undoes count:[${bucketName}] -> ${undoes.length}`);
     for (const undo of undoes.reverse()) {
       this.logger.info(`[${bucketName}] -> ${undo.id} -> ${undo.imgList.join('\n')}`);
       for (const imgUrl of undo.imgList) {
         try {
-          let asset = this.assetDao.create();
-          asset.sn = undo.id;
-          asset.originUrl = undo.originUrl;
-          asset.tags = undo.tags;
-          // ε=(´ο｀*))) 专属的脚本机器人
-          asset.uploadBy = await this.userService.getAssetBotUser();
+          const asset = await this.createAsset(undo, bucket);
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();
           const metadata = await sharp(buffer).metadata();
           asset.sha1 = sha1(buffer);
-          if (metadata.format) {
-            asset.fileSuffix = metadata.format;
-            asset.pHash = await pHash(buffer);
-            const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
-            asset.exif = getEXIF(path);
-            asset.metadata = metadata;
-            asset.bucket = bucket;
-            asset = await this.assetDao.save(asset);
-            writeFileSync(path, buffer);
-            this.mqService.notifyUploadToCos({
-              sha1: asset.sha1,
-              suffix: asset.fileSuffix,
-              name: bucket.name,
-            });
-          } else {
-            this.logger.error(new Error('bot => unsupported media type!'));
-          }
+
+          await this.processAsset(asset, buffer, metadata, bucket);
         } catch (e) {
           this.logger.error(e);
         }

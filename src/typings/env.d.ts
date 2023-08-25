@@ -49,6 +49,9 @@ interface _ProcessEnv {
   // Instagram
   IG_USERNAME: string;
   IG_PASSWORD: string;
+
+  // npm
+  npm_package_name: string;
 }
 
 declare module 'node:process' {

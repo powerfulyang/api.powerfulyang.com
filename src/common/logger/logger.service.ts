@@ -1,74 +1,10 @@
-import process from 'node:process';
+import { loggerInstance } from '@/common/logger/loggerInstance';
 import { Injectable, Optional, Scope } from '@nestjs/common';
-import { isProdProcess, isTestProcess } from '@powerfulyang/utils';
-import chalk from 'chalk';
-import dayjs from 'dayjs';
 import type { Logger } from 'winston';
-import winston, { format } from 'winston';
-
-const { combine, timestamp, printf } = format;
-const transport = new winston.transports.Console();
-const packageName = process.env.npm_package_name || '';
-
-const logger = winston.createLogger({
-  level: (isProdProcess && 'info') || 'debug',
-  transports: [transport],
-  silent: isTestProcess,
-  format: combine(
-    timestamp({
-      format: () => {
-        return dayjs().format('MM/DD/YYYY, h:mm:ss.SSS A');
-      },
-    }),
-    printf(({ level, message, ...others }) => {
-      const {
-        context,
-        stack,
-        timestamp: t,
-        ...json
-      } = others as {
-        context?: string;
-        stack?: string;
-        timestamp: string;
-        [key: string]: any;
-      };
-      let write: chalk.Chalk;
-      switch (level) {
-        case 'info':
-          write = chalk.green;
-          break;
-        case 'error':
-          write = chalk.red;
-          break;
-        case 'debug':
-          write = chalk.blue;
-          break;
-        case 'warn':
-          write = chalk.yellow;
-          break;
-        case 'verbose':
-          write = chalk.gray;
-          break;
-        default:
-          write = chalk.cyan;
-          break;
-      }
-      const LEVEL: string = write(level.toUpperCase());
-      const MESSAGE: string = write(message);
-      const CONTEXT = write(`[${context || ''}]`);
-      const APP = write(`[${packageName}] ${process.pid}  -`);
-      const STACK = stack ? chalk.magenta(`\n${stack}`) : '';
-      const _JSON = Object.keys(json).length
-        ? chalk.blueBright(`\n${JSON.stringify(json, undefined, 2)}`)
-        : '';
-      return `${APP} ${t}     ${LEVEL} ${CONTEXT} ${MESSAGE}${STACK}${_JSON}`;
-    }),
-  ),
-});
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggerService {
-  private readonly logger: Logger = logger;
+  private readonly logger: Logger = loggerInstance;
 
   private context: string;
 
@@ -86,26 +22,22 @@ export class LoggerService {
   error(error: Object, stack?: Error, context?: string): void;
 
   error(error: Error | string | Object, stack?: Error, context?: string) {
+    let logObject;
+
     if (error instanceof Error) {
-      this.logger.error({
+      logObject = {
         ...error,
         context: context || this.context,
         stack: error.stack,
         message: error.message,
-      });
+      };
     } else if (typeof error === 'object') {
-      this.logger.error({
-        ...error,
-        stack,
-        context: context || this.context,
-      });
+      logObject = { ...error, stack, context: context || this.context };
     } else {
-      this.logger.error({
-        context: context || this.context,
-        message: error,
-        stack,
-      });
+      logObject = { context: context || this.context, message: error, stack };
     }
+
+    this.logger.error(logObject);
   }
 
   warn(message: string, context?: string) {
