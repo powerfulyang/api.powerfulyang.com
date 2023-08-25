@@ -101,6 +101,7 @@ export class Asset {
 
   @Column({
     comment: 'OCR 识别结果',
+    default: '',
   })
   alt: string;
 

@@ -1,3 +1,4 @@
+import { getRequestId } from '@/request/namespace';
 import { isProdProcess, isTestProcess } from '@powerfulyang/utils';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
@@ -46,12 +47,16 @@ const logFormat = printf(({ level, message, ...others }) => {
   const write = getChalkColor(level);
   const LEVEL = write(level.toUpperCase());
   const MESSAGE = write(message);
-  const CONTEXT = write(`[${context || ''}]`);
+  const requestId = getRequestId();
+  const _requestId = requestId ? `@${requestId}` : '';
+  const _context = context ? `${context}` : '';
+  const CONTEXT = write(`[${_context}${_requestId}]`);
   const APP = write(`[${packageName}] ${process.pid}  -`);
   const STACK = stack ? chalk.magenta(`\n${stack}`) : '';
   const _JSON = Object.keys(json).length
     ? chalk.blueBright(`\n${JSON.stringify(json, undefined, 2)}`)
     : '';
+
   return `${APP} ${t}     ${LEVEL} ${CONTEXT} ${MESSAGE}${STACK}${_JSON}`;
 });
 

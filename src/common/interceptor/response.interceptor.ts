@@ -1,7 +1,8 @@
+import { getRequestExtend, getRequestId, getRequestUser } from '@/request/namespace';
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import type { FastifyReply } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 import { map } from 'rxjs';
 import { ExcludeResponseInterceptorSymbol } from '@/common/decorator/exclude-response-interceptor.decorator';
 import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
@@ -10,9 +11,9 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { Authorization, DefaultCookieOptions } from '@/constants/constants';
 import { PathViewCountService } from '@/path-view-count/path-view-count.service';
 import { UserService } from '@/user/user.service';
-import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import { DateTimeFormat } from '@/utils/dayjs';
 import { HOSTNAME } from '@/utils/hostname';
+import process from 'node:process';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -37,15 +38,16 @@ export class ResponseInterceptor implements NestInterceptor {
 
     const ctx = context.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
-    const request = ctx.getRequest<FastifyExtendRequest>();
-    const path = request.url;
-    const { xRealIp } = request.raw.extend;
+    const request = ctx.getRequest<FastifyRequest>();
+    const user = getRequestUser();
+    const extend = getRequestExtend();
+    const { xRealIp, start } = extend;
+    const { url: path } = request;
 
     return next.handle().pipe(
       map(async (data) => {
-        if (request.user) {
+        if (user) {
           // 这样写是有问题的，可能同时有多个请求带上即将过期的 cookie，导致不必要的连续刷新
-          const { user } = request;
           const ValidPeriodSecond = user.exp - Date.now() / 1000;
           const ValidPeriodHour = ValidPeriodSecond / 3600;
           if (ValidPeriodHour < 6) {
@@ -72,10 +74,12 @@ export class ResponseInterceptor implements NestInterceptor {
         reply.header('x-path-view-count', pathViewCount);
         reply.header('x-server-id', HOSTNAME);
         reply.header('x-server-time', DateTimeFormat());
-        reply.header('x-server-path', path);
-        const execTime = Date.now() - request.raw.extend.start;
-        reply.header('x-server-exec-time', execTime);
-        this.logger.verbose(`exec time: ${execTime}ms, response data: ${JSON.stringify(data)}`);
+        const diff = process.hrtime(start);
+        const execTime = diff[0] * 1e9 + diff[1]; // 纳秒
+        const execTimeMs = execTime / 1e6; // 毫秒
+        reply.header('x-server-exec-time', execTimeMs);
+        reply.header('x-request-id', getRequestId());
+        this.logger.verbose(`exec time: ${execTimeMs}ms, response data: ${JSON.stringify(data)}`);
         // 不再做统一格式处理，直接返回原始数据
         return data;
       }),

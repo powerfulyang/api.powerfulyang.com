@@ -1,3 +1,4 @@
+import type { RequestUser } from '@/request/namespace';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -162,7 +163,7 @@ export class UserService extends BaseService {
   }
 
   verifyAuthorization(token: string) {
-    return this.jwtService.verifyAsync<Pick<User, 'id'>>(token);
+    return this.jwtService.verifyAsync<RequestUser>(token);
   }
 
   async queryMenusByUserId(id: User['id']) {

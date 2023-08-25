@@ -1,11 +1,11 @@
+import { getRequestUser } from '@/request/namespace';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Role } from '@/user/entities/role.entity';
-import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
 import type { UploadFile } from '@/type/UploadFile';
 
-type AccessRequest = FastifyExtendRequest & {
+type AccessRequest = {
   body: {
     public?: boolean | string;
     assets?: UploadFile[];
@@ -20,7 +20,8 @@ export class AccessGuard implements CanActivate {
 
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<AccessRequest>();
-    const useRoles = request.user.roles;
+    const user = getRequestUser();
+    const useRoles = user.roles;
     const isAdmin = useRoles.some((role) => role.name === Role.IntendedRoles.admin);
     const body = request.body || {};
     const isPublic = body.public === 'true' || body.public === true;

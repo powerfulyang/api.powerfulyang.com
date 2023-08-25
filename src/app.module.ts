@@ -96,7 +96,7 @@ export class AppModule implements NestModule {
   ) {
     this.logger.setContext(AppModule.name);
     this.bootstrapService.bootstrap().then(() => {
-      this.logger.info('bootstrap done');
+      this.logger.info('Bootstrap Success!');
     });
   }
 

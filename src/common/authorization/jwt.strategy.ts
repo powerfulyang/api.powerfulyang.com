@@ -1,14 +1,14 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import type { FastifyRequest } from 'fastify';
-import { ExtractJwt, Strategy } from 'passport-jwt';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { jwtSecretConfig } from '@/configuration/jwt.config';
 import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import type { User } from '@/user/entities/user.entity';
+import type { RequestUser } from '@/request/namespace';
+import { setRequestUser } from '@/request/namespace';
 import { UserService } from '@/user/user.service';
-import type { FastifyExtendRequest } from '@/type/FastifyExtendRequest';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import type { FastifyRequest } from 'fastify';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -27,23 +27,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate(
-    { raw: { extend } }: FastifyExtendRequest,
-    user: User & { iat: number; exp: number },
-  ) {
+  async validate(_: unknown, user: RequestUser) {
     // to check user status;
     const cachedUser = await this.userService.getCachedUser(user.id);
     if (!cachedUser) {
       throw new UnauthorizedException('User cache not found');
     }
-    if (extend.xRealIp) {
-      process.nextTick(() => {
-        this.userService.updateUserWithoutCache(user.id, {
-          lastIp: extend.xRealIp,
-          lastAddress: extend.address,
-        });
-      });
-    }
-    return Object.assign(cachedUser, { exp: user.exp });
+    const result = Object.assign(cachedUser, { exp: user.exp, iat: user.iat });
+    setRequestUser(result);
+    return result;
   }
 }

@@ -57,7 +57,7 @@ export class ToolsController {
   }
 
   @Post('ocr')
-  ocr(@Body() { images, language }: OCRDto) {
-    return this.toolsService.ocr(images[0].data, language);
+  ocr(@Body() { images }: OCRDto) {
+    return this.toolsService.ocr(images[0].data);
   }
 }
