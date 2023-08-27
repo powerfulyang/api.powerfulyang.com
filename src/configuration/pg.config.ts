@@ -14,6 +14,7 @@ export const pgConfig = (): TypeOrmModuleOptions => ({
   logging: false,
   entities: getMetadataArgsStorage().tables.map((t) => t.target),
   extra: {
+    // `idleTimeoutMillis: 0`表示数据库连接将永远不会超时并关闭。这可能在某些情况下是可接受的，但需要根据应用的具体需求来判断。
     idleTimeoutMillis: 0,
     connectionTimeoutMillis: 10000,
     application_name: 'backend-api',

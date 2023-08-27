@@ -1,5 +1,6 @@
+import { getBucketAssetPath } from '@/constants/asset_constants';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { basename, extname, join } from 'node:path';
+import { basename, extname } from 'node:path';
 import {
   HttpStatus,
   Injectable,
@@ -38,8 +39,6 @@ import process from 'node:process';
 
 @Injectable()
 export class AssetService extends BaseService {
-  private readonly assetsPath = join(process.cwd(), 'assets');
-
   constructor(
     @InjectRepository(Asset) private readonly assetDao: Repository<Asset>,
     @InjectDataSource() private readonly dataSource: DataSource,
@@ -161,7 +160,7 @@ export class AssetService extends BaseService {
         // asset 不存在
         if (isNull(asset)) {
           const objectUrl = await this.getObjectUrl(object.Key, bucket);
-          const path = join(this.assetsPath, `${hash}.${fileSuffix}`);
+          const path = getBucketAssetPath(bucket.name, `${hash}.${fileSuffix}`);
 
           const exist = existsSync(path);
           if (!exist) {
@@ -275,7 +274,7 @@ export class AssetService extends BaseService {
     const _asset = asset;
     _asset.fileSuffix = metadata.format;
     _asset.pHash = await pHash(buffer);
-    const path = join(this.assetsPath, `${asset.sha1}.${asset.fileSuffix}`);
+    const path = getBucketAssetPath(bucket.name, `${asset.sha1}.${asset.fileSuffix}`);
     _asset.exif = getEXIF(path);
     _asset.metadata = metadata;
     await this.assetDao.save(asset);
@@ -405,8 +404,9 @@ export class AssetService extends BaseService {
 
   async persistentToCos(data: UploadFileMsg) {
     const Key = `${data.sha1}.${data.suffix}`;
-    const buffer = readFileSync(join(process.cwd(), 'assets', Key));
     const { name } = data;
+    const path = getBucketAssetPath(name, Key);
+    const buffer = readFileSync(path);
     const bucket = await this.bucketService.getBucketByBucketName(name);
     const { Bucket, Region } = bucket;
     const { tencentCloudAccount } = bucket;
@@ -506,7 +506,7 @@ export class AssetService extends BaseService {
     asset.fileSuffix = metadata.format;
     asset.pHash = await pHash(buffer);
     try {
-      const path = join(process.cwd(), 'assets', `${asset.sha1}.${asset.fileSuffix}`);
+      const path = getBucketAssetPath(asset.bucket.name, `${asset.sha1}.${asset.fileSuffix}`);
       asset.exif = getEXIF(path);
       asset.metadata = metadata;
       asset = await this.assetDao.save(asset);
