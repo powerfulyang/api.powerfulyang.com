@@ -1,4 +1,4 @@
-import { getRequestUser } from '@/request/namespace';
+import type { AccessRequest } from '@/common/authorization/access-guard';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -15,8 +15,9 @@ export class PermissionGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest<AccessRequest>();
     const permissions = this.reflector.get<Permission[]>(Permission, context.getHandler()) || [];
-    const user = getRequestUser();
+    const { user } = request;
     this.logger.debug(`Action needs permissions: ${permissions.join(', ')}`);
     const hasPermission = user.roles.some((role) => {
       return role.permissions.some((permission) => {

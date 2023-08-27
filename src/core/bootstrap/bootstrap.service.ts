@@ -5,7 +5,6 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { CoreService } from '@/core/core.service';
 import { BucketService } from '@/bucket/bucket.service';
-import { PathViewCountService } from '@/path-view-count/path-view-count.service';
 import { MenuService } from '@/user/menu/menu.service';
 import { RoleService } from '@/user/role/role.service';
 import { UserService } from '@/user/user.service';
@@ -17,7 +16,6 @@ export class BootstrapService {
     private readonly userService: UserService,
     private readonly logger: LoggerService,
     private readonly coreService: CoreService,
-    private readonly pathViewCountService: PathViewCountService,
     private readonly bucketService: BucketService,
     private readonly roleService: RoleService,
     private readonly menuService: MenuService,
@@ -37,12 +35,7 @@ export class BootstrapService {
     }
     if (result) {
       // 10s 后过期
-      await Promise.all([
-        this.cacheUsers(),
-        this.cachePathViewCount(),
-        this.initBucket(),
-        this.initIntendedData(),
-      ]);
+      await Promise.all([this.cacheUsers(), this.initBucket(), this.initIntendedData()]);
     }
     return true;
   }
@@ -51,13 +44,6 @@ export class BootstrapService {
     const bool = await this.coreService.isScheduleNode();
     if (bool) {
       await this.userService.cacheUsers();
-    }
-  }
-
-  private async cachePathViewCount() {
-    const bool = await this.coreService.isScheduleNode();
-    if (bool) {
-      await this.pathViewCountService.initPathViewCountCache();
     }
   }
 

@@ -18,8 +18,8 @@ export class CatchFilter<T> implements ExceptionFilter {
     }
 
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<FastifyReply>();
+    const reply = ctx.getResponse<FastifyReply>();
     const statusCode = 500;
-    response.status(statusCode).send(exception);
+    reply.status(statusCode).send(exception);
   }
 }

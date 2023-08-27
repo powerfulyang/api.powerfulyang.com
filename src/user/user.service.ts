@@ -1,4 +1,4 @@
-import type { RequestUser } from '@/request/namespace';
+import type { RequestUser } from '@/common/authorization/access-guard';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -149,11 +149,6 @@ export class UserService extends BaseService {
         // salt 是默认密码
         await this.sendDefaultPassword(user.email, user.salt);
       }
-    } else {
-      // 更新头像
-      const u = await this.getCachedUser(user.id);
-      u.avatar = avatar;
-      user = await this.saveUserAndCached(u);
     }
     return this.generateAuthorization(user);
   }

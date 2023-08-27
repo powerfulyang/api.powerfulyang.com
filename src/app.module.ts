@@ -19,7 +19,6 @@ import { BootstrapModule } from '@/core/bootstrap/bootstrap.module';
 import { BootstrapService } from '@/core/bootstrap/bootstrap.service';
 import { GithubModule } from '@/libs/github';
 import { WechatModule } from '@/libs/wechat';
-import { PathViewCountModule } from '@/path-view-count/path-view-count.module';
 import { ScheduleModule } from '@/schedule/schedule.module';
 import { AssetModule } from '@/asset/asset.module';
 import { FcmModule } from '@/fcm/fcm.module';
@@ -52,7 +51,6 @@ import { ClickUpModule } from './click-up/click-up.module';
     AssetModule,
     PostModule,
     PublicModule,
-    PathViewCountModule,
     ScheduleModule,
     FeedModule,
     BootstrapModule,

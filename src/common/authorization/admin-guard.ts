@@ -1,9 +1,9 @@
-import { getRequestUser } from '@/request/namespace';
-import type { CanActivate } from '@nestjs/common';
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import type { Observable } from 'rxjs';
+import type { AccessRequest } from '@/common/authorization/access-guard';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Role } from '@/user/entities/role.entity';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import type { Observable } from 'rxjs';
 
 /**
  * @description 需要搭配 @UseGuards(AdminGuard) 使用
@@ -14,8 +14,9 @@ export class AdminGuard implements CanActivate {
     this.logger.setContext(AdminGuard.name);
   }
 
-  canActivate(): boolean | Promise<boolean> | Observable<boolean> {
-    const user = getRequestUser();
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest<AccessRequest>();
+    const { user } = request;
     this.logger.debug(`User [id=${user.id}] is trying to access admin area`);
     const result = user.roles.some((role) => role.name === Role.IntendedRoles.admin);
     if (!result) {

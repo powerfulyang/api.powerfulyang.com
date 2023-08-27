@@ -1,9 +1,8 @@
+import type { RequestUser } from '@/common/authorization/access-guard';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { jwtSecretConfig } from '@/configuration/jwt.config';
 import { JWT_SECRET_CONFIG } from '@/constants/PROVIDER_TOKEN';
-import type { RequestUser } from '@/request/namespace';
-import { setRequestUser } from '@/request/namespace';
 import { UserService } from '@/user/user.service';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -28,14 +27,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate(_: unknown, user: RequestUser) {
+  async validate(_: FastifyRequest, user: RequestUser) {
     // to check user status;
     const cachedUser = await this.userService.getCachedUser(user.id);
     if (!cachedUser) {
       throw new UnauthorizedException('User cache not found');
     }
-    const result = Object.assign(cachedUser, { exp: user.exp, iat: user.iat });
-    setRequestUser(result);
-    return result;
+    return Object.assign(cachedUser, { exp: user.exp, iat: user.iat });
   }
 }

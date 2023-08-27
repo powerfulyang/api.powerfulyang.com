@@ -18,8 +18,8 @@ export class HttpExceptionFilter<T extends HttpException> implements ExceptionFi
     }
 
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<FastifyReply>();
+    const reply = ctx.getResponse<FastifyReply>();
     const statusCode = exception.getStatus();
-    response.status(statusCode).send(exception.getResponse());
+    reply.status(statusCode).send(exception.getResponse());
   }
 }

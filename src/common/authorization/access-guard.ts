@@ -1,16 +1,23 @@
-import { getRequestUser } from '@/request/namespace';
+import type { User } from '@/user/entities/user.entity';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
 import { Role } from '@/user/entities/role.entity';
 import type { UploadFile } from '@/type/UploadFile';
+import type { FastifyRequest } from 'fastify';
 
-type AccessRequest = {
+export interface RequestUser extends User {
+  iat: number;
+  exp: number;
+}
+
+export interface AccessRequest extends FastifyRequest {
   body: {
     public?: boolean | string;
     assets?: UploadFile[];
   };
-};
+  user: RequestUser;
+}
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -20,7 +27,7 @@ export class AccessGuard implements CanActivate {
 
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<AccessRequest>();
-    const user = getRequestUser();
+    const { user } = request;
     const useRoles = user.roles;
     const isAdmin = useRoles.some((role) => role.name === Role.IntendedRoles.admin);
     const body = request.body || {};
