@@ -30,11 +30,6 @@ export class AssetController {
     return this.assetService.queryAssets(pagination);
   }
 
-  @Get('sync')
-  syncAllFromCos() {
-    return this.assetService.syncFromCos();
-  }
-
   @Get('pHash/distance')
   async pHashMap() {
     return this.assetService.pHashMap();

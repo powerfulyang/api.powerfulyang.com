@@ -34,7 +34,7 @@
     "swagger-helper": "npx ts-node src/generate-metadata.ts"
   },
   "dependencies": {
-    "@apollo/server": "4.9.1",
+    "@apollo/server": "4.9.2",
     "@as-integrations/fastify": "2.1.0",
     "@elastic/elasticsearch": "8.9.0",
     "@fastify/cookie": "9.0.4",
@@ -54,7 +54,7 @@
     "@nestjs/swagger": "7.1.8",
     "@nestjs/typeorm": "10.0.0",
     "@powerfulyang/node-utils": "1.6.0",
-    "@powerfulyang/utils": "1.11.2",
+    "@powerfulyang/utils": "1.13.0",
     "@prisma/client": "5.2.0",
     "amqp-connection-manager": "4.1.14",
     "amqplib": "0.10.3",
@@ -80,16 +80,16 @@
     "passport-github": "1.1.0",
     "passport-google-oauth20": "2.0.0",
     "passport-jwt": "4.0.1",
-    "peer": "1.0.0",
+    "peer": "1.0.1",
     "pg": "8.11.3",
-    "qqwry.ipdb": "2023.8.9",
+    "qqwry.ipdb": "2023.8.23",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.1",
     "sharp": "0.32.5",
     "socks-proxy-agent": "8.0.1",
     "source-map-support": "0.5.21",
-    "tencentcloud-sdk-nodejs": "4.0.671",
-    "tesseract.js": "4.1.1",
+    "tencentcloud-sdk-nodejs": "4.0.674",
+    "tesseract.js": "4.1.2",
     "typeorm": "0.3.17",
     "uuid": "9.0.0",
     "web-push": "3.6.4",
@@ -102,8 +102,8 @@
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-graphql-request": "5.0.0",
     "@graphql-codegen/typescript-operations": "4.0.1",
-    "@jest/globals": "29.6.3",
-    "@nestjs/cli": "10.1.13",
+    "@jest/globals": "29.6.4",
+    "@nestjs/cli": "10.1.16",
     "@nestjs/schematics": "10.0.2",
     "@nestjs/testing": "10.2.1",
     "@powerfulyang/lint": "3.7.0",
@@ -111,7 +111,7 @@
     "@types/cls-hooked": "4.3.5",
     "@types/fs-extra": "11.0.1",
     "@types/lodash": "4.14.197",
-    "@types/node": "20.5.3",
+    "@types/node": "20.5.7",
     "@types/node-fetch": "2.6.4",
     "@types/node-telegram-bot-api": "0.61.7",
     "@types/nodemailer": "6.4.9",
@@ -121,22 +121,17 @@
     "@types/passport-jwt": "3.0.9",
     "@types/sharp": "0.31.1",
     "@types/uuid": "9.0.2",
-    "@types/web-push": "3.3.2",
+    "@types/web-push": "3.6.0",
     "@types/xml2js": "0.4.11",
     "form-data": "4.0.0",
     "node-addon-api": "7.0.0",
     "node-gyp": "9.4.0",
     "prisma": "5.2.0",
     "ts-node": "10.9.1",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "bundledDependencies": [
     "fastify"
   ],
-  "gypfile": true,
-  "pnpm": {
-    "patchedDependencies": {
-      "@nestjs/cli@10.1.13": "patches/@nestjs__cli@10.1.13.patch"
-    }
-  }
+  "gypfile": true
 }

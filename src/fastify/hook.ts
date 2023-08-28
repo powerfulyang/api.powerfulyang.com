@@ -9,7 +9,7 @@ import fastify from 'fastify';
 import process from 'node:process';
 import { parseString } from 'xml2js';
 
-export const createFastifyInstance = () => {
+export const createFastifyInstance: any = () => {
   const fastifyInstance = fastify();
 
   // adapt passport

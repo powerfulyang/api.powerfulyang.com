@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { FastifyRequest } from 'fastify';
 import type { Profile as GithubProfile } from 'passport-github';
@@ -106,7 +106,7 @@ export class UserController {
     operationId: 'loginWithEmail',
   })
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.CREATED,
     headers: {
       'set-cookie': {
         schema: {

@@ -1,3 +1,4 @@
+import { LoggerService } from '@/common/logger/logger.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import type {
   PinterestInterface,
@@ -7,7 +8,12 @@ import { ProxyFetchService } from '@/libs/proxy-fetch';
 
 @Injectable()
 export class PinterestBotService {
-  constructor(private proxyFetchService: ProxyFetchService) {}
+  constructor(
+    private readonly proxyFetchService: ProxyFetchService,
+    private readonly logger: LoggerService,
+  ) {
+    this.logger.setContext(PinterestBotService.name);
+  }
 
   async processRequestNext(lastId?: string, bookmark?: string) {
     const sourceUrl = '/powerfulyang/bot/';
@@ -47,13 +53,17 @@ export class PinterestBotService {
         if (datum.id === lastId) {
           return array;
         }
-        const obj: PinterestInterface = {
-          id: datum.id,
-          imgList: [datum.images.orig.url],
-          tags: [],
-          originUrl: `https://www.pinterest.com/pin/${datum.id}`,
-        };
-        array.push(obj);
+        if (datum.images?.orig) {
+          const obj: PinterestInterface = {
+            id: datum.id,
+            imgList: [datum.images.orig.url],
+            tags: [],
+            originUrl: `https://www.pinterest.com/pin/${datum.id}`,
+          };
+          array.push(obj);
+        } else {
+          this.logger.error(`id: ${datum.id} has no images`);
+        }
       }
       const nextBookmark = res.resource_response.bookmark;
       if (nextBookmark) {

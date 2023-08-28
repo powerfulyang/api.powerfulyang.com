@@ -99,7 +99,7 @@ export class AppModule implements NestModule {
   }
 
   configure(consumer: MiddlewareConsumer) {
-    this.logger.verbose('register RequestMiddleware & CookieParser middleware for path *');
+    this.logger.verbose('register RequestMiddleware middleware for path *');
     consumer.apply(RequestMiddleware).forRoutes('*');
   }
 }

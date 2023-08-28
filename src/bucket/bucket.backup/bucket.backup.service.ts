@@ -17,7 +17,7 @@ export class BucketBackupService {
     const cosUtil = await this.tencentCloudAccountService.getCosUtilByAccountId(Number(accountId));
     const result = await cosUtil.getService();
     const buckets = result.Buckets;
-    const actionResult = [];
+    const actionResult: any[] = [];
     for (const bucket of buckets) {
       const objects = await cosUtil.getBucket({
         Bucket: bucket.Name,

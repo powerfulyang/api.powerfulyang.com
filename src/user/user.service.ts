@@ -69,10 +69,6 @@ export class UserService extends BaseService {
     return root;
   }
 
-  private static pickUserId(user: Partial<User>) {
-    return pick(user, ['id']);
-  }
-
   private static verifyPassword(password: string, salt: string, saltedPassword: string) {
     const tmp = sha1(password, salt);
     return tmp === saltedPassword;
@@ -142,19 +138,20 @@ export class UserService extends BaseService {
         user.email = email;
         user.avatar = avatar;
         user.nickname = profile.displayName;
-        user = await this.initUserDefaultProperty(user);
+        const defaultProperty = await this.initUserDefaultProperty(user);
+        user = defaultProperty;
         user = await this.saveUserAndCached(user);
         // 关联新的 openid
         await this.oauthOpenidService.associateOpenid(user.id, openid, platform);
         // salt 是默认密码
-        await this.sendDefaultPassword(user.email, user.salt);
+        await this.sendDefaultPassword(user.email, defaultProperty.salt);
       }
     }
     return this.generateAuthorization(user);
   }
 
   generateAuthorization(user: Partial<User> & Pick<User, 'id'>) {
-    return this.jwtService.signAsync(UserService.pickUserId(user));
+    return this.jwtService.signAsync(pick(user, 'id'));
   }
 
   verifyAuthorization(token: string) {
@@ -227,7 +224,7 @@ export class UserService extends BaseService {
 
   queryUserCascadeInfo(ids: User['id'][]): Promise<User[]>;
 
-  queryUserCascadeInfo(id?: User['id'] | User['id'][]): Promise<any> {
+  queryUserCascadeInfo(id?: User['id'] | User['id'][]) {
     if (isDefined(id)) {
       if (isArray(id)) {
         return this.userDao.find({
@@ -255,7 +252,7 @@ export class UserService extends BaseService {
    * @param family - familyId or familyId[]
    * @param operation - 'add' | 'remove' | 'replace'
    */
-  async setUserFamily(
+  async joinFamily(
     userId: User['id'],
     family: Family['id'] | Family['id'][],
     operation: 'add' | 'remove' | 'replace' = 'replace',

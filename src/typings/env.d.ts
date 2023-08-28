@@ -1,6 +1,6 @@
 interface _ProcessEnv {
-  APP_ENV: string;
-  NODE_ENV: string;
+  APP_ENV: 'dev' | 'qa' | 'prod';
+  NODE_ENV: 'development' | 'production' | 'test';
 
   // JWT
   JWT_SECRET: string;
@@ -52,6 +52,9 @@ interface _ProcessEnv {
 
   // npm
   npm_package_name: string;
+
+  PORT: string;
+  HOSTNAME: string;
 }
 
 declare module 'node:process' {
