@@ -1,3 +1,4 @@
+import { ToolsModule } from '@/tools/tools.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from '@/common/logger/logger.module';
@@ -30,6 +31,7 @@ import { AssetService } from './asset.service';
     BucketModule,
     MqModule,
     ProxyFetchModule.forRoot(),
+    ToolsModule,
   ],
   providers: [AssetService, AlgoliaService],
   controllers: [AssetController],

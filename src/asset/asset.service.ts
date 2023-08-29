@@ -14,6 +14,7 @@ import { ProxyFetchService } from '@/libs/proxy-fetch';
 import { BaseService } from '@/service/base/BaseService';
 import { MqService } from '@/service/mq/mq.service';
 import { TencentCloudAccountService } from '@/tencent-cloud-account/tencent-cloud-account.service';
+import { OcrService } from '@/tools/ocr/ocrService';
 import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import type { UploadFile, UploadFileMsg } from '@/type/UploadFile';
 import type { User } from '@/user/entities/user.entity';
@@ -29,7 +30,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { ensureFileSync } from 'fs-extra';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
 
@@ -47,6 +48,7 @@ export class AssetService extends BaseService {
     private readonly tencentCloudAccountService: TencentCloudAccountService,
     private readonly userService: UserService,
     private readonly bucketService: BucketService,
+    private readonly ocrService: OcrService,
   ) {
     super();
     this.logger.setContext(AssetService.name);
@@ -222,12 +224,17 @@ export class AssetService extends BaseService {
     const _pHash = await pHash(buffer);
     _asset.fileSuffix = _fileSuffix;
     _asset.pHash = _pHash;
-    const path = getBucketAssetPath(bucket.name, `${_asset.sha1}.${_asset.fileSuffix}`);
+    const path = getBucketAssetPath(bucket.Bucket, `${_asset.sha1}.${_asset.fileSuffix}`);
+
+    if (!existsSync(path)) {
+      ensureFileSync(path);
+      writeFileSync(path, buffer);
+    }
     _asset.exif = getEXIF(path);
     _asset.metadata = metadata;
+    const { text } = await this.ocrService.recognize(path);
+    _asset.alt = text;
     const asset = await this.assetDao.save(_asset);
-    ensureFileSync(path);
-    writeFileSync(path, buffer);
 
     const data: UploadFileMsg = {
       sha1: asset.sha1,
@@ -367,9 +374,9 @@ export class AssetService extends BaseService {
   async persistentToCos(data: UploadFileMsg) {
     const Key = `${data.sha1}.${data.suffix}`;
     const { name } = data;
-    const path = getBucketAssetPath(name, Key);
-    const buffer = readFileSync(path);
     const bucket = await this.bucketService.getBucketByBucketName(name);
+    const path = getBucketAssetPath(bucket.Bucket, Key);
+    const buffer = readFileSync(path);
     const { Bucket, Region } = bucket;
     const { tencentCloudAccount } = bucket;
     const util = await this.tencentCloudAccountService.getCosUtilByAccountId(

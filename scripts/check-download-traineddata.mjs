@@ -1,5 +1,4 @@
 import { exec } from 'node:child_process';
-import { readFileSync } from 'node:fs';
 
 if (process.env.BUILD === 'true') {
   exec('pnpm run download:traineddata', (error, stdout, stderr) => {
@@ -11,6 +10,3 @@ if (process.env.BUILD === 'true') {
     console.error(`stderr: ${stderr}`);
   });
 }
-const content = readFileSync('dist/main.js');
-const contentString = content.toString();
-console.log(contentString);

@@ -23,7 +23,8 @@
     "useUnknownInCatchVariables": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@test/*": ["test/*"]
     },
     "resolveJsonModule": true
   },

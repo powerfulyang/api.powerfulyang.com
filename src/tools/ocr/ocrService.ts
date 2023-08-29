@@ -6,7 +6,7 @@ import type { ImageLike } from 'tesseract.js';
 import { createWorker } from 'tesseract.js';
 
 @Injectable()
-export class OCRService implements OnModuleInit, OnModuleDestroy {
+export class OcrService implements OnModuleInit, OnModuleDestroy {
   private worker: Tesseract.Worker;
 
   private engWorker: Tesseract.Worker;
@@ -14,7 +14,7 @@ export class OCRService implements OnModuleInit, OnModuleDestroy {
   private chsWorker: Tesseract.Worker;
 
   constructor(private readonly logger: LoggerService) {
-    this.logger.setContext(OCRService.name);
+    this.logger.setContext(OcrService.name);
   }
 
   async onModuleInit() {

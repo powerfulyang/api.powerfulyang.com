@@ -1,5 +1,5 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { OCRService } from '@/tools/ocr/ocr.service';
+import { OcrService } from '@/tools/ocr/ocrService';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
@@ -8,17 +8,17 @@ import { Test } from '@nestjs/testing';
 import { TEST_ASSETS_IMAGES } from '@/constants/test_constants';
 
 describe('OCR Service', () => {
-  let service: OCRService;
+  let service: OcrService;
   let module: TestingModule;
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      providers: [OCRService, LoggerService],
+      providers: [OcrService, LoggerService],
     }).compile();
 
     await module.init();
 
-    service = module.get<OCRService>(OCRService);
+    service = module.get<OcrService>(OcrService);
   }, 1000 * 100);
 
   afterAll(async () => {

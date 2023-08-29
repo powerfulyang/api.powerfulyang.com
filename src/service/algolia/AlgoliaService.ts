@@ -1,3 +1,4 @@
+import { isTestProcess } from '@powerfulyang/utils';
 import process from 'node:process';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { LoggerService } from '@/common/logger/logger.service';
@@ -15,6 +16,10 @@ export class AlgoliaService {
     const crawlerApiKey = process.env.ALGOLIA_CRAWLER_API_KEY;
     if (!crawlerId || !crawlerUserId || !crawlerApiKey) {
       // ignore if no crawler id
+      return null;
+    }
+    if (isTestProcess) {
+      // ignore if test process
       return null;
     }
     const headers = this.getAuthHeader(`${crawlerUserId}:${crawlerApiKey}`);

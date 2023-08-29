@@ -5,11 +5,12 @@ import { join } from 'node:path';
 import fastifyCookie from '@fastify/cookie';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
-import fastify from 'fastify';
+import type { FastifyInstance } from 'fastify';
+import { fastify } from 'fastify';
 import process from 'node:process';
 import { parseString } from 'xml2js';
 
-export const createFastifyInstance: any = () => {
+export const createFastifyInstance = (): FastifyInstance => {
   const fastifyInstance = fastify();
 
   // adapt passport

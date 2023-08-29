@@ -16,7 +16,7 @@ import { Post as _Post } from '@/post/entities/post.entity';
 import { PostService } from '@/post/post.service';
 import { User } from '@/user/entities/user.entity';
 
-@Controller('open')
+@Controller('public')
 @PublicAuthGuard()
 @ApiTags('open')
 export class PublicController {

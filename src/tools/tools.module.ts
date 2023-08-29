@@ -1,4 +1,4 @@
-import { OCRService } from '@/tools/ocr/ocr.service';
+import { OcrService } from '@/tools/ocr/ocrService';
 import { Module } from '@nestjs/common';
 import { LoggerModule } from '@/common/logger/logger.module';
 import { ProxyFetchModule } from '@/libs/proxy-fetch';
@@ -8,6 +8,7 @@ import { ToolsService } from './tools.service';
 @Module({
   imports: [ProxyFetchModule.forRoot(), LoggerModule],
   controllers: [ToolsController],
-  providers: [ToolsService, OCRService],
+  providers: [ToolsService, OcrService],
+  exports: [ToolsService, OcrService],
 })
 export class ToolsModule {}

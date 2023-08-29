@@ -1,6 +1,6 @@
 import { LoggerService } from '@/common/logger/logger.service';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
-import { OCRService } from '@/tools/ocr/ocr.service';
+import { OcrService } from '@/tools/ocr/ocrService';
 import { Injectable } from '@nestjs/common';
 import { sha1 } from '@powerfulyang/node-utils';
 import { join } from 'node:path';
@@ -14,7 +14,7 @@ export class ToolsService {
   constructor(
     private readonly logger: LoggerService,
     private readonly proxyFetchService: ProxyFetchService,
-    private readonly ocrService: OCRService,
+    private readonly ocrService: OcrService,
   ) {
     this.logger.setContext(ToolsService.name);
     this.proxyUri = this.proxyFetchService.proxyUri;

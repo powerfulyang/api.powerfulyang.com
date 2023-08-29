@@ -1,0 +1,15 @@
+POST http://localhost:3001/api/feed
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: {{authorization}}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+Content-Type: text/plain
+
+This is a test feed
+--WebAppBoundary
+Content-Disposition: form-data; name="assets"; filename="multi.png"
+Content-Type: image/png
+
+< ../__test_assets__/images/multi.png
+--WebAppBoundary--
