@@ -24,13 +24,12 @@ import {
   Injectable,
   ServiceUnavailableException,
   UnprocessableEntityException,
-  UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
+import { ensureFileSync } from 'fs-extra';
 import { readFileSync, writeFileSync } from 'node:fs';
-import type { Metadata } from 'sharp';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
 
@@ -190,35 +189,58 @@ export class AssetService extends BaseService {
     }
   }
 
-  private async createAsset(undo: { id: any; originUrl: any; tags: any }, bucket: CosBucket) {
-    const asset = this.assetDao.create({
-      sn: undo.id,
-      originUrl: undo.originUrl,
-      tags: undo.tags,
-      uploadBy: await this.userService.getAssetBotUser(),
-    });
-    asset.bucket = bucket;
-    return asset;
-  }
+  private async processAsset(
+    buffer: Buffer,
+    options: {
+      bucketName: CosBucket['name'];
+      uploadBy: User;
+      async?: boolean;
+      assetAddition?: Partial<Asset>;
+    },
+  ) {
+    const { bucketName, uploadBy, async = true, assetAddition = {} } = options;
 
-  private async processAsset(asset: Asset, buffer: Buffer, metadata: Metadata, bucket: CosBucket) {
+    const _asset = this.assetDao.create(assetAddition);
+    _asset.sha1 = sha1(buffer);
+    // 查找是否已经上传
+    const existingAsset = await this.assetDao.findOneBy({ sha1: _asset.sha1 });
+    if (isNotNull(existingAsset)) {
+      return existingAsset;
+    }
+
+    const metadata = await this.getAssetMetadata(buffer);
     if (!metadata.format) {
       throw new Error('bot => unsupported media type!');
     }
-    const _asset = asset;
-    _asset.fileSuffix = metadata.format;
-    _asset.pHash = await pHash(buffer);
-    const path = getBucketAssetPath(bucket.name, `${asset.sha1}.${asset.fileSuffix}`);
+
+    const toUploadBucket = is_TEST_BUCKET_ONLY ? TEST_BUCKET_ONLY : bucketName;
+    _asset.bucket = await this.bucketService.getBucketByBucketName(toUploadBucket);
+    _asset.uploadBy = uploadBy;
+
+    const { bucket } = _asset;
+    const _fileSuffix = metadata.format;
+    const _pHash = await pHash(buffer);
+    _asset.fileSuffix = _fileSuffix;
+    _asset.pHash = _pHash;
+    const path = getBucketAssetPath(bucket.name, `${_asset.sha1}.${_asset.fileSuffix}`);
     _asset.exif = getEXIF(path);
     _asset.metadata = metadata;
-    await this.assetDao.save(asset);
+    const asset = await this.assetDao.save(_asset);
+    ensureFileSync(path);
     writeFileSync(path, buffer);
 
-    this.mqService.notifyUploadToCos({
+    const data: UploadFileMsg = {
       sha1: asset.sha1,
       suffix: asset.fileSuffix,
       name: bucket.name,
-    });
+    };
+    if (async) {
+      this.mqService.notifyUploadToCos(data);
+    } else {
+      const { objectUrl } = await this.persistentToCos(data);
+      asset.objectUrl = objectUrl;
+    }
+    return asset;
   }
 
   /**
@@ -247,13 +269,19 @@ export class AssetService extends BaseService {
       this.logger.info(`[${bucketName}] -> ${undo.id} -> ${undo.imgList.join('\n')}`);
       for (const imgUrl of undo.imgList) {
         try {
-          const asset = await this.createAsset(undo, bucket);
           const res = await this.fetchImgBuffer(imgUrl, headers);
           const buffer = await res.buffer();
-          const metadata = await sharp(buffer).metadata();
-          asset.sha1 = sha1(buffer);
 
-          await this.processAsset(asset, buffer, metadata, bucket);
+          await this.processAsset(buffer, {
+            bucketName: bucket.name,
+            uploadBy: await this.userService.getAssetBotUser(),
+            async: true,
+            assetAddition: {
+              sn: undo.id,
+              originUrl: undo.originUrl,
+              tags: undo.tags,
+            },
+          });
         } catch (e) {
           this.logger.error(e);
         }
@@ -421,49 +449,11 @@ export class AssetService extends BaseService {
     bucketName: CosBucket['name'],
     uploadBy: User,
   ) {
-    let asset = this.assetDao.create();
-    asset.sha1 = sha1(buffer);
-
-    // 查找是否已经上传
-    const existingAsset = await this.assetDao.findOneBy({ sha1: asset.sha1 });
-    if (isNotNull(existingAsset)) {
-      return existingAsset;
-    }
-
-    // 获取或创建
-    const toUploadBucket = is_TEST_BUCKET_ONLY ? TEST_BUCKET_ONLY : bucketName;
-    // 库里面木有
-    asset.bucket = await this.bucketService.getBucketByBucketName(toUploadBucket);
-
-    asset.uploadBy = uploadBy;
-    const metadata = await this.getAssetMetadata(buffer);
-
-    if (!metadata.format) {
-      throw new UnsupportedMediaTypeException('unsupported media type');
-    }
-
-    asset.fileSuffix = metadata.format;
-    asset.pHash = await pHash(buffer);
-
-    try {
-      const path = getBucketAssetPath(asset.bucket.name, `${asset.sha1}.${asset.fileSuffix}`);
-      asset.exif = getEXIF(path);
-      asset.metadata = metadata;
-      asset = await this.assetDao.save(asset);
-
-      writeFileSync(path, buffer);
-      const data: UploadFileMsg = {
-        sha1: asset.sha1,
-        suffix: asset.fileSuffix,
-        name: asset.bucket.name,
-      };
-
-      const { objectUrl } = await this.persistentToCos(data);
-      asset.objectUrl = objectUrl;
-    } catch (e) {
-      this.logger.error(e);
-    }
-    return asset;
+    return this.processAsset(buffer, {
+      bucketName,
+      uploadBy,
+      async: false,
+    });
   }
 
   private updateAssetByHash(hash: string, asset: Partial<Asset>) {

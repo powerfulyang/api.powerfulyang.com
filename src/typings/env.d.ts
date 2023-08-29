@@ -55,6 +55,10 @@ interface _ProcessEnv {
 
   PORT: string;
   HOSTNAME: string;
+
+  //
+  BOT_SOCKS5_PROXY_HOST: string;
+  BOT_SOCKS5_PROXY_PORT: string;
 }
 
 declare module 'node:process' {
