@@ -187,6 +187,8 @@ export class PostService extends BaseService {
             width: true,
             height: true,
           },
+          alt: true,
+          id: true,
         },
         summary: true,
         createBy: {

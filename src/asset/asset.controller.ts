@@ -80,4 +80,14 @@ export class AssetController {
   deleteAsset(@Body('id') id: number, @Body('ids') ids: number[]) {
     return this.assetService.deleteAsset(ids || [id]);
   }
+
+  // 给所有的 asset 添加一个 alt 属性
+  @Get('addAlt')
+  @ApiOperation({
+    summary: '给所有的 asset 添加一个 alt 属性',
+    operationId: 'addAlt',
+  })
+  addAlt() {
+    return this.assetService.addAlt();
+  }
 }

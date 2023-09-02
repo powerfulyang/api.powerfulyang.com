@@ -471,4 +471,21 @@ export class AssetService extends BaseService {
       asset,
     );
   }
+
+  async addAlt() {
+    const assets = await this.assetDao.find({
+      relations: ['bucket'],
+    });
+    for (const asset of assets) {
+      try {
+        const path = getBucketAssetPath(asset.bucket.Bucket, `${asset.sha1}.${asset.fileSuffix}`);
+        const { text } = await this.ocrService.recognize(path);
+        await this.assetDao.update(asset.id, {
+          alt: text,
+        });
+      } catch (e) {
+        this.logger.error(e);
+      }
+    }
+  }
 }

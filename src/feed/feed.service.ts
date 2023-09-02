@@ -91,6 +91,7 @@ export class FeedService extends BaseService {
             width: true,
             height: true,
           },
+          alt: true,
         },
         public: true,
       },
