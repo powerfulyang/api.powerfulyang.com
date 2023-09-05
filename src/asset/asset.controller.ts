@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { QueryPagination } from '@/common/decorator/pagination/pagination.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
@@ -83,11 +83,14 @@ export class AssetController {
 
   // 给所有的 asset 添加一个 alt 属性
   @Get('addAlt')
-  @ApiOperation({
-    summary: '给所有的 asset 添加一个 alt 属性',
-    operationId: 'addAlt',
-  })
+  @ApiExcludeEndpoint()
   addAlt() {
     return this.assetService.addAlt();
+  }
+
+  @Get('backup/azuki')
+  @ApiExcludeEndpoint()
+  backupAzuki() {
+    return this.assetService.backupZukui();
   }
 }

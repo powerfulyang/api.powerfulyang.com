@@ -34,7 +34,7 @@
     "swagger-helper": "npx ts-node src/generate-metadata.ts"
   },
   "dependencies": {
-    "@apollo/server": "4.9.2",
+    "@apollo/server": "^4.9.3",
     "@as-integrations/fastify": "2.1.0",
     "@elastic/elasticsearch": "8.9.0",
     "@fastify/cookie": "9.0.4",
@@ -104,7 +104,7 @@
     "@graphql-codegen/typescript-graphql-request": "5.0.0",
     "@graphql-codegen/typescript-operations": "4.0.1",
     "@jest/globals": "29.6.4",
-    "@nestjs/cli": "10.1.16",
+    "@nestjs/cli": "10.1.17",
     "@nestjs/schematics": "10.0.2",
     "@nestjs/testing": "10.2.2",
     "@powerfulyang/lint": "3.7.0",

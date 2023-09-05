@@ -1,3 +1,4 @@
+import { AZUKI_ASSET_PATH } from '@/constants/asset_constants';
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { Controller, Get, Query, Res } from '@nestjs/common';
@@ -6,7 +7,6 @@ import { randomItem } from '@powerfulyang/utils';
 import { FastifyReply } from 'fastify';
 import sharp from 'sharp';
 import { convertUuidToNumber } from '@/utils/uuid';
-import { CWD } from '@/constants/cookie-path';
 import { LoggerService } from '@/common/logger/logger.service';
 
 @Controller('random')
@@ -17,13 +17,13 @@ export class RandomController {
   }
 
   @Get('avatar')
-  getAvatar(
+  async getAvatar(
     @Query('uuid') uuid: string,
     @Res() res: FastifyReply,
     @Query('size') size: string = '300',
   ) {
     const parsedUuid = (convertUuidToNumber(uuid) % 9999) + 1;
-    const dir = join(CWD, 'assets', 'azuki');
+    const dir = AZUKI_ASSET_PATH;
     let path = join(dir, `${parsedUuid}.png`);
     if (!existsSync(path)) {
       const files = readdirSync(dir);
@@ -33,15 +33,13 @@ export class RandomController {
     const s = sharp(path);
     res.type('image/webp');
     res.header('Cache-Control', 'max-age=2592000');
-    return s
+    const data = await s
       .resize({
         width: Number(size),
         height: Number(size),
       })
       .toFormat('webp')
-      .toBuffer()
-      .then((data) => {
-        res.send(data);
-      });
+      .toBuffer();
+    res.send(data);
   }
 }

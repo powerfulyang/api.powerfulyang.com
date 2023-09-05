@@ -4,7 +4,7 @@ import { Asset } from '@/asset/entities/asset.entity';
 import { BucketService } from '@/bucket/bucket.service';
 import type { CosBucket } from '@/bucket/entities/bucket.entity';
 import { LoggerService } from '@/common/logger/logger.service';
-import { getBucketAssetPath } from '@/constants/asset_constants';
+import { AZUKI_ASSET_PATH, getBucketAssetPath } from '@/constants/asset_constants';
 import { ScheduleType } from '@/enum/ScheduleType';
 import { InstagramBotService } from '@/libs/instagram-bot';
 import { PinterestBotService } from '@/libs/pinterest-bot';
@@ -33,6 +33,8 @@ import { ensureFileSync } from 'fs-extra';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
+import fetch from 'node-fetch';
+import { join } from 'node:path';
 
 @Injectable()
 export class AssetService extends BaseService {
@@ -483,6 +485,21 @@ export class AssetService extends BaseService {
         await this.assetDao.update(asset.id, {
           alt: text,
         });
+      } catch (e) {
+        this.logger.error(e);
+      }
+    }
+  }
+
+  async backupZukui() {
+    const prefix = 'http://1.15.136.103:81/azuki';
+    for (let i = 1; i < 10000; i++) {
+      try {
+        const res = await fetch(`${prefix}/${i}.png`);
+        const buffer = await res.buffer();
+        const file = join(AZUKI_ASSET_PATH, `${i}.png`);
+        ensureFileSync(file);
+        writeFileSync(file, buffer);
       } catch (e) {
         this.logger.error(e);
       }

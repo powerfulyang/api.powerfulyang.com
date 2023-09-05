@@ -1,5 +1,5 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import { ProxyFetchService } from '@/libs/proxy-fetch';
+import { ProxyFetchService } from '@/libs/proxy-fetch/proxy-fetch.service';
 import { OcrService } from '@/tools/ocr/ocrService';
 import { Injectable } from '@nestjs/common';
 import { sha1 } from '@powerfulyang/node-utils';
