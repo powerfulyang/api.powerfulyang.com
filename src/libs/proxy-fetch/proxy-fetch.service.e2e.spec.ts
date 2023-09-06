@@ -1,8 +1,7 @@
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import type { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
-import { ProxyFetchModule } from '@/libs/proxy-fetch/proxy-fetch.module';
-import { ProxyFetchService } from '@/libs/proxy-fetch/proxy-fetch.service';
+import { ProxyFetchModule, ProxyFetchService } from '@/libs/proxy-fetch';
 
 describe('proxy', () => {
   let service: ProxyFetchService;

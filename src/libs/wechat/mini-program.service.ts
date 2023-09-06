@@ -6,7 +6,6 @@ import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
 import { WeatherService } from '@/libs/weather';
-import { WechatService } from '@/libs/wechat/wechat.service';
 import type {
   ReplySubscribeMessageRequest,
   WechatBaseResponse,
@@ -14,6 +13,7 @@ import type {
   WechatMessageOriginalRequest,
   WechatMiniProgramSendCustomMessageRequest,
 } from '@/type/wechat';
+import { WechatService } from './wechat.service';
 
 @Injectable()
 export class MiniProgramService extends WechatService {

@@ -4,9 +4,9 @@ import fetch from 'node-fetch';
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { WechatService } from '@/libs/wechat/wechat.service';
 import type { WechatMessageOriginalRequest } from '@/type/wechat';
 import { generateUuid } from '@/utils/uuid';
+import { WechatService } from './wechat.service';
 
 @Injectable()
 export class OfficialAccountService extends WechatService {

@@ -8,7 +8,7 @@ import { AZUKI_ASSET_PATH, getBucketAssetPath } from '@/constants/asset_constant
 import { ScheduleType } from '@/enum/ScheduleType';
 import { InstagramBotService } from '@/libs/instagram-bot';
 import { PinterestBotService } from '@/libs/pinterest-bot';
-import type { PinterestInterface } from '@/libs/pinterest-bot/pinterest.interface';
+import type { PinterestInterface } from '@/libs/pinterest-bot';
 import { PixivBotService } from '@/libs/pixiv-bot';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 import { BaseService } from '@/service/base/BaseService';

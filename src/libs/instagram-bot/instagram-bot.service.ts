@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import type { SavedFeedResponseMedia } from 'instagram-private-api';
 import { IgApiClient } from 'instagram-private-api';
 import { instagramCookieFilePath } from '@/constants/cookie-path';
-import type { InstagramInterface } from '@/libs/instagram-bot/instagram.interface';
+import type { InstagramInterface } from '@/libs/instagram-bot';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 
 @Injectable()

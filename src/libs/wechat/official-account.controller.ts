@@ -2,8 +2,8 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Res } from '@
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { LoggerService } from '@/common/logger/logger.service';
-import { OfficialAccountService } from '@/libs/wechat/official-account.service';
 import { WechatCheckSignatureRequest, WechatMessageOriginalRequest } from '@/type/wechat';
+import { OfficialAccountService } from './official-account.service';
 
 @Controller('official-account')
 @ApiTags('official-account')
