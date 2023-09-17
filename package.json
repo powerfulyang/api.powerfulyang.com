@@ -75,6 +75,7 @@
     "ipdb": "0.3.3",
     "lodash": "4.17.21",
     "node-fetch": "2.6.13",
+    "node-telegram-bot-api": "0.63.0",
     "nodemailer": "6.9.5",
     "passport": "0.6.0",
     "passport-github": "1.1.0",

@@ -59,6 +59,9 @@ interface _ProcessEnv {
   //
   BOT_SOCKS5_PROXY_HOST: string;
   BOT_SOCKS5_PROXY_PORT: string;
+
+  // tg
+  TELEGRAM_BOT_TOKEN: string;
 }
 
 declare module 'node:process' {

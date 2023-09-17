@@ -1,3 +1,4 @@
+import { TelegramBotModule } from '@/libs/telegram-bot';
 import { join } from 'node:path';
 import process from 'node:process';
 import type { ApolloDriverConfig } from '@nestjs/apollo';
@@ -62,6 +63,7 @@ import { ClickUpModule } from './click-up/click-up.module';
     FcmModule,
     WebPushModule,
     ClickUpModule,
+    TelegramBotModule,
   ],
   providers: [
     {
