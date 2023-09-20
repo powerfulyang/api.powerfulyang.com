@@ -74,8 +74,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: ${{ matrix.docker-repository-prod }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
           target: runner
         if: startsWith(github.event.head_commit.message, 'build:')
       - name: Deploy prod
