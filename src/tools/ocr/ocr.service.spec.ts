@@ -37,8 +37,8 @@ describe('OCR Service', () => {
     const imageBuffer = readFileSync(image);
     const res = await service.recognize(imageBuffer);
     expect(res.text).toContain(
-      '本 文 将 详 线 仁 绍 在 Nodejs 环 境 中 借 用 fesseract 逼 行 光 学 字 符 识 别 (OCR) 的 方 法\n' +
-        'Tasseract 怠 一 个 开 源 OCR 引 孽 , 可 以 泓 别 多 种 语 言 的 文 本',
+      '本 文 将 详细 介绍 在 Nodejs 环 境 中 使 用 Tesseract 进 行 光学 字符 识别 (OCR) 的 方法 。\n' +
+        'Tesseract 是 一 个 开源 OCR 引擎 ， 可 以 识别 多 种 语言 的 文本 。\n',
     );
   });
 
@@ -47,7 +47,7 @@ describe('OCR Service', () => {
     const imageBuffer = readFileSync(image);
     const res = await service.recognize(imageBuffer);
     expect(res.text).toContain(
-      '这 一 版 本 的 表 述 更 加 流 畅 , 有 助 于 读 者 更 好 地 理 解 本 月 的 科 研 项 目 迹 展 。',
+      '这 一 版 本 的 表述 更 加 流畅 ， 有 助 于 读者 更 好 地 理解 本 月 的 科研 项 目 进展 。\n',
     );
   });
 });

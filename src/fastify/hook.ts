@@ -40,7 +40,7 @@ export const createFastifyInstance = (): FastifyInstance => {
   });
 
   fastifyInstance.register(fastifyCookie);
-  fastifyInstance.register(fastifyMultipart, { addToBody: true });
+  fastifyInstance.register(fastifyMultipart, { attachFieldsToBody: true });
   fastifyInstance.register(fastifyStatic, {
     root: join(process.cwd(), 'assets'),
     decorateReply: false,

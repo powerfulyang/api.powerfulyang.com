@@ -320,6 +320,7 @@ export class AssetService extends BaseService {
           webp: true,
           thumbnail_blur_: true,
         },
+        alt: true,
       },
       where: {
         uploadBy: {
