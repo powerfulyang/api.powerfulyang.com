@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { isDefined } from '@powerfulyang/utils';
+import { firstItem, isDefined, lastItem } from '@powerfulyang/utils';
 import { countBy, flatten, pick, trim } from 'lodash';
 import { DataSource, In, Repository } from 'typeorm';
 import { AssetService } from '@/asset/asset.service';
@@ -168,8 +168,14 @@ export class PostService extends BaseService {
    * @param post
    * @param ids
    */
-  searchPosts(post?: SearchPostDto, ids: User['id'][] = []) {
-    return this.postDao.find({
+  async searchPosts(post: SearchPostDto, ids: User['id'][] = []) {
+    const { prevCursor, nextCursor, publishYear } = post;
+    const take = this.formatInfiniteTake(post.take);
+    const cursor = this.generateInfiniteCursor({
+      nextCursor,
+      prevCursor,
+    });
+    const res = await this.postDao.find({
       select: {
         id: true,
         title: true,
@@ -177,10 +183,7 @@ export class PostService extends BaseService {
         updatedAt: true,
         poster: {
           objectUrl: {
-            thumbnail_300_: true,
             thumbnail_700_: true,
-            original: true,
-            webp: true,
             thumbnail_blur_: true,
           },
           size: {
@@ -196,18 +199,25 @@ export class PostService extends BaseService {
         },
       },
       order: { id: 'DESC' },
+      take,
       relations: ['poster', 'createBy'],
       loadEagerRelations: false,
       where: [
         {
-          ...post,
+          publishYear,
           createBy: {
             id: In(ids),
           },
+          id: cursor,
         },
-        { ...post, public: true },
+        { publishYear, public: true, id: cursor },
       ],
     });
+    return {
+      resources: res,
+      prevCursor: (res.length === take && lastItem(res)?.id) || null,
+      nextCursor: firstItem(res)?.id || null,
+    };
   }
 
   /**

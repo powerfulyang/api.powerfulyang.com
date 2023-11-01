@@ -1,7 +1,7 @@
-import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
-import { Post } from '@/post/entities/post.entity';
+import { InfiniteQueryRequest } from '@/type/InfiniteQueryRequest';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class SearchPostDto extends PartialType(PickType(Post, ['publishYear'])) {
+export class SearchPostDto extends InfiniteQueryRequest {
   @ApiProperty()
   declare publishYear?: number;
 }

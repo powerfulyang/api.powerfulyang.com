@@ -1,12 +1,9 @@
-import { Controller, Get, HttpStatus, Param, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AssetService } from '@/asset/asset.service';
 import { Asset } from '@/asset/entities/asset.entity';
 import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ClientTimezone } from '@/common/decorator/client-timezone';
 import { AuthFamilyMembersId, AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
-import { InfiniteQueryRequest } from '@/type/InfiniteQueryRequest';
 import { ApiOkInfiniteQueryResponse } from '@/common/swagger/ApiOkInfiniteQueryResponse';
 import { Feed } from '@/feed/entities/feed.entity';
 import { FeedService } from '@/feed/feed.service';
@@ -14,7 +11,10 @@ import { PathViewCountService } from '@/path-view-count/path-view-count.service'
 import { SearchPostDto } from '@/post/dto/search-post.dto';
 import { Post as _Post } from '@/post/entities/post.entity';
 import { PostService } from '@/post/post.service';
+import { InfiniteQueryRequest } from '@/type/InfiniteQueryRequest';
 import { User } from '@/user/entities/user.entity';
+import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('public')
 @PublicAuthGuard()
@@ -42,11 +42,10 @@ export class PublicController {
   @Get('post')
   @ApiOperation({
     summary: '获取所有的公开文章列表',
-    operationId: 'queryPublicPosts',
+    operationId: 'infiniteQueryPublicPost',
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: () => [Post],
+  @ApiOkInfiniteQueryResponse({
+    model: _Post,
   })
   queryPublicPosts(@AuthFamilyMembersId() userIds: User['id'][], @Query() post: SearchPostDto) {
     return this.postService.searchPosts(post, userIds);

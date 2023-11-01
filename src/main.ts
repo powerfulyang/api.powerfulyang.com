@@ -45,6 +45,9 @@ async function bootstrap(): Promise<void> {
       'https://local.powerfulyang.com',
       'https://powerfulyang.github.io',
       'https://us4ever.com',
+      'https://powerfulyang.com',
+      'https://littleeleven.com',
+      'https://admin.powerfulyang.com',
     ],
     credentials: true,
   });
