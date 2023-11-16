@@ -1,0 +1,57 @@
+POST http://localhost:3001/api/web-push/subscribe
+Content-Type: application/json
+
+{
+  "endpoint": "https://fcm.googleapis.com/fcm/send/.../.../..."
+}
+
+### tools->video-downloader empty videoUrl
+GET http://localhost:3001/api/tools/video-downloader?videoUrl=
+Authorization: {{authorization}}
+
+### tools->video-downloader valid videoUrl
+GET http://localhost:3001/api/tools/video-downloader?videoUrl=https://www.youtube.com/watch?v=m4nu_F_9dWU
+Authorization: {{authorization}}
+
+### tools->video-downloader invalid videoUrl
+GET http://localhost:3001/api/tools/video-downloader?videoUrl=123
+Authorization: {{authorization}}
+
+
+### create feed multi images
+POST http://localhost:3001/api/feed
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: {{authorization}}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+Content-Type: text/plain
+
+This is a test feed
+--WebAppBoundary
+Content-Disposition: form-data; name="assets"; filename="multi.png"
+Content-Type: image/png
+
+< ../__test_assets__/images/multi.png
+--WebAppBoundary--
+Content-Disposition: form-data; name="assets"; filename="multi1.png"
+Content-Type: image/png
+
+< ../__test_assets__/images/multi.png
+--WebAppBoundary--
+
+### create feed single image
+POST http://localhost:3001/api/feed
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: {{authorization}}
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+Content-Type: text/plain
+
+This is a test feed
+--WebAppBoundary
+Content-Disposition: form-data; name="assets"; filename="multi.png"
+Content-Type: image/png
+
+< ../__test_assets__/images/multi.png

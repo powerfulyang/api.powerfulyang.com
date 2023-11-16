@@ -75,9 +75,10 @@ async function bootstrap(): Promise<void> {
     });
   });
 
+  const PORT = process.env.PORT || 3000;
   // Running Host and Port
-  app.listen(process.env.PORT || 3000, '0.0.0.0').then(() => {
-    logger.info(`Server is running on port ${process.env.PORT || 3000}`, 'Bootstrap');
+  app.listen(PORT, '0.0.0.0').then(() => {
+    logger.info(`Server is running on port ${PORT}`, 'Bootstrap');
   });
 }
 

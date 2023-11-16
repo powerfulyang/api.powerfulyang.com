@@ -1,13 +1,12 @@
-import { exec, spawn } from 'node:child_process';
-import { basename } from 'node:path';
-import { promisify } from 'node:util';
-import { Body, Controller, Post, Query, Sse } from '@nestjs/common';
-import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
-import { concat, from, fromEvent, map, merge, takeUntil } from 'rxjs';
-import { AdminAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response-interceptor.decorator';
+import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OCRDto } from '@/tools/dto/OCR.dto';
+import { User } from '@/user/entities/user.entity';
+import { Body, Controller, Header, Post, Query, Sse } from '@nestjs/common';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { of } from 'rxjs';
 import { ToolsService } from './tools.service';
 
 @Controller('tools')
@@ -23,37 +22,22 @@ export class ToolsController {
   @Sse('video-downloader')
   @ApiExcludeEndpoint()
   @ExcludeResponseInterceptor()
-  @AdminAuthGuard()
-  download(@Query('videoUrl') videoUrl: string) {
-    const { downloadCommand, getFilenameCommand } = this.toolsService.yt_dlp(videoUrl);
-    const download = spawn(downloadCommand, {
-      shell: true,
-    });
-    const data$ = fromEvent(download.stdout, 'data', (event: Buffer) => {
-      return {
-        data: event.toString('utf8'),
-      };
-    });
-    const close$ = fromEvent(download, 'close');
-    const error$ = fromEvent(download.stderr, 'data', (event: Buffer) => {
-      return {
-        data: event.toString('utf8'),
-      };
-    });
-
-    const asyncExec = promisify(exec);
-    const downloadUrl$ = from(asyncExec(getFilenameCommand)).pipe(
-      map((value) => {
-        const filename = basename(value.stdout.trim());
-        const downloadUrl = `https://powerfulyang.com/yt-dlp/${filename}`;
-        return {
-          type: 'done',
-          data: { downloadUrl },
-        };
-      }),
-    );
-
-    return concat(merge(data$, error$).pipe(takeUntil(close$)), downloadUrl$);
+  @PublicAuthGuard()
+  @Header('Content-Type', 'text/event-stream; charset=utf-8')
+  download(@Query('videoUrl') videoUrl: string, @AuthUser() user: User) {
+    if (!videoUrl) {
+      return of({
+        type: 'error',
+        data: 'videoUrl is required',
+      });
+    }
+    if (user.email !== User.IntendedUsers.AdminUser) {
+      return of({
+        type: 'error',
+        data: 'Permission denied, please contact admin, email:i@powerfulyang.com',
+      });
+    }
+    return this.toolsService.download(videoUrl);
   }
 
   @Post('ocr')
