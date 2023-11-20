@@ -1,9 +1,11 @@
 Thanks to JetBrains for providing me with a free license of their awesome IDE, [WebStorm](https://www.jetbrains.com/webstorm/) [DataGrip](https://www.jetbrains.com/datagrip/).
 
-# Server api for my personal website
+## Features
 
-> Server api for my personal website with NextJS : https://powerfulyang.com  
-> Built with [NestJS](https://nestjs.com/), have a look at the https://api.powerfulyang.com
+- [Auto download your favorites from `pinterest`,`instagram`, `pixiv`](./src/schedule)
+- [Repost channel message from telegram](./src/libs/telegram-bot)
+- [Download YouTube video online and OCR interface](./src/tools)
+  - You can have a try in https://powerfulyang.com/tools/video-downloader
 
 ## Prerequisites
 

@@ -1,9 +1,13 @@
 import { LoggerService } from '@/common/logger/logger.service';
+import { COOKIE_PATH } from '@/constants/cookie-path';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 import { OcrService } from '@/tools/ocr/ocrService';
+import type { User } from '@/user/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { sha1 } from '@powerfulyang/node-utils';
+import { ensureFileSync } from 'fs-extra';
 import { spawn } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import process from 'node:process';
 import { concatWith, fromEvent, merge, of, switchMap, takeUntil } from 'rxjs';
@@ -22,11 +26,12 @@ export class ToolsService {
     this.proxyUri = this.proxyFetchService.proxyUri;
   }
 
-  generateVideoDownloadCommand(url: string) {
+  generateVideoDownloadCommand(url: string, user: User) {
     const hash = sha1(url);
     const downloadPath = join(process.cwd(), `assets/yt-dlp/${hash}.%(ext)s`);
     const getFilenameCommand = `yt-dlp ${url} --proxy '${this.proxyUri}' --output '${downloadPath}' --get-filename`;
-    const downloadCommand = `yt-dlp ${url} --proxy '${this.proxyUri}' --output '${downloadPath}'`;
+    const cookiesPath = join(COOKIE_PATH, 'yt-dlp', user.id.toString());
+    const downloadCommand = `yt-dlp ${url} --cookies ${cookiesPath} --proxy '${this.proxyUri}' --output '${downloadPath}'`;
     return {
       getFilenameCommand,
       downloadCommand,
@@ -38,8 +43,11 @@ export class ToolsService {
     return result.text;
   }
 
-  download(videoUrl: string) {
-    const { downloadCommand, getFilenameCommand } = this.generateVideoDownloadCommand(videoUrl);
+  download(videoUrl: string, user: User) {
+    const { downloadCommand, getFilenameCommand } = this.generateVideoDownloadCommand(
+      videoUrl,
+      user,
+    );
     const download = spawn(downloadCommand, {
       shell: true,
     });
@@ -91,5 +99,20 @@ export class ToolsService {
         ),
       ),
     );
+  }
+
+  saveCookies(cookies: string, user: User) {
+    const path = join(COOKIE_PATH, 'yt-dlp', user.id.toString());
+    ensureFileSync(path);
+    writeFileSync(path, cookies);
+  }
+
+  readCookies(user: User) {
+    const path = join(COOKIE_PATH, 'yt-dlp', user.id.toString());
+    try {
+      return readFileSync(path, 'utf8');
+    } catch {
+      return '';
+    }
   }
 }

@@ -1,11 +1,11 @@
-import { PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
+import { JwtAuthGuard, PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
 import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response-interceptor.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OCRDto } from '@/tools/dto/OCR.dto';
 import { User } from '@/user/entities/user.entity';
-import { Body, Controller, Header, Post, Query, Sse } from '@nestjs/common';
-import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Header, Post, Query, Sse } from '@nestjs/common';
+import { ApiBody, ApiExcludeEndpoint, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { of } from 'rxjs';
 import { ToolsService } from './tools.service';
 
@@ -37,7 +37,38 @@ export class ToolsController {
         data: 'Permission denied, please contact admin, email:i@powerfulyang.com',
       });
     }
-    return this.toolsService.download(videoUrl);
+    return this.toolsService.download(videoUrl, user);
+  }
+
+  @Post('video-downloader/cookies')
+  @JwtAuthGuard()
+  @ApiOperation({
+    operationId: 'saveCookies',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        cookies: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  cookies(@Body() { cookies }: { cookies: string }, @AuthUser() user: User) {
+    return this.toolsService.saveCookies(cookies, user);
+  }
+
+  @Get('video-downloader/cookies')
+  @JwtAuthGuard()
+  @ApiOperation({
+    operationId: 'readCookies',
+  })
+  @ApiOkResponse({
+    type: String,
+  })
+  readCookies(@AuthUser() user: User) {
+    return this.toolsService.readCookies(user);
   }
 
   @Post('ocr')
