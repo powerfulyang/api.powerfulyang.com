@@ -103,6 +103,9 @@ dependencies:
   dotenv:
     specifier: 16.3.1
     version: 16.3.1
+  exif-reader:
+    specifier: 2.0.0
+    version: 2.0.0
   firebase-admin:
     specifier: 11.11.0
     version: 11.11.0
@@ -7349,6 +7352,10 @@ packages:
     dependencies:
       pify: 2.3.0
     dev: true
+
+  /exif-reader@2.0.0:
+    resolution: {integrity: sha512-/c4JW2Kb4/MdmUJyMKTXhNG524q0pCA1DDCEb2aawd9j2i2+bc+mKGKKyO4z2glRTKW93Ks4BWCgmKeEyKiUeA==}
+    dev: false
 
   /exit@0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}

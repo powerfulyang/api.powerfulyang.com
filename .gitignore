@@ -39,3 +39,6 @@ __test_assets__/*
 http-client.private.env.json
 
 *.traineddata
+
+__test_assets__/images/private/*
+!__test_assets__/images/private/.gitkeep
