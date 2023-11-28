@@ -1,4 +1,4 @@
-import type { RequestUser } from '@/common/authorization/access-guard';
+import type { PassportUser } from '@/common/authorization/access-guard';
 import { getTokenFromRequest } from '@/common/authorization/util';
 import { LoggerService } from '@/common/logger/logger.service';
 import type { jwtSecretConfig } from '@/configuration/jwt.config';
@@ -27,11 +27,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     this.logger.setContext(JwtStrategy.name);
   }
 
-  async validate(_: FastifyRequest, user: RequestUser) {
+  async validate(_: FastifyRequest, user: PassportUser) {
     // to check user status;
     const cachedUser = await this.userService.getCachedUser(user.id);
     if (!cachedUser) {
-      throw new UnauthorizedException('User cache not found');
+      throw new UnauthorizedException('User not found');
     }
     return Object.assign(cachedUser, { exp: user.exp, iat: user.iat });
   }

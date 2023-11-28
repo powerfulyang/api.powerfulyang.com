@@ -19,7 +19,7 @@ export class PermissionGuard implements CanActivate {
     const permissions = this.reflector.get<Permission[]>(Permission, context.getHandler()) || [];
     const { user } = request;
     this.logger.debug(`Action needs permissions: ${permissions.join(', ')}`);
-    const hasPermission = user.roles.some((role) => {
+    const hasPermission = user?.roles.some((role) => {
       return role.permissions.some((permission) => {
         return permissions.includes(permission);
       });

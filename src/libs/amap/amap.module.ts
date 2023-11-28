@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from '@/common/logger/logger.module';
-import { WeatherService } from './weather.service';
+import { AmapService } from './amap.service';
 
 @Module({
   imports: [LoggerModule],
-  providers: [WeatherService],
-  exports: [WeatherService],
+  providers: [AmapService],
+  exports: [AmapService],
 })
-export class WeatherModule {}
+export class AmapModule {}

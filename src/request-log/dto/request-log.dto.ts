@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ViewCountDto {
+export class RequestLogDto {
   @ApiProperty()
   createdAt: string;
 

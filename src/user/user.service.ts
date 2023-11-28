@@ -1,4 +1,5 @@
-import type { RequestUser } from '@/common/authorization/access-guard';
+import type { PassportUser } from '@/common/authorization/access-guard';
+import { getIpInfo } from '@/utils/ipdb';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -147,7 +148,11 @@ export class UserService extends BaseService {
         await this.sendDefaultPassword(user.email, defaultProperty.salt);
       }
     }
-    return this.generateAuthorization(user);
+    const token = await this.generateAuthorization(user);
+    return {
+      token,
+      user,
+    };
   }
 
   generateAuthorization(user: Partial<User> & Pick<User, 'id'>) {
@@ -155,7 +160,7 @@ export class UserService extends BaseService {
   }
 
   verifyAuthorization(token: string) {
-    return this.jwtService.verifyAsync<RequestUser>(token);
+    return this.jwtService.verifyAsync<PassportUser>(token);
   }
 
   async queryMenusByUserId(id: User['id']) {
@@ -203,10 +208,6 @@ export class UserService extends BaseService {
 
   getUserByEmailOrFail(email: string) {
     return this.userDao.findOneByOrFail({ email });
-  }
-
-  updateUserWithoutCache(id: User['id'], user: Partial<User>) {
-    return this.userDao.update(id, user);
   }
 
   async updatePassword(id: User['id'], password?: string) {
@@ -378,5 +379,12 @@ export class UserService extends BaseService {
     // update to cache
     await this.cacheService.hSetJSON(REDIS_KEYS.USERS, user.id, cache);
     return cache;
+  }
+
+  async updateLoginTime(id: number, loginIp: string) {
+    const user = await this.queryUserCascadeInfo(id);
+    user.lastIp = loginIp;
+    user.lastAddress = getIpInfo(loginIp);
+    return this.saveUserAndCached(user);
   }
 }

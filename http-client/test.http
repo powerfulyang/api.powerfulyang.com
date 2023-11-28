@@ -55,3 +55,23 @@ Content-Disposition: form-data; name="assets"; filename="multi.png"
 Content-Type: image/png
 
 < ../__test_assets__/images/multi.png
+
+
+### test hello (method GET)
+GET http://localhost:3001/api/public/hello
+x-forwarded-for: 1.1.1.1, 2.2.2.2, 3.3.3.3
+x-forwarded-for: 4.4.4.4
+cf-connecting-ip: 1.1.1.1, 2.2.2.2
+cf-connecting-ip: 3.3.3.3
+
+### test hello (method POST)
+POST http://localhost:3001/api/public/hello
+
+### user login
+POST http://localhost:3001/api/user/login
+Content-Type: application/json
+
+{
+  "email": "{{username}}",
+  "password": "{{password}}"
+}

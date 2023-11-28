@@ -62,7 +62,10 @@ async function bootstrap(): Promise<void> {
     .setVersion('1.0')
     .addCookieAuth(Authorization)
     .build();
-  await SwaggerModule.loadPluginMetadata(metadata);
+  if (!process.env.IGNORE_METADATA) {
+    // @ts-ignore
+    await SwaggerModule.loadPluginMetadata(metadata);
+  }
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/swagger', app, document);
 

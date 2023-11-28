@@ -62,6 +62,12 @@ interface _ProcessEnv {
 
   // tg
   TELEGRAM_BOT_TOKEN: string;
+
+  // amap
+  AMAP_KEY: string;
+
+  //
+  IGNORE_METADATA: string;
 }
 
 declare module 'node:process' {

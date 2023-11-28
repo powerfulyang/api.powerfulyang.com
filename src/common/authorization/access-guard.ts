@@ -6,7 +6,7 @@ import { Role } from '@/user/entities/role.entity';
 import type { UploadFile } from '@/type/UploadFile';
 import type { FastifyRequest } from 'fastify';
 
-export interface RequestUser extends User {
+export interface PassportUser extends User {
   iat: number;
   exp: number;
 }
@@ -16,7 +16,6 @@ export interface AccessRequest extends FastifyRequest {
     public?: boolean | string;
     assets?: UploadFile[];
   };
-  user: RequestUser;
 }
 
 @Injectable()
@@ -28,8 +27,8 @@ export class AccessGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<AccessRequest>();
     const { user } = request;
-    const useRoles = user.roles;
-    const isAdmin = useRoles.some((role) => role.name === Role.IntendedRoles.admin);
+    const useRoles = user?.roles;
+    const isAdmin = useRoles?.some((role) => role.name === Role.IntendedRoles.admin);
     const body = request.body || {};
     const isPublic = body.public === 'true' || body.public === true;
     if (isPublic && !isAdmin) {

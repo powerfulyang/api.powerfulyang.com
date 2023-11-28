@@ -39,7 +39,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, SupportOauthAppli
   }
 
   validate(_: string, __: string, profile: Profile) {
-    this.logger.info(`displayName->${profile.displayName}, openid->${profile.id}`);
+    this.logger.info(`[GithubStrategy] displayName: ${profile.displayName}, openid: ${profile.id}`);
     return profile;
   }
 }

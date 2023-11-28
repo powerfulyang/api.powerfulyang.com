@@ -17,11 +17,13 @@ export class AdminGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest<AccessRequest>();
     const { user } = request;
-    this.logger.debug(`User [id=${user.id}] is trying to access admin area`);
-    const result = user.roles.some((role) => role.name === Role.IntendedRoles.admin);
-    if (!result) {
+    const isAdmin = user?.roles.some((role) => role.name === Role.IntendedRoles.admin);
+
+    this.logger.info(`User [id=${user?.id}] is trying to access admin area`);
+
+    if (!isAdmin) {
       throw new ForbiddenException('You are not authorized to access this area!');
     }
-    return result;
+    return isAdmin;
   }
 }

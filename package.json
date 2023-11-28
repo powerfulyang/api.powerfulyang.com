@@ -31,7 +31,7 @@
     "test:e2e": "jest --testRegex \"e2e\"",
     "test:unit": "jest --testPathIgnorePatterns \"e2e\"",
     "tsc-check": "tsc --noEmit",
-    "swagger-helper": "npx ts-node src/generate-metadata.ts"
+    "swagger-helper": "cross-env IGNORE_METADATA=true npx ts-node src/generate-metadata.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
@@ -62,6 +62,7 @@
     "chalk": "4.1.2",
     "class-validator": "0.14.0",
     "cls-hooked": "4.2.2",
+    "coordtransform": "2.1.2",
     "cos-nodejs-sdk-v5": "2.12.5",
     "dayjs": "1.11.10",
     "dotenv": "16.3.1",

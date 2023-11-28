@@ -1,6 +1,6 @@
+import { LoginInterceptor } from '@/common/interceptor/login.interceptor';
 import { Body, Controller, Get, HttpStatus, Post, Req, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import type { FastifyRequest } from 'fastify';
 import type { Profile as GithubProfile } from 'passport-github';
 import type { Profile as GoogleProfile } from 'passport-google-oauth20';
 import {
@@ -45,15 +45,13 @@ export class UserController {
 
   @Get('google/auth/callback')
   @GoogleAuthGuard()
-  @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
-  async googleAuthCallback(
-    @Req() req: FastifyRequest & { user: GoogleProfile; query: { state: string } },
-  ) {
+  @UseInterceptors(RedirectInterceptor, LoginInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
+  async googleAuthCallback(@Req() req: { user: GoogleProfile; query: { state: string } }) {
     const profile = req.user;
     // if not register to add user!
     const { state } = req.query;
     const redirect = Buffer.from(state, 'base64').toString();
-    const token = await this.userService.dealLoginRequestFromOauthApplication(
+    const { user, token } = await this.userService.dealLoginRequestFromOauthApplication(
       profile,
       SupportOauthApplication.google,
     );
@@ -68,20 +66,19 @@ export class UserController {
         url: redirect,
         type: 'JS',
       },
+      user,
     };
   }
 
   @Get('github/auth/callback')
   @GithubAuthGuard()
-  @UseInterceptors(RedirectInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
-  async githubAuthCallback(
-    @Req() req: FastifyRequest & { user: GithubProfile; query: { state: string } },
-  ) {
+  @UseInterceptors(RedirectInterceptor, LoginInterceptor, CookieInterceptor) // cookie 1st, redirect 2nd
+  async githubAuthCallback(@Req() req: { user: GithubProfile; query: { state: string } }) {
     const profile = req.user;
     // if not register to add user!
     const { state } = req.query;
     const redirect = Buffer.from(state, 'base64').toString();
-    const token = await this.userService.dealLoginRequestFromOauthApplication(
+    const { token, user } = await this.userService.dealLoginRequestFromOauthApplication(
       profile,
       SupportOauthApplication.github,
     );
@@ -96,11 +93,12 @@ export class UserController {
         url: redirect,
         type: 'JS',
       },
+      user,
     };
   }
 
   @Post('login')
-  @UseInterceptors(CookieInterceptor)
+  @UseInterceptors(LoginInterceptor, CookieInterceptor)
   @ApiOperation({
     summary: '使用用户名密码登录',
     operationId: 'loginWithEmail',
@@ -117,17 +115,17 @@ export class UserController {
       },
     },
   })
-  async login(@Body() user: UserLoginDto) {
-    this.logger.info(`${user.email} try to login in`);
-    const info = await this.userService.login(user);
+  async login(@Body() _user: UserLoginDto) {
+    const { user, token } = await this.userService.login(_user);
     return {
       cookies: [
         {
           name: Authorization,
-          value: info.token,
+          value: token,
         },
       ],
-      ...info.user,
+      ...user,
+      user,
     };
   }
 

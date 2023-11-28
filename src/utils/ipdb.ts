@@ -20,7 +20,7 @@ export const getIpInfo = (ip: string) => {
   const { code, data } = inspectIp(ip);
   if (code === 0) {
     const { country_name, region_name, city_name, owner_domain, isp_domain } = data;
-    return `${country_name}-${region_name}-${city_name} | ${owner_domain}-${isp_domain}`;
+    return `"${country_name}"-"${region_name}"-"${city_name}" | "${owner_domain}"-"${isp_domain}"`;
   }
   return '';
 };

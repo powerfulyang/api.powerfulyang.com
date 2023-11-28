@@ -11,14 +11,14 @@ export class RedirectInterceptor implements NestInterceptor {
     this.logger.setContext(RedirectInterceptor.name);
   }
 
-  intercept(_context: ExecutionContext, next: CallHandler) {
-    if (isGraphQLContext(_context)) {
+  intercept(context: ExecutionContext, next: CallHandler) {
+    if (isGraphQLContext(context)) {
       return next.handle();
     }
 
     return next.handle().pipe(
       map((data) => {
-        const ctx = _context.switchToHttp();
+        const ctx = context.switchToHttp();
         const res = ctx.getResponse<FastifyReply>();
         if (data?.redirect?.url) {
           const {

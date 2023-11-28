@@ -1,5 +1,5 @@
 import { JwtAuthGuard, PublicAuthGuard } from '@/common/decorator/auth-guard.decorator';
-import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response-interceptor.decorator';
+import { ExcludeResponseInterceptor } from '@/common/decorator/exclude-response.interceptor.decorator';
 import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OCRDto } from '@/tools/dto/OCR.dto';

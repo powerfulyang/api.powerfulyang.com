@@ -1,21 +1,21 @@
 import { LoggerService } from '@/common/logger/logger.service';
-import type { ViewCountDto } from '@/path-view-count/dto/view-count.dto';
-import { PathViewCount } from '@/path-view-count/entities/path-view-count.entity';
+import type { RequestLogDto } from '@/request-log/dto/request-log.dto';
+import { RequestLog } from '@/request-log/entities/request-log.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class PathViewCountService {
+export class RequestLogService {
   constructor(
-    @InjectRepository(PathViewCount) private readonly pathViewCountDao: Repository<PathViewCount>,
+    @InjectRepository(RequestLog) private readonly requestLogDao: Repository<RequestLog>,
     private readonly logger: LoggerService,
   ) {
-    this.logger.setContext(PathViewCountService.name);
+    this.logger.setContext(RequestLogService.name);
   }
 
   async viewCount(timezone = 'Asia/Shanghai') {
-    return this.pathViewCountDao
+    return this.requestLogDao
       .createQueryBuilder()
       .select(`("createdAt"::timestamptz AT TIME ZONE :timezone)::date::text`, 'date')
       .setParameters({ timezone })
@@ -23,6 +23,10 @@ export class PathViewCountService {
       .addSelect(`count(distinct ip)::int`, 'distinctIpCount')
       .groupBy('date')
       .orderBy('date', 'DESC')
-      .getRawMany<ViewCountDto>();
+      .getRawMany<RequestLogDto>();
+  }
+
+  async log(requestLog: Omit<RequestLog, 'id' | 'createdAt' | 'updatedAt'>) {
+    return this.requestLogDao.save(requestLog);
   }
 }

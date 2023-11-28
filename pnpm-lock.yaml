@@ -94,6 +94,9 @@ dependencies:
   cls-hooked:
     specifier: 4.2.2
     version: 4.2.2
+  coordtransform:
+    specifier: 2.1.2
+    version: 2.1.2
   cos-nodejs-sdk-v5:
     specifier: 2.12.5
     version: 2.12.5
@@ -6139,6 +6142,10 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /coordtransform@2.1.2:
+    resolution: {integrity: sha512-0xLJApBlrUP+clyLJWIaqg4GXE5JTbAJb5d/CDMqebIksAMMze8eAyO6YfHEIxWJ+c42mXoMHBzWTeUrG7RFhw==}
     dev: false
 
   /core-util-is@1.0.2:

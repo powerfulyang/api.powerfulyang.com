@@ -1,5 +1,5 @@
 import type { AccessRequest } from '@/common/authorization/access-guard';
-import { ExcludeResponseInterceptorSymbol } from '@/common/decorator/exclude-response-interceptor.decorator';
+import { ExcludeResponseInterceptorSymbol } from '@/common/decorator/exclude-response.interceptor.decorator';
 import { isGraphQLContext } from '@/common/graphql/isGraphQLContext';
 import { getBaseDomain } from '@/common/interceptor/cookie.interceptor';
 import { LoggerService } from '@/common/logger/logger.service';

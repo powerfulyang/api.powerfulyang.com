@@ -1,3 +1,4 @@
+import { AmapService } from '@/libs/amap';
 import process from 'node:process';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import dayjs from 'dayjs';
@@ -5,7 +6,6 @@ import fetch from 'node-fetch';
 import { CacheService } from '@/common/cache/cache.service';
 import { LoggerService } from '@/common/logger/logger.service';
 import { REDIS_KEYS } from '@/constants/REDIS_KEYS';
-import { WeatherService } from '@/libs/weather';
 import type {
   ReplySubscribeMessageRequest,
   WechatBaseResponse,
@@ -20,7 +20,7 @@ export class MiniProgramService extends WechatService {
   constructor(
     protected readonly logger: LoggerService,
     protected readonly cacheService: CacheService,
-    private readonly weatherService: WeatherService,
+    private readonly amapService: AmapService,
   ) {
     super(logger, cacheService);
     this.logger.setContext(MiniProgramService.name);
@@ -74,7 +74,9 @@ export class MiniProgramService extends WechatService {
    * @param toUser - 接收者（用户）的 openid
    */
   async replyTodayWeather(toUser: string) {
-    const weather = await this.weatherService.getTodayWeather();
+    const weatherLive = await this.amapService.weatherLive();
+    const weather = weatherLive.lives[0];
+    const description = `${weather.weather}，${weather.temperature}℃，${weather.winddirection}风${weather.windpower}级，湿度${weather.humidity}%`;
     return this.replySubscribeMessage({
       touser: toUser,
       template_id: 'k-EspzqmrO2YOZ9ZQCEKwA5ptCYXjQits4k-aJeokaw',
@@ -94,7 +96,7 @@ export class MiniProgramService extends WechatService {
           value: `${weather.temperature}℃`,
         },
         thing5: {
-          value: weather.description,
+          value: description,
         },
       },
     });

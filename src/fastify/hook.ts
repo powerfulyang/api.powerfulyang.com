@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import fastifyCookie from '@fastify/cookie';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyStatic from '@fastify/static';
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyReply } from 'fastify';
 import { fastify } from 'fastify';
 import process from 'node:process';
 import { parseString } from 'xml2js';
@@ -31,8 +31,9 @@ export const createFastifyInstance = (): FastifyInstance => {
     done();
   });
 
-  fastifyInstance.addHook('onSend', (_request, reply, _payload, done) => {
-    reply.header('x-request-id', getRequestId());
+  fastifyInstance.addHook('onSend', (_request, reply: FastifyReply, _payload, done) => {
+    // fix log.middleware.ts can't get response headers
+    reply.raw.setHeader('x-request-id', getRequestId());
     reply.header('x-process-time', `${reply.getResponseTime().toFixed(3)}ms`);
     reply.header('x-server-id', HOSTNAME);
     reply.header('x-server-time', DateTimeFormat());

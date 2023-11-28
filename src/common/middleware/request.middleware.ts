@@ -11,7 +11,7 @@ export class RequestMiddleware implements NestMiddleware {
     this.logger.setContext(RequestMiddleware.name);
   }
 
-  use(req: FastifyRequest, _reply: FastifyReply, next: () => void) {
+  use(req: FastifyRequest, _reply: FastifyReply['raw'], next: () => void) {
     // request log
     requestNamespace.run(() => {
       const requestIdFromHeader = req.headers['x-request-id'] as string | undefined;

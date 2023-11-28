@@ -7,7 +7,7 @@ import { LoggerService } from '@/common/logger/logger.service';
 import { ApiOkInfiniteQueryResponse } from '@/common/swagger/ApiOkInfiniteQueryResponse';
 import { Feed } from '@/feed/entities/feed.entity';
 import { FeedService } from '@/feed/feed.service';
-import { PathViewCountService } from '@/path-view-count/path-view-count.service';
+import { RequestLogService } from '@/request-log/request-log.service';
 import { SearchPostDto } from '@/post/dto/search-post.dto';
 import { Post as _Post } from '@/post/entities/post.entity';
 import { PostService } from '@/post/post.service';
@@ -25,7 +25,7 @@ export class PublicController {
     private readonly assetService: AssetService,
     private readonly postService: PostService,
     private readonly feedService: FeedService,
-    private readonly pathViewCountService: PathViewCountService,
+    private readonly pathViewCountService: RequestLogService,
   ) {
     this.logger.setContext(PublicController.name);
   }
