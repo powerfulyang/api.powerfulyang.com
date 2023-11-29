@@ -141,7 +141,6 @@ export class UserController {
   })
   current(@AuthUser() user: User) {
     if (user.email) {
-      this.logger.verbose(`${user.email} try to get current user info`);
       return user;
     }
     return null;
@@ -155,7 +154,7 @@ export class UserController {
     operationId: 'logout',
   })
   logout(@AuthUser() user: User): { cookies: CookieClear[] } {
-    this.logger.info(`${user.email} try to logout!!!`);
+    this.logger.info(`${user.email} logout!`);
     return {
       cookies: [
         {

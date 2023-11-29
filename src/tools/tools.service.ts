@@ -7,7 +7,7 @@ import { Injectable } from '@nestjs/common';
 import { sha1 } from '@powerfulyang/node-utils';
 import { ensureFileSync } from 'fs-extra';
 import { spawn } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import process from 'node:process';
 import { concatWith, fromEvent, merge, of, switchMap, takeUntil } from 'rxjs';
@@ -31,7 +31,11 @@ export class ToolsService {
     const downloadPath = join(process.cwd(), `assets/yt-dlp/${hash}.%(ext)s`);
     const getFilenameCommand = `yt-dlp ${url} --proxy '${this.proxyUri}' --output '${downloadPath}' --get-filename`;
     const cookiesPath = join(COOKIE_PATH, 'yt-dlp', user.id.toString());
-    const downloadCommand = `yt-dlp ${url} --cookies ${cookiesPath} --proxy '${this.proxyUri}' --output '${downloadPath}'`;
+    let cookiesOption = '';
+    if (existsSync(cookiesPath)) {
+      cookiesOption = `--cookies ${cookiesPath}`;
+    }
+    const downloadCommand = `yt-dlp ${url} ${cookiesOption} --proxy '${this.proxyUri}' --output '${downloadPath}'`;
     return {
       getFilenameCommand,
       downloadCommand,

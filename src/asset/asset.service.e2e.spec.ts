@@ -17,7 +17,7 @@ describe('AssetService', () => {
   });
 
   it('fetchUndoes pinterest', async () => {
-    const result = await service.fetchUndoes(ScheduleType.pinterest, undefined, {});
+    const result = await service.fetchUndoes(ScheduleType.pinterest);
     expect(result).toBeDefined();
   }, 100000);
 });

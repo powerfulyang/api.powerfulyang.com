@@ -174,20 +174,38 @@ export class AssetService extends BaseService {
     });
   }
 
-  async fetchUndoes(
-    bucketName: string,
-    maxSn: string | undefined,
-    headers: Record<string, string>,
-  ) {
+  async fetchUndoes(bucketName: string) {
     switch (bucketName) {
-      case ScheduleType.instagram:
-        return this.instagramBotService.fetchUndo(maxSn);
-      case ScheduleType.pinterest:
-        // eslint-disable-next-line no-param-reassign
-        headers.refer = 'https://www.pinterest.com/';
-        return this.pinterestBotService.fetchUndo(maxSn);
-      case ScheduleType.pixiv:
-        return this.pixivBotService.fetchUndo(maxSn);
+      case ScheduleType.instagram: {
+        const max = await this.assetDao.findOne({
+          order: { id: 'DESC' },
+          where: {
+            bucket: { name: bucketName },
+            sn: Not(''),
+          },
+        });
+        return this.instagramBotService.fetchUndo(max?.sn);
+      }
+      case ScheduleType.pinterest: {
+        const max = await this.assetDao.findOne({
+          order: { sn: 'DESC' },
+          where: {
+            bucket: { name: bucketName },
+            sn: Not(''),
+          },
+        });
+        return this.pinterestBotService.fetchUndo(max?.sn);
+      }
+      case ScheduleType.pixiv: {
+        const max = await this.assetDao.findOne({
+          order: { id: 'DESC' },
+          where: {
+            bucket: { name: bucketName },
+            sn: Not(''),
+          },
+        });
+        return this.pixivBotService.fetchUndo(max?.sn);
+      }
       default:
         throw new UnprocessableEntityException('bucketName is not support');
     }
@@ -262,37 +280,42 @@ export class AssetService extends BaseService {
       return;
     }
 
-    const max = await this.assetDao.findOne({
-      order: { id: 'DESC' },
-      where: {
-        bucket: { name: bucketName },
-        sn: Not(''),
-      },
-    });
-
     const headers = { refer: '' };
-    const undoes: PinterestInterface[] = await this.fetchUndoes(bucketName, max?.sn, headers);
+    if (bucketName === ScheduleType.pinterest) {
+      headers.refer = 'https://www.pinterest.com/';
+    }
+    const undoes: PinterestInterface[] = await this.fetchUndoes(bucketName);
 
-    this.logger.info(`undoes count:[${bucketName}] -> ${undoes.length}`);
+    this.logger.info(`[${bucketName}]: undoes count is ${undoes.length}`);
     for (const undo of undoes.reverse()) {
-      this.logger.info(`[${bucketName}] -> ${undo.id} -> ${undo.imgList.join('\n')}`);
-      for (const imgUrl of undo.imgList) {
-        try {
-          const res = await this.fetchImgBuffer(imgUrl, headers);
-          const buffer = await res.buffer();
+      this.logger.info(`[${bucketName}]: ${undo.id}\n${undo.imgList.join('\n')}`);
+      // check if the asset sn is already exist
+      const existingAsset = await this.assetDao.exist({
+        where: {
+          sn: undo.id,
+        },
+      });
+      if (existingAsset) {
+        this.logger.info(`[${bucketName}]: ${undo.id} is already exist`);
+      } else {
+        for (const imgUrl of undo.imgList) {
+          try {
+            const res = await this.fetchImgBuffer(imgUrl, headers);
+            const buffer = await res.buffer();
 
-          await this.processAsset(buffer, {
-            bucketName: bucket.name,
-            uploadBy: await this.userService.getAssetBotUser(),
-            async: true,
-            assetAddition: {
-              sn: undo.id,
-              originUrl: undo.originUrl,
-              tags: undo.tags,
-            },
-          });
-        } catch (e) {
-          this.logger.error(e);
+            await this.processAsset(buffer, {
+              bucketName: bucket.name,
+              uploadBy: await this.userService.getAssetBotUser(),
+              async: true,
+              assetAddition: {
+                sn: undo.id,
+                originUrl: undo.originUrl,
+                tags: undo.tags,
+              },
+            });
+          } catch (e) {
+            this.logger.error(e);
+          }
         }
       }
     }

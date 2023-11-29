@@ -4,6 +4,7 @@ export interface PixivBotApiQuery {
   limit: number;
   rest: 'show';
   lang: 'zh';
+  version: string;
 }
 
 export interface RESPixivInterface {
