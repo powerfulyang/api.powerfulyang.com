@@ -24,6 +24,7 @@ model asset {
   createdAt                             DateTime            @default(now()) @db.Timestamptz(6)
   updatedAt                             DateTime            @default(now()) @db.Timestamptz(6)
   objectUrl                             Json                @default("{}") @db.Json
+  alt                                   String              @default("") @db.VarChar
   cos_bucket                            cos_bucket          @relation(fields: [bucketId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_3df68956fee26c7e06f6f407e9e")
   user_asset_uploadByIdTouser           user                @relation("asset_uploadByIdTouser", fields: [uploadById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_792de37ab3c707e8e8affb10f0f")
   feed_assets_asset                     feed_assets_asset[]
@@ -62,8 +63,8 @@ model feed {
   public                     Boolean             @default(false)
   createById                 Int
   updateById                 Int?
-  updatedAt                  DateTime            @default(now()) @db.Timestamptz(6)
   createdAt                  DateTime            @default(now()) @db.Timestamptz(6)
+  updatedAt                  DateTime            @default(now()) @db.Timestamptz(6)
   user_feed_createByIdTouser user                @relation("feed_createByIdTouser", fields: [createById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_06e81566f97ddc4a644e0069b3c")
   user_feed_updateByIdTouser user?               @relation("feed_updateByIdTouser", fields: [updateById], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_bab3ec30f4daf39a663896681f7")
   feed_assets_asset          feed_assets_asset[]
@@ -82,9 +83,9 @@ model feed_assets_asset {
 
 model menu {
   id                                            Int               @id(map: "PK_35b2a8f47d153ff7a41860cceeb") @default(autoincrement())
-  name                                          String            @unique(map: "UQ_51b63874cdce0d6898a0b2150f2") @db.VarChar
   path                                          String            @db.VarChar
   parentId                                      Int?
+  name                                          String            @unique(map: "UQ_51b63874cdce0d6898a0b2150f2") @db.VarChar
   createdAt                                     DateTime          @default(now()) @db.Timestamptz(6)
   updatedAt                                     DateTime          @default(now()) @db.Timestamptz(6)
   menu                                          menu?             @relation("menuTomenu", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_23ac1b81a7bfb85b14e86bd23a5")
@@ -129,23 +130,15 @@ model oauth_openid {
   @@unique([applicationId, openid], map: "IDX_783105cac265c9ebc13511e418")
 }
 
-model path_view_count {
-  id        Int      @id(map: "PK_bcf66d7174f19d4485589ad3518") @default(autoincrement())
-  path      String
-  ip        BigInt
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @default(now()) @db.Timestamptz(6)
-}
-
 model post {
   id                         Int        @id(map: "PK_be5fda3aac270b134ff9c21cdee") @default(autoincrement())
   title                      String     @db.VarChar
   content                    String
   tags                       Json       @db.Json
   public                     Boolean    @default(false)
+  publishYear                Int
   createById                 Int
   posterId                   Int?
-  publishYear                Int
   updateById                 Int?
   summary                    String     @default("") @db.VarChar
   createdAt                  DateTime   @default(now()) @db.Timestamptz(6)
@@ -211,25 +204,26 @@ model typeorm_metadata {
 }
 
 model user {
-  id                                     Int                    @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
-  email                                  String                 @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
-  saltedPassword                         String                 @default("") @db.VarChar
-  salt                                   String                 @default("") @db.VarChar
-  nickname                               String                 @db.VarChar
-  bio                                    String                 @default("") @db.VarChar
-  avatar                                 String                 @default("") @db.VarChar
-  lastIp                                 String                 @default("") @db.VarChar
-  lastAddress                            String                 @default("") @db.VarChar
+  id                                     Int                     @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  email                                  String                  @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
+  saltedPassword                         String                  @default("") @db.VarChar
+  salt                                   String                  @default("") @db.VarChar
+  nickname                               String                  @db.VarChar
+  bio                                    String                  @default("") @db.VarChar
+  avatar                                 String                  @default("") @db.VarChar
+  lastIp                                 String                  @default("") @db.VarChar
+  lastAddress                            String                  @default("") @db.VarChar
   timelineBackgroundId                   Int?
-  createdAt                              DateTime               @default(now()) @db.Timestamptz(6)
-  updatedAt                              DateTime               @default(now()) @db.Timestamptz(6)
-  asset_asset_uploadByIdTouser           asset[]                @relation("asset_uploadByIdTouser")
-  feed_feed_createByIdTouser             feed[]                 @relation("feed_createByIdTouser")
-  feed_feed_updateByIdTouser             feed[]                 @relation("feed_updateByIdTouser")
+  createdAt                              DateTime                @default(now()) @db.Timestamptz(6)
+  updatedAt                              DateTime                @default(now()) @db.Timestamptz(6)
+  asset_asset_uploadByIdTouser           asset[]                 @relation("asset_uploadByIdTouser")
+  feed_feed_createByIdTouser             feed[]                  @relation("feed_createByIdTouser")
+  feed_feed_updateByIdTouser             feed[]                  @relation("feed_updateByIdTouser")
   oauth_openid                           oauth_openid[]
-  post_post_createByIdTouser             post[]                 @relation("post_createByIdTouser")
-  post_post_updateByIdTouser             post[]                 @relation("post_updateByIdTouser")
-  asset_user_timelineBackgroundIdToasset asset?                 @relation("user_timelineBackgroundIdToasset", fields: [timelineBackgroundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_a80a526e85d3ae828a8932c8d77")
+  post_post_createByIdTouser             post[]                  @relation("post_createByIdTouser")
+  post_post_updateByIdTouser             post[]                  @relation("post_updateByIdTouser")
+  push_subscription_log                  push_subscription_log[]
+  asset_user_timelineBackgroundIdToasset asset?                  @relation("user_timelineBackgroundIdToasset", fields: [timelineBackgroundId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_a80a526e85d3ae828a8932c8d77")
   user_families_family                   user_families_family[]
   user_roles_role                        user_roles_role[]
 }
@@ -254,4 +248,30 @@ model user_roles_role {
   @@id([userId, roleId], map: "PK_b47cd6c84ee205ac5a713718292")
   @@index([roleId], map: "IDX_4be2f7adf862634f5f803d246b")
   @@index([userId], map: "IDX_5f9286e6c25594c6b88c108db7")
+}
+
+model push_subscription_log {
+  id                   Int      @id(map: "PK_34b9abcd1ca5cbdd0f11c7a08d6") @default(autoincrement())
+  pushSubscriptionJSON Json
+  endpoint             String   @unique(map: "IDX_295c91546d35e8d46006f1fd29") @default(dbgenerated("(\"pushSubscriptionJSON\" ->> 'endpoint'::text)")) @db.VarChar
+  createdAt            DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime @default(now()) @db.Timestamptz(6)
+  userId               Int?
+  user                 user?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_db86a22ea16bb8d4efbfa66158f")
+}
+
+model request_log {
+  id            Int      @id(map: "PK_ae393b42f50b0399df4c90160d6") @default(autoincrement())
+  path          String
+  ip            String   @db.VarChar
+  ipInfo        String   @db.VarChar
+  method        String   @db.VarChar
+  statusCode    Int
+  contentLength String   @db.VarChar
+  processTime   String   @db.VarChar
+  referer       String   @db.VarChar
+  userAgent     String   @db.VarChar
+  requestId     String   @db.VarChar
+  createdAt     DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @db.Timestamptz(6)
 }
