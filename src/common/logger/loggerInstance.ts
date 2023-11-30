@@ -67,7 +67,7 @@ export const loggerInstance = winston.createLogger({
   format: combine(
     timestamp({
       format: () => {
-        return dayjs().format('MM/DD/YYYY, h:mm:ss.SSS A');
+        return dayjs().format('MM/DD/YYYY, hh:mm:ss.SSS A');
       },
     }),
     logFormat,

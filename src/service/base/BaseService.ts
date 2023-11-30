@@ -61,6 +61,10 @@ export class BaseService {
     return isNotNil(value) ? value : undefined;
   }
 
+  protected ignoreEmptyString(value?: string) {
+    return value === '' ? undefined : value;
+  }
+
   protected ignoreEmptyArray<T>(value?: T[]) {
     return value?.length ? In(value) : undefined;
   }

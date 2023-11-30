@@ -1,4 +1,5 @@
 import { RequestLog } from '@/request-log/entities/request-log.entity';
+import { RequestLogController } from '@/request-log/request-log.controller';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@/common/cache/cache.module';
@@ -10,5 +11,6 @@ import { RequestLogService } from '@/request-log/request-log.service';
   imports: [OrmModule, TypeOrmModule.forFeature([RequestLog]), CacheModule, LoggerModule],
   providers: [RequestLogService],
   exports: [RequestLogService],
+  controllers: [RequestLogController],
 })
 export class RequestLogModule {}

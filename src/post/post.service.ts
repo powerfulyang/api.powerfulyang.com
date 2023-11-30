@@ -271,7 +271,7 @@ export class PostService extends BaseService {
       createdAt,
       skip,
       content,
-      public: _p,
+      public: isPublic,
       updatedAt,
       poster,
       summary,
@@ -283,7 +283,7 @@ export class PostService extends BaseService {
         title: super.iLike(title),
         createdAt: super.convertDateRangeToBetween(createdAt),
         content: super.iLike(content),
-        public: super.ignoreNilValue(_p),
+        public: isPublic,
         updatedAt: super.convertDateRangeToBetween(updatedAt),
         poster: {
           id: super.ignoreFalsyValue(poster?.id),

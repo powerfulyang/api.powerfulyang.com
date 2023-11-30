@@ -385,6 +385,7 @@ export class UserService extends BaseService {
     const user = await this.queryUserCascadeInfo(id);
     user.lastIp = loginIp;
     user.lastAddress = getIpInfo(loginIp);
+    user.updatedAt = new Date();
     return this.saveUserAndCached(user);
   }
 }
