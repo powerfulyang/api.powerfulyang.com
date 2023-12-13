@@ -4,8 +4,9 @@ import { AuthUser } from '@/common/decorator/user-from-auth.decorator';
 import { LoggerService } from '@/common/logger/logger.service';
 import { OCRDto } from '@/tools/dto/OCR.dto';
 import { User } from '@/user/entities/user.entity';
-import { Body, Controller, Get, Header, Post, Query, Sse } from '@nestjs/common';
+import { Body, Controller, Get, Header, Post, Query, Res, Sse } from '@nestjs/common';
 import { ApiBody, ApiExcludeEndpoint, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FastifyReply } from 'fastify';
 import { of } from 'rxjs';
 import { ToolsService } from './tools.service';
 
@@ -74,5 +75,12 @@ export class ToolsController {
   @Post('ocr')
   ocr(@Body() { images }: OCRDto) {
     return this.toolsService.ocr(images[0].data);
+  }
+
+  @Post('compress')
+  async compress(@Body() { images }: OCRDto, @Res() res: FastifyReply) {
+    const { data } = images[0];
+    const buffer = await this.toolsService.compress(data);
+    return res.type('image/webp').send(buffer);
   }
 }

@@ -41,7 +41,12 @@ export const createFastifyInstance = (): FastifyInstance => {
   });
 
   fastifyInstance.register(fastifyCookie);
-  fastifyInstance.register(fastifyMultipart, { addToBody: true });
+  fastifyInstance.register(fastifyMultipart, {
+    addToBody: true,
+    limits: {
+      fileSize: 1000 * 1000 * 10, // 10MB
+    },
+  });
   fastifyInstance.register(fastifyStatic, {
     root: join(process.cwd(), 'assets'),
     decorateReply: false,

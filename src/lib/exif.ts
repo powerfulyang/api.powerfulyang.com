@@ -6,7 +6,7 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-export const getEXIF = async (file: Buffer) => {
+export const getEXIF = async (file: Buffer | string) => {
   const s = sharp(file);
   const metadata = await s.metadata();
   const { exif } = metadata;

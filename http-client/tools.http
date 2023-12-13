@@ -1,0 +1,9 @@
+POST {{origin}}/api/tools/compress
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="images"; filename="test.jpeg"
+Content-Type: image/jpeg
+
+< ./test.jpeg
+--WebAppBoundary

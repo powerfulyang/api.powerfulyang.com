@@ -7,8 +7,8 @@ COPY package.json pnpm-lock.yaml .npmrc binding.gyp ./
 COPY addon ./addon
 COPY patches ./patches
 
-RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/main" > /etc/apk/repositories \
-    && echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/community" >> /etc/apk/repositories \
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.19/main" > /etc/apk/repositories \
+    && echo "https://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories \
     && apk update && apk upgrade \
     && apk add --no-cache tzdata \
     && echo "Asia/Shanghai" > /etc/timezone \
@@ -55,7 +55,7 @@ COPY --from=dependencies /etc/timezone /etc/timezone
 # yt-dlp
 # 在 Alpine Linux 中，`pip` 不是默认与 `python3` 一起安装的。要在 Alpine Linux 上安装 `pip`，您需要安装 `py3-pip` 包。
 RUN apk add --no-cache ffmpeg python3 py3-pip vips-dev \
-    && pip install --no-cache-dir yt-dlp
+    && pip install --break-system-packages --no-cache-dir yt-dlp
 
 USER node
 

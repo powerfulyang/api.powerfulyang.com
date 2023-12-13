@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import type { Exif } from 'exif-reader';
 import { Metadata } from 'sharp';
 import {
   BeforeInsert,
@@ -13,7 +14,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@/user/entities/user.entity';
-import { Exif } from '@/addon/types/Exif';
 import { CosBucket } from '@/bucket/entities/bucket.entity';
 
 export const AssetStyles = {
@@ -91,9 +91,9 @@ export class Asset {
   @ApiProperty()
   pHash: string;
 
-  @Column({ type: 'jsonb', select: false })
+  @Column({ type: 'jsonb', select: false, nullable: true })
   @ApiProperty()
-  exif: Exif;
+  exif: Exif | null;
 
   @Column({ type: 'jsonb', select: false })
   @ApiProperty()

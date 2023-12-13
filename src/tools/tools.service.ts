@@ -11,6 +11,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import process from 'node:process';
 import { concatWith, fromEvent, merge, of, switchMap, takeUntil } from 'rxjs';
+import sharp from 'sharp';
 import type { ImageLike } from 'tesseract.js';
 
 @Injectable()
@@ -118,5 +119,10 @@ export class ToolsService {
     } catch {
       return '';
     }
+  }
+
+  compress(data: Buffer) {
+    const sharpInstance = sharp(data);
+    return sharpInstance.rotate().webp().resize(300, 300).toBuffer();
   }
 }

@@ -17,7 +17,7 @@ export class RequestLogService extends BaseService {
     this.logger.setContext(RequestLogService.name);
   }
 
-  async viewCount(timezone = 'Asia/Shanghai') {
+  viewCount(timezone = 'Asia/Shanghai') {
     return this.requestLogDao
       .createQueryBuilder()
       .select(`("createdAt"::timestamptz AT TIME ZONE :timezone)::date::text`, 'date')
@@ -29,7 +29,7 @@ export class RequestLogService extends BaseService {
       .getRawMany<RequestLogDto>();
   }
 
-  async log(requestLog: Omit<RequestLog, 'id' | 'createdAt' | 'updatedAt'>) {
+  log(requestLog: Omit<RequestLog, 'id' | 'createdAt' | 'updatedAt'>) {
     return this.requestLogDao.save(requestLog);
   }
 

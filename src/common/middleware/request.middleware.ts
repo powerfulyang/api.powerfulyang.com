@@ -16,7 +16,7 @@ export class RequestMiddleware implements NestMiddleware {
     requestNamespace.run(() => {
       const requestIdFromHeader = req.headers['x-request-id'] as string | undefined;
       const requestId = requestIdFromHeader || generateUuid().toUpperCase();
-
+      this.logger.debug(`[${requestId}] ${req.method} ${req.url}`);
       setRequestId(requestId);
       next();
     });

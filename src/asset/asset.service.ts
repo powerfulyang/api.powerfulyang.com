@@ -1,4 +1,3 @@
-import { getEXIF } from '@/addon';
 import type { QueryAssetsDto } from '@/asset/dto/query-assets.dto';
 import { Asset } from '@/asset/entities/asset.entity';
 import { BucketService } from '@/bucket/bucket.service';
@@ -6,6 +5,7 @@ import type { CosBucket } from '@/bucket/entities/bucket.entity';
 import { LoggerService } from '@/common/logger/logger.service';
 import { AZUKI_ASSET_PATH, getBucketAssetPath } from '@/constants/asset_constants';
 import { ScheduleType } from '@/enum/ScheduleType';
+import { getEXIF } from '@/lib/exif';
 import { InstagramBotService } from '@/libs/instagram-bot';
 import { PinterestBotService } from '@/libs/pinterest-bot';
 import type { PinterestInterface } from '@/libs/pinterest-bot';
@@ -250,7 +250,7 @@ export class AssetService extends BaseService {
       ensureFileSync(path);
       writeFileSync(path, buffer);
     }
-    _asset.exif = getEXIF(path);
+    _asset.exif = await getEXIF(path);
     _asset.metadata = metadata;
     const { text } = await this.ocrService.recognize(path);
     _asset.alt = text;
