@@ -6,12 +6,12 @@ export class PaginatedBaseQuery {
     description: '每页条数',
     type: Number,
   })
-  public readonly take: number;
+  public readonly take?: number;
 
   @ApiProperty({
     name: 'current',
     description: '当前页码',
     type: Number,
   })
-  skip: number;
+  skip?: number;
 }

@@ -97,7 +97,7 @@ export class AssetService extends BaseService {
   ) {
     const assets: Asset[] = [];
     for (const file of files) {
-      const asset = await this.manualUploadImageToCos(file.data, bucketName, uploadBy);
+      const asset = await this.manualUploadAssetToCos(file.data, bucketName, uploadBy);
       assets.push(asset);
     }
     return assets;
@@ -473,11 +473,11 @@ export class AssetService extends BaseService {
 
   /**
    * 手动上传图片
-   * @param buffer - 图片 buffer
+   * @param buffer - asset buffer
    * @param bucketName - bucket 名称
    * @param uploadBy - 上传者
    */
-  private async manualUploadImageToCos(
+  private async manualUploadAssetToCos(
     buffer: Buffer,
     bucketName: CosBucket['name'],
     uploadBy: User,

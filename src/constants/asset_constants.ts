@@ -11,4 +11,7 @@ export const getBucketAssetPath = (bucketName: string, key: string = '') => {
 
 export const AZUKI_ASSET_PATH = join(ASSET_PATH, 'azuki');
 
+/**
+ * path: <rootDir>/assets/emt
+ */
 export const EMT_ASSET_PATH = join(ASSET_PATH, 'emt');

@@ -35,6 +35,7 @@ export class TelegramBotService {
       });
       this.bot.on('channel_post', (msg) => {
         const sender = msg.sender_chat;
+        this.logger.debug(`handle msg: ${JSON.stringify(msg, null, 2)}`);
         if (sender?.type === 'channel' && sender.username === 'emt_channel') {
           this.mqService.notifyHandleFeed(msg);
         }
@@ -44,6 +45,10 @@ export class TelegramBotService {
 
   async writeMsgToFeed(msg: TelegramBot.Message) {
     const photos = msg.photo;
+    const { document } = msg;
+
+    let content = msg.text || msg.caption || 'From Telegram';
+
     const assets: any[] = [];
     if (photos) {
       // 只取最大的一张
@@ -60,11 +65,19 @@ export class TelegramBotService {
         }
       }
     }
+    if (document) {
+      const path = join(EMT_ASSET_PATH, document.file_id);
+      ensureDirSync(path);
+      await this.bot?.downloadFile(document.file_id, path);
+      const videoUrl = `https://api.powerfulyang.com/emt/${document.file_id}`;
+      // add video url to content 简单处理下
+      content += `\n:::video\n${videoUrl}\n:::`;
+    }
     const admin = new User();
     admin.id = 1;
     await this.feedService.postFeed({
       public: true,
-      content: msg.text || msg.caption || 'From Telegram',
+      content,
       createBy: admin,
       assets,
     });

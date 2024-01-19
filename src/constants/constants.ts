@@ -1,7 +1,7 @@
 import type { CookieSerializeOptions } from '@fastify/cookie';
 import { InternalServerErrorException } from '@nestjs/common';
 import type { Nullable } from '@powerfulyang/utils';
-import { isDevProcess } from '@powerfulyang/utils';
+import { isProdProcess, isDevProcess } from '@powerfulyang/utils';
 
 export const MICROSERVICE_NAME = Symbol('RABBIT_MQ_MICROSERVICE');
 export const RMQ_COS_UPLOAD_QUEUE = 'RABBIT_MQ_COS_UPLOAD_QUEUE';
@@ -26,3 +26,5 @@ export const DefaultCookieOptions: CookieSerializeOptions = {
   maxAge: 24 * 60 * 60, // hours * minutes * seconds
   path: '/',
 };
+
+export const DEFAULT_R2_BUCKET_NAME = isProdProcess ? 'eleven' : 'test';

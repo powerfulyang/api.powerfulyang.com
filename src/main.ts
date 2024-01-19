@@ -1,4 +1,5 @@
 import '@/loadEnv';
+import { patchNestJsSwagger } from 'nestjs-zod';
 import process from 'node:process';
 import { NestFactory } from '@nestjs/core';
 import type { RmqOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
@@ -14,6 +15,8 @@ import { DateTimeFormat } from '@/utils/dayjs';
 import { AppModule } from './app.module';
 
 require('source-map-support').install();
+
+patchNestJsSwagger();
 
 async function bootstrap(): Promise<void> {
   const logger = new LoggerService();

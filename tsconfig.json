@@ -20,14 +20,15 @@
     "strictPropertyInitialization": false,
     "strict": true,
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "useUnknownInCatchVariables": true,
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@test/*": ["test/*"]
+      "@test/*": ["test/*"],
     },
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "codegen.ts", "test"]
+  "include": ["src/**/*.ts", "codegen.ts", "test"],
 }

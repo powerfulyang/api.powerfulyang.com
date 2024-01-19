@@ -1,15 +1,14 @@
+import { AssetService } from '@/asset/asset.service';
+import { BuiltinBucket } from '@/bucket/entities/bucket.entity';
+import { LoggerService } from '@/common/logger/logger.service';
+import type { QueryFeedsDto } from '@/feed/dto/query-feeds.dto';
+import { Feed } from '@/feed/entities/feed.entity';
+import { BaseService } from '@/service/base/BaseService';
+import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { firstItem, lastItem } from '@powerfulyang/utils';
 import { In, Repository } from 'typeorm';
-import { LoggerService } from '@/common/logger/logger.service';
-import { AlgoliaService } from '@/service/algolia/AlgoliaService';
-import { BaseService } from '@/service/base/BaseService';
-import { BuiltinBucket } from '@/bucket/entities/bucket.entity';
-import type { QueryFeedsDto } from '@/feed/dto/query-feeds.dto';
-import { Feed } from '@/feed/entities/feed.entity';
-import type { AuthorizationParams, InfiniteQueryParams } from '@/type/InfiniteQueryParams';
-import { AssetService } from '@/asset/asset.service';
 import type { CreateFeedDto } from './dto/create-feed.dto';
 import type { UpdateFeedDto } from './dto/update-feed.dto';
 
@@ -19,7 +18,6 @@ export class FeedService extends BaseService {
     @InjectRepository(Feed) private readonly feedDao: Repository<Feed>,
     private readonly logger: LoggerService,
     private readonly assetService: AssetService,
-    private readonly algoliaService: AlgoliaService,
   ) {
     super();
     this.logger.setContext(FeedService.name);
@@ -33,9 +31,6 @@ export class FeedService extends BaseService {
       createFeedDto.createBy,
     );
     const feed: Feed = await this.feedDao.save({ ...createFeedDto, assets });
-    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
-      this.logger.error(e);
-    });
     return feed;
   }
 
@@ -55,9 +50,6 @@ export class FeedService extends BaseService {
       updateFeedDto.updateBy,
     );
     const saved = await this.feedDao.save(feed);
-    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
-      this.logger.error(e);
-    });
     return saved;
   }
 
@@ -129,9 +121,6 @@ export class FeedService extends BaseService {
     if (result.affected === 0) {
       throw new ForbiddenException('You can only delete your own post!');
     }
-    this.algoliaService.reindexAlgoliaCrawler().catch((e) => {
-      this.logger.error(e);
-    });
   }
 
   queryFeeds(pagination: QueryFeedsDto) {

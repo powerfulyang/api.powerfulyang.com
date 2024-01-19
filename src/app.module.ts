@@ -1,4 +1,5 @@
 import { AssetModule } from '@/asset/asset.module';
+import { BabyModule } from '@/baby/baby.module';
 import { BucketModule } from '@/bucket/bucket.module';
 import { StrategyModule } from '@/common/authorization/strategy.module';
 import { CatchFilter } from '@/common/filter/catch.filter';
@@ -32,6 +33,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PassportModule } from '@nestjs/passport';
+import { ZodValidationPipe } from 'nestjs-zod';
 import { join } from 'node:path';
 import process from 'node:process';
 import { ClickUpModule } from './click-up/click-up.module';
@@ -67,6 +69,7 @@ import { WebPushModule } from './web-push/web-push.module';
     ClickUpModule,
     TelegramBotModule,
     RequestLogModule,
+    BabyModule,
   ],
   providers: [
     {
@@ -89,6 +92,10 @@ import { WebPushModule } from './web-push/web-push.module';
       provide: APP_PIPE,
       // default forbidUnknownValues: true, is too strict
       useClass: ValidationPipe,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe,
     },
   ],
 })

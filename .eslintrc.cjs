@@ -8,6 +8,7 @@ module.exports = {
       ...override.rules,
       'no-await-in-loop': 'off',
       'import/no-cycle': 'off',
+      'max-classes-per-file': 'off',
     },
   })),
 };

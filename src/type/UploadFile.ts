@@ -13,5 +13,5 @@ export type UploadFile = {
   encoding: string;
   mimetype: string;
   data: Buffer;
-  limit: boolean;
+  limit?: boolean;
 };
