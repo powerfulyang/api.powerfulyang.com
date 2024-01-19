@@ -6,6 +6,7 @@ WORKDIR /usr/app
 COPY package.json pnpm-lock.yaml .npmrc binding.gyp ./
 COPY addon ./addon
 COPY patches ./patches
+COPY src ./src
 
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.19/main" > /etc/apk/repositories \
     && echo "https://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories \
