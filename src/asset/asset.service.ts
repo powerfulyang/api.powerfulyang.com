@@ -7,8 +7,8 @@ import { AZUKI_ASSET_PATH, getBucketAssetPath } from '@/constants/asset_constant
 import { ScheduleType } from '@/enum/ScheduleType';
 import { getEXIF } from '@/lib/exif';
 import { InstagramBotService } from '@/libs/instagram-bot';
-import { PinterestBotService } from '@/libs/pinterest-bot';
 import type { PinterestInterface } from '@/libs/pinterest-bot';
+import { PinterestBotService } from '@/libs/pinterest-bot';
 import { PixivBotService } from '@/libs/pixiv-bot';
 import { ProxyFetchService } from '@/libs/proxy-fetch';
 import { BaseService } from '@/service/base/BaseService';
@@ -30,11 +30,11 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { calculateHammingDistances, pHash, sha1 } from '@powerfulyang/node-utils';
 import { firstItem, isArray, isNotNull, isNull, lastItem } from '@powerfulyang/utils';
 import { ensureFileSync } from 'fs-extra';
+import fetch from 'node-fetch';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import sharp from 'sharp';
 import { DataSource, In, Not, Repository } from 'typeorm';
-import fetch from 'node-fetch';
-import { join } from 'node:path';
 
 @Injectable()
 export class AssetService extends BaseService {
@@ -287,10 +287,13 @@ export class AssetService extends BaseService {
     const undoes: PinterestInterface[] = await this.fetchUndoes(bucketName);
 
     this.logger.info(`[${bucketName}]: undoes count is ${undoes.length}`);
+
+    const botUser = await this.userService.getAssetBotUser();
+
     for (const undo of undoes.reverse()) {
       this.logger.info(`[${bucketName}]: ${undo.id}\n${undo.imgList.join('\n')}`);
       // check if the asset sn is already exist
-      const existingAsset = await this.assetDao.exist({
+      const existingAsset = await this.assetDao.exists({
         where: {
           sn: undo.id,
         },
@@ -305,7 +308,7 @@ export class AssetService extends BaseService {
 
             await this.processAsset(buffer, {
               bucketName: bucket.name,
-              uploadBy: await this.userService.getAssetBotUser(),
+              uploadBy: botUser,
               async: true,
               assetAddition: {
                 sn: undo.id,
@@ -324,7 +327,7 @@ export class AssetService extends BaseService {
   async infiniteQuery(params: InfiniteQueryParams<AuthorizationParams> = {}) {
     const { userIds = [], prevCursor, nextCursor } = params;
     const take = this.formatInfiniteTake(params.take);
-    const BotUser = await this.userService.getAssetBotUser();
+    const { publicBucketIds, publicUserIds } = await this.listPublicAssetSource();
     const cursor = this.generateInfiniteCursor({
       nextCursor,
       prevCursor,
@@ -345,12 +348,20 @@ export class AssetService extends BaseService {
         },
         alt: true,
       },
-      where: {
-        uploadBy: {
-          id: In(userIds.concat(BotUser.id)),
+      where: [
+        {
+          uploadBy: {
+            id: In(userIds.concat(publicUserIds)),
+          },
+          id: cursor,
         },
-        id: cursor,
-      },
+        {
+          bucket: {
+            id: In(publicBucketIds),
+          },
+          id: cursor,
+        },
+      ],
       order: {
         id: 'DESC',
       },

@@ -34,7 +34,7 @@ export const createFastifyInstance = (): FastifyInstance => {
   fastifyInstance.addHook('onSend', (_request, reply: FastifyReply, _payload, done) => {
     // fix log.middleware.ts can't get response headers
     reply.raw.setHeader('x-request-id', getRequestId() || '');
-    reply.header('x-process-time', `${reply.getResponseTime().toFixed(3)}ms`);
+    reply.header('x-process-time', `${reply.elapsedTime.toFixed(3)}ms`);
     reply.header('x-server-id', HOSTNAME);
     reply.header('x-server-time', DateTimeFormat());
     done();

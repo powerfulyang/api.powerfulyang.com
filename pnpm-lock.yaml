@@ -7,7 +7,7 @@ settings:
 overrides:
   tough-cookie@<4.1.3: '>=4.1.3'
   '@apollo/server@<4.9.3': '>=4.9.3'
-  '@as-integrations/fastify>fastify': 4.25.2
+  '@as-integrations/fastify>fastify': 4.26.2
 
 dependencies:
   '@apollo/server':
@@ -15,7 +15,7 @@ dependencies:
     version: 4.10.2(graphql@16.8.1)
   '@as-integrations/fastify':
     specifier: 2.1.1
-    version: 2.1.1(@apollo/server@4.10.2)(fastify@4.25.2)
+    version: 2.1.1(@apollo/server@4.10.2)(fastify@4.26.2)
   '@aws-sdk/client-s3':
     specifier: ^3.540.0
     version: 3.540.0
@@ -653,15 +653,15 @@ packages:
       - encoding
     dev: true
 
-  /@as-integrations/fastify@2.1.1(@apollo/server@4.10.2)(fastify@4.25.2):
+  /@as-integrations/fastify@2.1.1(@apollo/server@4.10.2)(fastify@4.26.2):
     resolution: {integrity: sha512-iupYSQyRrlBAdsDcCYzuKjJlJAKiQpRDLd33A6yAF3Ip/rGrSDDDrxfJWp6FqyVlivSL+MQkGIphmUI/ckfZkg==}
     engines: {node: '>=16'}
     peerDependencies:
       '@apollo/server': '>=4.9.3'
-      fastify: 4.25.2
+      fastify: 4.26.2
     dependencies:
       '@apollo/server': 4.10.2(graphql@16.8.1)
-      fastify: 4.25.2
+      fastify: 4.26.2
       fastify-plugin: 4.5.1
     dev: false
 
@@ -3903,7 +3903,7 @@ packages:
     dependencies:
       '@apollo/server': 4.10.2(graphql@16.8.1)
       '@apollo/server-plugin-landing-page-graphql-playground': 4.0.0(@apollo/server@4.10.2)
-      '@as-integrations/fastify': 2.1.1(@apollo/server@4.10.2)(fastify@4.25.2)
+      '@as-integrations/fastify': 2.1.1(@apollo/server@4.10.2)(fastify@4.26.2)
       '@nestjs/common': 10.3.7(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.7(@nestjs/common@10.3.7)(@nestjs/microservices@10.3.7)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/graphql': 12.1.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(class-validator@0.14.1)(graphql@16.8.1)(reflect-metadata@0.2.2)
@@ -6522,16 +6522,6 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /avvio@8.2.1:
-    resolution: {integrity: sha512-TAlMYvOuwGyLK3PfBb5WKBXZmXz2fVCgv23d6zZFdle/q3gPjmxBaeuC0pY0Dzs5PWMSgfqqEZkrye19GlDTgw==}
-    dependencies:
-      archy: 1.0.0
-      debug: 4.3.4
-      fastq: 1.16.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /avvio@8.3.0:
     resolution: {integrity: sha512-VBVH0jubFr9LdFASy/vNtm5giTrnbVquWBhT0fyizuNK2rQ7e7ONU2plZQWUNqtE1EmxFEb+kbSkFRkstiaS9Q==}
     dependencies:
@@ -8851,29 +8841,6 @@ packages:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
     dev: false
 
-  /fastify@4.25.2:
-    resolution: {integrity: sha512-SywRouGleDHvRh054onj+lEZnbC1sBCLkR0UY3oyJwjD4BdZJUrxBqfkfCaqn74pVCwBaRHGuL3nEWeHbHzAfw==}
-    dependencies:
-      '@fastify/ajv-compiler': 3.5.0
-      '@fastify/error': 3.4.1
-      '@fastify/fast-json-stringify-compiler': 4.3.0
-      abstract-logging: 2.0.1
-      avvio: 8.2.1
-      fast-content-type-parse: 1.1.0
-      fast-json-stringify: 5.10.0
-      find-my-way: 7.7.0
-      light-my-request: 5.11.0
-      pino: 8.17.2
-      process-warning: 3.0.0
-      proxy-addr: 2.0.7
-      rfdc: 1.3.1
-      secure-json-parse: 2.7.0
-      semver: 7.5.4
-      toad-cache: 3.7.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /fastify@4.26.2:
     resolution: {integrity: sha512-90pjTuPGrfVKtdpLeLzND5nyC4woXZN5VadiNQCicj/iJU4viNHKhsAnb7jmv1vu2IzkLXyBiCzdWuzeXgQ5Ug==}
     dependencies:
@@ -9040,15 +9007,6 @@ packages:
       unpipe: 1.0.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /find-my-way@7.7.0:
-    resolution: {integrity: sha512-+SrHpvQ52Q6W9f3wJoJBbAQULJuNEEQwBvlvYwACDhBTLOTMiQ0HYWh4+vC3OivGP2ENcTI1oKlFA2OepJNjhQ==}
-    engines: {node: '>=14'}
-    dependencies:
-      fast-deep-equal: 3.1.3
-      fast-querystring: 1.1.2
-      safe-regex2: 2.0.0
     dev: false
 
   /find-my-way@8.1.0:
@@ -11551,14 +11509,6 @@ packages:
   /libphonenumber-js@1.10.54:
     resolution: {integrity: sha512-P+38dUgJsmh0gzoRDoM4F5jLbyfztkU6PY6eSK6S5HwTi/LPvnwXqVCQZlAy1FxZ5c48q25QhxGQ0pq+WQcSlQ==}
 
-  /light-my-request@5.11.0:
-    resolution: {integrity: sha512-qkFCeloXCOMpmEdZ/MV91P8AT4fjwFXWaAFz3lUeStM8RcoM1ks4J/F8r1b3r6y/H4u3ACEJ1T+Gv5bopj7oDA==}
-    dependencies:
-      cookie: 0.5.0
-      process-warning: 2.3.2
-      set-cookie-parser: 2.6.0
-    dev: false
-
   /light-my-request@5.12.0:
     resolution: {integrity: sha512-P526OX6E7aeCIfw/9UyJNsAISfcFETghysaWHQAlQYayynShT08MOj4c6fBCvTWBrHXSvqBAKDp3amUPSCQI4w==}
     dependencies:
@@ -13829,10 +13779,6 @@ packages:
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
-    dev: false
-
-  /process-warning@2.3.2:
-    resolution: {integrity: sha512-n9wh8tvBe5sFmsqlg+XQhaQLumwpqoAUruLwjCopgTmUBjJ/fjtBsJzKleCaIGBOMXYEhp1YfKl4d7rJ5ZKJGA==}
     dev: false
 
   /process-warning@3.0.0:

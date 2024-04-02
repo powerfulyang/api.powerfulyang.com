@@ -27,7 +27,7 @@
     "prod:dev": "cross-env PORT=3001 APP_ENV=prod nest start --watch",
     "deprecated:qa:dev": "cross-env PORT=3001 APP_ENV=qa nest build --webpackPath webpack-hmr.config.js --watch",
     "qa:dev": "cross-env PORT=3001 APP_ENV=qa nest start --watch",
-    "start": "node dist/src/main.js",
+    "start": "node dist/main.js",
     "test:e2e": "jest --testRegex \"e2e\"",
     "test:unit": "jest --testPathIgnorePatterns \"e2e\"",
     "tsc-check": "tsc --noEmit",
